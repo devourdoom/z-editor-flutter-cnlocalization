@@ -13,7 +13,7 @@
           "RTID(ZombossBattleIntro@CurrentLevel)",
           "RTID(ZombossBattle@CurrentLevel)"
         ],
-        "MusicType": "",
+        "MusicType": "MainPath",
         "Name": "僵王战示例",
         "StageModule": "RTID(FutureStage@LevelModules)",
         "StartingSun": 200,

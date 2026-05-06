@@ -14,7 +14,7 @@
           "RTID(NewWaves@CurrentLevel)",
           "RTID(DefaultCustomLevel@LevelModules)"
         ],
-        "MusicType": "",
+        "MusicType": "MainPath",
         "Name": "自定义僵尸示例",
         "StageModule": "RTID(TutorialStage@LevelModules)",
         "VictoryModule": "RTID(VictoryOutro@LevelModules)",
