@@ -9,6 +9,19 @@ import 'package:z_editor/data/rtid_parser.dart';
 import 'package:z_editor/l10n/app_localizations.dart';
 import 'package:z_editor/l10n/resource_names.dart';
 
+bool _shouldRecommendTunnelDefendModule(
+  LevelDefinitionData levelDef,
+  Set<String> moduleObjClasses,
+) {
+  final stageInfo = RtidParser.parse(levelDef.stageModule);
+  final alias = stageInfo?.alias ?? '';
+  if (alias != 'UnchartedMausoleumStage' &&
+      alias != 'UnchartedMausoleum2Stage') {
+    return false;
+  }
+  return !moduleObjClasses.contains('TunnelDefendModuleProperties');
+}
+
 class ModuleUIInfo {
   final String rtid;
   final String alias;
@@ -146,6 +159,8 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
       context,
       existingObjClasses,
     );
+    final showTunnelDefendRecommendation =
+        _shouldRecommendTunnelDefendModule(levelDef, existingObjClasses);
 
     return Stack(
       children: [
@@ -378,6 +393,53 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
                   );
                 },
               ),
+
+            if (showTunnelDefendRecommendation) ...[
+              const SizedBox(height: 12),
+              Builder(
+                builder: (ctx) {
+                  final isDark = Theme.of(ctx).brightness == Brightness.dark;
+                  final warningBg = isDark
+                      ? warningBarDark.withValues(alpha: 0.2)
+                      : warningBarLight.withValues(alpha: 0.2);
+                  final warningFg = isDark ? warningBarDark : warningBarLight;
+                  return Card(
+                    color: warningBg,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Icon(Icons.warning_amber, color: warningFg),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: Text(
+                                  l10n?.recommendedTunnelDefendTitle ??
+                                      'Tunnel pathways strongly recommended',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: warningFg,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n?.recommendedTunnelDefendBody ??
+                                'This Underground Palace stage expects the Tunnel Defend module for pathway visuals. Without it the lawn may look empty in-game.',
+                            style: TextStyle(color: warningFg),
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
           ],
         ),
         if (pendingDeleteRtid != null)
