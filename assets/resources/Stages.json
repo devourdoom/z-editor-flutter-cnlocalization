@@ -31,6 +31,7 @@
   { "alias": "UnchartedNo42UniverseStage", "type": "extra", "iconName": "Stage_PU41.webp" },
   { "alias": "JourneyToTheWestStage", "type": "extra", "iconName": "Stage_JTTW.webp" },
   { "alias": "UnchartedMausoleumStage", "type": "extra", "iconName": "Stage_Underground.webp" },
+  { "alias": "UnchartedMausoleum2Stage", "type": "extra", "iconName": "Stage_Underground.webp" },
   { "alias": "RiftStage", "type": "extra", "iconName": "Stage_Rift.webp" },
   { "alias": "JoustStage", "type": "extra", "iconName": "Stage_Joust.webp" },
   { "alias": "TwisterStage", "type": "seasons", "iconName": "Stage_Twister.webp" },
