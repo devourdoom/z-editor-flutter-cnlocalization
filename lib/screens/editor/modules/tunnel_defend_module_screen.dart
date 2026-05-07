@@ -126,7 +126,7 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
         roads.add(road);
       }
     }
-    _data = TunnelDefendModuleData(roads: roads);
+    _data = TunnelDefendModuleData(roads: roads, brickMapIndex: _data.brickMapIndex);
     _moduleObj.objData = _data.toJson();
     widget.onChanged();
     setState(() {});
@@ -230,7 +230,10 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
     final inside = _data.roads.where((r) =>
         r.gridX >= 0 && r.gridX < _gridCols &&
         r.gridY >= 0 && r.gridY < _gridRows).toList();
-    _data = TunnelDefendModuleData(roads: inside);
+    _data = TunnelDefendModuleData(
+      roads: inside,
+      brickMapIndex: _data.brickMapIndex,
+    );
     _moduleObj.objData = _data.toJson();
     widget.onChanged();
     setState(() {});
@@ -289,6 +292,42 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            InputDecorator(
+              decoration: InputDecoration(
+                labelText:
+                    l10n?.tunnelDefendTileStylePreset ?? 'Tile style preset',
+                filled: true,
+              ),
+              child: DropdownButtonHideUnderline(
+                child: DropdownButton<int>(
+                  isExpanded: true,
+                  value: _data.brickMapIndex == 2 ? 2 : 1,
+                  items: [
+                    DropdownMenuItem(
+                      value: 1,
+                      child: Text(
+                        l10n?.tunnelDefendTileStylePart1 ?? 'part 1',
+                      ),
+                    ),
+                    DropdownMenuItem(
+                      value: 2,
+                      child: Text(
+                        l10n?.tunnelDefendTileStylePart2 ?? 'part 2',
+                      ),
+                    ),
+                  ],
+                  onChanged: (v) {
+                    if (v == null) return;
+                    setState(() {
+                      _data.brickMapIndex = v;
+                      _moduleObj.objData = _data.toJson();
+                    });
+                    widget.onChanged();
+                  },
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
             scaleTableForDesktop(
               context: context,
               child: Container(

@@ -49,6 +49,7 @@ import 'package:z_editor/screens/editor/modules/sun_bomb_challenge_screen.dart';
 import 'package:z_editor/screens/editor/modules/war_mist_properties_screen.dart';
 import 'package:z_editor/screens/editor/modules/zombie_potion_module_screen.dart';
 import 'package:z_editor/screens/editor/modules/air_drop_ship_module_screen.dart';
+import 'package:z_editor/screens/editor/modules/sperm_whale_module_screen.dart';
 import 'package:z_editor/screens/editor/modules/heian_wind_module_screen.dart';
 import 'package:z_editor/screens/editor/modules/renai_module_screen.dart';
 import 'package:z_editor/screens/editor/modules/penny_classroom_module_screen.dart';
@@ -99,6 +100,7 @@ import 'package:z_editor/screens/select/module_selection_screen.dart';
 import 'package:z_editor/screens/select/plant_selection_screen.dart';
 import 'package:z_editor/screens/select/zombie_selection_screen.dart';
 import 'package:z_editor/screens/select/tool_selection_screen.dart';
+import 'package:z_editor/screens/select/music_suffix_selection_screen.dart';
 import 'package:z_editor/screens/select/stage_selection_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:z_editor/bloc/editor/editor_cubit.dart';
@@ -180,10 +182,13 @@ class _EditorScreenState extends State<EditorScreen> {
       for (final entry in data.entries) {
         final k = entry.key as String;
         final v = entry.value;
-        if (k == 'PresetPlantList' || k == 'PlantWhiteList' || k == 'PlantBlackList') {
-          if (v is List) for (final e in v) {
-            if (e is String && e.isNotEmpty) out.add(e);
-          }
+        if (k == 'PresetPlantList' ||
+            k == 'PlantWhiteList' ||
+            k == 'PlantBlackList') {
+          if (v is List)
+            for (final e in v) {
+              if (e is String && e.isNotEmpty) out.add(e);
+            }
         } else if (k == 'PlantMap' && v is Map) {
           for (final key in v.keys) {
             if (key is String && key.isNotEmpty) out.add(key);
@@ -195,7 +200,8 @@ class _EditorScreenState extends State<EditorScreen> {
               if (pt is String && pt.isNotEmpty) out.add(pt);
             }
           }
-        } else if ((k == 'InitialPlantPlacements' || k == 'Placements') && v is List) {
+        } else if ((k == 'InitialPlantPlacements' || k == 'Placements') &&
+            v is List) {
           for (final e in v) {
             if (e is Map) {
               final tn = e['TypeName'];
@@ -208,9 +214,10 @@ class _EditorScreenState extends State<EditorScreen> {
               final pt = e['PlantType'];
               if (pt is String && pt.isNotEmpty) out.add(pt);
               final pts = e['PlantTypes'];
-              if (pts is List) for (final p in pts) {
-                if (p is String && p.isNotEmpty) out.add(p);
-              }
+              if (pts is List)
+                for (final p in pts) {
+                  if (p is String && p.isNotEmpty) out.add(p);
+                }
             }
           }
         } else if (k == 'Vases' && v is List) {
@@ -279,8 +286,9 @@ class _EditorScreenState extends State<EditorScreen> {
     return warnings.map((k, v) => MapEntry(k, v.toList()..sort()));
   }
 
-List<ModuleMetadata> _calculateMissingModules() {
-    if (_ec.state.levelFile == null || _ec.state.parsedData == null) return const [];
+  List<ModuleMetadata> _calculateMissingModules() {
+    if (_ec.state.levelFile == null || _ec.state.parsedData == null)
+      return const [];
     final existingClasses = <String>{
       ..._ec.state.levelFile!.objects.map((o) => o.objClass),
       ...?_ec.state.parsedData!.levelDef?.modules.map((rtid) {
@@ -310,7 +318,8 @@ List<ModuleMetadata> _calculateMissingModules() {
     if (!existingClasses.contains('ZombiesAteYourBrainsProperties')) {
       if (!isEvilDave) missingList.add('ZombiesAteYourBrainsProperties');
     }
-    if (!existingClasses.contains('ZombiesDeadWinConProperties')) {
+    if (!existingClasses.contains('ZombiesDeadWinConProperties') &&
+        !existingClasses.contains('BronzeDeadWinConProperties')) {
       if (!isEvilDave && !isZombossBattle) {
         missingList.add('ZombiesDeadWinConProperties');
       }
@@ -445,8 +454,14 @@ List<ModuleMetadata> _calculateMissingModules() {
           levelFile: _ec.state.levelFile!,
           levelDef: _ec.state.parsedData!.levelDef!,
           onBack: () => Navigator.pop(context),
-          onStageTap: (levelDef, onStagePicked) =>
-              _openStageSelection(levelDef: levelDef, onStagePicked: onStagePicked),
+          onStageTap: (levelDef, onStagePicked) => _openStageSelection(
+            levelDef: levelDef,
+            onStagePicked: onStagePicked,
+          ),
+          onMusicSuffixTap: (levelDef, onPicked) => _openMusicSuffixSelection(
+            levelDef: levelDef,
+            onPicked: onPicked,
+          ),
           onChanged: _markDirty,
         ),
       ),
@@ -470,8 +485,9 @@ List<ModuleMetadata> _calculateMissingModules() {
             final willBeDeepSea =
                 newAlias == 'DeepseaStage' || newAlias == 'DeepseaLandStage';
             if (wasDeepSea && !willBeDeepSea) {
-              final has6RowData =
-                  LevelParser.has6RowDataInLevel(_ec.state.levelFile!);
+              final has6RowData = LevelParser.has6RowDataInLevel(
+                _ec.state.levelFile!,
+              );
               if (has6RowData && mounted) {
                 final l10n = AppLocalizations.of(context);
                 final confirmed = await showDialog<bool>(
@@ -510,6 +526,35 @@ List<ModuleMetadata> _calculateMissingModules() {
             Navigator.pop(stageRouteContext);
           },
           onBack: () => Navigator.pop(stageRouteContext),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _openMusicSuffixSelection({
+    required LevelDefinitionData levelDef,
+    VoidCallback? onPicked,
+  }) async {
+    if (_ec.state.levelFile == null) return;
+    await Navigator.push<void>(
+      context,
+      MaterialPageRoute<void>(
+        builder: (routeContext) => MusicSuffixSelectionScreen(
+          currentCodename: levelDef.musicSuffix,
+          onBack: () => Navigator.pop(routeContext),
+          onCodenameSelected: (code) {
+            levelDef.musicSuffix = code;
+            for (final o in _ec.state.levelFile!.objects) {
+              if (o.objClass == 'LevelDefinition') {
+                o.objData = levelDef.toJson();
+                break;
+              }
+            }
+            _markDirty();
+            onPicked?.call();
+            if (!mounted) return;
+            Navigator.pop(routeContext);
+          },
         ),
       ),
     );
@@ -565,6 +610,11 @@ List<ModuleMetadata> _calculateMissingModules() {
       def.modules.add(rtid);
 
       final objData = Map<String, dynamic>.from(meta.initialData ?? {});
+      if (meta.objClass == 'TunnelDefendModuleProperties') {
+        final stageAlias = RtidParser.parse(def.stageModule)?.alias ?? '';
+        objData['BrickMapIndex'] =
+            stageAlias == 'UnchartedMausoleum2Stage' ? 2 : 1;
+      }
       _ec.state.levelFile!.objects.add(
         PvzObject(aliases: [alias], objClass: meta.objClass, objData: objData),
       );
@@ -739,8 +789,8 @@ List<ModuleMetadata> _calculateMissingModules() {
       final subtitle = objClass == 'BassRainZombieSpawnerProps'
           ? 'Event: Bass/Jetpack rain'
           : objClass == 'SpiderRainZombieSpawnerProps'
-              ? 'Event: Spider rain'
-              : 'Event: Parachute rain';
+          ? 'Event: Spider rain'
+          : 'Event: Parachute rain';
       await Navigator.push(
         context,
         MaterialPageRoute(
@@ -1350,7 +1400,9 @@ List<ModuleMetadata> _calculateMissingModules() {
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(l10n?.eventEditorInDevelopment ?? 'Event editor in development'),
+        content: Text(
+          l10n?.eventEditorInDevelopment ?? 'Event editor in development',
+        ),
       ),
     );
   }
@@ -1378,7 +1430,9 @@ List<ModuleMetadata> _calculateMissingModules() {
     var prefix = 'Wave$waveIndex${meta.defaultAlias}';
     var count = 0;
     var newAlias = '$prefix$count';
-    while (_ec.state.levelFile!.objects.any((o) => o.aliases?.contains(newAlias) == true)) {
+    while (_ec.state.levelFile!.objects.any(
+      (o) => o.aliases?.contains(newAlias) == true,
+    )) {
       count++;
       newAlias = '$prefix$count';
     }
@@ -1395,8 +1449,9 @@ List<ModuleMetadata> _calculateMissingModules() {
     );
     waveEvents.add(newRtid);
 
-    final wmObj = _ec.state.levelFile!.objects
-        .firstWhereOrNull((o) => o.objClass == 'WaveManagerProperties');
+    final wmObj = _ec.state.levelFile!.objects.firstWhereOrNull(
+      (o) => o.objClass == 'WaveManagerProperties',
+    );
     if (wmObj != null) {
       wmObj.objData = wm.toJson();
     }
@@ -1410,8 +1465,9 @@ List<ModuleMetadata> _calculateMissingModules() {
       for (final wave in wm.waves) {
         wave.remove(rtid);
       }
-      final wmObj = _ec.state.levelFile?.objects
-          .firstWhereOrNull((o) => o.objClass == 'WaveManagerProperties');
+      final wmObj = _ec.state.levelFile?.objects.firstWhereOrNull(
+        (o) => o.objClass == 'WaveManagerProperties',
+      );
       if (wmObj != null) {
         wmObj.objData = wm.toJson();
       }
@@ -1421,16 +1477,18 @@ List<ModuleMetadata> _calculateMissingModules() {
 
   void _handleEditWaveManagerSettings() {
     if (_ec.state.levelFile == null || _ec.state.parsedData == null) return;
-    final hasConveyor = _ec.state.parsedData!.levelDef?.modules.any((rtid) {
-      final info = RtidParser.parse(rtid);
-      if (info == null) return false;
-      if (info.source == 'CurrentLevel') {
-        final obj = _ec.state.parsedData!.objectMap[info.alias];
-        return obj?.objClass == 'ConveyorSeedBankProperties';
-      }
-      return ReferenceRepository.instance.getObjClass(info.alias) ==
-          'ConveyorSeedBankProperties';
-    }) ?? false;
+    final hasConveyor =
+        _ec.state.parsedData!.levelDef?.modules.any((rtid) {
+          final info = RtidParser.parse(rtid);
+          if (info == null) return false;
+          if (info.source == 'CurrentLevel') {
+            final obj = _ec.state.parsedData!.objectMap[info.alias];
+            return obj?.objClass == 'ConveyorSeedBankProperties';
+          }
+          return ReferenceRepository.instance.getObjClass(info.alias) ==
+              'ConveyorSeedBankProperties';
+        }) ??
+        false;
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -1454,10 +1512,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       count++;
       alias = 'WaveManagerProps_$count';
     }
-    final wm = WaveManagerData(
-      waveCount: 0,
-      waves: [],
-    );
+    final wm = WaveManagerData(waveCount: 0, waves: []);
     _ec.state.levelFile!.objects.add(
       PvzObject(
         aliases: [alias],
@@ -1465,8 +1520,9 @@ List<ModuleMetadata> _calculateMissingModules() {
         objData: wm.toJson(),
       ),
     );
-    final wmmObj = _ec.state.levelFile!.objects
-        .firstWhereOrNull((o) => o.objClass == 'WaveManagerModuleProperties');
+    final wmmObj = _ec.state.levelFile!.objects.firstWhereOrNull(
+      (o) => o.objClass == 'WaveManagerModuleProperties',
+    );
     if (wmmObj != null && wmmObj.objData is Map<String, dynamic>) {
       final data = WaveManagerModuleData.fromJson(
         Map<String, dynamic>.from(wmmObj.objData as Map),
@@ -1572,8 +1628,10 @@ List<ModuleMetadata> _calculateMissingModules() {
     final newPropsData = _cloneJson(propsTemplate.objData);
     final newTypeData = _cloneJson(typeTemplate.objData);
     if (newTypeData is Map<String, dynamic>) {
-      newTypeData['Properties'] =
-          RtidParser.build(newPropsAlias, 'CurrentLevel');
+      newTypeData['Properties'] = RtidParser.build(
+        newPropsAlias,
+        'CurrentLevel',
+      );
     }
 
     final newPropsObj = PvzObject(
@@ -1614,9 +1672,15 @@ List<ModuleMetadata> _calculateMissingModules() {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Flexible(child: Text(l10n.small, overflow: TextOverflow.ellipsis)),
-                  Flexible(child: Text(l10n.standard, overflow: TextOverflow.ellipsis)),
-                  Flexible(child: Text(l10n.large, overflow: TextOverflow.ellipsis)),
+                  Flexible(
+                    child: Text(l10n.small, overflow: TextOverflow.ellipsis),
+                  ),
+                  Flexible(
+                    child: Text(l10n.standard, overflow: TextOverflow.ellipsis),
+                  ),
+                  Flexible(
+                    child: Text(l10n.large, overflow: TextOverflow.ellipsis),
+                  ),
                 ],
               ),
             ],
@@ -1689,8 +1753,10 @@ List<ModuleMetadata> _calculateMissingModules() {
     final newPropsData = _cloneJson(propsTemplate.objData);
     final newTypeData = _cloneJson(typeTemplate.objData);
     if (newTypeData is Map<String, dynamic>) {
-      newTypeData['Properties'] =
-          RtidParser.build(newPropsAlias, 'CurrentLevel');
+      newTypeData['Properties'] = RtidParser.build(
+        newPropsAlias,
+        'CurrentLevel',
+      );
     }
 
     final newPropsObj = PvzObject(
@@ -1834,8 +1900,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'RailcartProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'RailcartProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -1956,7 +2021,8 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (objClass == 'SunDropperProperties' && _ec.state.parsedData?.levelDef != null) {
+    if (objClass == 'SunDropperProperties' &&
+        _ec.state.parsedData?.levelDef != null) {
       void openSunDropper(String rt) {
         Navigator.push(
           context,
@@ -1976,11 +2042,11 @@ List<ModuleMetadata> _calculateMissingModules() {
           ),
         );
       }
+
       openSunDropper(rtid);
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'PiratePlankProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'PiratePlankProperties') {
       if (_ec.state.parsedData!.levelDef != null) {
         Navigator.push(
           context,
@@ -1997,8 +2063,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       }
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'SeedRainProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'SeedRainProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -2007,7 +2072,8 @@ List<ModuleMetadata> _calculateMissingModules() {
             levelFile: _ec.state.levelFile!,
             onChanged: _markDirty,
             onBack: () => Navigator.pop(context),
-            onAddModule: (objClass) => _addModule(ModuleRegistry.getMetadata(objClass)),
+            onAddModule: (objClass) =>
+                _addModule(ModuleRegistry.getMetadata(objClass)),
             editorCubit: _ec,
           ),
         ),
@@ -2079,8 +2145,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'SeedBankProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'SeedBankProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -2132,8 +2197,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'InitialPlantProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'InitialPlantProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -2142,7 +2206,8 @@ List<ModuleMetadata> _calculateMissingModules() {
             levelFile: _ec.state.levelFile!,
             onChanged: _markDirty,
             onBack: () => Navigator.pop(context),
-            onAddModule: (objClass) => _addModule(ModuleRegistry.getMetadata(objClass)),
+            onAddModule: (objClass) =>
+                _addModule(ModuleRegistry.getMetadata(objClass)),
           ),
         ),
       );
@@ -2158,7 +2223,8 @@ List<ModuleMetadata> _calculateMissingModules() {
             levelFile: _ec.state.levelFile!,
             onChanged: _markDirty,
             onBack: () => Navigator.pop(context),
-            onAddModule: (objClass) => _addModule(ModuleRegistry.getMetadata(objClass)),
+            onAddModule: (objClass) =>
+                _addModule(ModuleRegistry.getMetadata(objClass)),
           ),
         ),
       );
@@ -2205,7 +2271,8 @@ List<ModuleMetadata> _calculateMissingModules() {
             levelFile: _ec.state.levelFile!,
             onChanged: _markDirty,
             onBack: () => Navigator.pop(context),
-            onAddModule: (objClass) => _addModule(ModuleRegistry.getMetadata(objClass)),
+            onAddModule: (objClass) =>
+                _addModule(ModuleRegistry.getMetadata(objClass)),
           ),
         ),
       );
@@ -2270,12 +2337,26 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'DropShipProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'DropShipProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => AirDropShipModuleScreen(
+            rtid: rtid,
+            levelFile: _ec.state.levelFile!,
+            onChanged: _markDirty,
+            onBack: () => Navigator.pop(context),
+          ),
+        ),
+      );
+      return;
+    }
+    if (info.source == 'CurrentLevel' &&
+        objClass == 'SpermWhaleModuleProperties') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SpermWhaleModuleScreen(
             rtid: rtid,
             levelFile: _ec.state.levelFile!,
             onChanged: _markDirty,
@@ -2300,8 +2381,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'RenaiModuleProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'RenaiModuleProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -2315,8 +2395,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'BronzeProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'BronzeProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -2340,7 +2419,8 @@ List<ModuleMetadata> _calculateMissingModules() {
             levelFile: _ec.state.levelFile!,
             onChanged: _markDirty,
             onBack: () => Navigator.pop(context),
-            onAddModule: (objClass) => _addModule(ModuleRegistry.getMetadata(objClass)),
+            onAddModule: (objClass) =>
+                _addModule(ModuleRegistry.getMetadata(objClass)),
           ),
         ),
       );
@@ -2361,8 +2441,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'PowerTileProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'PowerTileProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -2376,8 +2455,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       );
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'RoofProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'RoofProperties') {
       if (_ec.state.parsedData!.levelDef != null) {
         Navigator.push(
           context,
@@ -2394,8 +2472,7 @@ List<ModuleMetadata> _calculateMissingModules() {
       }
       return;
     }
-    if (info.source == 'CurrentLevel' &&
-        objClass == 'WarMistProperties') {
+    if (info.source == 'CurrentLevel' && objClass == 'WarMistProperties') {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -2507,9 +2584,8 @@ List<ModuleMetadata> _calculateMissingModules() {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => UnknownModuleScreen(
-            onBack: () => Navigator.pop(context),
-          ),
+          builder: (context) =>
+              UnknownModuleScreen(onBack: () => Navigator.pop(context)),
         ),
       );
     } else {
@@ -2529,208 +2605,219 @@ List<ModuleMetadata> _calculateMissingModules() {
     final settings = context.watch<SettingsCubit>().state;
     return BlocBuilder<EditorCubit, EditorState>(
       builder: (context, editorState) {
-    final l10n = AppLocalizations.of(context);
-    final isDesktop = Theme.of(context).platform == TargetPlatform.windows ||
-        Theme.of(context).platform == TargetPlatform.macOS ||
-        Theme.of(context).platform == TargetPlatform.linux;
-    Widget body = Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _ec.fileName,
-            overflow: TextOverflow.ellipsis,
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () async {
-              if (_ec.state.hasChanges) {
-                final leave = await _confirmLeave();
-                if (leave && mounted) widget.onBack();
-              } else {
-                widget.onBack();
-              }
-            },
-          ),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.language),
-              tooltip: l10n?.language ?? 'Language',
-              onPressed: () => widget.onLanguageTap(context),
-            ),
-            IconButton(
-              icon: const Icon(Icons.aspect_ratio),
-              tooltip: l10n?.uiSize ?? 'UI size',
-              onPressed: () => _showUiScaleDialog(context),
-            ),
-            IconButton(
-              icon: const Icon(Icons.code),
-              tooltip: l10n?.tooltipJsonViewer ?? 'View/edit JSON',
-              onPressed: _ec.state.levelFile != null
-                  ? () async {
-                      await _save();
-                      if (context.mounted) {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => JsonViewerScreen(
-                              fileName: _ec.fileName,
-                              filePath: _ec.filePath,
-                              levelFile: _ec.state.levelFile!,
-                              onBack: () => Navigator.pop(context),
-                              onSaved: () => _ec.onJsonViewerSaved(),
-                            ),
-                          ),
-                        );
-                      }
-                    }
-                  : null,
-            ),
-            IconButton(
-              icon: Icon(
-                settings.themeMode == ThemeMode.dark
-                    ? Icons.light_mode
-                    : Icons.dark_mode,
-              ),
-              tooltip: l10n?.toggleTheme ?? 'Toggle theme',
-              onPressed: () => context.read<SettingsCubit>().cycleTheme(),
-            ),
-            IconButton(
-              icon: const Icon(Icons.save),
-              tooltip: l10n?.tooltipSave ?? 'Save',
-              onPressed: _ec.state.hasChanges ? _save : null,
-            ),
-          ],
-        ),
-        body: _ec.state.isLoading
-            ? const Center(child: CircularProgressIndicator())
-            : _ec.state.levelFile == null || _ec.state.parsedData == null
-            ? Center(
-                child: Text(l10n?.failedToLoadLevel ?? 'Failed to load level'),
-              )
-            : DefaultTabController(
-                length: _ec.state.availableTabs.length,
-                child: Builder(
-                  builder: (context) {
-                    _tabController = DefaultTabController.of(context);
-                    return Column(
-                      children: [
-                        TabBar(
-                          isScrollable: false,
-                          tabAlignment: TabAlignment.fill,
-                          dividerHeight: 0,
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          tabs: _ec.state.availableTabs.map((t) {
-                            IconData icon;
-                            String label;
-                            switch (t) {
-                              case EditorTabType.settings:
-                                icon = Icons.settings;
-                                label = l10n?.settings ?? 'Settings';
-                                break;
-                              case EditorTabType.timeline:
-                                icon = Icons.timeline;
-                                label = l10n?.timeline ?? 'Timeline';
-                                break;
-                              case EditorTabType.iZombie:
-                                icon = Icons.groups;
-                                label = l10n?.iZombie ?? 'I, Zombie';
-                                break;
-                              case EditorTabType.vaseBreaker:
-                                icon = Icons.inventory_2;
-                                label = l10n?.vaseBreaker ?? 'Vase breaker';
-                                break;
-                              case EditorTabType.zomboss:
-                                icon = Icons.warning_amber;
-                                label = l10n?.zomboss ?? 'Zomboss';
-                                break;
-                            }
-                            return Tab(text: label, icon: Icon(icon));
-                          }).toList(),
-                        ),
-                        Expanded(
-                          child: TabBarView(
-                            children: _ec.state.availableTabs.map<Widget>((t) {
-                              switch (t) {
-                                case EditorTabType.settings:
-                                  return LevelSettingsTab(
-                                    levelDef: _ec.state.parsedData!.levelDef,
-                                    objectMap: _ec.state.parsedData!.objectMap,
-                                    missingModules: _calculateMissingModules(),
-                                    missingModuleWarnings: _getMissingModuleWarnings(),
-                                    onEditBasicInfo: _handleEditBasicInfo,
-                                    onEditModule: _handleEditModule,
-                                    onRemoveModule: _handleRemoveModule,
-                                    onNavigateToAddModule:
-                                        _handleNavigateToAddModule,
-                                  );
-                                case EditorTabType.timeline:
-                                  return WaveTimelineTab(
-                                    levelFile: _ec.state.levelFile!,
-                                    parsed: _ec.state.parsedData!,
-                                    onChanged: _markDirty,
-                                    onEditEvent: _handleEditEvent,
-                                    onAddEvent: _handleAddEvent,
-                                    onEditWaveManagerSettings:
-                                        _handleEditWaveManagerSettings,
-                                    onEditCustomZombie: _handleEditCustomZombie,
-                                    onEditCustomFish: _handleEditCustomFish,
-                                    onOpenModule: _handleEditModule,
-                                    openWaveSheetNotifier: _ec.openWaveSheetNotifier,
-                                    onCreateContainer: () => _handleCreateWaveContainer(),
-                                    onDeleteContainer: () => _handleDeleteWaveContainer(),
-                                  );
-                                case EditorTabType.iZombie:
-                                  return IZombieTab(
-                                    levelFile: _ec.state.levelFile!,
-                                    onChanged: _markDirty,
-                                  );
-                                case EditorTabType.vaseBreaker:
-                                  return VaseBreakerTab(
-                                    levelFile: _ec.state.levelFile!,
-                                    onChanged: _markDirty,
-                                    editorCubit: _ec,
-                                    onAddModule: (objClass) {
-                                      _addModule(ModuleRegistry.getMetadata(objClass));
-                                    },
-                                  );
-                                case EditorTabType.zomboss:
-                                  return ZombossBattleTab(
-                                    levelFile: _ec.state.levelFile!,
-                                    onChanged: _markDirty,
-                                  );
-                              }
-                            }).toList(),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-    );
-    if (isDesktop) {
-      body = Shortcuts(
-        shortcuts: const {
-          SingleActivator(LogicalKeyboardKey.escape): _EditorEscapeIntent(),
-        },
-        child: Actions(
-          actions: {
-            _EditorEscapeIntent: CallbackAction<_EditorEscapeIntent>(
-              onInvoke: (_) async {
+        final l10n = AppLocalizations.of(context);
+        final isDesktop =
+            Theme.of(context).platform == TargetPlatform.windows ||
+            Theme.of(context).platform == TargetPlatform.macOS ||
+            Theme.of(context).platform == TargetPlatform.linux;
+        Widget body = Scaffold(
+          appBar: AppBar(
+            title: Text(_ec.fileName, overflow: TextOverflow.ellipsis),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () async {
                 if (_ec.state.hasChanges) {
                   final leave = await _confirmLeave();
                   if (leave && mounted) widget.onBack();
                 } else {
                   widget.onBack();
                 }
-                return null;
               },
             ),
-          },
-          child: body,
-        ),
-      );
-    }
-    return body;
+            actions: [
+              IconButton(
+                icon: const Icon(Icons.language),
+                tooltip: l10n?.language ?? 'Language',
+                onPressed: () => widget.onLanguageTap(context),
+              ),
+              IconButton(
+                icon: const Icon(Icons.aspect_ratio),
+                tooltip: l10n?.uiSize ?? 'UI size',
+                onPressed: () => _showUiScaleDialog(context),
+              ),
+              IconButton(
+                icon: const Icon(Icons.code),
+                tooltip: l10n?.tooltipJsonViewer ?? 'View/edit JSON',
+                onPressed: _ec.state.levelFile != null
+                    ? () async {
+                        await _save();
+                        if (context.mounted) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => JsonViewerScreen(
+                                fileName: _ec.fileName,
+                                filePath: _ec.filePath,
+                                levelFile: _ec.state.levelFile!,
+                                onBack: () => Navigator.pop(context),
+                                onSaved: () => _ec.onJsonViewerSaved(),
+                              ),
+                            ),
+                          );
+                        }
+                      }
+                    : null,
+              ),
+              IconButton(
+                icon: Icon(
+                  settings.themeMode == ThemeMode.dark
+                      ? Icons.light_mode
+                      : Icons.dark_mode,
+                ),
+                tooltip: l10n?.toggleTheme ?? 'Toggle theme',
+                onPressed: () => context.read<SettingsCubit>().cycleTheme(),
+              ),
+              IconButton(
+                icon: const Icon(Icons.save),
+                tooltip: l10n?.tooltipSave ?? 'Save',
+                onPressed: _ec.state.hasChanges ? _save : null,
+              ),
+            ],
+          ),
+          body: _ec.state.isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : _ec.state.levelFile == null || _ec.state.parsedData == null
+              ? Center(
+                  child: Text(
+                    l10n?.failedToLoadLevel ?? 'Failed to load level',
+                  ),
+                )
+              : DefaultTabController(
+                  length: _ec.state.availableTabs.length,
+                  child: Builder(
+                    builder: (context) {
+                      _tabController = DefaultTabController.of(context);
+                      return Column(
+                        children: [
+                          TabBar(
+                            isScrollable: false,
+                            tabAlignment: TabAlignment.fill,
+                            dividerHeight: 0,
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            tabs: _ec.state.availableTabs.map((t) {
+                              IconData icon;
+                              String label;
+                              switch (t) {
+                                case EditorTabType.settings:
+                                  icon = Icons.settings;
+                                  label = l10n?.settings ?? 'Settings';
+                                  break;
+                                case EditorTabType.timeline:
+                                  icon = Icons.timeline;
+                                  label = l10n?.timeline ?? 'Timeline';
+                                  break;
+                                case EditorTabType.iZombie:
+                                  icon = Icons.groups;
+                                  label = l10n?.iZombie ?? 'I, Zombie';
+                                  break;
+                                case EditorTabType.vaseBreaker:
+                                  icon = Icons.inventory_2;
+                                  label = l10n?.vaseBreaker ?? 'Vase breaker';
+                                  break;
+                                case EditorTabType.zomboss:
+                                  icon = Icons.warning_amber;
+                                  label = l10n?.zomboss ?? 'Zomboss';
+                                  break;
+                              }
+                              return Tab(text: label, icon: Icon(icon));
+                            }).toList(),
+                          ),
+                          Expanded(
+                            child: TabBarView(
+                              children: _ec.state.availableTabs.map<Widget>((
+                                t,
+                              ) {
+                                switch (t) {
+                                  case EditorTabType.settings:
+                                    return LevelSettingsTab(
+                                      levelDef: _ec.state.parsedData!.levelDef,
+                                      objectMap:
+                                          _ec.state.parsedData!.objectMap,
+                                      missingModules:
+                                          _calculateMissingModules(),
+                                      missingModuleWarnings:
+                                          _getMissingModuleWarnings(),
+                                      onEditBasicInfo: _handleEditBasicInfo,
+                                      onEditModule: _handleEditModule,
+                                      onRemoveModule: _handleRemoveModule,
+                                      onNavigateToAddModule:
+                                          _handleNavigateToAddModule,
+                                    );
+                                  case EditorTabType.timeline:
+                                    return WaveTimelineTab(
+                                      levelFile: _ec.state.levelFile!,
+                                      parsed: _ec.state.parsedData!,
+                                      onChanged: _markDirty,
+                                      onEditEvent: _handleEditEvent,
+                                      onAddEvent: _handleAddEvent,
+                                      onEditWaveManagerSettings:
+                                          _handleEditWaveManagerSettings,
+                                      onEditCustomZombie:
+                                          _handleEditCustomZombie,
+                                      onEditCustomFish: _handleEditCustomFish,
+                                      onOpenModule: _handleEditModule,
+                                      openWaveSheetNotifier:
+                                          _ec.openWaveSheetNotifier,
+                                      onCreateContainer: () =>
+                                          _handleCreateWaveContainer(),
+                                      onDeleteContainer: () =>
+                                          _handleDeleteWaveContainer(),
+                                    );
+                                  case EditorTabType.iZombie:
+                                    return IZombieTab(
+                                      levelFile: _ec.state.levelFile!,
+                                      onChanged: _markDirty,
+                                    );
+                                  case EditorTabType.vaseBreaker:
+                                    return VaseBreakerTab(
+                                      levelFile: _ec.state.levelFile!,
+                                      onChanged: _markDirty,
+                                      editorCubit: _ec,
+                                      onAddModule: (objClass) {
+                                        _addModule(
+                                          ModuleRegistry.getMetadata(objClass),
+                                        );
+                                      },
+                                    );
+                                  case EditorTabType.zomboss:
+                                    return ZombossBattleTab(
+                                      levelFile: _ec.state.levelFile!,
+                                      onChanged: _markDirty,
+                                    );
+                                }
+                              }).toList(),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+        );
+        if (isDesktop) {
+          body = Shortcuts(
+            shortcuts: const {
+              SingleActivator(LogicalKeyboardKey.escape): _EditorEscapeIntent(),
+            },
+            child: Actions(
+              actions: {
+                _EditorEscapeIntent: CallbackAction<_EditorEscapeIntent>(
+                  onInvoke: (_) async {
+                    if (_ec.state.hasChanges) {
+                      final leave = await _confirmLeave();
+                      if (leave && mounted) widget.onBack();
+                    } else {
+                      widget.onBack();
+                    }
+                    return null;
+                  },
+                ),
+              },
+              child: body,
+            ),
+          );
+        }
+        return body;
       },
     );
   }
