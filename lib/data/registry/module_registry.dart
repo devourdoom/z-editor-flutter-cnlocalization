@@ -89,6 +89,10 @@ class ModuleRegistry {
         return l10n.moduleTitle_ZombiesAteYourBrainsProperties;
       case 'moduleTitle_ZombiesDeadWinConProperties':
         return l10n.moduleTitle_ZombiesDeadWinConProperties;
+      case 'moduleTitle_BronzeDeadWinConProperties':
+        return l10n.moduleTitle_BronzeDeadWinConProperties;
+      case 'moduleTitle_SpermWhaleModuleProperties':
+        return l10n.moduleTitle_SpermWhaleModuleProperties;
       case 'moduleTitle_PennyClassroomModuleProperties':
         return l10n.moduleTitle_PennyClassroomModuleProperties;
       case 'moduleTitle_SeedBankProperties':
@@ -213,6 +217,10 @@ class ModuleRegistry {
         return l10n.moduleDesc_ZombiesAteYourBrainsProperties;
       case 'moduleDesc_ZombiesDeadWinConProperties':
         return l10n.moduleDesc_ZombiesDeadWinConProperties;
+      case 'moduleDesc_BronzeDeadWinConProperties':
+        return l10n.moduleDesc_BronzeDeadWinConProperties;
+      case 'moduleDesc_SpermWhaleModuleProperties':
+        return l10n.moduleDesc_SpermWhaleModuleProperties;
       case 'moduleDesc_PennyClassroomModuleProperties':
         return l10n.moduleDesc_PennyClassroomModuleProperties;
       case 'moduleDesc_SeedBankProperties':
@@ -400,6 +408,17 @@ class ModuleRegistry {
       category: ModuleCategory.base,
       defaultAlias: 'ZombiesDeadWinCon',
       defaultSource: 'LevelModules',
+      routeId: 'UnknownDetail',
+    ),
+    'BronzeDeadWinConProperties': ModuleMetadata(
+      titleKey: 'moduleTitle_BronzeDeadWinConProperties',
+      descriptionKey: 'moduleDesc_BronzeDeadWinConProperties',
+      icon: Icons.emoji_events,
+      isCore: false,
+      category: ModuleCategory.base,
+      defaultAlias: 'BronzeDeadWinCon',
+      defaultSource: 'LevelModules',
+      initialDataFactory: () => <String, dynamic>{},
       routeId: 'UnknownDetail',
     ),
     'PennyClassroomModuleProperties': ModuleMetadata(
@@ -896,6 +915,17 @@ class ModuleRegistry {
       defaultAlias: 'HeianWindModule',
       initialDataFactory: () => HeianWindModulePropertiesData(),
       routeId: 'HeianWindModule',
+    ),
+    'SpermWhaleModuleProperties': ModuleMetadata(
+      titleKey: 'moduleTitle_SpermWhaleModuleProperties',
+      descriptionKey: 'moduleDesc_SpermWhaleModuleProperties',
+      icon: Icons.water,
+      isCore: true,
+      allowMultiple: false,
+      category: ModuleCategory.base,
+      defaultAlias: 'SpermWhaleModule',
+      initialDataFactory: () => SpermWhaleModulePropertiesData(),
+      routeId: 'SpermWhaleModule',
     ),
     'RocketZombieFlickModuleProperties': const ModuleMetadata(
       titleKey: 'moduleTitle_RocketZombieFlickModuleProperties',
