@@ -42,7 +42,7 @@ class SettingsCubit extends Cubit<SettingsState> {
     return SettingsState(
       locale: locale,
       themeMode: themeMode,
-      uiScale: uiScale.toDouble(),
+      uiScale: uiScale,
     );
   }
 

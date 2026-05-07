@@ -148,11 +148,11 @@ abstract class LevelRepositoryBase {
         .toSet();
     var candidate = '${baseNameWithoutExt}_copy';
     if (!existing.contains(candidate.toLowerCase())) return candidate;
-    var n = 2;
-    while (existing.contains('$candidate$n'.toLowerCase())) {
+    var n = 1;
+    while (existing.contains('${baseNameWithoutExt}_copy$n'.toLowerCase())) {
       n++;
     }
-    return '$candidate$n';
+    return '${baseNameWithoutExt}_copy$n';
   }
 
   Future<String?> moveFileAsCopy(
@@ -162,7 +162,12 @@ abstract class LevelRepositoryBase {
   ) async {
     final baseName = baseNameWithoutLevelExtension(fileName);
     final suggested = await getNextAvailableCopyName(destDirPath, baseName);
-    final newFileName = '$suggested.json';
+    final lower = fileName.toLowerCase();
+    final ext = levelExtensions.firstWhere(
+      lower.endsWith,
+      orElse: () => '.json',
+    );
+    final newFileName = '$suggested$ext';
     return moveFileWithName(srcDirPath, fileName, destDirPath, newFileName);
   }
 

@@ -57,7 +57,6 @@ class ZombiePropertiesRepository {
       }
       instance._isInitialized = true;
     } catch (_) {
-      instance._isInitialized = true;
     }
   }
  

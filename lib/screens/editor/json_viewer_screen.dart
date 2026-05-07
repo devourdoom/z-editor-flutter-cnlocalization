@@ -50,6 +50,7 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
   String? _syntaxError;
   _JsonViewMode _viewMode = _JsonViewMode.rawText;
   final Map<int, bool> _expandedStates = {};
+  bool Function()? _escapeHandler;
 
   @override
   void initState() {
@@ -77,9 +78,27 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
     await prefs.setDouble(_fontSizeKey, value);
   }
 
+  void _pushEscapeHandler() {
+    if (_escapeHandler != null) return;
+    _escapeHandler = () {
+      if (_isEditing) {
+        _cancelEdit();
+        return true;
+      }
+      return false;
+    };
+    EscapeOverride.push(_escapeHandler!);
+  }
+
+  void _popEscapeHandler() {
+    if (_escapeHandler == null) return;
+    EscapeOverride.pop(_escapeHandler!);
+    _escapeHandler = null;
+  }
+
   @override
   void dispose() {
-    EscapeOverride.tryHandle = null;
+    _popEscapeHandler();
     _verticalController.dispose();
     _editController.dispose();
     super.dispose();
@@ -93,17 +112,11 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
       _isEditing = true;
       _syntaxError = null;
     });
-    EscapeOverride.tryHandle = () {
-      if (_isEditing) {
-        _cancelEdit();
-        return true;
-      }
-      return false;
-    };
+    _pushEscapeHandler();
   }
 
   void _cancelEdit() {
-    EscapeOverride.tryHandle = null;
+    _popEscapeHandler();
     setState(() {
       _isEditing = false;
       _syntaxError = null;
@@ -118,7 +131,7 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
       widget.levelFile.objects.addAll(newLevel.objects);
       await LevelRepository.saveAndExport(widget.filePath, widget.levelFile);
       if (mounted) {
-        EscapeOverride.tryHandle = null;
+        _popEscapeHandler();
         setState(() {
           _isEditing = false;
           _syntaxError = null;

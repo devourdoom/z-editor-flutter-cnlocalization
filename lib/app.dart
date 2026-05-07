@@ -47,7 +47,7 @@ class _DesktopEscapeHandlerState extends State<_DesktopEscapeHandler> {
   }
 
   bool _handleKeyEvent(KeyEvent event) {
-    if (event is KeyRepeatEvent) return true;
+    if (event is KeyRepeatEvent) return false;
     if (event is! KeyDownEvent) return false;
     if (event.logicalKey != LogicalKeyboardKey.escape) return false;
     if (!mounted) return false;
@@ -110,19 +110,25 @@ class _ZEditorAppState extends State<ZEditorApp> {
             var scale = settings.uiScale;
             final mediaQuery = MediaQuery.of(context);
             final viewportSize = mediaQuery.size;
-            if (kIsWeb) {
-              final isMobileViewport = mediaQuery.size.shortestSide < 600;
-              if (isMobileViewport) {
-                scale *= 0.85;
-              }
+            if (mediaQuery.size.shortestSide < 600) {
+              scale *= 0.85;
             }
             final scaledSize = Size(
               viewportSize.width / scale,
               viewportSize.height / scale,
             );
+            EdgeInsets scaleInsets(EdgeInsets e) => EdgeInsets.fromLTRB(
+              e.left / scale,
+              e.top / scale,
+              e.right / scale,
+              e.bottom / scale,
+            );
             return MediaQuery(
               data: mediaQuery.copyWith(
                 size: scaledSize,
+                padding: scaleInsets(mediaQuery.padding),
+                viewPadding: scaleInsets(mediaQuery.viewPadding),
+                viewInsets: scaleInsets(mediaQuery.viewInsets),
                 textScaler: TextScaler.linear(1.0),
               ),
               child: FittedBox(

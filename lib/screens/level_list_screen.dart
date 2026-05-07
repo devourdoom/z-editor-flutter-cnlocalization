@@ -1868,12 +1868,152 @@ class _FileItemRow extends StatelessWidget {
   final VoidCallback? onDownload;
   final VoidCallback? onConvert;
 
+  static const _iconBtnStyle = ButtonStyle(
+    padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
+    minimumSize: WidgetStatePropertyAll(Size(36, 36)),
+    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+  );
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final isNarrow = MediaQuery.of(context).size.width < 500;
     final displayName = item.isDirectory
         ? item.name
         : LevelRepository.baseNameWithoutLevelExtension(item.name);
+
+    final bool hasSecondary = (!item.isDirectory) ||
+        onDownload != null ||
+        onConvert != null ||
+        showMove;
+
+    Widget actionsRow;
+    if (isNarrow) {
+      actionsRow = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(Icons.edit, color: theme.colorScheme.onSurfaceVariant),
+            tooltip: l10n.rename,
+            onPressed: onRename,
+            iconSize: 22,
+            style: _iconBtnStyle,
+          ),
+          if (hasSecondary)
+            PopupMenuButton<String>(
+              icon: Icon(
+                Icons.more_vert,
+                color: theme.colorScheme.onSurfaceVariant,
+                size: 22,
+              ),
+              padding: const EdgeInsets.all(8),
+              itemBuilder: (_) => [
+                if (!item.isDirectory)
+                  PopupMenuItem(
+                    value: 'copy',
+                    child: ListTile(
+                      leading: const Icon(Icons.copy),
+                      title: Text(l10n.copy),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                if (onDownload != null)
+                  const PopupMenuItem(
+                    value: 'download',
+                    child: ListTile(
+                      leading: Icon(Icons.download),
+                      title: Text('Download'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                if (onConvert != null)
+                  const PopupMenuItem(
+                    value: 'convert',
+                    child: ListTile(
+                      leading: Icon(Icons.swap_horiz),
+                      title: Text('Convert'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                if (showMove)
+                  PopupMenuItem(
+                    value: 'move',
+                    child: ListTile(
+                      leading: const Icon(Icons.drive_file_move),
+                      title: Text(l10n.move),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+              ],
+              onSelected: (v) {
+                if (v == 'copy') onCopy();
+                if (v == 'download') onDownload?.call();
+                if (v == 'convert') onConvert?.call();
+                if (v == 'move') onMove();
+              },
+            ),
+          IconButton(
+            icon: Icon(Icons.delete, color: theme.colorScheme.error, size: 22),
+            tooltip: l10n.delete,
+            onPressed: onDelete,
+            iconSize: 22,
+            style: _iconBtnStyle,
+          ),
+        ],
+      );
+    } else {
+      actionsRow = Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          IconButton(
+            icon: Icon(Icons.edit, color: theme.colorScheme.onSurfaceVariant),
+            tooltip: l10n.rename,
+            onPressed: onRename,
+            iconSize: 22,
+            style: _iconBtnStyle,
+          ),
+          if (!item.isDirectory)
+            IconButton(
+              icon: Icon(Icons.copy, color: theme.colorScheme.onSurfaceVariant),
+              tooltip: l10n.copy,
+              onPressed: onCopy,
+              iconSize: 22,
+              style: _iconBtnStyle,
+            ),
+          if (onDownload != null)
+            IconButton(
+              icon: Icon(Icons.download, color: theme.colorScheme.onSurfaceVariant),
+              tooltip: 'Download',
+              onPressed: onDownload,
+              iconSize: 22,
+              style: _iconBtnStyle,
+            ),
+          if (onConvert != null)
+            IconButton(
+              icon: Icon(Icons.swap_horiz, color: theme.colorScheme.onSurfaceVariant),
+              tooltip: 'Convert',
+              onPressed: onConvert,
+              iconSize: 22,
+              style: _iconBtnStyle,
+            ),
+          if (showMove)
+            IconButton(
+              icon: Icon(Icons.drive_file_move, color: theme.colorScheme.onSurfaceVariant),
+              tooltip: l10n.move,
+              onPressed: onMove,
+              iconSize: 22,
+              style: _iconBtnStyle,
+            ),
+          IconButton(
+            icon: Icon(Icons.delete, color: theme.colorScheme.error, size: 22),
+            tooltip: l10n.delete,
+            onPressed: onDelete,
+            iconSize: 22,
+            style: _iconBtnStyle,
+          ),
+        ],
+      );
+    }
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -1927,100 +2067,7 @@ class _FileItemRow extends StatelessWidget {
                   ],
                 ),
               ),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                    tooltip: l10n.rename,
-                    onPressed: onRename,
-                    iconSize: 22,
-                    style: IconButton.styleFrom(
-                      padding: const EdgeInsets.all(8),
-                      minimumSize: const Size(36, 36),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                  ),
-                  if (!item.isDirectory)
-                    IconButton(
-                      icon: Icon(
-                        Icons.copy,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      tooltip: l10n.copy,
-                      onPressed: onCopy,
-                      iconSize: 22,
-                      style: IconButton.styleFrom(
-                        padding: const EdgeInsets.all(8),
-                        minimumSize: const Size(36, 36),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                    ),
-                  if (onDownload != null)
-                    IconButton(
-                      icon: Icon(
-                        Icons.download,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      tooltip: 'Download',
-                      onPressed: onDownload,
-                      iconSize: 22,
-                      style: IconButton.styleFrom(
-                        padding: const EdgeInsets.all(8),
-                        minimumSize: const Size(36, 36),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                    ),
-                  if (onConvert != null)
-                    IconButton(
-                      icon: Icon(
-                        Icons.swap_horiz,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      tooltip: 'Convert',
-                      onPressed: onConvert,
-                      iconSize: 22,
-                      style: IconButton.styleFrom(
-                        padding: const EdgeInsets.all(8),
-                        minimumSize: const Size(36, 36),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                    ),
-                  if (showMove)
-                    IconButton(
-                      icon: Icon(
-                        Icons.drive_file_move,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      tooltip: l10n.move,
-                      onPressed: onMove,
-                      iconSize: 22,
-                      style: IconButton.styleFrom(
-                        padding: const EdgeInsets.all(8),
-                        minimumSize: const Size(36, 36),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                    ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.delete,
-                      color: theme.colorScheme.error,
-                      size: 22,
-                    ),
-                    tooltip: l10n.delete,
-                    onPressed: onDelete,
-                    iconSize: 22,
-                    style: IconButton.styleFrom(
-                      padding: const EdgeInsets.all(8),
-                      minimumSize: const Size(36, 36),
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                  ),
-                ],
-              ),
+              actionsRow,
             ],
           ),
         ),

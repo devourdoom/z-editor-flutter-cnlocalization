@@ -35,7 +35,7 @@ enum ZombieTag {
   henaiAtlantis,
   taleZCorp,
   parkourSpeed,
-  tothewest,
+  toTheWest,
   memory,
   universe,
   festival1,
@@ -79,7 +79,7 @@ extension ZombieTagExtension on ZombieTag {
         return s.zombieTagTaleZCorp;
       case ZombieTag.parkourSpeed:
         return s.zombieTagParkourSpeed;
-      case ZombieTag.tothewest:
+      case ZombieTag.toTheWest:
         return s.zombieTagTothewest;
       case ZombieTag.memory:
         return s.zombieTagMemory;
@@ -124,7 +124,7 @@ extension ZombieTagExtension on ZombieTag {
       case ZombieTag.henaiAtlantis:
       case ZombieTag.taleZCorp:
       case ZombieTag.parkourSpeed:
-      case ZombieTag.tothewest:
+      case ZombieTag.toTheWest:
       case ZombieTag.memory:
       case ZombieTag.universe:
       case ZombieTag.festival1:

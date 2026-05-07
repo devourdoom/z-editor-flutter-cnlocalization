@@ -6,10 +6,14 @@ import 'package:flutter/material.dart';
 class EscapeOverride {
   EscapeOverride._();
 
-  /// Called when Escape is pressed and a route can pop. Return true to consume
-  /// the event and prevent pop (e.g. cancel edit mode, or close modal only).
-  /// Return false to let the normal pop happen.
-  static bool Function()? tryHandle;
+  static final List<bool Function()> _stack = [];
+
+  static void push(bool Function() handler) => _stack.add(handler);
+  static void pop(bool Function() handler) => _stack.remove(handler);
+
+  /// The topmost registered handler, or null if none.
+  static bool Function()? get tryHandle =>
+      _stack.isEmpty ? null : _stack.last;
 }
 
 /// Wraps modal bottom sheet content so Escape closes only the modal, not the
@@ -24,21 +28,24 @@ class EscapeClosesModal extends StatefulWidget {
 }
 
 class _EscapeClosesModalState extends State<EscapeClosesModal> {
+  late final bool Function() _handler;
+
   @override
   void initState() {
     super.initState();
-    EscapeOverride.tryHandle = () {
+    _handler = () {
       if (Navigator.of(context).canPop()) {
         Navigator.of(context).pop();
         return true;
       }
       return false;
     };
+    EscapeOverride.push(_handler);
   }
 
   @override
   void dispose() {
-    EscapeOverride.tryHandle = null;
+    EscapeOverride.pop(_handler);
     super.dispose();
   }
 
