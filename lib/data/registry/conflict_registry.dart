@@ -21,11 +21,17 @@ class ConflictRegistry {
       descriptionKey: 'conflictDesc_SeedBankConveyor',
     ),
     ModuleConflictRule(
-      conflictingClasses: {'VaseBreakerPresetProperties', 'StandardLevelIntroProperties'},
+      conflictingClasses: {
+        'VaseBreakerPresetProperties',
+        'StandardLevelIntroProperties',
+      },
       descriptionKey: 'conflictDesc_VaseBreakerIntro',
     ),
     ModuleConflictRule(
-      conflictingClasses: {'LastStandMinigameProperties', 'StandardLevelIntroProperties'},
+      conflictingClasses: {
+        'LastStandMinigameProperties',
+        'StandardLevelIntroProperties',
+      },
       descriptionKey: 'conflictDesc_LastStandIntro',
     ),
     ModuleConflictRule(
@@ -33,15 +39,24 @@ class ConflictRegistry {
       descriptionKey: 'conflictDesc_EvilDaveZombieDrop',
     ),
     ModuleConflictRule(
-      conflictingClasses: {'EvilDaveProperties', 'ZombiesAteYourBrainsProperties'},
+      conflictingClasses: {
+        'EvilDaveProperties',
+        'ZombiesAteYourBrainsProperties',
+      },
       descriptionKey: 'conflictDesc_EvilDaveVictory',
     ),
     ModuleConflictRule(
-      conflictingClasses: {'ZombossBattleModuleProperties', 'ZombiesDeadWinConProperties'},
+      conflictingClasses: {
+        'ZombossBattleModuleProperties',
+        'ZombiesDeadWinConProperties',
+      },
       descriptionKey: 'conflictDesc_ZombossDeathDrop',
     ),
     ModuleConflictRule(
-      conflictingClasses: {'ZombossBattleIntroProperties', 'StandardLevelIntroProperties'},
+      conflictingClasses: {
+        'ZombossBattleIntroProperties',
+        'StandardLevelIntroProperties',
+      },
       descriptionKey: 'conflictDesc_ZombossTwoIntros',
     ),
     ModuleConflictRule(
@@ -53,30 +68,60 @@ class ConflictRegistry {
       descriptionKey: 'conflictDesc_InitialPlantRoof',
     ),
     ModuleConflictRule(
-      conflictingClasses: {'ProtectThePlantChallengeProperties', 'RoofProperties'},
+      conflictingClasses: {
+        'ProtectThePlantChallengeProperties',
+        'RoofProperties',
+      },
       descriptionKey: 'conflictDesc_ProtectPlantRoof',
     ),
     ModuleConflictRule(
-      conflictingClasses: {'CustomLevelModuleProperties', 'LawnMowerProperties'},
+      conflictingClasses: {
+        'CustomLevelModuleProperties',
+        'LawnMowerProperties',
+      },
       descriptionKey: 'conflictDesc_LawnMowerYard',
     ),
   ];
 
   /// Returns list of (localized title, localized description) for active conflicts.
-  static List<Pair<String, String>> getActiveConflicts(BuildContext context, Set<String> existingObjClasses) {
+  static List<Pair<String, String>> getActiveConflicts(
+    BuildContext context,
+    Set<String> existingObjClasses,
+  ) {
     final l10n = AppLocalizations.of(context)!;
     final title = l10n.conflictTitle_ModuleLogic;
-    return rules.where((rule) {
-      return rule.conflictingClasses.every((cls) => existingObjClasses.contains(cls));
-    }).map((rule) {
-      final desc = rule.descriptionKey != null
-          ? _getLocalizedConflictDescription(l10n, rule.descriptionKey!)
-          : _generateDefaultDescription(context, rule);
-      return Pair(title, desc);
-    }).toList();
+    final result = rules
+        .where((rule) {
+          return rule.conflictingClasses.every(
+            (cls) => existingObjClasses.contains(cls),
+          );
+        })
+        .map((rule) {
+          final desc = rule.descriptionKey != null
+              ? _getLocalizedConflictDescription(l10n, rule.descriptionKey!)
+              : _generateDefaultDescription(context, rule);
+          return Pair(title, desc);
+        })
+        .toList();
+
+    // Player win modules use objClass names ending in `WinConProperties` (not
+    // `WinCondition…`). Only one such module may be present at a time.
+    final winConCount = existingObjClasses
+        .where((c) => c.endsWith('WinConProperties'))
+        .length;
+    if (winConCount > 1) {
+      result.add(
+        Pair(title, l10n.conflictDesc_WinConditionExclusive),
+      );
+    }
+
+    return result;
   }
 
-  static String _getLocalizedConflictDescription(AppLocalizations l10n, String key) {
+  static String _getLocalizedConflictDescription(
+    AppLocalizations l10n,
+    String key,
+  ) {
     switch (key) {
       case 'conflictDesc_SeedBankConveyor':
         return l10n.conflictDesc_SeedBankConveyor;
@@ -92,6 +137,8 @@ class ConflictRegistry {
         return l10n.conflictDesc_ZombossDeathDrop;
       case 'conflictDesc_ZombossTwoIntros':
         return l10n.conflictDesc_ZombossTwoIntros;
+      case 'conflictDesc_WinConditionExclusive':
+        return l10n.conflictDesc_WinConditionExclusive;
       case 'conflictDesc_InitialPlantEntryRoof':
         return l10n.conflictDesc_InitialPlantEntryRoof;
       case 'conflictDesc_InitialPlantRoof':
@@ -105,12 +152,18 @@ class ConflictRegistry {
     }
   }
 
-  static String _generateDefaultDescription(BuildContext context, ModuleConflictRule rule) {
+  static String _generateDefaultDescription(
+    BuildContext context,
+    ModuleConflictRule rule,
+  ) {
     final l10n = AppLocalizations.of(context)!;
     final names = rule.conflictingClasses.map((cls) {
       return ModuleRegistry.getMetadata(cls).getTitle(context);
     }).toList();
-    return l10n.conflictDefaultDescription(names[0], names.length > 1 ? names[1] : names[0]);
+    return l10n.conflictDefaultDescription(
+      names[0],
+      names.length > 1 ? names[1] : names[0],
+    );
   }
 }
 
