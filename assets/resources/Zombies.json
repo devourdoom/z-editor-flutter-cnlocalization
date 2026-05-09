@@ -805,6 +805,16 @@
     "icon": "zombie_dark_rogue.webp"
   },
   {
+    "id": "dark_rogue_plus",
+    "name": "zombie_dark_rogue_plus",
+    "tags": [
+      "Dark_Beach",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_dark_rogue.webp"
+  },
+  {
     "id": "dark_cavalry",
     "name": "zombie_dark_cavalry",
     "tags": [
@@ -1238,6 +1248,17 @@
       "Iceage_Lostcity",
       "Elite",
       "Strong"
+    ],
+    "icon": "zombie_iceage_chief_elite.webp"
+  },
+  {
+    "id": "iceage_chief_elite_memo",
+    "name": "zombie_iceage_chief_elite_memo",
+    "tags": [
+      "Iceage_Lostcity",
+      "Elite",
+      "Strong",
+      "Custom"
     ],
     "icon": "zombie_iceage_chief_elite.webp"
   },
@@ -1919,6 +1940,16 @@
     "icon": "zombie_tutorial_gargantuar.webp"
   },
   {
+    "id": "tutorial_gargantuar_memo",
+    "name": "zombie_tutorial_gargantuar_memo",
+    "tags": [
+      "Modern_Pvz1",
+      "Gargantuar",
+      "Custom"
+    ],
+    "icon": "zombie_tutorial_gargantuar.webp"
+  },
+  {
     "id": "vase_gargantuar",
     "name": "zombie_vase_gargantuar",
     "tags": [
@@ -1943,6 +1974,16 @@
       "Modern_Pvz1",
       "Evildave",
       "Basic"
+    ],
+    "icon": "zombie_modern_newspaper.webp"
+  },
+  {
+    "id": "modern_newspaper_memo",
+    "name": "zombie_modern_newspaper_memo",
+    "tags": [
+      "Modern_Pvz1",
+      "Basic",
+      "Custom"
     ],
     "icon": "zombie_modern_newspaper.webp"
   },
@@ -2031,6 +2072,17 @@
     ],
     "icon": "zombie_catapult.webp"
   },
+    {
+    "id": "catapult_zomboss",
+    "name": "zombie_catapult_zomboss",
+    "tags": [
+      "Modern_Pvz1",
+      "Memory",
+      "Fat",
+      "Custom"
+    ],
+    "icon": "zombie_catapult.webp"
+  },
   {
     "id": "pvz1_bungee",
     "name": "zombie_pvz1_bungee",
@@ -2094,6 +2146,16 @@
   {
     "id": "sled_punk",
     "name": "zombie_sled_punk",
+    "tags": [
+      "Modern_Pvz1",
+      "Memory",
+      "Basic"
+    ],
+    "icon": "zombie_sled_punk.webp"
+  },
+  {
+    "id": "sled_armor_punk",
+    "name": "zombie_sled_armor_punk",
     "tags": [
       "Modern_Pvz1",
       "Memory",
@@ -2312,6 +2374,17 @@
     "icon": "zombie_renai_sherlock.webp"
   },
   {
+    "id": "renai_sherlock_memo",
+    "name": "zombie_renai_sherlock_memo",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_sherlock.webp"
+  },
+  {
     "id": "renai_hamlet",
     "name": "zombie_renai_hamlet",
     "tags": [
@@ -2320,6 +2393,38 @@
       "Basic"
     ],
     "icon": "zombie_renai_hamlet.webp"
+  },
+  {
+    "id": "renai_romeo",
+    "name": "zombie_renai_romeo",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic"
+    ],
+    "icon": "zombie_renai_romeo.webp"
+  },
+  {
+    "id": "renai_romeo_memo",
+    "name": "zombie_renai_romeo_memo",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_romeo.webp"
+  },
+  {
+    "id": "renai_romeo_memo1",
+    "name": "zombie_renai_romeo_memo1",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_romeo.webp"
   },
   {
     "id": "renai_juliet",
@@ -2332,14 +2437,26 @@
     "icon": "zombie_renai_juliet.webp"
   },
   {
-    "id": "renai_romeo",
-    "name": "zombie_renai_romeo",
+    "id": "renai_juliet_memo",
+    "name": "zombie_renai_juliet_memo",
     "tags": [
       "Steam_Renai",
       "Elite",
-      "Basic"
+      "Basic",
+      "Custom"
     ],
-    "icon": "zombie_renai_romeo.webp"
+    "icon": "zombie_renai_juliet.webp"
+  },
+  {
+    "id": "renai_juliet_memo1",
+    "name": "zombie_renai_juliet_memo1",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_juliet.webp"
   },
   {
     "id": "heian_worker",
@@ -2674,6 +2791,16 @@
     "icon": "zombie_fairy_tale_imp.webp"
   },
   {
+    "id": "fairy_tale_imp_memo",
+    "name": "zombie_fairy_tale_imp_memo",
+    "tags": [
+      "Tale_ZCorp",
+      "Imp",
+      "Custom"
+    ],
+    "icon": "zombie_fairy_tale_imp.webp"
+  },
+  {
     "id": "fairy_tale_witch",
     "name": "zombie_fairy_tale_witch",
     "tags": [
@@ -2688,6 +2815,16 @@
     "tags": [
       "Tale_ZCorp",
       "Pet"
+    ],
+    "icon": "zombie_fairy_tale_knight.webp"
+  },
+  {
+    "id": "fairy_tale_knight_memo",
+    "name": "zombie_fairy_tale_knight_memo",
+    "tags": [
+      "Tale_ZCorp",
+      "Pet",
+      "Custom"
     ],
     "icon": "zombie_fairy_tale_knight.webp"
   },
@@ -3880,6 +4017,18 @@
     "icon": "zombie_pumpkin_knight.webp"
   },
   {
+    "id": "pumpkin_knight_memo",
+    "name": "zombie_pumpkin_knight_memo",
+    "tags": [
+      "Festival2",
+      "Elite",
+      "Basic",
+      "Pet",
+      "Custom"
+    ],
+    "icon": "zombie_pumpkin_knight.webp"
+  },
+  {
     "id": "pumpkin_necromancer",
     "name": "zombie_pumpkin_necromancer",
     "tags": [
@@ -4213,6 +4362,39 @@
     "icon": "zombie_zombie_gatlingpea.webp"
   },
   {
+    "id": "zombie_gatlingpea_electric",
+    "name": "zombie_zombie_gatlingpea_electric",
+    "tags": [
+      "Modern_Pvz1",
+      "Memory",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_zombie_gatlingpea.webp"
+  },
+  {
+    "id": "zombie_gatlingpea_fire",
+    "name": "zombie_zombie_gatlingpea_fire",
+    "tags": [
+      "Modern_Pvz1",
+      "Memory",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_zombie_gatlingpea.webp"
+  },
+  {
+    "id": "zombie_gatlingpea_ice",
+    "name": "zombie_zombie_gatlingpea_ice",
+    "tags": [
+      "Modern_Pvz1",
+      "Memory",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_zombie_gatlingpea.webp"
+  },
+  {
     "id": "zombie_explodenut",
     "name": "zombie_zombie_explodenut",
     "tags": [
@@ -4302,183 +4484,9 @@
     "name": "zombie_slimes_gargantuar_memo",
     "tags": [
       "Memory",
-      "Gargantuar",
       "Custom"
     ],
     "icon": "zombie_slimes.webp"
-  },
-  {
-    "id": "iceage_chief_elite_memo",
-    "name": "zombie_iceage_chief_elite_memo",
-    "tags": [
-      "Iceage_Lostcity",
-      "Elite",
-      "Strong",
-      "Custom"
-    ],
-    "icon": "zombie_iceage_chief_elite.webp"
-  },
-  {
-    "id": "renai_romeo_memo",
-    "name": "zombie_renai_romeo_memo",
-    "tags": [
-      "Steam_Renai",
-      "Elite",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_renai_romeo.webp"
-  },
-  {
-    "id": "renai_romeo_memo1",
-    "name": "zombie_renai_romeo_memo1",
-    "tags": [
-      "Steam_Renai",
-      "Elite",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_renai_romeo.webp"
-  },
-  {
-    "id": "renai_juliet_memo",
-    "name": "zombie_renai_juliet_memo",
-    "tags": [
-      "Steam_Renai",
-      "Elite",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_renai_juliet.webp"
-  },
-  {
-    "id": "renai_juliet_memo1",
-    "name": "zombie_renai_juliet_memo1",
-    "tags": [
-      "Steam_Renai",
-      "Elite",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_renai_juliet.webp"
-  },
-  {
-    "id": "renai_sherlock_memo",
-    "name": "zombie_renai_sherlock_memo",
-    "tags": [
-      "Steam_Renai",
-      "Elite",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_renai_sherlock.webp"
-  },
-  {
-    "id": "roman_ballista_memo",
-    "name": "zombie_roman_ballista_memo",
-    "tags": [
-      "Roman",
-      "Imp",
-      "Custom"
-    ],
-    "icon": "zombie_roman_ballista.webp"
-  },
-  {
-    "id": "roman_ballista_memo2",
-    "name": "zombie_roman_ballista_memo2",
-    "tags": [
-      "Roman",
-      "Imp",
-      "Custom"
-    ],
-    "icon": "zombie_roman_ballista.webp"
-  },
-  {
-    "id": "pumpkin_knight_memo",
-    "name": "zombie_pumpkin_knight_memo",
-    "tags": [
-      "Festival2",
-      "Elite",
-      "Basic",
-      "Pet",
-      "Custom"
-    ],
-    "icon": "zombie_pumpkin_knight.webp"
-  },
-  {
-    "id": "modern_newspaper_memo",
-    "name": "zombie_modern_newspaper_memo",
-    "tags": [
-      "Modern_Pvz1",
-      "Evildave",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_modern_newspaper.webp"
-  },
-  {
-    "id": "tutorial_gargantuar_memo",
-    "name": "zombie_tutorial_gargantuar_memo",
-    "tags": [
-      "Modern_Pvz1",
-      "Evildave",
-      "Gargantuar",
-      "Custom"
-    ],
-    "icon": "zombie_tutorial_gargantuar.webp"
-  },
-  {
-    "id": "fairy_tale_imp_memo",
-    "name": "zombie_fairy_tale_imp_memo",
-    "tags": [
-      "Tale_ZCorp",
-      "Imp",
-      "Custom"
-    ],
-    "icon": "zombie_fairy_tale_imp.webp"
-  },
-  {
-    "id": "fairy_tale_knight_memo",
-    "name": "zombie_fairy_tale_knight_memo",
-    "tags": [
-      "Tale_ZCorp",
-      "Pet",
-      "Custom"
-    ],
-    "icon": "zombie_fairy_tale_knight.webp"
-  },
-  {
-    "id": "zombie_gatlingpea_electric",
-    "name": "zombie_zombie_gatlingpea_electric",
-    "tags": [
-      "Modern_Pvz1",
-      "Memory",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_zombie_gatlingpea.webp"
-  },
-  {
-    "id": "zombie_gatlingpea_fire",
-    "name": "zombie_zombie_gatlingpea_fire",
-    "tags": [
-      "Modern_Pvz1",
-      "Memory",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_zombie_gatlingpea.webp"
-  },
-  {
-    "id": "zombie_gatlingpea_ice",
-    "name": "zombie_zombie_gatlingpea_ice",
-    "tags": [
-      "Modern_Pvz1",
-      "Memory",
-      "Basic",
-      "Custom"
-    ],
-    "icon": "zombie_zombie_gatlingpea.webp"
   },
   {
     "id": "carnie_magician",
@@ -4658,6 +4666,26 @@
     "tags": [
       "Roman",
       "Imp"
+    ],
+    "icon": "zombie_roman_ballista.webp"
+  },
+  {
+    "id": "roman_ballista_memo",
+    "name": "zombie_roman_ballista_memo",
+    "tags": [
+      "Roman",
+      "Imp",
+      "Custom"
+    ],
+    "icon": "zombie_roman_ballista.webp"
+  },
+  {
+    "id": "roman_ballista_memo2",
+    "name": "zombie_roman_ballista_memo2",
+    "tags": [
+      "Roman",
+      "Imp",
+      "Custom"
     ],
     "icon": "zombie_roman_ballista.webp"
   },
