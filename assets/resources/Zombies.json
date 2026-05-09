@@ -1325,6 +1325,30 @@
     "icon": "zombie_elite_skycity_electric.webp"
   },
   {
+    "id": "elite_skycity_electric_pvz1_normal",
+    "name": "zombie_elite_skycity_electric_pvz1_normal",
+    "tags": [
+      "Kongfu_Skycity",
+      "Memory",
+      "Basic",
+      "Elite",
+      "Custom"
+    ],
+    "icon": "zombie_elite_skycity_electric.webp"
+  },
+  {
+    "id": "elite_skycity_electric_pvz1_hard",
+    "name": "zombie_elite_skycity_electric_pvz1_hard",
+    "tags": [
+      "Kongfu_Skycity",
+      "Memory",
+      "Basic",
+      "Elite",
+      "Custom"
+    ],
+    "icon": "zombie_elite_skycity_electric.webp"
+  },
+  {
     "id": "skycity_battleplane",
     "name": "zombie_skycity_battleplane",
     "tags": [
@@ -2414,6 +2438,28 @@
       "Memory",
       "Basic",
       "Elite"
+    ],
+    "icon": "zombie_elite_heian_onmyoji.webp"
+  },
+  {
+    "id": "elite_heian_onmyoji_pvz1_normal",
+    "name": "zombie_elite_heian_onmyoji_pvz1_normal",
+    "tags": [
+      "Memory",
+      "Basic",
+      "Elite",
+      "Custom"
+    ],
+    "icon": "zombie_elite_heian_onmyoji.webp"
+  },
+  {
+    "id": "elite_heian_onmyoji_pvz1_hard",
+    "name": "zombie_elite_heian_onmyoji_pvz1_hard",
+    "tags": [
+      "Memory",
+      "Basic",
+      "Elite",
+      "Custom"
     ],
     "icon": "zombie_elite_heian_onmyoji.webp"
   },
@@ -4161,7 +4207,8 @@
       "Modern_Pvz1",
       "Evildave",
       "Memory",
-      "Basic"
+      "Basic",
+      "Custom"
     ],
     "icon": "zombie_zombie_gatlingpea.webp"
   },
@@ -4254,9 +4301,184 @@
     "id": "slimes_gargantuar_memo",
     "name": "zombie_slimes_gargantuar_memo",
     "tags": [
-      "Memory"
+      "Memory",
+      "Gargantuar",
+      "Custom"
     ],
     "icon": "zombie_slimes.webp"
+  },
+  {
+    "id": "iceage_chief_elite_memo",
+    "name": "zombie_iceage_chief_elite_memo",
+    "tags": [
+      "Iceage_Lostcity",
+      "Elite",
+      "Strong",
+      "Custom"
+    ],
+    "icon": "zombie_iceage_chief_elite.webp"
+  },
+  {
+    "id": "renai_romeo_memo",
+    "name": "zombie_renai_romeo_memo",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_romeo.webp"
+  },
+  {
+    "id": "renai_romeo_memo1",
+    "name": "zombie_renai_romeo_memo1",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_romeo.webp"
+  },
+  {
+    "id": "renai_juliet_memo",
+    "name": "zombie_renai_juliet_memo",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_juliet.webp"
+  },
+  {
+    "id": "renai_juliet_memo1",
+    "name": "zombie_renai_juliet_memo1",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_juliet.webp"
+  },
+  {
+    "id": "renai_sherlock_memo",
+    "name": "zombie_renai_sherlock_memo",
+    "tags": [
+      "Steam_Renai",
+      "Elite",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_renai_sherlock.webp"
+  },
+  {
+    "id": "roman_ballista_memo",
+    "name": "zombie_roman_ballista_memo",
+    "tags": [
+      "Roman",
+      "Imp",
+      "Custom"
+    ],
+    "icon": "zombie_roman_ballista.webp"
+  },
+  {
+    "id": "roman_ballista_memo2",
+    "name": "zombie_roman_ballista_memo2",
+    "tags": [
+      "Roman",
+      "Imp",
+      "Custom"
+    ],
+    "icon": "zombie_roman_ballista.webp"
+  },
+  {
+    "id": "pumpkin_knight_memo",
+    "name": "zombie_pumpkin_knight_memo",
+    "tags": [
+      "Festival2",
+      "Elite",
+      "Basic",
+      "Pet",
+      "Custom"
+    ],
+    "icon": "zombie_pumpkin_knight.webp"
+  },
+  {
+    "id": "modern_newspaper_memo",
+    "name": "zombie_modern_newspaper_memo",
+    "tags": [
+      "Modern_Pvz1",
+      "Evildave",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_modern_newspaper.webp"
+  },
+  {
+    "id": "tutorial_gargantuar_memo",
+    "name": "zombie_tutorial_gargantuar_memo",
+    "tags": [
+      "Modern_Pvz1",
+      "Evildave",
+      "Gargantuar",
+      "Custom"
+    ],
+    "icon": "zombie_tutorial_gargantuar.webp"
+  },
+  {
+    "id": "fairy_tale_imp_memo",
+    "name": "zombie_fairy_tale_imp_memo",
+    "tags": [
+      "Tale_ZCorp",
+      "Imp",
+      "Custom"
+    ],
+    "icon": "zombie_fairy_tale_imp.webp"
+  },
+  {
+    "id": "fairy_tale_knight_memo",
+    "name": "zombie_fairy_tale_knight_memo",
+    "tags": [
+      "Tale_ZCorp",
+      "Pet",
+      "Custom"
+    ],
+    "icon": "zombie_fairy_tale_knight.webp"
+  },
+  {
+    "id": "zombie_gatlingpea_electric",
+    "name": "zombie_zombie_gatlingpea_electric",
+    "tags": [
+      "Modern_Pvz1",
+      "Memory",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_zombie_gatlingpea.webp"
+  },
+  {
+    "id": "zombie_gatlingpea_fire",
+    "name": "zombie_zombie_gatlingpea_fire",
+    "tags": [
+      "Modern_Pvz1",
+      "Memory",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_zombie_gatlingpea.webp"
+  },
+  {
+    "id": "zombie_gatlingpea_ice",
+    "name": "zombie_zombie_gatlingpea_ice",
+    "tags": [
+      "Modern_Pvz1",
+      "Memory",
+      "Basic",
+      "Custom"
+    ],
+    "icon": "zombie_zombie_gatlingpea.webp"
   },
   {
     "id": "carnie_magician",
@@ -4371,6 +4593,30 @@
     "icon": "zombie_elite_roman_healer.webp"
   },
   {
+    "id": "elite_roman_healer_pvz1_normal",
+    "name": "zombie_elite_roman_healer_pvz1_normal",
+    "tags": [
+      "Roman",
+      "Memory",
+      "Basic",
+      "Elite",
+      "Custom"
+    ],
+    "icon": "zombie_elite_roman_healer.webp"
+  },
+  {
+    "id": "elite_roman_healer_pvz1_hard",
+    "name": "zombie_elite_roman_healer_pvz1_hard",
+    "tags": [
+      "Roman",
+      "Memory",
+      "Basic",
+      "Elite",
+      "Custom"
+    ],
+    "icon": "zombie_elite_roman_healer.webp"
+  },
+  {
     "id": "roman_shield_top",
     "name": "zombie_roman_shield_top",
     "tags": [
@@ -4423,6 +4669,30 @@
       "Memory",
       "Elite",
       "Imp"
+    ],
+    "icon": "zombie_elite_roman_ballista.webp"
+  },
+  {
+    "id": "elite_roman_ballista_pvz1_normal",
+    "name": "zombie_elite_roman_ballista_pvz1_normal",
+    "tags": [
+      "Roman",
+      "Memory",
+      "Elite",
+      "Imp",
+      "Custom"
+    ],
+    "icon": "zombie_elite_roman_ballista.webp"
+  },
+  {
+    "id": "elite_roman_ballista_pvz1_hard",
+    "name": "zombie_elite_roman_ballista_pvz1_hard",
+    "tags": [
+      "Roman",
+      "Memory",
+      "Elite",
+      "Imp",
+      "Custom"
     ],
     "icon": "zombie_elite_roman_ballista.webp"
   },
