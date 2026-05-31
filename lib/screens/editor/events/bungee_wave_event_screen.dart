@@ -78,9 +78,9 @@ class _BungeeWaveEventScreenState extends State<BungeeWaveEventScreen> {
     } catch (_) {
       _data = BungeeWaveActionData();
     }
-    // Default to tutorial zombie when none selected
-    if (_data.zombieName.isEmpty) {
-      final alias = ZombieRepository().buildZombieAliases('zombie_tutorial');
+    // Default to tutorial zombie when none selected (or legacy wrong alias).
+    if (_data.zombieName.isEmpty || _data.zombieName == 'zombie_tutorial') {
+      final alias = ZombieRepository().buildZombieAliases('tutorial');
       _data = BungeeWaveActionData(
         target: _data.target,
         zombieName: alias,

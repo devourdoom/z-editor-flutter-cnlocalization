@@ -5,7 +5,7 @@ import 'package:z_editor/data/pvz_models/BungeeWaveTargetData.dart';
 class BungeeWaveActionData extends PvzModel {
   BungeeWaveActionData({
     BungeeWaveTargetData? target,
-    this.zombieName = '',
+    this.zombieName = 'tutorial',
     this.level = 1,
   }) : target = target ?? BungeeWaveTargetData();
 
