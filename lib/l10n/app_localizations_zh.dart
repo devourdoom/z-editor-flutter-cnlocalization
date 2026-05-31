@@ -1816,7 +1816,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get eventTitle_SchoolBusWaveActionProps => '冰淇淋车生成';
 
   @override
-  String get eventDesc_SchoolBusWaveActionProps => '在指定行生成冰淇淋车，可配置车内僵尸';
+  String get eventDesc_SchoolBusWaveActionProps => '在指定行生成冰淇淋车，并配置车内僵尸';
 
   @override
   String get eventTitle_BungeeWaveActionProps => '蹦极投放';
@@ -2769,14 +2769,16 @@ class AppLocalizationsZh extends AppLocalizations {
       '与障碍物生成的预选池不同，这个事件能精准地在固定格点强行生成障碍物并挤走植物。\n注意在部分缺少墓碑出土特效的地图可能会出现阳光贴图的情况，请谨慎使用此事件。';
 
   @override
-  String get eventHelpShellBody => '此事件可以在指定位置生成海底贝壳或其他障碍物。';
+  String get eventHelpShellBody =>
+      '此事件可以在指定位置生成海底贝壳。贝壳初始为闭合状态，有僵尸踩中贝壳时，贝壳会张开，将僵尸向前弹射，并在10秒后重新闭合。张开状态下的贝壳可被植物攻击，阻挡平射子弹。每次张开，生成一个随机物品，包括能量豆、鱿鱼、植物卡片或遗迹小鬼僵尸。若3次被僵尸触发，贝壳会游向植物卡槽处，将随机一个卡槽替换为贝壳卡槽。将贝壳种植到场上3次后，卡槽会恢复原植物。';
 
   @override
   String get eventHelpShellUsage =>
       '选中格子后，点击“+”放置贝壳。场地大小因关卡地图而异，共有5×9和6×10两种规格。';
 
   @override
-  String get eventHelpPumpkinHouseBody => '此事件可在指定位置生成南瓜屋障碍物。';
+  String get eventHelpPumpkinHouseBody =>
+      '此事件可在指定位置生成南瓜屋。经过南瓜屋的僵尸将会变为南瓜屋幽灵僵尸。南瓜屋幽灵僵尸有独立的血量，只能被抛投类植物攻击，血量归零时恢复原僵尸。南瓜屋本身也有一定血量，可以被集火打爆。';
 
   @override
   String get eventHelpPumpkinHouseUsage =>
@@ -2838,27 +2840,27 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get eventHelpSchoolBusBody =>
-      '在指定行生成特殊冰淇淋车（schoolbus_special），从右侧驶入。被击破后会释放配置的僵尸。';
+      '此事件用于在指定行生成冰淇淋车。冰淇淋车载着僵尸从右侧缓慢驶入，占据两行。前进路径上被车体碾压到的植物会被直接摧毁。\n若冰淇淋车贴图显示搭乘的是泡泡枪小鬼僵尸和棒棒糖僵尸（即类型为 schoolbus_special），则会在前进过程中持续释放对应僵尸的技能。\n地刺、钢地刺等植物可以扎破冰淇淋车的轮胎。轮胎破裂后，冰淇淋车会逐渐减速并进入滑行状态，一段时间后停止移动并损毁。';
 
   @override
   String get schoolBusHelpRows => '行数说明';
 
   @override
   String get eventHelpSchoolBusRows =>
-      '行数从1开始计，地图最上面一行为1，最下面一行为5（或6）。标准地图共有5行，海底世界地图共有6行。类型固定为 schoolbus_special，不可修改。';
+      '行数从1开始计，地图最上面一行为1，最下面一行为5（或6）。标准地图共有5行，海底世界地图共有6行。';
 
   @override
-  String get schoolBusHelpZombies => '僵尸';
+  String get schoolBusHelpZombies => '乘客说明';
 
   @override
   String get eventHelpSchoolBusZombies =>
-      '冰淇淋车被击破后释放的僵尸。等级范围为 0–10（0 表示无等级加成）。';
+      '冰淇淋车具有一定血量，车体被击毁后，车上的僵尸会下车继续前进。可以单独设置每个僵尸的阶数（0阶表示随地图阶级，庭院模式下即为1阶）。';
 
   @override
-  String get schoolBusRow => '行';
+  String get schoolBusRow => '冰激凌车所在行 (Row)';
 
   @override
-  String get schoolBusType => '类型';
+  String get schoolBusType => '车辆类型 (Type)';
 
   @override
   String get schoolBusHitPoints => '车辆血量 (SchoolBusHitPoints)';
@@ -3798,13 +3800,13 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get eventHelpStandardOverview =>
-      '最基础的生成僵尸事件。可以配置每一只僵尸的阶级和行号，0阶表示随地图阶级，庭院模式下即为1阶。\n掉落物默认情况下配置的是携带能量豆的僵尸个数，启用掉落植物功能后会随机从配置的植物库里掉落植物卡片。';
+      '最基础的生成僵尸事件。可以配置每一只僵尸的阶数和行号，0阶表示随地图阶级，庭院模式下即为1阶。\n掉落物默认情况下配置的是携带能量豆的僵尸个数，启用掉落植物功能后会随机从配置的植物库里掉落植物卡片。';
 
   @override
-  String get eventHelpStandardRow => '僵尸可出现在第 1–5 行中的任意一行，或随机选择一行出现。';
+  String get eventHelpStandardRow => '僵尸可出现在第1–5行中的任意一行，或随机选择一行出现。';
 
   @override
-  String get eventHelpStandardRowDeepSea => '僵尸可出现在第 1–6行中的任意一行，或随机选择一行出现。';
+  String get eventHelpStandardRowDeepSea => '僵尸可出现在第1–6行中的任意一行，或随机选择一行出现。';
 
   @override
   String get warningStageSwitchedTo5Rows =>
@@ -4499,115 +4501,118 @@ class AppLocalizationsZh extends AppLocalizations {
   String get moduleDesc_TunnelDefendModuleProperties => '设置地宫秘境的坑道及地砖样式';
 
   @override
-  String get moduleTitle_WitchModuleProperties => '南瓜女巫';
+  String get moduleTitle_WitchModuleProperties => '女巫登场';
 
   @override
-  String get moduleDesc_WitchModuleProperties => '配置南瓜女巫登场动画与出现间隔';
+  String get moduleDesc_WitchModuleProperties => '惊吓巫婆周期性掠过场地，泼洒魔法药剂';
 
   @override
-  String get moduleTitle_InitialGridItemGulliverTunnelProperties => '格列弗隧道';
+  String get moduleTitle_InitialGridItemGulliverTunnelProperties => '格列佛隧道';
 
   @override
-  String get moduleDesc_InitialGridItemGulliverTunnelProperties => '在场地预置格列弗隧道';
+  String get moduleDesc_InitialGridItemGulliverTunnelProperties =>
+      '在场地上预置可以使经过单位变大变小的隧道';
 
   @override
-  String get witchModuleTitle => '南瓜女巫';
+  String get witchModuleTitle => '女巫登场设置';
 
   @override
-  String get witchModuleHelpTitle => '南瓜女巫模块';
+  String get witchModuleHelpTitle => '女巫登场模块说明';
 
   @override
   String get witchModuleHelpIntro =>
-      '添加南瓜女巫登场动画与字幕。默认使用 LevelModules 中名为 WitchModule 的内置配置。';
+      '使用本模块会为关卡添加2名惊吓巫婆。关卡开始后，惊吓巫婆会从场地左侧或右侧随机选择一行突入，骑着魔法扫帚快速掠过场地，并在沿途随机洒下魔法药剂，随后每隔一段时间返回场地，重复上述操作。\n不同药剂拥有不同效果：橙色爆炸药剂会对落点周围3×3范围造成百分比伤害；绿色变形药剂会将单格植物变为羊、青蛙或鸡中的一种，也有概率将其变为高坚果卡片；蓝色亡灵药剂会在持续时间内不断复活落点周围3×3范围内死亡的僵尸；红色狂化药剂会为僵尸提供生命值和移动速度加成。\n惊吓巫婆无法被植物攻击。使用高坚果可以将其撞离场地；若高坚果释放过能量豆大招，则会直接将巫婆撞碎，使其不再出现。';
 
   @override
   String get witchModuleHelpParams => '参数配置';
 
   @override
   String get witchModuleHelpParamsBody =>
-      '启用自定义本地参数可覆盖 WitchSpawnInterval。关闭时使用 LevelModules 默认值。';
+      '常规情况下，本模块使用在游戏文件里的定义，也可以选择打开自定义开关，对巫婆出现的间隔进行编辑。';
 
   @override
   String get witchModuleSpawnInterval => '女巫出现间隔 (WitchSpawnInterval，单位：秒)';
 
   @override
-  String get gulliverTunnelTitle => '格列弗隧道';
+  String get gulliverTunnelTitle => '格列佛隧道';
 
   @override
-  String get gulliverTunnelHelpOverview => '在关卡开始前于场地放置格列弗隧道。';
+  String get gulliverTunnelHelpOverview =>
+      '本模块用于放置关卡开始前场地上的格列佛隧道。根据朝向不同，格列佛隧道分为两种：小口朝右、大口朝左，以及小口朝左、大口朝右。\n从小口进入的小鬼僵尸会变为巨型小鬼僵尸，拥有更高血量；从大口进入的常规僵尸会变为小小僵尸，移速更快，且可以躲避部分较高的平射子弹。\n植物的平射子弹也可进入大口，在被缩小后从小口射出，伤害降低；抛投子弹可越过隧道直接攻击僵尸。';
 
   @override
-  String get gulliverTunnelHelpUsage => '使用方法';
+  String get gulliverTunnelHelpUsage => '使用说明';
 
   @override
   String get gulliverTunnelHelpUsageBody =>
-      '在下方选择朝向，然后点击网格放置。再次点击同一格可移除；选择不同朝向后点击可替换。';
+      '先在下方选择隧道的朝向，然后点击网格放置。再次点击已有隧道的格可将其移除；选择不同朝向后点击已有隧道的格可以替换其朝向。';
 
   @override
-  String get gulliverTunnelOrientationBigOnLeft => '大口朝左';
+  String get gulliverTunnelOrientationBigOnLeft => '小口朝右，大口朝左';
 
   @override
-  String get gulliverTunnelOrientationBigOnRight => '大口朝右';
+  String get gulliverTunnelOrientationBigOnRight => '小口朝左，大口朝右';
 
   @override
   String get gulliverTunnelPlacedCount => '已放置';
 
   @override
-  String get gulliverTunnelClearAll => '全部清除';
+  String get gulliverTunnelClearAll => '清空全部';
 
   @override
-  String get gulliverTunnelClearConfirmTitle => '清除全部格列弗隧道？';
+  String get gulliverTunnelClearConfirmTitle => '确定要清空全部格列佛隧道吗？';
 
   @override
-  String get gulliverTunnelClearConfirmMessage => '将移除网格上所有已放置的格列弗隧道，此操作不可撤销。';
+  String get gulliverTunnelClearConfirmMessage => '将移除场上所有已放置的格列佛隧道，此操作不可撤销。';
 
   @override
-  String get gulliverTunnelSelectOrientation => '选择朝向';
+  String get gulliverTunnelSelectOrientation => '选择隧道朝向';
 
   @override
-  String get gulliverTunnelOutsideLawn => '场地外';
+  String get gulliverTunnelOutsideLawn => '场地外的隧道：';
 
   @override
-  String get gulliverTunnelDeleteOutside => '删除场地外隧道';
+  String get gulliverTunnelDeleteOutside => '删除场地外的隧道';
 
   @override
-  String get gulliverTunnelDeleteOutsideConfirmTitle => '删除场地外的隧道？';
+  String get gulliverTunnelDeleteOutsideConfirmTitle => '确定要删除场地外的隧道吗？';
 
   @override
   String get gulliverTunnelDeleteOutsideConfirmMessage =>
-      '移除位于 5×9 场地网格之外的隧道放置。';
+      '将移除 5×9 场地之外的格列佛隧道，此操作不可撤销。';
 
   @override
-  String get moduleTitle_RiftThemeDemoModuleProperties => '追击主题';
+  String get moduleTitle_RiftThemeDemoModuleProperties => '主题配置';
 
   @override
-  String get moduleDesc_RiftThemeDemoModuleProperties => '为关卡配置自定义追击、回忆等主题效果';
+  String get moduleDesc_RiftThemeDemoModuleProperties =>
+      '为关卡配置来自潘妮的追击、回忆之旅等模式的主题效果';
 
   @override
-  String get riftThemeModuleTitle => '追击主题';
+  String get riftThemeModuleTitle => '主题配置';
 
   @override
-  String get riftThemeHelpTitle => '追击主题模块';
+  String get riftThemeHelpTitle => '主题配置模块说明';
 
   @override
   String get riftThemeHelpOverview =>
-      '为关卡定义自定义追击主题列表，用法与追击、回忆等主题关卡相同。详细主题说明请参阅创辅文件。';
+      '本模块用于为关卡添加主题列表。主题是在潘妮的追击、回忆之旅、时空秘境等模式中出现的全局机制，不同的主题有着不同的效果。各主题的详细说明请参阅创辅文件。';
 
   @override
-  String get riftThemeHelpUsage => '用法';
+  String get riftThemeHelpUsage => '使用说明';
 
   @override
   String get riftThemeHelpUsageBody =>
-      '点击按钮打开主题选择界面。点击主题可勾选或取消，完成后点击确认按钮。主题按列表顺序生效。';
+      '点击右下角按钮打开主题选择界面。点击主题可将其加入或移出主题列表。全部设置完成后，再次点击右下角按钮确认，即可完成添加。主题将在关卡中按照列表顺序依次生效。';
 
   @override
-  String get riftThemeHelpUnique => '唯一主题';
+  String get riftThemeHelpUnique => '添加规范';
 
   @override
-  String get riftThemeHelpUniqueBody => '每个主题在列表中只能出现一次。';
+  String get riftThemeHelpUniqueBody => '每个主题最多在列表中添加一次。添加过多主题可能造成关卡闪退。';
 
   @override
-  String get riftThemeEmpty => '尚未选择主题。点击下方按钮选择主题。';
+  String get riftThemeEmpty => '尚未选择主题。点击右下角按钮选择主题。';
 
   @override
   String get riftThemeAddTheme => '添加主题';
@@ -4619,7 +4624,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get riftThemeSelectTheme => '主题';
 
   @override
-  String get riftThemeSearchPlaceholder => '搜索主题名称或代号';
+  String get riftThemeSearchPlaceholder => '搜索主题名称或代码名';
 
   @override
   String get riftThemeAlreadyAdded => '已添加';
@@ -4631,7 +4636,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get riftThemeAllUsedTitle => '已添加全部主题';
 
   @override
-  String get riftThemeAllUsedMessage => '所有追击主题均已添加。每个主题只能添加一次。';
+  String get riftThemeAllUsedMessage => '所有列表中主题均已添加。每个主题只能添加一次。';
 
   @override
   String get moduleTitle_ZombieRushModuleProperties => '关卡倒计时';

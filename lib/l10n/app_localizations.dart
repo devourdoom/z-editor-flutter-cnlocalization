@@ -2521,7 +2521,7 @@ abstract class AppLocalizations {
   /// No description provided for @moduleDesc_SeedBankProperties.
   ///
   /// In en, this message translates to:
-  /// **'Preset seed slots and seed selection mode'**
+  /// **'Presets seed slots and seed selection mode'**
   String get moduleDesc_SeedBankProperties;
 
   /// No description provided for @moduleTitle_ConveyorSeedBankProperties.
@@ -3409,7 +3409,7 @@ abstract class AppLocalizations {
   /// No description provided for @eventDesc_ZombiePotionActionProps.
   ///
   /// In en, this message translates to:
-  /// **'Force spawns grid items at fixed positions'**
+  /// **'Force spawns grid items at set positions'**
   String get eventDesc_ZombiePotionActionProps;
 
   /// No description provided for @eventTitle_ZombieAtlantisShellActionProps.
@@ -3547,13 +3547,13 @@ abstract class AppLocalizations {
   /// No description provided for @eventTitle_SchoolBusWaveActionProps.
   ///
   /// In en, this message translates to:
-  /// **'Ice Cream Truck Spawn'**
+  /// **'Ice Cream Van Spawn'**
   String get eventTitle_SchoolBusWaveActionProps;
 
   /// No description provided for @eventDesc_SchoolBusWaveActionProps.
   ///
   /// In en, this message translates to:
-  /// **'Spawns an ice cream truck in a lane with configurable zombies inside'**
+  /// **'Spawns an ice cream van in a lane and configures the zombies inside'**
   String get eventDesc_SchoolBusWaveActionProps;
 
   /// No description provided for @eventTitle_BungeeWaveActionProps.
@@ -5323,7 +5323,7 @@ abstract class AppLocalizations {
   /// No description provided for @eventHelpShellBody.
   ///
   /// In en, this message translates to:
-  /// **'Spawns atlantis seashells or other grid items at specified positions.'**
+  /// **'Spawns atlantis seashells at specified positions. Seashells start in a closed state. When a zombie steps on a seashell, it opens, launches the zombie forward, and closes again after 10 seconds. While open, seashells can be attacked by plants and block straight-shot projectiles. Each time a seashell opens, it generates a random item, including a Plant Food, a Cuttlefish, a plant seed packet, or a Relic Imp. After being triggered by zombies 3 times, the seashell will swim toward the seed bank and replace a random seed slot with a seashell seed packet. After the seashell has been planted 3 times, the seed slot will revert to its original plant.'**
   String get eventHelpShellBody;
 
   /// No description provided for @eventHelpShellUsage.
@@ -5335,7 +5335,7 @@ abstract class AppLocalizations {
   /// No description provided for @eventHelpPumpkinHouseBody.
   ///
   /// In en, this message translates to:
-  /// **'Spawns pumpkin house grid items at specified positions during the wave.'**
+  /// **'Spawns pumpkin houses at specified positions. Zombies that pass through the Pumpkin House are transformed into Pumpkin House Ghosts. Pumpkin House Ghosts have a separate health pool and can only be damaged by lobbed plants. When their health is depleted, they revert to their original zombie form. The Pumpkin House itself also has its own health and can be destroyed by concentrated fire.'**
   String get eventHelpPumpkinHouseBody;
 
   /// No description provided for @eventHelpPumpkinHouseUsage.
@@ -5425,7 +5425,7 @@ abstract class AppLocalizations {
   /// No description provided for @barrelWaveHelpRows.
   ///
   /// In en, this message translates to:
-  /// **'Rows'**
+  /// **'Row'**
   String get barrelWaveHelpRows;
 
   /// No description provided for @eventHelpBarrelWaveRows.
@@ -5437,7 +5437,7 @@ abstract class AppLocalizations {
   /// No description provided for @eventHelpSchoolBusBody.
   ///
   /// In en, this message translates to:
-  /// **'Spawns a special ice cream truck (schoolbus_special) that rolls in from the right on the selected lane. When destroyed, it releases the configured zombies.'**
+  /// **'Spawns an Ice Cream Van in the specified lane. Ice Cream Van slowly enters from the right side while carrying zombies, occupying 2 lanes. Any plants run over by the van are instantly crushed.\nIf the van is displayed with Bubble Gun Imps and Lollipop Zombies (i.e. the schoolbus_special variant), they will continuously use their respective abilities while the van is moving.\nPlants like Spikeweed and Spikerock can puncture the van\'s tires. After its tires are punctured, the Ice Cream Van gradually slows down and enters a gliding state. After a short period of time, it comes to a stop and breaks down.'**
   String get eventHelpSchoolBusBody;
 
   /// No description provided for @schoolBusHelpRows.
@@ -5449,7 +5449,7 @@ abstract class AppLocalizations {
   /// No description provided for @eventHelpSchoolBusRows.
   ///
   /// In en, this message translates to:
-  /// **'Rows are 1-based: Row 1 = top lane, Row 5/6 = bottom lane. Standard lawns: 5 rows. Underwater World lawns: 6 rows. The truck type is fixed to schoolbus_special.'**
+  /// **'Rows are 1-based: Row 1 = top lane, Row 5/6 = bottom lane. Standard lawns: 5 rows. Underwater World lawns: 6 rows.'**
   String get eventHelpSchoolBusRows;
 
   /// No description provided for @schoolBusHelpZombies.
@@ -5461,7 +5461,7 @@ abstract class AppLocalizations {
   /// No description provided for @eventHelpSchoolBusZombies.
   ///
   /// In en, this message translates to:
-  /// **'Zombies released when the truck is destroyed. Level ranges from 0 to 10 (0 = no level bonus).'**
+  /// **'Ice Cream Van has its own health pool. Once destroyed, the zombies inside will exit the vehicle and continue advancing. Each zombie\'s level can be configured individually (Level 0 follows the lawn’s default level, which is Level 1 in Creative Courtyard).'**
   String get eventHelpSchoolBusZombies;
 
   /// No description provided for @schoolBusRow.
@@ -5479,13 +5479,13 @@ abstract class AppLocalizations {
   /// No description provided for @schoolBusHitPoints.
   ///
   /// In en, this message translates to:
-  /// **'Truck health (SchoolBusHitPoints)'**
+  /// **' Van health (SchoolBusHitPoints)'**
   String get schoolBusHitPoints;
 
   /// No description provided for @schoolBusSpeed.
   ///
   /// In en, this message translates to:
-  /// **'Truck speed (SchoolBusSpeed)'**
+  /// **'Van speed (SchoolBusSpeed)'**
   String get schoolBusSpeed;
 
   /// No description provided for @schoolBusZombies.
@@ -6043,7 +6043,7 @@ abstract class AppLocalizations {
   /// No description provided for @roofFlowerPot.
   ///
   /// In en, this message translates to:
-  /// **'Roof pots module'**
+  /// **'Roof Pots module'**
   String get roofFlowerPot;
 
   /// No description provided for @eventConveyorModify.
@@ -6073,19 +6073,19 @@ abstract class AppLocalizations {
   /// No description provided for @eventShellSpawn.
   ///
   /// In en, this message translates to:
-  /// **'Event: Seashell spawn'**
+  /// **'Event: Seashell Spawn'**
   String get eventShellSpawn;
 
   /// No description provided for @eventPumpkinHouseSpawn.
   ///
   /// In en, this message translates to:
-  /// **'Event: Pumpkin house spawn'**
+  /// **'Event: Pumpkin House Spawn'**
   String get eventPumpkinHouseSpawn;
 
   /// No description provided for @eventSchoolBusSpawn.
   ///
   /// In en, this message translates to:
-  /// **'Event: Ice cream truck spawn'**
+  /// **'Event: Ice cream Van spawn'**
   String get eventSchoolBusSpawn;
 
   /// No description provided for @warMist.
@@ -8533,19 +8533,19 @@ abstract class AppLocalizations {
   /// No description provided for @moduleTitle_WitchModuleProperties.
   ///
   /// In en, this message translates to:
-  /// **'Pumpkin Witch'**
+  /// **'Fright Witch'**
   String get moduleTitle_WitchModuleProperties;
 
   /// No description provided for @moduleDesc_WitchModuleProperties.
   ///
   /// In en, this message translates to:
-  /// **'Configures the pumpkin witch intro animation and spawn timing'**
+  /// **'Fright Witches periodically sweep across the lawn, scattering magical potions'**
   String get moduleDesc_WitchModuleProperties;
 
   /// No description provided for @moduleTitle_InitialGridItemGulliverTunnelProperties.
   ///
   /// In en, this message translates to:
-  /// **'Gulliver Tunnels'**
+  /// **'Gulliver Tunnel'**
   String get moduleTitle_InitialGridItemGulliverTunnelProperties;
 
   /// No description provided for @moduleDesc_InitialGridItemGulliverTunnelProperties.
@@ -8557,19 +8557,19 @@ abstract class AppLocalizations {
   /// No description provided for @witchModuleTitle.
   ///
   /// In en, this message translates to:
-  /// **'Pumpkin Witch'**
+  /// **'Fright Witch Settings'**
   String get witchModuleTitle;
 
   /// No description provided for @witchModuleHelpTitle.
   ///
   /// In en, this message translates to:
-  /// **'Pumpkin Witch module'**
+  /// **'Fright Witch module'**
   String get witchModuleHelpTitle;
 
   /// No description provided for @witchModuleHelpIntro.
   ///
   /// In en, this message translates to:
-  /// **'Adds the pumpkin witch appearance animation and subtitles. By default uses the built-in LevelModules definition named WitchModule.'**
+  /// **'Enabling this module adds 2 Fright Witches to the level. After the level begins, Fright Witch will periodically enter from either the left or right side of the lawn, randomly choosing a lane and flying across it on a magic broomstick while scattering magical potions along the way. After a period of time, she returns and repeats the process.\nDifferent potions have different effects: Orange Explosion Potions deal percentage-based damage in a 3×3 area around the landing point; Green Transmutation Potions transform single-tile plants into a sheep, frog, or chicken, and may also turn them into Tall-nut seed packets; Blue Necromancy Potions continuously revive zombies that die within a 3×3 area around the landing point for a duration; Red Berserk Potions grant zombies increased health and movement speed.\nFright Witch cannot be targeted by plants. Planting a Tall-nut in her path will knock her off the lawn; if the Tall-nut has previously used Plant Food, it will shatter the witch permanently, preventing her from returning.'**
   String get witchModuleHelpIntro;
 
   /// No description provided for @witchModuleHelpParams.
@@ -8581,7 +8581,7 @@ abstract class AppLocalizations {
   /// No description provided for @witchModuleHelpParamsBody.
   ///
   /// In en, this message translates to:
-  /// **'Enable custom local parameters to override WitchSpawnInterval. When disabled, the game uses the LevelModules default.'**
+  /// **'By default, this module uses the values defined in the game files. Alternatively, you may enable custom local parameters and modify the interval between witch appearances'**
   String get witchModuleHelpParamsBody;
 
   /// No description provided for @witchModuleSpawnInterval.
@@ -8593,13 +8593,13 @@ abstract class AppLocalizations {
   /// No description provided for @gulliverTunnelTitle.
   ///
   /// In en, this message translates to:
-  /// **'Gulliver tunnels'**
+  /// **'Gulliver Tunnel Settings'**
   String get gulliverTunnelTitle;
 
   /// No description provided for @gulliverTunnelHelpOverview.
   ///
   /// In en, this message translates to:
-  /// **'Place Gulliver tunnel grid items on the lawn before the level starts.'**
+  /// **'This module is used to place Gulliver Tunnels on the lawn before the level begins. Depending on their orientation, Gulliver Tunnels come in two forms: a small opening on the right and a large opening on the left, or a small opening on the left and a large opening on the right.\nImps entering through the small opening become Giant Imps with increased health. Regular zombies entering through the large opening become Mini Zombies, gaining increased movement speed and the ability to avoid some higher-flying straight projectiles.\nStraight-flying plant projectiles can also enter through the large opening and emerge from the small opening after being shrunk, dealing reduced damage. Lobbed projectiles can pass over the tunnel and attack zombies normally.'**
   String get gulliverTunnelHelpOverview;
 
   /// No description provided for @gulliverTunnelHelpUsage.
@@ -8611,19 +8611,19 @@ abstract class AppLocalizations {
   /// No description provided for @gulliverTunnelHelpUsageBody.
   ///
   /// In en, this message translates to:
-  /// **'Choose an orientation below, then tap the grid to place. Tap the same cell again to remove. Tap with a different orientation selected to replace.'**
+  /// **'Select a tunnel orientation below, then click a tile to place it. Clicking a tile containing an existing tunnel removes it. Selecting a different orientation and clicking an existing tunnel replaces its orientation.'**
   String get gulliverTunnelHelpUsageBody;
 
   /// No description provided for @gulliverTunnelOrientationBigOnLeft.
   ///
   /// In en, this message translates to:
-  /// **'Big opening on left'**
+  /// **'Small Opening on Right, Large Opening on Left'**
   String get gulliverTunnelOrientationBigOnLeft;
 
   /// No description provided for @gulliverTunnelOrientationBigOnRight.
   ///
   /// In en, this message translates to:
-  /// **'Big opening on right'**
+  /// **'Small Opening on Left, Large Opening on Right'**
   String get gulliverTunnelOrientationBigOnRight;
 
   /// No description provided for @gulliverTunnelPlacedCount.
@@ -8641,13 +8641,13 @@ abstract class AppLocalizations {
   /// No description provided for @gulliverTunnelClearConfirmTitle.
   ///
   /// In en, this message translates to:
-  /// **'Clear all Gulliver tunnels?'**
+  /// **'Clear all Gulliver Tunnels?'**
   String get gulliverTunnelClearConfirmTitle;
 
   /// No description provided for @gulliverTunnelClearConfirmMessage.
   ///
   /// In en, this message translates to:
-  /// **'Remove all placed Gulliver tunnels from the grid. This cannot be undone.'**
+  /// **'This will removbe all placed Gulliver Tunnels from the lawn. This action cannot be undone.'**
   String get gulliverTunnelClearConfirmMessage;
 
   /// No description provided for @gulliverTunnelSelectOrientation.
@@ -8659,55 +8659,55 @@ abstract class AppLocalizations {
   /// No description provided for @gulliverTunnelOutsideLawn.
   ///
   /// In en, this message translates to:
-  /// **'Outside lawn'**
+  /// **'Tunnels outside the lawn: '**
   String get gulliverTunnelOutsideLawn;
 
   /// No description provided for @gulliverTunnelDeleteOutside.
   ///
   /// In en, this message translates to:
-  /// **'Delete outside lawn'**
+  /// **'Remove Gulliver Tunnels outside the lawn'**
   String get gulliverTunnelDeleteOutside;
 
   /// No description provided for @gulliverTunnelDeleteOutsideConfirmTitle.
   ///
   /// In en, this message translates to:
-  /// **'Delete tunnels outside lawn?'**
+  /// **'Remove Gulliver Tunnels outside the lawn?'**
   String get gulliverTunnelDeleteOutsideConfirmTitle;
 
   /// No description provided for @gulliverTunnelDeleteOutsideConfirmMessage.
   ///
   /// In en, this message translates to:
-  /// **'Remove tunnel placements that fall outside the 5×9 lawn grid.'**
+  /// **'This will remove all Gulliver Tunnels outside the 5×9 lawn. This action cannot be undone.'**
   String get gulliverTunnelDeleteOutsideConfirmMessage;
 
   /// No description provided for @moduleTitle_RiftThemeDemoModuleProperties.
   ///
   /// In en, this message translates to:
-  /// **'Rift Themes'**
+  /// **'Theme Configuration'**
   String get moduleTitle_RiftThemeDemoModuleProperties;
 
   /// No description provided for @moduleDesc_RiftThemeDemoModuleProperties.
   ///
   /// In en, this message translates to:
-  /// **'Applies custom Penny Pursuit / Memory Lane theme modifiers to the level'**
+  /// **'Adds theme effects from Penny\'s Pursuit, Memory Lane, and other game modes to the level'**
   String get moduleDesc_RiftThemeDemoModuleProperties;
 
   /// No description provided for @riftThemeModuleTitle.
   ///
   /// In en, this message translates to:
-  /// **'Rift themes'**
+  /// **'Theme Configuration'**
   String get riftThemeModuleTitle;
 
   /// No description provided for @riftThemeHelpTitle.
   ///
   /// In en, this message translates to:
-  /// **'Rift theme module'**
+  /// **'Theme Configuration module'**
   String get riftThemeHelpTitle;
 
   /// No description provided for @riftThemeHelpOverview.
   ///
   /// In en, this message translates to:
-  /// **'Defines a custom list of rift themes for the level, similar to Penny Pursuit and Memory Lane themed stages. See the creator reference for full theme details.'**
+  /// **'This module defines a list of themes for the level. Themes are global conditions found in modes such as Penny\'s Pursuit, Memory Lane, and Secret Realm. Each theme provides unique effects. For detailed descriptions of individual themes, please refer to the wiki.gg pages covering those themes.'**
   String get riftThemeHelpOverview;
 
   /// No description provided for @riftThemeHelpUsage.
@@ -8719,31 +8719,31 @@ abstract class AppLocalizations {
   /// No description provided for @riftThemeHelpUsageBody.
   ///
   /// In en, this message translates to:
-  /// **'Tap the button to open the theme picker. Tap themes to select or deselect them, then confirm with the check button. Themes are applied in list order.'**
+  /// **'Click the button in the lower-right corner to open the theme selection screen. Themes can be added to or removed from the theme list by clicking them. Once all settings are complete, click the button again to confirm. Themes take effect in the order they appear in the list.'**
   String get riftThemeHelpUsageBody;
 
   /// No description provided for @riftThemeHelpUnique.
   ///
   /// In en, this message translates to:
-  /// **'Unique themes'**
+  /// **'Addition Rules'**
   String get riftThemeHelpUnique;
 
   /// No description provided for @riftThemeHelpUniqueBody.
   ///
   /// In en, this message translates to:
-  /// **'Each theme can only appear once in the list.'**
+  /// **'Each theme can only appear once in the list. Adding an excessive number of themes may cause the level to crash.'**
   String get riftThemeHelpUniqueBody;
 
   /// No description provided for @riftThemeEmpty.
   ///
   /// In en, this message translates to:
-  /// **'No themes selected. Tap the button below to choose themes.'**
+  /// **'No themes selected. Tap the button in the lower-right corner to choose themes.'**
   String get riftThemeEmpty;
 
   /// No description provided for @riftThemeAddTheme.
   ///
   /// In en, this message translates to:
-  /// **'Add rift theme'**
+  /// **'Add theme'**
   String get riftThemeAddTheme;
 
   /// No description provided for @riftThemeSelectThemes.
@@ -8761,7 +8761,7 @@ abstract class AppLocalizations {
   /// No description provided for @riftThemeSearchPlaceholder.
   ///
   /// In en, this message translates to:
-  /// **'Search theme name or id'**
+  /// **'Search theme name or codename'**
   String get riftThemeSearchPlaceholder;
 
   /// No description provided for @riftThemeAlreadyAdded.
@@ -8785,7 +8785,7 @@ abstract class AppLocalizations {
   /// No description provided for @riftThemeAllUsedMessage.
   ///
   /// In en, this message translates to:
-  /// **'Every rift theme is already in the list. Each theme can only be added once.'**
+  /// **'All available themes have already been added. Each theme can only be added once.'**
   String get riftThemeAllUsedMessage;
 
   /// No description provided for @moduleTitle_ZombieRushModuleProperties.

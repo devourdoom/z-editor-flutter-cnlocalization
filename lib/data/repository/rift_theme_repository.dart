@@ -26,7 +26,6 @@ class RiftThemeRepository {
     'plant_fastcd',
     'plant_melee',
     'lemon',
-    'seed_rain',
     'balloon',
     'plant_seed',
     'piggy_bank',
