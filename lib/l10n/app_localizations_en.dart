@@ -1346,7 +1346,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moduleDesc_SeedBankProperties =>
-      'Preset seed slots and seed selection mode';
+      'Presets seed slots and seed selection mode';
 
   @override
   String get moduleTitle_ConveyorSeedBankProperties => 'Conveyor Belt';
@@ -1857,7 +1857,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventDesc_ZombiePotionActionProps =>
-      'Force spawns grid items at fixed positions';
+      'Force spawns grid items at set positions';
 
   @override
   String get eventTitle_ZombieAtlantisShellActionProps => 'Seashell Spawn';
@@ -1938,11 +1938,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'Spawns barrels with different abilities in set lanes';
 
   @override
-  String get eventTitle_SchoolBusWaveActionProps => 'Ice Cream Truck Spawn';
+  String get eventTitle_SchoolBusWaveActionProps => 'Ice Cream Van Spawn';
 
   @override
   String get eventDesc_SchoolBusWaveActionProps =>
-      'Spawns an ice cream truck in a lane with configurable zombies inside';
+      'Spawns an ice cream van in a lane and configures the zombies inside';
 
   @override
   String get eventTitle_BungeeWaveActionProps => 'Bungee Drop';
@@ -2936,7 +2936,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventHelpShellBody =>
-      'Spawns atlantis seashells or other grid items at specified positions.';
+      'Spawns atlantis seashells at specified positions. Seashells start in a closed state. When a zombie steps on a seashell, it opens, launches the zombie forward, and closes again after 10 seconds. While open, seashells can be attacked by plants and block straight-shot projectiles. Each time a seashell opens, it generates a random item, including a Plant Food, a Cuttlefish, a plant seed packet, or a Relic Imp. After being triggered by zombies 3 times, the seashell will swim toward the seed bank and replace a random seed slot with a seashell seed packet. After the seashell has been planted 3 times, the seed slot will revert to its original plant.';
 
   @override
   String get eventHelpShellUsage =>
@@ -2944,7 +2944,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventHelpPumpkinHouseBody =>
-      'Spawns pumpkin house grid items at specified positions during the wave.';
+      'Spawns pumpkin houses at specified positions. Zombies that pass through the Pumpkin House are transformed into Pumpkin House Ghosts. Pumpkin House Ghosts have a separate health pool and can only be damaged by lobbed plants. When their health is depleted, they revert to their original zombie form. The Pumpkin House itself also has its own health and can be destroyed by concentrated fire.';
 
   @override
   String get eventHelpPumpkinHouseUsage =>
@@ -3001,7 +3001,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Empty Barrel: Breaks with no effect.\nImp Barrel: Releases zombies (usually Imps) when destroyed.\nExplosive Barrel: Explodes on contact or when destroyed, damaging plants and zombies in a 3×3 area.';
 
   @override
-  String get barrelWaveHelpRows => 'Rows';
+  String get barrelWaveHelpRows => 'Row';
 
   @override
   String get eventHelpBarrelWaveRows =>
@@ -3009,21 +3009,21 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventHelpSchoolBusBody =>
-      'Spawns a special ice cream truck (schoolbus_special) that rolls in from the right on the selected lane. When destroyed, it releases the configured zombies.';
+      'Spawns an Ice Cream Van in the specified lane. Ice Cream Van slowly enters from the right side while carrying zombies, occupying 2 lanes. Any plants run over by the van are instantly crushed.\nIf the van is displayed with Bubble Gun Imps and Lollipop Zombies (i.e. the schoolbus_special variant), they will continuously use their respective abilities while the van is moving.\nPlants like Spikeweed and Spikerock can puncture the van\'s tires. After its tires are punctured, the Ice Cream Van gradually slows down and enters a gliding state. After a short period of time, it comes to a stop and breaks down.';
 
   @override
   String get schoolBusHelpRows => 'Row';
 
   @override
   String get eventHelpSchoolBusRows =>
-      'Rows are 1-based: Row 1 = top lane, Row 5/6 = bottom lane. Standard lawns: 5 rows. Underwater World lawns: 6 rows. The truck type is fixed to schoolbus_special.';
+      'Rows are 1-based: Row 1 = top lane, Row 5/6 = bottom lane. Standard lawns: 5 rows. Underwater World lawns: 6 rows.';
 
   @override
   String get schoolBusHelpZombies => 'Zombies';
 
   @override
   String get eventHelpSchoolBusZombies =>
-      'Zombies released when the truck is destroyed. Level ranges from 0 to 10 (0 = no level bonus).';
+      'Ice Cream Van has its own health pool. Once destroyed, the zombies inside will exit the vehicle and continue advancing. Each zombie\'s level can be configured individually (Level 0 follows the lawn’s default level, which is Level 1 in Creative Courtyard).';
 
   @override
   String get schoolBusRow => 'Row';
@@ -3032,10 +3032,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get schoolBusType => 'Type';
 
   @override
-  String get schoolBusHitPoints => 'Truck health (SchoolBusHitPoints)';
+  String get schoolBusHitPoints => ' Van health (SchoolBusHitPoints)';
 
   @override
-  String get schoolBusSpeed => 'Truck speed (SchoolBusSpeed)';
+  String get schoolBusSpeed => 'Van speed (SchoolBusSpeed)';
 
   @override
   String get schoolBusZombies => 'Contained zombies (Zombies)';
@@ -3344,7 +3344,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get lastStandSettings => 'Last Stand Settings';
 
   @override
-  String get roofFlowerPot => 'Roof pots module';
+  String get roofFlowerPot => 'Roof Pots module';
 
   @override
   String get eventConveyorModify => 'Event: Conveyor Change';
@@ -3359,13 +3359,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eventPotionDrop => 'Event: Potion Drop';
 
   @override
-  String get eventShellSpawn => 'Event: Seashell spawn';
+  String get eventShellSpawn => 'Event: Seashell Spawn';
 
   @override
-  String get eventPumpkinHouseSpawn => 'Event: Pumpkin house spawn';
+  String get eventPumpkinHouseSpawn => 'Event: Pumpkin House Spawn';
 
   @override
-  String get eventSchoolBusSpawn => 'Event: Ice cream truck spawn';
+  String get eventSchoolBusSpawn => 'Event: Ice cream Van spawn';
 
   @override
   String get warMist => 'Fog System module';
@@ -4741,60 +4741,62 @@ class AppLocalizationsEn extends AppLocalizations {
       'Configures pathways and tile styles for Underground Palace secret realm levels';
 
   @override
-  String get moduleTitle_WitchModuleProperties => 'Pumpkin Witch';
+  String get moduleTitle_WitchModuleProperties => 'Fright Witch';
 
   @override
   String get moduleDesc_WitchModuleProperties =>
-      'Configures the pumpkin witch intro animation and spawn timing';
+      'Fright Witches periodically sweep across the lawn, scattering magical potions';
 
   @override
   String get moduleTitle_InitialGridItemGulliverTunnelProperties =>
-      'Gulliver Tunnels';
+      'Gulliver Tunnel';
 
   @override
   String get moduleDesc_InitialGridItemGulliverTunnelProperties =>
       'Places pre-set Gulliver tunnels on the lawn';
 
   @override
-  String get witchModuleTitle => 'Pumpkin Witch';
+  String get witchModuleTitle => 'Fright Witch Settings';
 
   @override
-  String get witchModuleHelpTitle => 'Pumpkin Witch module';
+  String get witchModuleHelpTitle => 'Fright Witch module';
 
   @override
   String get witchModuleHelpIntro =>
-      'Adds the pumpkin witch appearance animation and subtitles. By default uses the built-in LevelModules definition named WitchModule.';
+      'Enabling this module adds 2 Fright Witches to the level. After the level begins, Fright Witch will periodically enter from either the left or right side of the lawn, randomly choosing a lane and flying across it on a magic broomstick while scattering magical potions along the way. After a period of time, she returns and repeats the process.\nDifferent potions have different effects: Orange Explosion Potions deal percentage-based damage in a 3×3 area around the landing point; Green Transmutation Potions transform single-tile plants into a sheep, frog, or chicken, and may also turn them into Tall-nut seed packets; Blue Necromancy Potions continuously revive zombies that die within a 3×3 area around the landing point for a duration; Red Berserk Potions grant zombies increased health and movement speed.\nFright Witch cannot be targeted by plants. Planting a Tall-nut in her path will knock her off the lawn; if the Tall-nut has previously used Plant Food, it will shatter the witch permanently, preventing her from returning.';
 
   @override
   String get witchModuleHelpParams => 'Parameter configuration';
 
   @override
   String get witchModuleHelpParamsBody =>
-      'Enable custom local parameters to override WitchSpawnInterval. When disabled, the game uses the LevelModules default.';
+      'By default, this module uses the values defined in the game files. Alternatively, you may enable custom local parameters and modify the interval between witch appearances';
 
   @override
   String get witchModuleSpawnInterval =>
       'Witch spawn interval (WitchSpawnInterval, seconds)';
 
   @override
-  String get gulliverTunnelTitle => 'Gulliver tunnels';
+  String get gulliverTunnelTitle => 'Gulliver Tunnel Settings';
 
   @override
   String get gulliverTunnelHelpOverview =>
-      'Place Gulliver tunnel grid items on the lawn before the level starts.';
+      'This module is used to place Gulliver Tunnels on the lawn before the level begins. Depending on their orientation, Gulliver Tunnels come in two forms: a small opening on the right and a large opening on the left, or a small opening on the left and a large opening on the right.\nImps entering through the small opening become Giant Imps with increased health. Regular zombies entering through the large opening become Mini Zombies, gaining increased movement speed and the ability to avoid some higher-flying straight projectiles.\nStraight-flying plant projectiles can also enter through the large opening and emerge from the small opening after being shrunk, dealing reduced damage. Lobbed projectiles can pass over the tunnel and attack zombies normally.';
 
   @override
   String get gulliverTunnelHelpUsage => 'Usage';
 
   @override
   String get gulliverTunnelHelpUsageBody =>
-      'Choose an orientation below, then tap the grid to place. Tap the same cell again to remove. Tap with a different orientation selected to replace.';
+      'Select a tunnel orientation below, then click a tile to place it. Clicking a tile containing an existing tunnel removes it. Selecting a different orientation and clicking an existing tunnel replaces its orientation.';
 
   @override
-  String get gulliverTunnelOrientationBigOnLeft => 'Big opening on left';
+  String get gulliverTunnelOrientationBigOnLeft =>
+      'Small Opening on Right, Large Opening on Left';
 
   @override
-  String get gulliverTunnelOrientationBigOnRight => 'Big opening on right';
+  String get gulliverTunnelOrientationBigOnRight =>
+      'Small Opening on Left, Large Opening on Right';
 
   @override
   String get gulliverTunnelPlacedCount => 'Placed';
@@ -4803,66 +4805,67 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gulliverTunnelClearAll => 'Clear all';
 
   @override
-  String get gulliverTunnelClearConfirmTitle => 'Clear all Gulliver tunnels?';
+  String get gulliverTunnelClearConfirmTitle => 'Clear all Gulliver Tunnels?';
 
   @override
   String get gulliverTunnelClearConfirmMessage =>
-      'Remove all placed Gulliver tunnels from the grid. This cannot be undone.';
+      'This will removbe all placed Gulliver Tunnels from the lawn. This action cannot be undone.';
 
   @override
   String get gulliverTunnelSelectOrientation => 'Select orientation';
 
   @override
-  String get gulliverTunnelOutsideLawn => 'Outside lawn';
+  String get gulliverTunnelOutsideLawn => 'Tunnels outside the lawn: ';
 
   @override
-  String get gulliverTunnelDeleteOutside => 'Delete outside lawn';
+  String get gulliverTunnelDeleteOutside =>
+      'Remove Gulliver Tunnels outside the lawn';
 
   @override
   String get gulliverTunnelDeleteOutsideConfirmTitle =>
-      'Delete tunnels outside lawn?';
+      'Remove Gulliver Tunnels outside the lawn?';
 
   @override
   String get gulliverTunnelDeleteOutsideConfirmMessage =>
-      'Remove tunnel placements that fall outside the 5×9 lawn grid.';
+      'This will remove all Gulliver Tunnels outside the 5×9 lawn. This action cannot be undone.';
 
   @override
-  String get moduleTitle_RiftThemeDemoModuleProperties => 'Rift Themes';
+  String get moduleTitle_RiftThemeDemoModuleProperties => 'Theme Configuration';
 
   @override
   String get moduleDesc_RiftThemeDemoModuleProperties =>
-      'Applies custom Penny Pursuit / Memory Lane theme modifiers to the level';
+      'Adds theme effects from Penny\'s Pursuit, Memory Lane, and other game modes to the level';
 
   @override
-  String get riftThemeModuleTitle => 'Rift themes';
+  String get riftThemeModuleTitle => 'Theme Configuration';
 
   @override
-  String get riftThemeHelpTitle => 'Rift theme module';
+  String get riftThemeHelpTitle => 'Theme Configuration module';
 
   @override
   String get riftThemeHelpOverview =>
-      'Defines a custom list of rift themes for the level, similar to Penny Pursuit and Memory Lane themed stages. See the creator reference for full theme details.';
+      'This module defines a list of themes for the level. Themes are global conditions found in modes such as Penny\'s Pursuit, Memory Lane, and Secret Realm. Each theme provides unique effects. For detailed descriptions of individual themes, please refer to the wiki.gg pages covering those themes.';
 
   @override
   String get riftThemeHelpUsage => 'Usage';
 
   @override
   String get riftThemeHelpUsageBody =>
-      'Tap the button to open the theme picker. Tap themes to select or deselect them, then confirm with the check button. Themes are applied in list order.';
+      'Click the button in the lower-right corner to open the theme selection screen. Themes can be added to or removed from the theme list by clicking them. Once all settings are complete, click the button again to confirm. Themes take effect in the order they appear in the list.';
 
   @override
-  String get riftThemeHelpUnique => 'Unique themes';
+  String get riftThemeHelpUnique => 'Addition Rules';
 
   @override
   String get riftThemeHelpUniqueBody =>
-      'Each theme can only appear once in the list.';
+      'Each theme can only appear once in the list. Adding an excessive number of themes may cause the level to crash.';
 
   @override
   String get riftThemeEmpty =>
-      'No themes selected. Tap the button below to choose themes.';
+      'No themes selected. Tap the button in the lower-right corner to choose themes.';
 
   @override
-  String get riftThemeAddTheme => 'Add rift theme';
+  String get riftThemeAddTheme => 'Add theme';
 
   @override
   String get riftThemeSelectThemes => 'Select themes';
@@ -4871,7 +4874,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get riftThemeSelectTheme => 'Theme';
 
   @override
-  String get riftThemeSearchPlaceholder => 'Search theme name or id';
+  String get riftThemeSearchPlaceholder => 'Search theme name or codename';
 
   @override
   String get riftThemeAlreadyAdded => 'Already added';
@@ -4884,7 +4887,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get riftThemeAllUsedMessage =>
-      'Every rift theme is already in the list. Each theme can only be added once.';
+      'All available themes have already been added. Each theme can only be added once.';
 
   @override
   String get moduleTitle_ZombieRushModuleProperties => 'Level Timer';
