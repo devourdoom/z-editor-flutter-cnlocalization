@@ -92,6 +92,7 @@ export 'pvz_models/RailcartPropertiesData.dart';
 export 'pvz_models/RectData.dart';
 export 'pvz_models/RenaiModulePropertiesData.dart';
 export 'pvz_models/RenaiStatueInfoData.dart';
+export 'pvz_models/RiftThemeDemoModulePropertiesData.dart';
 export 'pvz_models/RiftTimedSunData.dart';
 export 'pvz_models/RiftTimedSunModuleData.dart';
 export 'pvz_models/RoofPropertiesData.dart';

@@ -191,6 +191,8 @@ class ModuleRegistry {
         return l10n.moduleTitle_HeianWindModuleProperties;
       case 'moduleTitle_WitchModuleProperties':
         return l10n.moduleTitle_WitchModuleProperties;
+      case 'moduleTitle_RiftThemeDemoModuleProperties':
+        return l10n.moduleTitle_RiftThemeDemoModuleProperties;
       case 'moduleTitle_InitialGridItemGulliverTunnelProperties':
         return l10n.moduleTitle_InitialGridItemGulliverTunnelProperties;
       case 'moduleTitle_RocketZombieFlickModuleProperties':
@@ -323,6 +325,8 @@ class ModuleRegistry {
         return l10n.moduleDesc_HeianWindModuleProperties;
       case 'moduleDesc_WitchModuleProperties':
         return l10n.moduleDesc_WitchModuleProperties;
+      case 'moduleDesc_RiftThemeDemoModuleProperties':
+        return l10n.moduleDesc_RiftThemeDemoModuleProperties;
       case 'moduleDesc_InitialGridItemGulliverTunnelProperties':
         return l10n.moduleDesc_InitialGridItemGulliverTunnelProperties;
       case 'moduleDesc_RocketZombieFlickModuleProperties':
@@ -491,6 +495,16 @@ class ModuleRegistry {
       defaultAlias: 'OverrideStartingPlantFood',
       initialDataFactory: () => LevelMutatorStartingPlantfoodPropsData(),
       routeId: 'StartingPlantfoodModule',
+    ),
+    'RiftThemeDemoModuleProperties': ModuleMetadata(
+      titleKey: 'moduleTitle_RiftThemeDemoModuleProperties',
+      descriptionKey: 'moduleDesc_RiftThemeDemoModuleProperties',
+      icon: Icons.theater_comedy,
+      isCore: true,
+      category: ModuleCategory.base,
+      defaultAlias: 'RiftTheme',
+      initialDataFactory: () => RiftThemeDemoModulePropertiesData(),
+      routeId: 'RiftThemeModule',
     ),
     'LevelMutatorRiftTimedSunProps': ModuleMetadata(
       titleKey: 'moduleTitle_LevelMutatorRiftTimedSunProps',
