@@ -473,7 +473,7 @@ class _PlantRow extends StatelessWidget {
     final isTool = toolInfo != null;
     final plantInfo = PlantRepository().getPlantInfoById(plant.plantType);
     final displayName = isTool
-        ? toolInfo.name
+        ? ToolRepository.localizedName(context, plant.plantType)
         : ResourceNames.lookup(context, PlantRepository().getName(plant.plantType));
     final iconPath = isTool
         ? (toolInfo.icon != null ? 'assets/images/tools/${toolInfo.icon}' : null)
@@ -646,8 +646,12 @@ class _PlantDetailDialogState extends State<_PlantDetailDialog> {
     final l10n = widget.l10n ?? AppLocalizations.of(context);
     final toolInfo = ToolRepository.get(widget.data.plantType);
     final isTool = toolInfo != null;
-    final displayName = toolInfo?.name ??
-        ResourceNames.lookup(context, PlantRepository().getName(widget.data.plantType));
+    final displayName = isTool
+        ? ToolRepository.localizedName(context, widget.data.plantType)
+        : ResourceNames.lookup(
+            context,
+            PlantRepository().getName(widget.data.plantType),
+          );
 
     return AlertDialog(
       title: Text(l10n?.editAlias(displayName) ?? 'Edit: $displayName'),

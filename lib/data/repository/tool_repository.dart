@@ -1,3 +1,6 @@
+import 'package:flutter/widgets.dart';
+import 'package:z_editor/l10n/resource_names.dart';
+
 /// Tool card info. Ported from Z-Editor-master ToolRepository.kt
 class ToolCardInfo {
   const ToolCardInfo({
@@ -41,4 +44,11 @@ class ToolRepository {
   }
 
   static List<ToolCardInfo> getAll() => toolCards;
+
+  /// Localized display name from [assets/l10n/resource_*.json] (key = [id]).
+  static String localizedName(BuildContext context, String id) {
+    final localized = ResourceNames.lookup(context, id);
+    if (localized != id) return localized;
+    return get(id)?.name ?? id;
+  }
 }

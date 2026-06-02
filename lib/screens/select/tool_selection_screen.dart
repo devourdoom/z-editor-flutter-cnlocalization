@@ -72,7 +72,7 @@ class ToolSelectionScreen extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.all(8),
                     child: Text(
-                      tool.name,
+                      ToolRepository.localizedName(context, tool.id),
                       textAlign: TextAlign.center,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
