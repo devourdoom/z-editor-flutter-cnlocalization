@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:z_editor/data/pvz_models.dart';
+import 'package:z_editor/data/repository/challenge_repository.dart';
 import 'package:z_editor/l10n/app_localizations.dart';
+import 'package:z_editor/theme/app_theme.dart';
 
 /// Shows challenge editor in an alert dialog instead of a separate screen.
 Future<void> showChallengeEditorDialog(
   BuildContext context, {
   required PvzObject object,
   required VoidCallback onChanged,
+  Color? accentColor,
 }) async {
   final l10n = AppLocalizations.of(context);
-  final title = _friendlyTitleFor(object.objClass, l10n);
+  final theme = Theme.of(context);
+  final isDark = theme.brightness == Brightness.dark;
+  final accent = accentColor ?? (isDark ? pvzOrangeDark : pvzOrangeLight);
+  final onAccent = theme.colorScheme.onPrimary;
+  final title = _friendlyTitleFor(context, object.objClass, l10n);
   await showDialog<void>(
     context: context,
     builder: (ctx) => AlertDialog(
@@ -23,10 +30,15 @@ Future<void> showChallengeEditorDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx),
+          style: TextButton.styleFrom(foregroundColor: accent),
           child: Text(l10n?.cancel ?? 'Cancel'),
         ),
         FilledButton(
           onPressed: () => Navigator.pop(ctx),
+          style: FilledButton.styleFrom(
+            backgroundColor: accent,
+            foregroundColor: onAccent,
+          ),
           child: Text(l10n?.save ?? 'Save'),
         ),
       ],
@@ -34,7 +46,14 @@ Future<void> showChallengeEditorDialog(
   );
 }
 
-String _friendlyTitleFor(String objClass, AppLocalizations? l10n) {
+String _friendlyTitleFor(
+  BuildContext context,
+  String objClass,
+  AppLocalizations? l10n,
+) {
+  if (ChallengeRepository.getInfo(objClass) != null) {
+    return ChallengeRepository.localizedTitle(context, objClass);
+  }
   switch (objClass) {
     case 'ProtectThePlantChallengeProperties':
       return l10n?.protectPlants ?? 'Protect plants';
@@ -48,8 +67,6 @@ String _friendlyTitleFor(String objClass, AppLocalizations? l10n) {
       return l10n?.pennyClassroom ?? 'Penny classroom';
     case 'ManholePipelineModuleProperties':
       return l10n?.manholePipeline ?? 'Manhole pipeline';
-    case 'StarChallengeBeatTheLevelProps':
-      return l10n?.levelHintText ?? 'Level hint text';
     default:
       return objClass;
   }
@@ -199,22 +216,7 @@ class ChallengeEditorScreen extends StatefulWidget {
 
 class _ChallengeEditorScreenState extends State<ChallengeEditorScreen> {
   String _friendlyTitle(AppLocalizations? l10n) {
-    switch (widget.object.objClass) {
-      case 'ProtectThePlantChallengeProperties':
-        return l10n?.protectPlants ?? 'Protect plants';
-      case 'ProtectTheGridItemChallengeProperties':
-        return l10n?.protectGridItems ?? 'Protect grid items';
-      case 'SunBombChallengeProperties':
-        return l10n?.sunBomb ?? 'Sun bomb';
-      case 'ZombiePotionModuleProperties':
-        return l10n?.zombiePotion ?? 'Zombie potion';
-      case 'PennyClassroomModuleProperties':
-        return l10n?.pennyClassroom ?? 'Penny classroom';
-      case 'ManholePipelineModuleProperties':
-        return l10n?.manholePipeline ?? 'Manhole pipeline';
-      default:
-        return widget.object.objClass;
-    }
+    return _friendlyTitleFor(context, widget.object.objClass, l10n);
   }
 
   @override

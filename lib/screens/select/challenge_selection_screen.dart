@@ -31,7 +31,7 @@ class _ChallengeSelectionScreenState extends State<ChallengeSelectionScreen> {
     final themeColor = isDark ? pvzOrangeDark : pvzOrangeLight;
     final challenges = _searchQuery.trim().isEmpty
         ? ChallengeRepository.allChallenges
-        : ChallengeRepository.search(_searchQuery);
+        : ChallengeRepository.search(_searchQuery, context);
 
     return Scaffold(
       appBar: AppBar(
@@ -93,12 +93,12 @@ class _ChallengeSelectionScreenState extends State<ChallengeSelectionScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            challenge.title,
+                            challenge.localizedTitle(context),
                             style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            challenge.description,
+                            challenge.localizedDescription(context),
                             style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,

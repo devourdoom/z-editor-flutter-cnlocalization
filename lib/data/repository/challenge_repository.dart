@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:z_editor/data/pvz_models.dart';
+import 'package:z_editor/l10n/resource_names.dart';
 
 /// Challenge type metadata. Ported from Z-Editor-master ChallengeRepository.kt
 class ChallengeTypeInfo {
@@ -18,6 +19,17 @@ class ChallengeTypeInfo {
   final String description;
   final IconData icon;
   final Object? Function()? initialDataFactory;
+
+  static String _titleKey(String objClass) =>
+      'starChallenge_${objClass}_title';
+
+  static String _descKey(String objClass) => 'starChallenge_${objClass}_desc';
+
+  String localizedTitle(BuildContext context) =>
+      ChallengeRepository.localizedTitle(context, objClass);
+
+  String localizedDescription(BuildContext context) =>
+      ChallengeRepository.localizedDescription(context, objClass);
 }
 
 /// Challenge repository. Ported from Z-Editor-master ChallengeRepository.kt
@@ -155,15 +167,39 @@ class ChallengeRepository {
     ),
   ];
 
-  static List<ChallengeTypeInfo> search(String query) {
+  static List<ChallengeTypeInfo> search(String query, [BuildContext? context]) {
     if (query.trim().isEmpty) return allChallenges;
     final lower = query.toLowerCase();
     return allChallenges
-        .where((c) =>
-            c.title.toLowerCase().contains(lower) ||
-            c.objClass.toLowerCase().contains(lower) ||
-            c.defaultAlias.toLowerCase().contains(lower))
+        .where((c) {
+          final title = context != null
+              ? c.localizedTitle(context)
+              : c.title;
+          final description = context != null
+              ? c.localizedDescription(context)
+              : c.description;
+          return title.toLowerCase().contains(lower) ||
+              description.toLowerCase().contains(lower) ||
+              c.title.toLowerCase().contains(lower) ||
+              c.description.toLowerCase().contains(lower) ||
+              c.objClass.toLowerCase().contains(lower) ||
+              c.defaultAlias.toLowerCase().contains(lower);
+        })
         .toList();
+  }
+
+  static String localizedTitle(BuildContext context, String objClass) {
+    final key = ChallengeTypeInfo._titleKey(objClass);
+    final localized = ResourceNames.lookup(context, key);
+    if (localized != key) return localized;
+    return getInfo(objClass)?.title ?? objClass;
+  }
+
+  static String localizedDescription(BuildContext context, String objClass) {
+    final key = ChallengeTypeInfo._descKey(objClass);
+    final localized = ResourceNames.lookup(context, key);
+    if (localized != key) return localized;
+    return getInfo(objClass)?.description ?? '';
   }
 
   static ChallengeTypeInfo? getInfo(String objClass) {
