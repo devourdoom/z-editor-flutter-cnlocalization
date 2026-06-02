@@ -44,6 +44,7 @@
   { "typeName": "cavalrygun", "category": "spawnableObjects", "icon": "cavalrygun.webp" },
   { "typeName": "surfboard", "category": "spawnableObjects", "icon": "surfboard.webp" },
   { "typeName": "backpack", "category": "spawnableObjects", "icon": "backpack.webp" },
+  { "typeName": "BesiegeBox", "category": "spawnableObjects", "tag": "special" },
   { "typeName": "eightiesarcadecabinet", "category": "spawnableObjects", "icon": "eightiesarcadecabinet.webp" },
   { "typeName": "gridItem_sushi", "category": "spawnableObjects", "icon": "griditem_sushi.webp" },
   { "typeName": "dinoegg_zomshell", "category": "spawnableObjects", "icon": "dinoegg_zomshell.webp" },
