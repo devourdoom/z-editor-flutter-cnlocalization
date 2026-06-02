@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:z_editor/data/pvz_models.dart';
 import 'package:z_editor/data/rtid_parser.dart';
 import 'package:z_editor/l10n/app_localizations.dart';
+import 'package:z_editor/l10n/resource_names.dart';
 import 'package:z_editor/theme/app_theme.dart';
 import 'package:z_editor/widgets/editor_components.dart';
 
@@ -27,32 +28,39 @@ class LawnMowerPropertiesScreen extends StatefulWidget {
 }
 
 class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
-  static const _mowerOptions = [
-    ('FrontLawnMowers', 'Front lawn'),
-    ('EgyptMowers', 'Egypt'),
-    ('PirateMowers', 'Pirate'),
-    ('WestMowers', 'West'),
-    ('KongFuMowers', 'Kung Fu'),
-    ('FutureMowers', 'Future'),
-    ('DarkMowers', 'Dark'),
-    ('BeachMowers', 'Beach'),
-    ('IceageMowers', 'Ice Age'),
-    ('IceageZombossMowers', 'Ice Age Zomboss'),
-    ('LostCityMowers', 'Lost City'),
-    ('EightiesMowers', 'Eighties'),
-    ('EightiesZombossMowers', 'Eighties Zomboss'),
-    ('DinoMowers', 'Dino'),
-    ('ModernMowers', 'Modern'),
-    ('SteamMowers', 'Steam'),
-    ('RenaiMowers', 'Renai'),
-    ('HeianMowers', 'Heian'),
-    ('FairyTaleMowers', 'Fairy Tale'),
-    ('ZCorpMowers', 'Z Corp'),
-    ('RunningSubwayMowers', 'Running Subway'),
-    ('MausoleumMowers', 'Mausoleum'),
+  static const _mowerAliases = [
+    'FrontLawnMowers',
+    'EgyptMowers',
+    'PirateMowers',
+    'WestMowers',
+    'KongFuMowers',
+    'FutureMowers',
+    'DarkMowers',
+    'BeachMowers',
+    'IceageMowers',
+    'IceageZombossMowers',
+    'LostCityMowers',
+    'EightiesMowers',
+    'EightiesZombossMowers',
+    'DinoMowers',
+    'ModernMowers',
+    'SteamMowers',
+    'RenaiMowers',
+    'HeianMowers',
+    'FairyTaleMowers',
+    'ZCorpMowers',
+    'RunningSubwayMowers',
+    'MausoleumMowers',
+    'QinGhostMowers',
   ];
 
-  static final _targetAliases = _mowerOptions.map((e) => e.$1).toSet();
+  static final _targetAliases = _mowerAliases.toSet();
+
+  String _mowerLabel(BuildContext context, String alias) {
+    final key = 'lawnMower_$alias';
+    final localized = ResourceNames.lookup(context, key);
+    return localized != key ? localized : alias;
+  }
 
   void _selectOption(String newAlias) {
     final def = widget.levelFile.objects
@@ -160,10 +168,11 @@ class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
           Expanded(
             child: ListView.builder(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              itemCount: _mowerOptions.length,
+              itemCount: _mowerAliases.length,
               itemBuilder: (context, i) {
-                final option = _mowerOptions[i];
-                final isSelected = option.$1 == _activeAlias;
+                final alias = _mowerAliases[i];
+                final label = _mowerLabel(context, alias);
+                final isSelected = alias == _activeAlias;
                 return Card(
                   color: theme.colorScheme.surface,
                   elevation: isSelected ? 4 : 2,
@@ -174,13 +183,13 @@ class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
                         : BorderSide.none,
                   ),
                   child: InkWell(
-                    onTap: () => _selectOption(option.$1),
+                    onTap: () => _selectOption(alias),
                     child: Padding(
                       padding: const EdgeInsets.all(8),
                       child: Row(
                         children: [
                           Radio<String>(
-                            value: option.$1,
+                            value: alias,
                             groupValue: _activeAlias,
                             onChanged: (v) {
                               if (v != null) _selectOption(v);
@@ -196,12 +205,15 @@ class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
                                 : theme.colorScheme.onSurfaceVariant,
                           ),
                           const SizedBox(width: 8),
-                          Text(
-                            option.$2,
-                            style: TextStyle(
-                              fontWeight:
-                                  isSelected ? FontWeight.bold : FontWeight.normal,
-                              fontSize: 16,
+                          Expanded(
+                            child: Text(
+                              label,
+                              style: TextStyle(
+                                fontWeight: isSelected
+                                    ? FontWeight.bold
+                                    : FontWeight.normal,
+                                fontSize: 16,
+                              ),
                             ),
                           ),
                         ],
