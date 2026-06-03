@@ -8,6 +8,7 @@ import 'package:c_editor/bloc/settings/settings_cubit.dart';
 import 'package:c_editor/data/repository/level_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/screens/level_list_platform.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class LevelListScreen extends StatefulWidget {
   const LevelListScreen({
@@ -202,7 +203,9 @@ class _LevelListScreenState extends State<LevelListScreen> {
 
   void _goToParentDirectory() {
     if (!_canGoBack) return;
-    setState(() => _pathStack = _pathStack.take(_pathStack.length - 1).toList());
+    setState(
+      () => _pathStack = _pathStack.take(_pathStack.length - 1).toList(),
+    );
     _loadCurrentDirectory();
   }
 
@@ -429,6 +432,32 @@ class _LevelListScreenState extends State<LevelListScreen> {
           ),
         );
       }
+    }
+  }
+
+  Future<void> _uploadLevel() async {
+    final l10n = AppLocalizations.of(context)!;
+    final url = Uri.parse('https://pvz2.hrgame.com.cn/diy');
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.uploadLevel),
+        content: Text(l10n.uploadLevelConfirm),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n.back),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l10n.proceed),
+          ),
+        ],
+      ),
+    );
+
+    if (ok == true && await canLaunchUrl(url)) {
+      await launchUrl(url, mode: LaunchMode.externalApplication);
     }
   }
 
@@ -1089,7 +1118,10 @@ class _LevelListScreenState extends State<LevelListScreen> {
               top: false,
               child: Container(
                 color: fabBgColor,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     Expanded(
@@ -1127,6 +1159,16 @@ class _LevelListScreenState extends State<LevelListScreen> {
                               },
                         icon: const Icon(Icons.create_new_folder),
                         label: Text(l10n.newFolder),
+                        style: TextButton.styleFrom(
+                          foregroundColor: fabFgColor,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: TextButton.icon(
+                        onPressed: _uploadLevel,
+                        icon: const Icon(Icons.cloud_upload),
+                        label: Text(l10n.uploadLevel),
                         style: TextButton.styleFrom(
                           foregroundColor: fabFgColor,
                         ),
@@ -1919,7 +1961,8 @@ class _FileItemRow extends StatelessWidget {
         ? item.name
         : LevelRepository.baseNameWithoutLevelExtension(item.name);
 
-    final bool hasSecondary = (!item.isDirectory) ||
+    final bool hasSecondary =
+        (!item.isDirectory) ||
         onDownload != null ||
         onConvert != null ||
         showMove;
@@ -1964,11 +2007,11 @@ class _FileItemRow extends StatelessWidget {
                     ),
                   ),
                 if (onConvert != null)
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'convert',
                     child: ListTile(
                       leading: Icon(Icons.swap_horiz),
-                      title: Text('Convert'),
+                      title: Text(l10n.convert),
                       contentPadding: EdgeInsets.zero,
                     ),
                   ),
@@ -2019,7 +2062,10 @@ class _FileItemRow extends StatelessWidget {
             ),
           if (onDownload != null)
             IconButton(
-              icon: Icon(Icons.download, color: theme.colorScheme.onSurfaceVariant),
+              icon: Icon(
+                Icons.download,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
               tooltip: 'Download',
               onPressed: onDownload,
               iconSize: 22,
@@ -2027,7 +2073,10 @@ class _FileItemRow extends StatelessWidget {
             ),
           if (onConvert != null)
             IconButton(
-              icon: Icon(Icons.swap_horiz, color: theme.colorScheme.onSurfaceVariant),
+              icon: Icon(
+                Icons.swap_horiz,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
               tooltip: 'Convert',
               onPressed: onConvert,
               iconSize: 22,
@@ -2035,7 +2084,10 @@ class _FileItemRow extends StatelessWidget {
             ),
           if (showMove)
             IconButton(
-              icon: Icon(Icons.drive_file_move, color: theme.colorScheme.onSurfaceVariant),
+              icon: Icon(
+                Icons.drive_file_move,
+                color: theme.colorScheme.onSurfaceVariant,
+              ),
               tooltip: l10n.move,
               onPressed: onMove,
               iconSize: 22,
