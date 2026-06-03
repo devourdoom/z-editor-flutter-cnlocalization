@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:path/path.dart' as p;
 import 'package:c_editor/bloc/settings/settings_cubit.dart';
+import 'package:c_editor/data/app_links.dart';
 import 'package:c_editor/data/repository/level_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/screens/level_list_platform.dart';
@@ -436,8 +437,10 @@ class _LevelListScreenState extends State<LevelListScreen> {
   }
 
   Future<void> _uploadLevel() async {
+    final links = await AppLinks.load();
+    if (!mounted) return;
     final l10n = AppLocalizations.of(context)!;
-    final url = Uri.parse('https://pvz2.hrgame.com.cn/diy');
+    final url = Uri.parse(links.levelUpload);
     final ok = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -2077,7 +2080,7 @@ class _FileItemRow extends StatelessWidget {
                 Icons.swap_horiz,
                 color: theme.colorScheme.onSurfaceVariant,
               ),
-              tooltip: 'Convert',
+              tooltip: l10n.convertHelpTooltip,
               onPressed: onConvert,
               iconSize: 22,
               style: _iconBtnStyle,
