@@ -9,6 +9,7 @@ class AppLinks {
     required this.issues,
     required this.discordInvite,
     required this.recommendedLevels,
+    required this.levelUpload,
   });
 
   static const assetPath = 'assets/meta/links.json';
@@ -17,6 +18,7 @@ class AppLinks {
   final String issues;
   final String discordInvite;
   final String recommendedLevels;
+  final String levelUpload;
 
   static AppLinks? _cached;
 
@@ -27,7 +29,8 @@ class AppLinks {
       source: raw['source'] as String,
       issues: raw['issues'] as String,
       discordInvite: raw['discordInvite'] as String,
-      recommendedLevels: raw['recommendedLevels'] as String,
+      recommendedLevels: (raw['recommendedLevels'] ?? raw['levelPlaza']) as String,
+      levelUpload: raw['levelUpload'] as String,
     );
     return _cached!;
   }
