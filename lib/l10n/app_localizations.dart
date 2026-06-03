@@ -751,7 +751,7 @@ abstract class AppLocalizations {
   /// No description provided for @thanksNames.
   ///
   /// In en, this message translates to:
-  /// **'Devourdoom, Evilhack28, Chara, Haruma, nineteendo, vi_i_guess'**
+  /// **'Devourdoom, Evilhack28, Chara, KL12, Haruma, nineteendo, vi_i_guess'**
   String get thanksNames;
 
   /// No description provided for @sourceLabel.
