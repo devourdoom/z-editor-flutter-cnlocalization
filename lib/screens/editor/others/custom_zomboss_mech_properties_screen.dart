@@ -574,11 +574,26 @@ class _StageCard extends StatelessWidget {
                   Row(
                     children: [
                       Expanded(
-                        child: Text(
-                          actionsLabel,
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              actionsLabel,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              zombossMechUseImmediateDrag(context)
+                                  ? (l10n?.presetPlantListReorderHintDesktop ??
+                                      'Drag the ⋮⋮ handle to reorder.')
+                                  : (l10n?.presetPlantListReorderHint ??
+                                      'Long press the ⋮⋮ handle and drag to reorder.'),
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: theme.colorScheme.onSurfaceVariant,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                       IconButton(
@@ -597,50 +612,26 @@ class _StageCard extends StatelessWidget {
                       ),
                     )
                   else
-                    SizedBox(
-                      height: selectedActions.length * kZombossMechActionRowHeight,
-                      child: ReorderableListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        buildDefaultDragHandles: false,
-                        itemCount: selectedActions.length,
-                        onReorder: (oldIndex, newIndex) {
-                          if (newIndex > oldIndex) newIndex--;
-                          final next = List<String>.from(selectedActions);
-                          final item = next.removeAt(oldIndex);
-                          next.insert(newIndex, item);
-                          onActionsChanged(next);
-                        },
-                        itemBuilder: (context, actionIndex) {
-                          final rtid = selectedActions[actionIndex];
-                          final isCustom =
-                              ZombossMechActionUtils.isCustomRtid(rtid);
-                          final resolved = ZombossMechActionUtils.resolveAction(
-                            rtid: rtid,
-                            catalog: catalog,
-                            levelFile: levelFile,
-                          );
-                          final tag = resolved?.tag ?? '';
-
-                          return ZombossMechActionListTile(
-                            key: ValueKey('$index-$actionIndex-$rtid'),
-                            mechId: catalog.id,
-                            catalog: catalog,
-                            levelFile: levelFile,
-                            rtid: rtid,
-                            tag: tag,
-                            reorderIndex: actionIndex,
-                            onEdit: isCustom
-                                ? () => onEditCustomAction(rtid)
-                                : null,
-                            onRemove: () {
-                              final next = List<String>.from(selectedActions)
-                                ..removeAt(actionIndex);
-                              onActionsChanged(next);
-                            },
-                          );
-                        },
-                      ),
+                    ZombossMechReorderableActionList(
+                      mechId: catalog.id,
+                      catalog: catalog,
+                      levelFile: levelFile,
+                      selectedActions: selectedActions,
+                      keyPrefix: '$index',
+                      onReorder: (from, to) {
+                        if (from == to) return;
+                        final next = List<String>.from(selectedActions);
+                        final temp = next[from];
+                        next[from] = next[to];
+                        next[to] = temp;
+                        onActionsChanged(next);
+                      },
+                      onRemove: (actionIndex) {
+                        final next = List<String>.from(selectedActions)
+                          ..removeAt(actionIndex);
+                        onActionsChanged(next);
+                      },
+                      onEditCustomAction: onEditCustomAction,
                     ),
                 ],
               ),
