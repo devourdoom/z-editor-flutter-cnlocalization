@@ -73,6 +73,7 @@ class _SpawnGraveStonesEventScreenState
 
   void _sync() {
     _moduleObj.objData = _data.toJson();
+    GridItemRepository.cleanupUnusedCustomGridItemTypes(widget.levelFile);
     widget.onChanged();
     setState(() {});
   }

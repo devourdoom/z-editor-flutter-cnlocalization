@@ -87,6 +87,7 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
 
   void _sync() {
     _moduleObj.objData = _data.toJson();
+    GridItemRepository.cleanupUnusedCustomGridItemTypes(widget.levelFile);
     widget.onChanged();
     setState(() {});
   }

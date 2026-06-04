@@ -187,6 +187,26 @@ class GridItemRepository {
     return object;
   }
 
+  static int cleanupUnusedCustomGridItemTypes(PvzLevelFile levelFile) {
+    var removed = 0;
+    for (final item in allItems) {
+      if (item.source != GridItemSource.custom) continue;
+      if (_cleanupUnusedCustomGridItemType(item, levelFile)) {
+        removed++;
+      }
+    }
+    return removed;
+  }
+
+  static bool cleanupUnusedCustomGridItemType(
+    String typeName,
+    PvzLevelFile levelFile,
+  ) {
+    final item = getByTypeName(typeName);
+    if (item == null || item.source != GridItemSource.custom) return false;
+    return _cleanupUnusedCustomGridItemType(item, levelFile);
+  }
+
   static List<GridItemInfo> search(String query) {
     if (query.trim().isEmpty) return allItems;
     final lower = query.toLowerCase();
@@ -219,6 +239,48 @@ class GridItemRepository {
     if (raw is Map<String, dynamic>) return PvzObject.fromJson(raw);
     if (raw is Map) return PvzObject.fromJson(Map<String, dynamic>.from(raw));
     return null;
+  }
+
+  static bool _cleanupUnusedCustomGridItemType(
+    GridItemInfo item,
+    PvzLevelFile levelFile,
+  ) {
+    final aliases = _gridItemTypeAliases(item);
+    final hasReference = aliases.any(
+      (alias) => _containsValue(
+        levelFile.objects.map((object) => object.toJson()),
+        RtidParser.build(alias, 'CurrentLevel'),
+      ),
+    );
+    if (hasReference) return false;
+
+    var removed = false;
+    levelFile.objects.removeWhere((object) {
+      if (object.objClass != 'GridItemType') return false;
+      final objectAliases = object.aliases ?? const <String>[];
+      final shouldRemove = objectAliases.any(aliases.contains);
+      removed = removed || shouldRemove;
+      return shouldRemove;
+    });
+    return removed;
+  }
+
+  static Set<String> _gridItemTypeAliases(GridItemInfo item) {
+    final aliases = <String>{buildGridAliases(item.typeName)};
+    final templateAliases = item.gridItemType?.aliases;
+    if (templateAliases != null) aliases.addAll(templateAliases);
+    return aliases;
+  }
+
+  static bool _containsValue(dynamic value, String target) {
+    if (value is String) return value == target;
+    if (value is Iterable) {
+      return value.any((entry) => _containsValue(entry, target));
+    }
+    if (value is Map) {
+      return value.values.any((entry) => _containsValue(entry, target));
+    }
+    return false;
   }
 
   static String? _gridItemTypeName(PvzObject object) {
