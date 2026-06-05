@@ -45,6 +45,8 @@ class _LevelListScreenState extends State<LevelListScreen> {
   String _selectedTemplate = '';
   String _newLevelNameInput = '';
   bool _showUiScaleDialog = false;
+  final ScrollController _listScrollController = ScrollController();
+  bool _listScrollAtTop = true;
 
   bool get _canGoBack => _pathStack.length > 1;
 
@@ -74,7 +76,30 @@ class _LevelListScreenState extends State<LevelListScreen> {
   @override
   void initState() {
     super.initState();
+    _listScrollController.addListener(_onListScroll);
     _loadSavedPathAndList();
+  }
+
+  @override
+  void dispose() {
+    _listScrollController.removeListener(_onListScroll);
+    _listScrollController.dispose();
+    super.dispose();
+  }
+
+  void _onListScroll() {
+    if (!_listScrollController.hasClients) return;
+    final atTop = _listScrollController.offset <= 0;
+    if (atTop != _listScrollAtTop && mounted) {
+      setState(() => _listScrollAtTop = atTop);
+    }
+  }
+
+  void _resetListScrollToTop() {
+    _listScrollAtTop = true;
+    if (_listScrollController.hasClients) {
+      _listScrollController.jumpTo(0);
+    }
   }
 
   Future<void> _ensureStoragePermission() async {
@@ -194,11 +219,13 @@ class _LevelListScreenState extends State<LevelListScreen> {
       () =>
           _pathStack = [..._pathStack, (name: folder.name, path: folder.path)],
     );
+    _resetListScrollToTop();
     _loadCurrentDirectory();
   }
 
   void _breadcrumbTap(int index) {
     setState(() => _pathStack = _pathStack.take(index + 1).toList());
+    _resetListScrollToTop();
     _loadCurrentDirectory();
   }
 
@@ -207,6 +234,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
     setState(
       () => _pathStack = _pathStack.take(_pathStack.length - 1).toList(),
     );
+    _resetListScrollToTop();
     _loadCurrentDirectory();
   }
 
@@ -786,8 +814,10 @@ class _LevelListScreenState extends State<LevelListScreen> {
           ),
         ],
       ),
-      body: Column(
+      body: Stack(
         children: [
+          Column(
+            children: [
           if (_rootFolderPath == null)
             Expanded(
               child: Center(
@@ -931,6 +961,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
                       ),
                     )
                   : ListView.builder(
+                      controller: _listScrollController,
                       padding: const EdgeInsets.all(16),
                       itemCount: _fileItems.length + 1,
                       itemBuilder: (context, index) {
@@ -1061,7 +1092,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
                                       });
                                     }
                                   },
-                            onConvert: actionsDisabled
+                            onConvert: actionsDisabled || item.isDirectory
                                 ? null
                                 : () => _showConvertMenuFor(item),
                             showMove: !item.isDirectory && !kIsWeb,
@@ -1072,48 +1103,60 @@ class _LevelListScreenState extends State<LevelListScreen> {
             ),
           ],
         ],
+          ),
+          if (_rootFolderPath != null && _itemToMove == null)
+            Positioned(
+              right: 16,
+              bottom: 16,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  _AnimatedUploadFab(
+                    visible: _listScrollAtTop,
+                    onPressed: _uploadLevel,
+                    label: l10n.uploadLevel,
+                  ),
+                  if (_listScrollAtTop && kIsWeb) const SizedBox(height: 12),
+                  if (kIsWeb)
+                    FloatingActionButton(
+                      heroTag: 'addFile',
+                      onPressed: _pickAndAddFile,
+                      child: const Icon(Icons.file_open),
+                    ),
+                ],
+              ),
+            ),
+        ],
       ),
-      floatingActionButton: _rootFolderPath != null
-          ? _itemToMove != null
-                ? Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      FloatingActionButton.extended(
-                        heroTag: 'moveCancel',
-                        onPressed: () {
-                          setState(() {
-                            _itemToMove = null;
-                            _moveSourcePath = null;
-                          });
-                        },
-                        backgroundColor: theme.colorScheme.error,
-                        foregroundColor: theme.colorScheme.onError,
-                        icon: const Icon(Icons.close),
-                        label: Text(l10n.cancel),
-                      ),
-                      const SizedBox(height: 12),
-                      FloatingActionButton.extended(
-                        heroTag: 'movePaste',
-                        onPressed: _handleMoveConfirm,
-                        icon: const Icon(Icons.content_paste),
-                        label: Text(l10n.paste),
-                      ),
-                    ],
-                  )
-                : Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      if (kIsWeb)
-                        FloatingActionButton(
-                          heroTag: 'addFile',
-                          onPressed: _pickAndAddFile,
-                          child: const Icon(Icons.file_open),
-                        ),
-                      if (kIsWeb) const SizedBox(height: 12),
-                    ],
-                  )
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: _rootFolderPath != null && _itemToMove != null
+          ? Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FloatingActionButton.extended(
+                  heroTag: 'moveCancel',
+                  onPressed: () {
+                    setState(() {
+                      _itemToMove = null;
+                      _moveSourcePath = null;
+                    });
+                  },
+                  backgroundColor: theme.colorScheme.error,
+                  foregroundColor: theme.colorScheme.onError,
+                  icon: const Icon(Icons.close),
+                  label: Text(l10n.cancel),
+                ),
+                const SizedBox(height: 12),
+                FloatingActionButton.extended(
+                  heroTag: 'movePaste',
+                  onPressed: _handleMoveConfirm,
+                  icon: const Icon(Icons.content_paste),
+                  label: Text(l10n.paste),
+                ),
+              ],
+            )
           : null,
       bottomNavigationBar: _rootFolderPath == null || _itemToMove != null
           ? null
@@ -1127,60 +1170,67 @@ class _LevelListScreenState extends State<LevelListScreen> {
                 ),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: TextButton.icon(
-                        onPressed: _canGoBack ? _goToParentDirectory : null,
-                        icon: const Icon(Icons.arrow_upward),
-                        label: Text(l10n.back),
-                        style: TextButton.styleFrom(
-                          foregroundColor: fabFgColor,
-                          disabledForegroundColor: fabFgColor.withValues(
-                            alpha: 0.45,
-                          ),
-                        ),
-                      ),
+                    _buildBottomNavButton(
+                      onPressed: _canGoBack ? _goToParentDirectory : null,
+                      icon: Icons.arrow_upward,
+                      label: l10n.back,
+                      fgColor: fabFgColor,
+                      disabledFgColor: fabFgColor.withValues(alpha: 0.45),
                     ),
-                    Expanded(
-                      child: TextButton.icon(
-                        onPressed: _openTemplateSelector,
-                        icon: const Icon(Icons.add),
-                        label: Text(l10n.newLevel),
-                        style: TextButton.styleFrom(
-                          foregroundColor: fabFgColor,
-                        ),
-                      ),
+                    _buildBottomNavButton(
+                      onPressed: _openTemplateSelector,
+                      icon: Icons.add,
+                      label: l10n.newLevel,
+                      fgColor: fabFgColor,
                     ),
-                    Expanded(
-                      child: TextButton.icon(
-                        onPressed: kIsWeb
-                            ? null
-                            : () {
-                                setState(() => _showNewFolderDialog = true);
-                                WidgetsBinding.instance.addPostFrameCallback(
-                                  (_) => _showNewFolderDialogImpl(),
-                                );
-                              },
-                        icon: const Icon(Icons.create_new_folder),
-                        label: Text(l10n.newFolder),
-                        style: TextButton.styleFrom(
-                          foregroundColor: fabFgColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton.icon(
-                        onPressed: _uploadLevel,
-                        icon: const Icon(Icons.cloud_upload),
-                        label: Text(l10n.uploadLevel),
-                        style: TextButton.styleFrom(
-                          foregroundColor: fabFgColor,
-                        ),
-                      ),
+                    _buildBottomNavButton(
+                      onPressed: kIsWeb
+                          ? null
+                          : () {
+                              setState(() => _showNewFolderDialog = true);
+                              WidgetsBinding.instance.addPostFrameCallback(
+                                (_) => _showNewFolderDialogImpl(),
+                              );
+                            },
+                      icon: Icons.create_new_folder,
+                      label: l10n.newFolder,
+                      fgColor: fabFgColor,
                     ),
                   ],
                 ),
               ),
             ),
+    );
+  }
+
+  Widget _buildBottomNavButton({
+    required VoidCallback? onPressed,
+    required IconData icon,
+    required String label,
+    required Color fgColor,
+    Color? disabledFgColor,
+  }) {
+    return Expanded(
+      child: TextButton(
+        onPressed: onPressed,
+        style: TextButton.styleFrom(
+          foregroundColor: fgColor,
+          disabledForegroundColor: disabledFgColor,
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 8),
+          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        ),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 20),
+              const SizedBox(width: 4),
+              Text(label),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -1951,161 +2001,173 @@ class _FileItemRow extends StatelessWidget {
   final VoidCallback? onConvert;
 
   static const _iconBtnStyle = ButtonStyle(
-    padding: WidgetStatePropertyAll(EdgeInsets.all(8)),
-    minimumSize: WidgetStatePropertyAll(Size(36, 36)),
+    padding: WidgetStatePropertyAll(EdgeInsets.all(6)),
+    minimumSize: WidgetStatePropertyAll(Size(32, 32)),
     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
   );
+
+  static Widget _popupMenuTile({
+    required IconData icon,
+    required String label,
+    Color? iconColor,
+    Color? textColor,
+  }) {
+    return ListTile(
+      leading: Icon(icon, size: 22, color: iconColor),
+      title: Text(
+        label,
+        style: textColor != null ? TextStyle(color: textColor) : null,
+      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+      visualDensity: VisualDensity.compact,
+    );
+  }
+
+  Widget _buildLevelFileMenu(ThemeData theme) {
+    return PopupMenuButton<String>(
+      icon: Icon(
+        Icons.more_vert,
+        color: theme.colorScheme.onSurfaceVariant,
+        size: 22,
+      ),
+      padding: const EdgeInsets.all(6),
+      itemBuilder: (_) => [
+        PopupMenuItem(
+          value: 'rename',
+          child: _popupMenuTile(
+            icon: Icons.edit,
+            label: l10n.rename,
+          ),
+        ),
+        PopupMenuItem(
+          value: 'copy',
+          child: _popupMenuTile(
+            icon: Icons.copy,
+            label: l10n.copy,
+          ),
+        ),
+        if (onDownload != null)
+          PopupMenuItem(
+            value: 'download',
+            child: _popupMenuTile(
+              icon: Icons.download,
+              label: l10n.download,
+            ),
+          ),
+        if (onConvert != null)
+          PopupMenuItem(
+            value: 'convert',
+            child: _popupMenuTile(
+              icon: Icons.swap_horiz,
+              label: l10n.convertHelpTooltip,
+            ),
+          ),
+        if (showMove)
+          PopupMenuItem(
+            value: 'move',
+            child: _popupMenuTile(
+              icon: Icons.drive_file_move,
+              label: l10n.move,
+            ),
+          ),
+        PopupMenuItem(
+          value: 'delete',
+          child: _popupMenuTile(
+            icon: Icons.delete,
+            label: l10n.delete,
+            iconColor: theme.colorScheme.error,
+            textColor: theme.colorScheme.error,
+          ),
+        ),
+      ],
+      onSelected: (v) {
+        switch (v) {
+          case 'rename':
+            onRename();
+          case 'copy':
+            onCopy();
+          case 'download':
+            onDownload?.call();
+          case 'convert':
+            onConvert?.call();
+          case 'move':
+            onMove();
+          case 'delete':
+            onDelete();
+        }
+      },
+    );
+  }
+
+  Widget _buildFolderMenu(ThemeData theme) {
+    return PopupMenuButton<String>(
+      icon: Icon(
+        Icons.more_vert,
+        color: theme.colorScheme.onSurfaceVariant,
+        size: 22,
+      ),
+      padding: const EdgeInsets.all(6),
+      itemBuilder: (_) => [
+        PopupMenuItem(
+          value: 'rename',
+          child: _popupMenuTile(
+            icon: Icons.edit,
+            label: l10n.rename,
+          ),
+        ),
+        PopupMenuItem(
+          value: 'delete',
+          child: _popupMenuTile(
+            icon: Icons.delete,
+            label: l10n.delete,
+            iconColor: theme.colorScheme.error,
+            textColor: theme.colorScheme.error,
+          ),
+        ),
+      ],
+      onSelected: (v) {
+        switch (v) {
+          case 'rename':
+            onRename();
+          case 'delete':
+            onDelete();
+        }
+      },
+    );
+  }
+
+  Widget _buildFolderActions(ThemeData theme) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: Icon(Icons.edit, color: theme.colorScheme.onSurfaceVariant),
+          tooltip: l10n.rename,
+          onPressed: onRename,
+          iconSize: 22,
+          style: _iconBtnStyle,
+        ),
+        IconButton(
+          icon: Icon(Icons.delete, color: theme.colorScheme.error, size: 22),
+          tooltip: l10n.delete,
+          onPressed: onDelete,
+          iconSize: 22,
+          style: _iconBtnStyle,
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isNarrow = MediaQuery.of(context).size.width < 500;
     final displayName = item.isDirectory
         ? item.name
         : LevelRepository.baseNameWithoutLevelExtension(item.name);
 
-    final bool hasSecondary =
-        (!item.isDirectory) ||
-        onDownload != null ||
-        onConvert != null ||
-        showMove;
-
-    Widget actionsRow;
-    if (isNarrow) {
-      actionsRow = Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: Icon(Icons.edit, color: theme.colorScheme.onSurfaceVariant),
-            tooltip: l10n.rename,
-            onPressed: onRename,
-            iconSize: 22,
-            style: _iconBtnStyle,
-          ),
-          if (hasSecondary)
-            PopupMenuButton<String>(
-              icon: Icon(
-                Icons.more_vert,
-                color: theme.colorScheme.onSurfaceVariant,
-                size: 22,
-              ),
-              padding: const EdgeInsets.all(8),
-              itemBuilder: (_) => [
-                if (!item.isDirectory)
-                  PopupMenuItem(
-                    value: 'copy',
-                    child: ListTile(
-                      leading: const Icon(Icons.copy),
-                      title: Text(l10n.copy),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                if (onDownload != null)
-                  const PopupMenuItem(
-                    value: 'download',
-                    child: ListTile(
-                      leading: Icon(Icons.download),
-                      title: Text('Download'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                if (onConvert != null)
-                  PopupMenuItem(
-                    value: 'convert',
-                    child: ListTile(
-                      leading: Icon(Icons.swap_horiz),
-                      title: Text(l10n.convert),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                if (showMove)
-                  PopupMenuItem(
-                    value: 'move',
-                    child: ListTile(
-                      leading: const Icon(Icons.drive_file_move),
-                      title: Text(l10n.move),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-              ],
-              onSelected: (v) {
-                if (v == 'copy') onCopy();
-                if (v == 'download') onDownload?.call();
-                if (v == 'convert') onConvert?.call();
-                if (v == 'move') onMove();
-              },
-            ),
-          IconButton(
-            icon: Icon(Icons.delete, color: theme.colorScheme.error, size: 22),
-            tooltip: l10n.delete,
-            onPressed: onDelete,
-            iconSize: 22,
-            style: _iconBtnStyle,
-          ),
-        ],
-      );
-    } else {
-      actionsRow = Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          IconButton(
-            icon: Icon(Icons.edit, color: theme.colorScheme.onSurfaceVariant),
-            tooltip: l10n.rename,
-            onPressed: onRename,
-            iconSize: 22,
-            style: _iconBtnStyle,
-          ),
-          if (!item.isDirectory)
-            IconButton(
-              icon: Icon(Icons.copy, color: theme.colorScheme.onSurfaceVariant),
-              tooltip: l10n.copy,
-              onPressed: onCopy,
-              iconSize: 22,
-              style: _iconBtnStyle,
-            ),
-          if (onDownload != null)
-            IconButton(
-              icon: Icon(
-                Icons.download,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              tooltip: 'Download',
-              onPressed: onDownload,
-              iconSize: 22,
-              style: _iconBtnStyle,
-            ),
-          if (onConvert != null)
-            IconButton(
-              icon: Icon(
-                Icons.swap_horiz,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              tooltip: l10n.convertHelpTooltip,
-              onPressed: onConvert,
-              iconSize: 22,
-              style: _iconBtnStyle,
-            ),
-          if (showMove)
-            IconButton(
-              icon: Icon(
-                Icons.drive_file_move,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-              tooltip: l10n.move,
-              onPressed: onMove,
-              iconSize: 22,
-              style: _iconBtnStyle,
-            ),
-          IconButton(
-            icon: Icon(Icons.delete, color: theme.colorScheme.error, size: 22),
-            tooltip: l10n.delete,
-            onPressed: onDelete,
-            iconSize: 22,
-            style: _iconBtnStyle,
-          ),
-        ],
-      );
-    }
+    final actionsRow = item.isDirectory
+        ? _buildFolderActions(theme)
+        : _buildLevelFileMenu(theme);
 
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
@@ -2114,53 +2176,159 @@ class _FileItemRow extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: Row(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                alignment: Alignment.center,
-                child: Icon(
-                  item.isDirectory ? Icons.folder : Icons.description,
-                  size: 40,
-                  color: item.isDirectory
-                      ? const Color(0xFFFFC107)
-                      : theme.colorScheme.primary,
-                ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            const compactBreakpoint = 140.0;
+            final compact = constraints.maxWidth < compactBreakpoint;
+            final hPad = compact ? 8.0 : 16.0;
+            final iconBox = compact ? 32.0 : 40.0;
+            final iconSize = compact ? 28.0 : 36.0;
+            final gap = compact ? 8.0 : 12.0;
+            final actions = item.isDirectory
+                ? (compact
+                      ? _buildFolderMenu(theme)
+                      : _buildFolderActions(theme))
+                : _buildLevelFileMenu(theme);
+
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: hPad,
+                vertical: 12,
               ),
-              const SizedBox(width: 16),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      displayName,
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+              child: Row(
+                children: [
+                  SizedBox(
+                    width: iconBox,
+                    height: iconBox,
+                    child: Icon(
+                      item.isDirectory ? Icons.folder : Icons.description,
+                      size: iconSize,
+                      color: item.isDirectory
+                          ? const Color(0xFFFFC107)
+                          : theme.colorScheme.primary,
                     ),
-                    if (!item.isDirectory) ...[
-                      const SizedBox(height: 2),
-                      Text(
-                        p
-                            .extension(item.name)
-                            .replaceFirst('.', '')
-                            .toUpperCase(),
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                  SizedBox(width: gap),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          displayName,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        if (!item.isDirectory) ...[
+                          const SizedBox(height: 2),
+                          Text(
+                            p
+                                .extension(item.name)
+                                .replaceFirst('.', '')
+                                .toUpperCase(),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
+                  if (compact)
+                    actions
+                  else
+                    Flexible(
+                      fit: FlexFit.loose,
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: actions,
                         ),
                       ),
-                    ],
-                  ],
-                ),
+                    ),
+                ],
               ),
-              actionsRow,
-            ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+
+class _AnimatedUploadFab extends StatefulWidget {
+  const _AnimatedUploadFab({
+    required this.visible,
+    required this.onPressed,
+    required this.label,
+  });
+
+  final bool visible;
+  final VoidCallback onPressed;
+  final String label;
+
+  @override
+  State<_AnimatedUploadFab> createState() => _AnimatedUploadFabState();
+}
+
+class _AnimatedUploadFabState extends State<_AnimatedUploadFab>
+    with SingleTickerProviderStateMixin {
+  static const _duration = Duration(milliseconds: 320);
+
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: _duration,
+    value: widget.visible ? 1 : 0,
+  );
+
+  late final Animation<double> _reveal = CurvedAnimation(
+    parent: _controller,
+    curve: Curves.easeOutCubic,
+    reverseCurve: Curves.easeInCubic,
+  );
+
+  late final Animation<Offset> _slide = Tween<Offset>(
+    begin: const Offset(0, 0.5),
+    end: Offset.zero,
+  ).animate(_reveal);
+
+  @override
+  void didUpdateWidget(covariant _AnimatedUploadFab oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.visible) {
+      _controller.forward();
+    } else {
+      _controller.reverse();
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SizeTransition(
+      sizeFactor: _reveal,
+      axisAlignment: 1,
+      child: FadeTransition(
+        opacity: _reveal,
+        child: SlideTransition(
+          position: _slide,
+          child: IgnorePointer(
+            ignoring: !widget.visible,
+            child: FloatingActionButton.extended(
+              heroTag: 'uploadLevel',
+              onPressed: widget.onPressed,
+              icon: const Icon(Icons.cloud_upload),
+              label: Text(widget.label),
+            ),
           ),
         ),
       ),
