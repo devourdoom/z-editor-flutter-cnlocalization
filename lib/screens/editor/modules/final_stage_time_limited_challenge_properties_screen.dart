@@ -7,6 +7,11 @@ import 'package:c_editor/theme/app_theme.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Final zomboss stage time limit challenge (`ZombossFinalStageTimeLimitedChallengeProperties`).
+///
+/// **Unwired:** the editor no longer opens this screen. The game reads the
+/// desperation timer from zomboss property sheets (e.g. `ZombossFinalStageTimeLimited`
+/// on `ZombieZombossQinShiHuangProps`), not from editable module parameters.
+/// Kept for potential future support when custom `@CurrentLevel` overrides work.
 class FinalStageTimeLimitedChallengePropertiesScreen extends StatefulWidget {
   const FinalStageTimeLimitedChallengePropertiesScreen({
     super.key,
