@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Inner padding for module editor section cards (no extra horizontal inset).
+const EdgeInsets kGridOverrideModuleSectionPadding =
+    EdgeInsets.symmetric(vertical: 16);
+
 /// Height shared by wave-group chips and the add (+) control.
 const double kGridOverrideGroupChipHeight = 44;
 

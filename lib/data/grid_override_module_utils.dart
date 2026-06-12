@@ -3,8 +3,9 @@ import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/registry/module_registry.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 
-/// Wave index used by [ArmrackPropertiesData] / [EnergyGridPropertiesData]
-/// overrides (1 = first wave). Later waves are ignored in-game.
+/// Wave index used by [ArmrackPropertiesData], [EnergyGridPropertiesData], and
+/// [BronzePropertiesData] batch entries (1 = first wave). Later waves are
+/// ignored in-game.
 const int gridOverrideFirstWave = 1;
 
 Set<String> levelModuleKeys(PvzLevelFile levelFile) {
@@ -57,6 +58,18 @@ EnergyGridPropertiesData? readEnergyGridModuleData(PvzLevelFile levelFile) {
   if (obj?.objData is! Map<String, dynamic>) return null;
   try {
     return EnergyGridPropertiesData.fromJson(
+      Map<String, dynamic>.from(obj!.objData as Map),
+    );
+  } catch (_) {
+    return null;
+  }
+}
+
+BronzePropertiesData? readBronzeModuleData(PvzLevelFile levelFile) {
+  final obj = _moduleObject(levelFile, 'BronzeProperties');
+  if (obj?.objData is! Map<String, dynamic>) return null;
+  try {
+    return BronzePropertiesData.fromJson(
       Map<String, dynamic>.from(obj!.objData as Map),
     );
   } catch (_) {

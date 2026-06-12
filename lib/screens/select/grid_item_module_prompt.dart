@@ -80,10 +80,6 @@ Future<bool> confirmGridItemModuleRequirements(
       ),
     );
     if (proceed != true) return false;
-    if (onAddModule != null &&
-        !levelHasModule(levelFile, 'EnergyGridProperties')) {
-      onAddModule('EnergyGridProperties');
-    }
     return true;
   }
 

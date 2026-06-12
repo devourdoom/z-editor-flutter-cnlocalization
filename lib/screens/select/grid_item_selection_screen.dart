@@ -7,6 +7,7 @@ import 'package:c_editor/screens/select/grid_item_module_prompt.dart';
 import 'package:c_editor/theme/app_theme.dart' show pvzBrownDark, pvzBrownLight;
 import 'package:c_editor/widgets/asset_image.dart'
     show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/editor_components.dart';
 
 /// Grid item selection. Ported from Z-Editor-master GridItemSelectionScreen.kt
 class GridItemSelectionScreen extends StatefulWidget {
@@ -111,32 +112,11 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
                 ),
                 child: Row(
                   children: GridItemCategory.values.map((cat) {
-                    final selected = _selectedCategory == cat;
-                    return Padding(
-                      padding: const EdgeInsets.only(right: 8),
-                      child: ChoiceChip(
-                        label: Text(
-                          _categoryLabel(cat, l10n),
-                          style: TextStyle(
-                            color: selected
-                                ? themeColor
-                                : Colors.white.withValues(alpha: 0.8),
-                            fontWeight: selected
-                                ? FontWeight.bold
-                                : FontWeight.normal,
-                          ),
-                        ),
-                        selected: selected,
-                        onSelected: (_) =>
-                            setState(() => _selectedCategory = cat),
-                        selectedColor: Colors.white,
-                        backgroundColor: Colors.transparent,
-                        side: BorderSide(
-                          color: selected
-                              ? Colors.white
-                              : Colors.white.withValues(alpha: 0.5),
-                        ),
-                      ),
+                    return AccentBarChoiceChip(
+                      label: _categoryLabel(cat, l10n),
+                      selected: _selectedCategory == cat,
+                      onSelected: (_) =>
+                          setState(() => _selectedCategory = cat),
                     );
                   }).toList(),
                 ),
