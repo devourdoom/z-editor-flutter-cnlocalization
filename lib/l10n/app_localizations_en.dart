@@ -1767,7 +1767,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moduleDesc_BronzeProperties =>
-      'Configures Kongfu World bronze statues';
+      'Configures Kongfu World bronze statues (wave 1 only)';
 
   @override
   String get moduleTitle_ArmrackProperties => 'Weapon Stands';
@@ -1801,7 +1801,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bronzeModuleHelpBatchesBody =>
-      'Each bronze statue added generates a corresponding entry in the level file. Revival timing is determined by the spawn time (spawnTime), in seconds, and is independent of waves. Bronze statues with the same spawn time will revive simultaneously.\nThe revival countdown for subsequent batches is offset from the first batch. For example, if the first batch is set to 30s, the second to 45s, and the third to 50s, then the second batch will revive 15s after the first, and the third batch 5s after the second.';
+      'Each wave group is one entry in the level file\'s data array. Assign statues to a group and set its wave index (only wave 1 takes effect in-game). Revival timing uses spawn time (spawnTime), in seconds. Statues in the same group with the same spawn time revive together.\nThe revival countdown for subsequent groups is offset from the first group. For example, if the first group is set to 30s, the second to 45s, and the third to 50s, then the second group will revive 15s after the first, and the third group 5s after the second.';
+
+  @override
+  String get bronzeModuleHelpWaveLimit => 'Wave limit';
+
+  @override
+  String get bronzeModuleHelpWaveLimitBody =>
+      'Due to a game limitation, only wave 1 entries take effect in-game. Other wave groups can still be edited here and are saved to the level file, but only wave 1 appears in the wave timeline tab.';
+
+  @override
+  String get bronzeModuleExpectationLabel => 'Bronze statues';
 
   @override
   String get bronzeModuleShakeOffset => 'Animation';
@@ -4194,6 +4204,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Mech boss family (Egypt, Future, Memory Lane robot, etc.). Changing this updates the available variations below.';
 
   @override
+  String get zombossMechSelectBaseTitle => 'Select base ZombossMech';
+
+  @override
+  String get zombossMechChangeBase => 'Change base ZombossMech';
+
+  @override
+  String get zombossMechUsedProperties => 'Used properties';
+
+  @override
   String get zombossMechVariationLabel => 'Variation';
 
   @override
@@ -4865,19 +4884,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get itemListRowFirst => 'Item(s) in selected tile';
 
   @override
-  String get railcartCowboy => 'Wild West mine cart (railcart_cowboy)';
+  String get railcartCowboy => 'Wild West mine cart';
 
   @override
-  String get railcartFuture => 'Far Future mine cart (railcart_future)';
+  String get railcartFuture => 'Far Future mine cart';
 
   @override
-  String get railcartEgypt => 'Ancient Egypt mine cart (railcart_egypt)';
+  String get railcartEgypt => 'Ancient Egypt mine cart';
 
   @override
-  String get railcartPirate => 'Pirate Seas mine cart (railcart_pirate)';
+  String get railcartPirate => 'Pirate Seas mine cart';
 
   @override
-  String get railcartWorldcup => 'Ice Hockey mine cart (railcart_worldcup)';
+  String get railcartWorldcup => 'Ice Hockey mine cart';
 
   @override
   String get clearUnusedTitle => 'Clear unused objects?';
@@ -5005,7 +5024,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moduleDesc_ZombossFinalStageTimeLimitedChallengeProperties =>
-      'Timed kill challenge for the final zomboss stage';
+      'Enables the final zomboss desperation timer. Add or remove only — the timer value comes from the zomboss property sheet (e.g. ZombossFinalStageTimeLimited on Qin Shi Huang props), not from module parameters.';
 
   @override
   String get finalStageTimeLimitedChallengeTitle => 'Final stage time limit';
@@ -5016,7 +5035,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get finalStageTimeLimitedChallengeHelpIntro =>
-      'Adds a timed kill challenge during the final zomboss stage (commonly used in Qin Shi Huang boss fights).';
+      'Adds a timed kill challenge during the final zomboss stage (commonly used in Qin Shi Huang boss fights). The actual timer is read from the zomboss property sheet (ZombossFinalStageTimeLimited), not from this module\'s ZombossTimeLimit field.';
 
   @override
   String get finalStageTimeLimitedChallengeHelpParams =>
@@ -5024,7 +5043,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get finalStageTimeLimitedChallengeHelpParamsBody =>
-      'By default this module uses the game definition from LevelModules (RTID(FinalStageTimeLimitedChallenge@LevelModules)). Enable custom local parameters to define your own object under @CurrentLevel.';
+      'This editor screen is currently unwired. Levels should reference RTID(FinalStageTimeLimitedChallenge@LevelModules) only. Custom @CurrentLevel overrides are not supported until the game reads them correctly.';
 
   @override
   String get finalStageTimeLimitedChallengeTimeLimit =>
@@ -6076,7 +6095,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get energyGridModuleHelpOverviewBody =>
-      'Places Taiji Tiles on the lawn for wave 1. This module is required for Taiji Tiles to display properly in the editor and in-game.';
+      'Places Taiji Tiles on the lawn for wave 1. Use this module to configure tile positions in the level file.';
 
   @override
   String get energyGridModuleHelpPlacement => 'Placement';
@@ -6105,7 +6124,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get energyGridModuleWarningMessage =>
-      'Due to a game-side issue, generated Taiji Tiles may appear as purple X markers. This does not affect their actual functionality. If you want them to display properly, restarting the game is recommended. The Taiji Tiles module is also required for proper display. Continue anyway?';
+      'Due to a game-side issue, generated Taiji Tiles may appear as purple X markers. This does not affect their actual functionality.';
 
   @override
   String get gridOverrideModuleAppearances => 'Wave groups';

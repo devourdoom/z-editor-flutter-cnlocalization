@@ -1759,7 +1759,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get moduleDesc_BronzeProperties =>
-      'Мини-игра бронзовых статуй мира Кунфу: размещение статуй и времени возрождения (не привязано к волнам)';
+      'Бронзовые статуи мира Кунфу: размещение и время возрождения (только волна 1)';
 
   @override
   String get moduleTitle_ArmrackProperties => 'Оружейные стойки';
@@ -1786,14 +1786,24 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get bronzeModuleHelpOverviewBody =>
-      'Размещает статуи Хань, Сигун и Рыцаря на газоне. Возрождение задаётся в секундах (spawnTime), а не номером волны. Добавляйте статую с выбранной клетки; каждое добавление создаёт запись в данных уровня.';
+      'Размещает статуи Хань, Сигун и Рыцаря на газоне в начале уровня. Возрождение задаётся в секундах (spawnTime). Каждая группа волн — отдельная запись в массиве data; в игре действует только волна 1.';
 
   @override
   String get bronzeModuleHelpBatches => 'Пакеты и время';
 
   @override
   String get bronzeModuleHelpBatchesBody =>
-      'Статуи с одинаковым временем возрождения появляются вместе. Последующие пакеты могут продолжать отсчёт. Выберите клетку, тип и секунды до возрождения.';
+      'Каждая группа волн — одна запись в data. Назначьте статуи группе и укажите номер волны (в игре действует только волна 1). Время возрождения — spawnTime в секундах. Статуи в одной группе с одинаковым spawnTime возрождаются вместе.\nОтсчёт последующих групп продолжается от первой (например: 30 с, 45 с, 50 с — вторая через 15 с после первой, третья через 5 с после второй).';
+
+  @override
+  String get bronzeModuleHelpWaveLimit => 'Ограничение по волнам';
+
+  @override
+  String get bronzeModuleHelpWaveLimitBody =>
+      'Из-за ограничения игры в игре действуют только записи волны 1. Другие группы волн можно редактировать здесь и сохранять в файл уровня, но на временной шкале отображается только волна 1.';
+
+  @override
+  String get bronzeModuleExpectationLabel => 'Бронзовые статуи';
 
   @override
   String get bronzeModuleShakeOffset => 'Анимация';
@@ -4142,6 +4152,15 @@ class AppLocalizationsRu extends AppLocalizations {
       'Семейство мех-боссов (Египет, Будущее, робот Memory Lane и т.д.). При смене обновляется список вариантов ниже.';
 
   @override
+  String get zombossMechSelectBaseTitle => 'Выбор базового ZombossMech';
+
+  @override
+  String get zombossMechChangeBase => 'Сменить базовый ZombossMech';
+
+  @override
+  String get zombossMechUsedProperties => 'Используемые свойства';
+
+  @override
   String get zombossMechVariationLabel => 'Вариант';
 
   @override
@@ -4940,7 +4959,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get moduleDesc_ZombossFinalStageTimeLimitedChallengeProperties =>
-      'Ограничение по времени на финальной фазе боя с Zomboss';
+      'Включает таймер отчаяния на финальной фазе Zomboss. Только добавление/удаление — значение таймера берётся из листа свойств Zomboss (напр. ZombossFinalStageTimeLimited у Цинь Шihuang), а не из параметров модуля.';
 
   @override
   String get finalStageTimeLimitedChallengeTitle =>
@@ -4952,14 +4971,14 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get finalStageTimeLimitedChallengeHelpIntro =>
-      'Добавляет ограничение по времени на финальной фазе боя с Zomboss (часто используется в боях с Цинь Шihuang).';
+      'Добавляет ограничение по времени на финальной фазе боя с Zomboss (часто используется в боях с Цинь Шihuang). Фактический таймер читается из листа свойств Zomboss (ZombossFinalStageTimeLimited), а не из поля ZombossTimeLimit этого модуля.';
 
   @override
   String get finalStageTimeLimitedChallengeHelpParams => 'Параметры';
 
   @override
   String get finalStageTimeLimitedChallengeHelpParamsBody =>
-      'По умолчанию используется определение из LevelModules (RTID(FinalStageTimeLimitedChallenge@LevelModules)). Включите локальные параметры для настройки объекта в @CurrentLevel.';
+      'Этот экран редактора сейчас отключён. Уровни должны ссылаться только на RTID(FinalStageTimeLimitedChallenge@LevelModules). Пользовательские переопределения @CurrentLevel не поддерживаются, пока игра их не читает.';
 
   @override
   String get finalStageTimeLimitedChallengeTimeLimit =>
@@ -6008,7 +6027,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get energyGridModuleHelpOverviewBody =>
-      'Размещает плитки Тайцзи на газоне в волне 1. Этот модуль нужен для корректного отображения плиток в редакторе и в игре.';
+      'Размещает плитки Тайцзи на газоне в волне 1. Модуль задаёт позиции плиток в файле уровня.';
 
   @override
   String get energyGridModuleHelpPlacement => 'Размещение';
@@ -6037,7 +6056,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get energyGridModuleWarningMessage =>
-      'Из-за ошибки игры сгенерированные плитки Тайцзи могут отображаться как фиолетовые маркеры X. На функциональность это не влияет. Для корректного отображения рекомендуется перезапустить игру. Также нужен модуль плиток Тайцзи. Всё равно продолжить?';
+      'Из-за ошибки игры сгенерированные плитки Тайцзи могут отображаться как фиолетовые маркеры X. На функциональность это не влияет.';
 
   @override
   String get gridOverrideModuleAppearances => 'Группы волн';

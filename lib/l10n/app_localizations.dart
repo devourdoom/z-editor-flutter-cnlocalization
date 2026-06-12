@@ -3253,7 +3253,7 @@ abstract class AppLocalizations {
   /// No description provided for @moduleDesc_BronzeProperties.
   ///
   /// In en, this message translates to:
-  /// **'Configures Kongfu World bronze statues'**
+  /// **'Configures Kongfu World bronze statues (wave 1 only)'**
   String get moduleDesc_BronzeProperties;
 
   /// No description provided for @moduleTitle_ArmrackProperties.
@@ -3313,8 +3313,26 @@ abstract class AppLocalizations {
   /// No description provided for @bronzeModuleHelpBatchesBody.
   ///
   /// In en, this message translates to:
-  /// **'Each bronze statue added generates a corresponding entry in the level file. Revival timing is determined by the spawn time (spawnTime), in seconds, and is independent of waves. Bronze statues with the same spawn time will revive simultaneously.\nThe revival countdown for subsequent batches is offset from the first batch. For example, if the first batch is set to 30s, the second to 45s, and the third to 50s, then the second batch will revive 15s after the first, and the third batch 5s after the second.'**
+  /// **'Each wave group is one entry in the level file\'s data array. Assign statues to a group and set its wave index (only wave 1 takes effect in-game). Revival timing uses spawn time (spawnTime), in seconds. Statues in the same group with the same spawn time revive together.\nThe revival countdown for subsequent groups is offset from the first group. For example, if the first group is set to 30s, the second to 45s, and the third to 50s, then the second group will revive 15s after the first, and the third group 5s after the second.'**
   String get bronzeModuleHelpBatchesBody;
+
+  /// No description provided for @bronzeModuleHelpWaveLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Wave limit'**
+  String get bronzeModuleHelpWaveLimit;
+
+  /// No description provided for @bronzeModuleHelpWaveLimitBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Due to a game limitation, only wave 1 entries take effect in-game. Other wave groups can still be edited here and are saved to the level file, but only wave 1 appears in the wave timeline tab.'**
+  String get bronzeModuleHelpWaveLimitBody;
+
+  /// No description provided for @bronzeModuleExpectationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Bronze statues'**
+  String get bronzeModuleExpectationLabel;
 
   /// No description provided for @bronzeModuleShakeOffset.
   ///
@@ -7564,6 +7582,24 @@ abstract class AppLocalizations {
   /// **'Mech boss family (Egypt, Future, Memory Lane robot, etc.). Changing this updates the available variations below.'**
   String get zombossMechBaseHint;
 
+  /// No description provided for @zombossMechSelectBaseTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select base ZombossMech'**
+  String get zombossMechSelectBaseTitle;
+
+  /// No description provided for @zombossMechChangeBase.
+  ///
+  /// In en, this message translates to:
+  /// **'Change base ZombossMech'**
+  String get zombossMechChangeBase;
+
+  /// No description provided for @zombossMechUsedProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Used properties'**
+  String get zombossMechUsedProperties;
+
   /// No description provided for @zombossMechVariationLabel.
   ///
   /// In en, this message translates to:
@@ -8743,31 +8779,31 @@ abstract class AppLocalizations {
   /// No description provided for @railcartCowboy.
   ///
   /// In en, this message translates to:
-  /// **'Wild West mine cart (railcart_cowboy)'**
+  /// **'Wild West mine cart'**
   String get railcartCowboy;
 
   /// No description provided for @railcartFuture.
   ///
   /// In en, this message translates to:
-  /// **'Far Future mine cart (railcart_future)'**
+  /// **'Far Future mine cart'**
   String get railcartFuture;
 
   /// No description provided for @railcartEgypt.
   ///
   /// In en, this message translates to:
-  /// **'Ancient Egypt mine cart (railcart_egypt)'**
+  /// **'Ancient Egypt mine cart'**
   String get railcartEgypt;
 
   /// No description provided for @railcartPirate.
   ///
   /// In en, this message translates to:
-  /// **'Pirate Seas mine cart (railcart_pirate)'**
+  /// **'Pirate Seas mine cart'**
   String get railcartPirate;
 
   /// No description provided for @railcartWorldcup.
   ///
   /// In en, this message translates to:
-  /// **'Ice Hockey mine cart (railcart_worldcup)'**
+  /// **'Ice Hockey mine cart'**
   String get railcartWorldcup;
 
   /// No description provided for @clearUnusedTitle.
@@ -8983,7 +9019,7 @@ abstract class AppLocalizations {
   /// No description provided for @moduleDesc_ZombossFinalStageTimeLimitedChallengeProperties.
   ///
   /// In en, this message translates to:
-  /// **'Timed kill challenge for the final zomboss stage'**
+  /// **'Enables the final zomboss desperation timer. Add or remove only — the timer value comes from the zomboss property sheet (e.g. ZombossFinalStageTimeLimited on Qin Shi Huang props), not from module parameters.'**
   String get moduleDesc_ZombossFinalStageTimeLimitedChallengeProperties;
 
   /// No description provided for @finalStageTimeLimitedChallengeTitle.
@@ -9001,7 +9037,7 @@ abstract class AppLocalizations {
   /// No description provided for @finalStageTimeLimitedChallengeHelpIntro.
   ///
   /// In en, this message translates to:
-  /// **'Adds a timed kill challenge during the final zomboss stage (commonly used in Qin Shi Huang boss fights).'**
+  /// **'Adds a timed kill challenge during the final zomboss stage (commonly used in Qin Shi Huang boss fights). The actual timer is read from the zomboss property sheet (ZombossFinalStageTimeLimited), not from this module\'s ZombossTimeLimit field.'**
   String get finalStageTimeLimitedChallengeHelpIntro;
 
   /// No description provided for @finalStageTimeLimitedChallengeHelpParams.
@@ -9013,7 +9049,7 @@ abstract class AppLocalizations {
   /// No description provided for @finalStageTimeLimitedChallengeHelpParamsBody.
   ///
   /// In en, this message translates to:
-  /// **'By default this module uses the game definition from LevelModules (RTID(FinalStageTimeLimitedChallenge@LevelModules)). Enable custom local parameters to define your own object under @CurrentLevel.'**
+  /// **'This editor screen is currently unwired. Levels should reference RTID(FinalStageTimeLimitedChallenge@LevelModules) only. Custom @CurrentLevel overrides are not supported until the game reads them correctly.'**
   String get finalStageTimeLimitedChallengeHelpParamsBody;
 
   /// No description provided for @finalStageTimeLimitedChallengeTimeLimit.
@@ -10879,7 +10915,7 @@ abstract class AppLocalizations {
   /// No description provided for @energyGridModuleHelpOverviewBody.
   ///
   /// In en, this message translates to:
-  /// **'Places Taiji Tiles on the lawn for wave 1. This module is required for Taiji Tiles to display properly in the editor and in-game.'**
+  /// **'Places Taiji Tiles on the lawn for wave 1. Use this module to configure tile positions in the level file.'**
   String get energyGridModuleHelpOverviewBody;
 
   /// No description provided for @energyGridModuleHelpPlacement.
@@ -10927,7 +10963,7 @@ abstract class AppLocalizations {
   /// No description provided for @energyGridModuleWarningMessage.
   ///
   /// In en, this message translates to:
-  /// **'Due to a game-side issue, generated Taiji Tiles may appear as purple X markers. This does not affect their actual functionality. If you want them to display properly, restarting the game is recommended. The Taiji Tiles module is also required for proper display. Continue anyway?'**
+  /// **'Due to a game-side issue, generated Taiji Tiles may appear as purple X markers. This does not affect their actual functionality.'**
   String get energyGridModuleWarningMessage;
 
   /// No description provided for @gridOverrideModuleAppearances.
