@@ -219,7 +219,7 @@ class _EnergyGridModuleScreenState extends State<EnergyGridModuleScreen> {
         child: Card(
           margin: EdgeInsets.zero,
           child: Padding(
-            padding: kGridOverrideModuleSectionPadding,
+            padding: const EdgeInsets.all(16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
