@@ -1945,7 +1945,7 @@
   "energyGridModuleWarningMessage": "Due to a game-side issue, generated Taiji Tiles may appear as purple X markers. This does not affect their actual functionality.",
   "gridOverrideModuleAppearances": "Wave groups",
   "gridOverrideModuleWaveFieldOneBased": "Wave (1 = first wave, 2 = second wave, ...)",
-  "gridOverrideModuleTimelineNote": "Only wave 1 entries appear in the wave timeline tab."
+  "gridOverrideModuleTimelineNote": "Only wave 1 entries appear in the wave timeline tab.",
   "mechanismPlankSettings": "Connected Mincart settings",
   "mechanismPlankStartColumn": "Start column",
   "mechanismPlankTrackLength": "Track length",

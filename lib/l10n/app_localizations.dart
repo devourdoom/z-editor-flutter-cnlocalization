@@ -3190,6 +3190,18 @@ abstract class AppLocalizations {
   /// **'Configures the initial layout of minecarts and rails'**
   String get moduleDesc_RailcartProperties;
 
+  /// No description provided for @moduleTitle_MechanismPlankProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected Minecart'**
+  String get moduleTitle_MechanismPlankProperties;
+
+  /// No description provided for @moduleDesc_MechanismPlankProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Configures the initial layout of Kongfu World minecarts and rails'**
+  String get moduleDesc_MechanismPlankProperties;
+
   /// No description provided for @moduleTitle_PowerTileProperties.
   ///
   /// In en, this message translates to:
@@ -4231,7 +4243,7 @@ abstract class AppLocalizations {
   /// No description provided for @canTriggerZombieWin.
   ///
   /// In en, this message translates to:
-  /// **'Triggers game over when reaching the house (CanTriggerZombieWin)'**
+  /// **'Can trigger game over when reaching the house (CanTriggerZombieWin)'**
   String get canTriggerZombieWin;
 
   /// No description provided for @resilience.
@@ -10105,7 +10117,7 @@ abstract class AppLocalizations {
   /// No description provided for @heianWindModuleRow.
   ///
   /// In en, this message translates to:
-  /// **'Affected Row (Row)'**
+  /// **'Affected row (Row)'**
   String get heianWindModuleRow;
 
   /// No description provided for @heianWindModuleAllRows.
@@ -11007,6 +11019,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Only wave 1 entries appear in the wave timeline tab.'**
   String get gridOverrideModuleTimelineNote;
+
+  /// No description provided for @mechanismPlankSettings.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected Mincart settings'**
+  String get mechanismPlankSettings;
+
+  /// No description provided for @mechanismPlankStartColumn.
+  ///
+  /// In en, this message translates to:
+  /// **'Start column'**
+  String get mechanismPlankStartColumn;
+
+  /// No description provided for @mechanismPlankTrackLength.
+  ///
+  /// In en, this message translates to:
+  /// **'Track length'**
+  String get mechanismPlankTrackLength;
+
+  /// No description provided for @mechanismPlankEditNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Only mX and mWidth are editable. Other values are preserved because changing them may cause in-game layout bugs.'**
+  String get mechanismPlankEditNotice;
+
+  /// No description provided for @mechanismPlankOutOfAreaWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'The current rail range may go outside the playable area.'**
+  String get mechanismPlankOutOfAreaWarning;
 }
 
 class _AppLocalizationsDelegate

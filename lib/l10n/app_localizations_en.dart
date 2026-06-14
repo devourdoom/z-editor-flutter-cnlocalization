@@ -1732,6 +1732,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Configures the initial layout of minecarts and rails';
 
   @override
+  String get moduleTitle_MechanismPlankProperties => 'Connected Minecart';
+
+  @override
+  String get moduleDesc_MechanismPlankProperties =>
+      'Configures the initial layout of Kongfu World minecarts and rails';
+
+  @override
   String get moduleTitle_PowerTileProperties => 'Power Tiles';
 
   @override
@@ -2313,7 +2320,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get canTriggerZombieWin =>
-      'Triggers game over when reaching the house (CanTriggerZombieWin)';
+      'Can trigger game over when reaching the house (CanTriggerZombieWin)';
 
   @override
   String get resilience => 'Resistances (Resistences)';
@@ -5655,7 +5662,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get heianWindModuleAddWind => 'Add wind';
 
   @override
-  String get heianWindModuleRow => 'Affected Row (Row)';
+  String get heianWindModuleRow => 'Affected row (Row)';
 
   @override
   String get heianWindModuleAllRows => 'All rows (-1)';
@@ -6146,4 +6153,21 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get gridOverrideModuleTimelineNote =>
       'Only wave 1 entries appear in the wave timeline tab.';
+
+  @override
+  String get mechanismPlankSettings => 'Connected Mincart settings';
+
+  @override
+  String get mechanismPlankStartColumn => 'Start column';
+
+  @override
+  String get mechanismPlankTrackLength => 'Track length';
+
+  @override
+  String get mechanismPlankEditNotice =>
+      'Only mX and mWidth are editable. Other values are preserved because changing them may cause in-game layout bugs.';
+
+  @override
+  String get mechanismPlankOutOfAreaWarning =>
+      'The current rail range may go outside the playable area.';
 }

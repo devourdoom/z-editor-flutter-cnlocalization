@@ -1967,7 +1967,7 @@
   "energyGridModuleWarningMessage": "Из-за ошибки игры сгенерированные плитки Тайцзи могут отображаться как фиолетовые маркеры X. На функциональность это не влияет.",
   "gridOverrideModuleAppearances": "Группы волн",
   "gridOverrideModuleWaveFieldOneBased": "Волна (1 = первая волна, 2 = вторая, …)",
-  "gridOverrideModuleTimelineNote": "На временной шкале отображаются только записи волны 1."
+  "gridOverrideModuleTimelineNote": "На временной шкале отображаются только записи волны 1.",
   "mechanismPlankSettings": "Connected Minecart settings",
   "mechanismPlankStartColumn": "Start column",
   "mechanismPlankTrackLength": "Track length",

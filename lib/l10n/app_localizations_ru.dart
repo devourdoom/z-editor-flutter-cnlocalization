@@ -1728,6 +1728,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get moduleDesc_RailcartProperties => 'Вагонетки и рельсы';
 
   @override
+  String get moduleTitle_MechanismPlankProperties => 'Connected Minecart';
+
+  @override
+  String get moduleDesc_MechanismPlankProperties =>
+      'Configures the initial layout of Kongfu World minecarts and rails';
+
+  @override
   String get moduleTitle_PowerTileProperties => 'Силовые плитки';
 
   @override
@@ -6081,4 +6088,21 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get gridOverrideModuleTimelineNote =>
       'На временной шкале отображаются только записи волны 1.';
+
+  @override
+  String get mechanismPlankSettings => 'Connected Minecart settings';
+
+  @override
+  String get mechanismPlankStartColumn => 'Start column';
+
+  @override
+  String get mechanismPlankTrackLength => 'Track length';
+
+  @override
+  String get mechanismPlankEditNotice =>
+      'Only mX and mWidth are editable. Other values are preserved because changing them may cause in-game layout bugs.';
+
+  @override
+  String get mechanismPlankOutOfAreaWarning =>
+      'The current rail range may go outside the playable area.';
 }

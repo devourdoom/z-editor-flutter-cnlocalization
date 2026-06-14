@@ -1635,7 +1635,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get moduleTitle_RailcartProperties => '矿车轨道';
 
   @override
-  String get moduleDesc_RailcartProperties => '配置矿车与轨道初始布局';
+  String get moduleDesc_RailcartProperties => '配置矿车与轨道的初始布局';
+
+  @override
+  String get moduleTitle_MechanismPlankProperties => '连体矿车';
+
+  @override
+  String get moduleDesc_MechanismPlankProperties => '配置功夫世界连体矿车与轨道的初始布局';
 
   @override
   String get moduleTitle_PowerTileProperties => '能量瓷砖';
@@ -5825,4 +5831,20 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get gridOverrideModuleTimelineNote => '仅第一波条目会显示在波次时间轴中。';
+
+  @override
+  String get mechanismPlankSettings => '连体矿车设置';
+
+  @override
+  String get mechanismPlankStartColumn => '起始列';
+
+  @override
+  String get mechanismPlankTrackLength => '轨道长度';
+
+  @override
+  String get mechanismPlankEditNotice =>
+      '仅允许编辑 mX 和 mWidth。其他值会被保留，因为修改它们可能导致游戏内布局异常。';
+
+  @override
+  String get mechanismPlankOutOfAreaWarning => '当前轨道范围可能超出可游玩区域。';
 }

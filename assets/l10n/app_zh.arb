@@ -1967,7 +1967,7 @@
   "energyGridModuleWarningMessage": "由于游戏端问题，生成的太极瓷砖可能显示为紫色 X 标记，这不影响实际功能。",
   "gridOverrideModuleAppearances": "波次组",
   "gridOverrideModuleWaveFieldOneBased": "波次（1 = 第一波，2 = 第二波，…）",
-  "gridOverrideModuleTimelineNote": "仅第一波条目会显示在波次时间轴中。"
+  "gridOverrideModuleTimelineNote": "仅第一波条目会显示在波次时间轴中。",
   "mechanismPlankSettings": "连体矿车设置",
   "mechanismPlankStartColumn": "起始列",
   "mechanismPlankTrackLength": "轨道长度",
