@@ -248,6 +248,13 @@
   "customZombieWaveItem": "Wave {n}",
   "@customZombieWaveItem": {"placeholders": {"n": {"type": "int"}}},
   "customZombieDeleteConfirm": "Remove this custom zombie entity and its property data.",
+  "customZombieOrphanDeleteTitle": "Remove custom zombie data?",
+  "customZombieOrphanDeleteMessage": "\"{alias}\" is no longer used in this level. Remove its zombie type and property objects from the level file?",
+  "@customZombieOrphanDeleteMessage": {
+    "placeholders": {
+      "alias": { "type": "String" }
+    }
+  },
   "editCustomZombieProperties": "Edit custom zombie properties",
   "makeZombieAsCustom": "Make zombie as custom",
   "customLabel": "Custom",
@@ -716,9 +723,9 @@
   "resilienceArmor": "Resilience Bar",
   "enableResilience": "Enable resilience",
   "resilienceSource": "Source",
-  "resiliencePreset": "Preset",
+  "resiliencePreset": "Existing",
   "resilienceCustom": "Custom",
-  "resiliencePresetSelect": "Selected resilience preset",
+  "resiliencePresetSelect": "Selected resilience shield",
   "resilienceAmount": "Resilience value (Amount)",
   "resilienceWeakType": "Resilience type (WeakType)",
   "resilienceRecoverSpeed": "Resilience bar recovery speed (RecoverSpeed)",
@@ -1864,6 +1871,13 @@
     }
   },
   "zombossMechDeletePhaseMessage": "This removes the phase and its action list. This cannot be undone.",
+  "zombossMechOrphanActionDeleteTitle": "Remove custom action data?",
+  "zombossMechOrphanActionDeleteMessage": "\"{alias}\" is no longer used in this level. Remove its action object from the level file?",
+  "@zombossMechOrphanActionDeleteMessage": {
+    "placeholders": {
+      "alias": { "type": "String" }
+    }
+  },
   "zombossMechPhasesHelp": "Each phase has hit points, an ordered action list (executed top to bottom), and optionally a retreat action when the mech supports it.",
   "zombossMechAddAction": "Add action",
   "zombossMechNoStageActions": "No actions yet",

@@ -190,6 +190,13 @@
   "customZombieWaveItem": "第{n}波",
   "@customZombieWaveItem": {"placeholders": {"n": {"type": "int"}}},
   "customZombieDeleteConfirm": "将移除僵尸实体及其属性数据。",
+  "customZombieOrphanDeleteTitle": "移除自定义僵尸数据？",
+  "customZombieOrphanDeleteMessage": "“{alias}” 已不在本关卡中使用。是否从关卡文件中移除其僵尸类型与属性对象？",
+  "@customZombieOrphanDeleteMessage": {
+    "placeholders": {
+      "alias": { "type": "String" }
+    }
+  },
   "editCustomZombieProperties": "编辑自定义属性数值",
   "makeZombieAsCustom": "注入为自定义僵尸",
   "customLabel": "自定义",
@@ -749,9 +756,9 @@
   "resistances": "抗性",
   "zombieResilience": "韧性条",
   "resilienceEnable": "启用韧性条",
-  "resiliencePreset": "预设韧性条",
+  "resiliencePreset": "已有配置",
   "resilienceCustom": "自定义韧性条",
-  "resiliencePresetSelect": "选择预设韧性条",
+  "resiliencePresetSelect": "选择韧性条配置",
   "resilienceAmount": "韧性条数值 (Amount)",
   "resilienceWeakType": "韧性条类型 (WeakType)",
   "resilienceRecoverSpeed": "韧性条恢复速度 (RecoverSpeed)",
@@ -1893,6 +1900,13 @@
     }
   },
   "zombossMechDeletePhaseMessage": "将移除此阶段及其动作列表，且无法撤销。",
+  "zombossMechOrphanActionDeleteTitle": "移除自定义动作数据？",
+  "zombossMechOrphanActionDeleteMessage": "“{alias}” 已不在本关卡中使用。是否从关卡文件中移除其动作对象？",
+  "@zombossMechOrphanActionDeleteMessage": {
+    "placeholders": {
+      "alias": { "type": "String" }
+    }
+  },
   "zombossMechPhasesHelp": "每个阶段包含生命值、按顺序执行的动作列表（自上而下），以及可选的撤退动作（若机甲支持）。",
   "zombossMechAddAction": "添加动作",
   "zombossMechNoStageActions": "暂无动作",

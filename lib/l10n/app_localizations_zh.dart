@@ -777,6 +777,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customZombieDeleteConfirm => '将移除僵尸实体及其属性数据。';
 
   @override
+  String get customZombieOrphanDeleteTitle => '移除自定义僵尸数据？';
+
+  @override
+  String customZombieOrphanDeleteMessage(String alias) {
+    return '“$alias” 已不在本关卡中使用。是否从关卡文件中移除其僵尸类型与属性对象？';
+  }
+
+  @override
   String get editCustomZombieProperties => '编辑自定义属性数值';
 
   @override
@@ -2181,13 +2189,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get resilienceSource => '来源';
 
   @override
-  String get resiliencePreset => '预设韧性条';
+  String get resiliencePreset => '已有配置';
 
   @override
   String get resilienceCustom => '自定义韧性条';
 
   @override
-  String get resiliencePresetSelect => '选择预设韧性条';
+  String get resiliencePresetSelect => '选择韧性条配置';
 
   @override
   String get resilienceAmount => '韧性条数值 (Amount)';
@@ -5612,6 +5620,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get zombossMechDeletePhaseMessage => '将移除此阶段及其动作列表，且无法撤销。';
+
+  @override
+  String get zombossMechOrphanActionDeleteTitle => '移除自定义动作数据？';
+
+  @override
+  String zombossMechOrphanActionDeleteMessage(String alias) {
+    return '“$alias” 已不在本关卡中使用。是否从关卡文件中移除其动作对象？';
+  }
 
   @override
   String get zombossMechPhasesHelp =>

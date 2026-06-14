@@ -793,6 +793,14 @@ class AppLocalizationsEn extends AppLocalizations {
       'Remove this custom zombie entity and its property data.';
 
   @override
+  String get customZombieOrphanDeleteTitle => 'Remove custom zombie data?';
+
+  @override
+  String customZombieOrphanDeleteMessage(String alias) {
+    return '\"$alias\" is no longer used in this level. Remove its zombie type and property objects from the level file?';
+  }
+
+  @override
   String get editCustomZombieProperties => 'Edit custom zombie properties';
 
   @override
@@ -2329,13 +2337,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resilienceSource => 'Source';
 
   @override
-  String get resiliencePreset => 'Preset';
+  String get resiliencePreset => 'Existing';
 
   @override
   String get resilienceCustom => 'Custom';
 
   @override
-  String get resiliencePresetSelect => 'Selected resilience preset';
+  String get resiliencePresetSelect => 'Selected resilience shield';
 
   @override
   String get resilienceAmount => 'Resilience value (Amount)';
@@ -5932,6 +5940,14 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get zombossMechDeletePhaseMessage =>
       'This removes the phase and its action list. This cannot be undone.';
+
+  @override
+  String get zombossMechOrphanActionDeleteTitle => 'Remove custom action data?';
+
+  @override
+  String zombossMechOrphanActionDeleteMessage(String alias) {
+    return '\"$alias\" is no longer used in this level. Remove its action object from the level file?';
+  }
 
   @override
   String get zombossMechPhasesHelp =>

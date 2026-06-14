@@ -1576,6 +1576,18 @@ abstract class AppLocalizations {
   /// **'Remove this custom zombie entity and its property data.'**
   String get customZombieDeleteConfirm;
 
+  /// No description provided for @customZombieOrphanDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove custom zombie data?'**
+  String get customZombieOrphanDeleteTitle;
+
+  /// No description provided for @customZombieOrphanDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{alias}\" is no longer used in this level. Remove its zombie type and property objects from the level file?'**
+  String customZombieOrphanDeleteMessage(String alias);
+
   /// No description provided for @editCustomZombieProperties.
   ///
   /// In en, this message translates to:
@@ -4261,7 +4273,7 @@ abstract class AppLocalizations {
   /// No description provided for @resiliencePreset.
   ///
   /// In en, this message translates to:
-  /// **'Preset'**
+  /// **'Existing'**
   String get resiliencePreset;
 
   /// No description provided for @resilienceCustom.
@@ -4273,7 +4285,7 @@ abstract class AppLocalizations {
   /// No description provided for @resiliencePresetSelect.
   ///
   /// In en, this message translates to:
-  /// **'Selected resilience preset'**
+  /// **'Selected resilience shield'**
   String get resiliencePresetSelect;
 
   /// No description provided for @resilienceAmount.
@@ -10611,6 +10623,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This removes the phase and its action list. This cannot be undone.'**
   String get zombossMechDeletePhaseMessage;
+
+  /// No description provided for @zombossMechOrphanActionDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove custom action data?'**
+  String get zombossMechOrphanActionDeleteTitle;
+
+  /// No description provided for @zombossMechOrphanActionDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{alias}\" is no longer used in this level. Remove its action object from the level file?'**
+  String zombossMechOrphanActionDeleteMessage(String alias);
 
   /// No description provided for @zombossMechPhasesHelp.
   ///

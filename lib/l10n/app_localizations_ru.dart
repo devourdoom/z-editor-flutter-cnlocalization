@@ -796,6 +796,15 @@ class AppLocalizationsRu extends AppLocalizations {
       'Удалить этого пользовательского зомби и его данные.';
 
   @override
+  String get customZombieOrphanDeleteTitle =>
+      'Удалить данные пользовательского зомби?';
+
+  @override
+  String customZombieOrphanDeleteMessage(String alias) {
+    return '«$alias» больше не используется в уровне. Удалить объект типа зомби и его свойства из файла уровня?';
+  }
+
+  @override
   String get editCustomZombieProperties =>
       'Редактировать свойства пользовательского зомби';
 
@@ -2304,13 +2313,13 @@ class AppLocalizationsRu extends AppLocalizations {
   String get resilienceSource => 'Источник';
 
   @override
-  String get resiliencePreset => 'Пресет';
+  String get resiliencePreset => 'Существующий';
 
   @override
   String get resilienceCustom => 'Свой';
 
   @override
-  String get resiliencePresetSelect => 'Выбрать пресет';
+  String get resiliencePresetSelect => 'Выбранный щит устойчивости';
 
   @override
   String get resilienceAmount => 'Количество';
@@ -5863,6 +5872,15 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get zombossMechDeletePhaseMessage =>
       'Фаза и её список действий будут удалены. Это нельзя отменить.';
+
+  @override
+  String get zombossMechOrphanActionDeleteTitle =>
+      'Удалить данные пользовательского действия?';
+
+  @override
+  String zombossMechOrphanActionDeleteMessage(String alias) {
+    return '«$alias» больше не используется в уровне. Удалить объект действия из файла уровня?';
+  }
 
   @override
   String get zombossMechPhasesHelp =>

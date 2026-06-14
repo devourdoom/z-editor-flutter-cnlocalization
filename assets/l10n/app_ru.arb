@@ -190,6 +190,13 @@
   "customZombieWaveItem": "Волна {n}",
   "@customZombieWaveItem": {"placeholders": {"n": {"type": "int"}}},
   "customZombieDeleteConfirm": "Удалить этого пользовательского зомби и его данные.",
+  "customZombieOrphanDeleteTitle": "Удалить данные пользовательского зомби?",
+  "customZombieOrphanDeleteMessage": "«{alias}» больше не используется в уровне. Удалить объект типа зомби и его свойства из файла уровня?",
+  "@customZombieOrphanDeleteMessage": {
+    "placeholders": {
+      "alias": { "type": "String" }
+    }
+  },
   "editCustomZombieProperties": "Редактировать свойства пользовательского зомби",
   "makeZombieAsCustom": "Сделать зомби пользовательским",
   "customLabel": "Пользовательский",
@@ -814,9 +821,9 @@
   "resilienceSource": "Источник",
   "zombieResilience": "Броня / Устойчивость",
   "resilienceEnable": "Включить броню",
-  "resiliencePreset": "Пресет",
+  "resiliencePreset": "Существующий",
   "resilienceCustom": "Свой",
-  "resiliencePresetSelect": "Выбрать пресет",
+  "resiliencePresetSelect": "Выбранный щит устойчивости",
   "resilienceAmount": "Количество",
   "resilienceWeakType": "Слабый тип",
   "resilienceRecoverSpeed": "Скорость восстановления",
@@ -1893,6 +1900,13 @@
     }
   },
   "zombossMechDeletePhaseMessage": "Фаза и её список действий будут удалены. Это нельзя отменить.",
+  "zombossMechOrphanActionDeleteTitle": "Удалить данные пользовательского действия?",
+  "zombossMechOrphanActionDeleteMessage": "«{alias}» больше не используется в уровне. Удалить объект действия из файла уровня?",
+  "@zombossMechOrphanActionDeleteMessage": {
+    "placeholders": {
+      "alias": { "type": "String" }
+    }
+  },
   "zombossMechPhasesHelp": "У каждой фазы есть очки здоровья, упорядоченный список действий (сверху вниз) и при поддержке — действие отступления.",
   "zombossMechAddAction": "Добавить действие",
   "zombossMechNoStageActions": "Действий пока нет",
