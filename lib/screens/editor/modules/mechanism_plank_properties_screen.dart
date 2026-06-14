@@ -189,11 +189,15 @@ class _MechanismPlankPropertiesScreenState
 
     final localRow = row - _mY;
 
-    // Connected Minecart rails are only generated on the lanes immediately
-    // above or below a Connected Minecart. For the default rows 0 and 4 with
-    // mHeight 5, this means rails appear on local rows 1 and 3, with local row
-    // 2 left disconnected.
-    return _cartLocalRows.any((cartRow) => (localRow - cartRow).abs() == 1);
+    // In-game, the rail sprite is still drawn underneath the Connected
+    // Minecart itself. Rails also appear on the lanes immediately above or
+    // below a Connected Minecart, but do not fill the disconnected middle lane.
+    // Default rows 0 and 4 with mHeight 5 therefore render rails on local rows
+    // 0, 1, 3 and 4, while local row 2 stays empty.
+    return _cartLocalRows.any((cartRow) {
+      final distance = (localRow - cartRow).abs();
+      return distance == 0 || distance == 1;
+    });
   }
 
   bool _hasCartAt(int col, int row) {
