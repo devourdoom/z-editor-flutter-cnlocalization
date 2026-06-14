@@ -2800,7 +2800,8 @@ class AppLocalizationsZh extends AppLocalizations {
       '事件触发后，僵尸会分批次从天而降。可以控制总数量和每批次之间的时间间隔。僵尸会随机降落在选择的列数。若到达了下落总前摇时间，剩下的僵尸会立即出现。\n事件出现前会出现红色字幕显示，在字幕中输入中文会显示乱码。可以不设置僵尸让这个事件变为纯粹的字幕显示。';
 
   @override
-  String get eventHelpModernPortalsBody => '在场地上刷新出固定种类的时空裂缝，常见于摩登世界和回忆之旅。';
+  String get eventHelpModernPortalsBody =>
+      '在场地上刷新出固定种类的时空裂缝，常见于摩登世界和回忆之旅。\n一个事件只能配置一个裂缝，若需要在同一波次中添加多个裂缝，请在该波次内添加多个时空裂缝事件。';
 
   @override
   String get eventHelpModernPortalsType => '游戏内有非常多种裂缝类型，可以在此选择具体的裂缝种类，预览出怪。';
@@ -5844,7 +5845,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get mechanismPlankEditNotice =>
-      '该界面仅支持编辑轨道宽度和起始列。其他参数采用预设值，因为修改它们可能会导致连体矿车无法正常使用。如需进一步自定义，请手动编辑JSON文件。';
+      '该界面仅支持编辑轨道宽度和起始列。其他参数采用预设值，因为修改它们可能会导致连体矿车无法正常使用。如需进一步自定义，请手动编辑JSON文件。\n此外，不建议在功夫世界以外的地图中使用连体矿车。连体矿车在其他地图中会显示为紫色叉号，虽然不影响实际功能，但可能会影响关卡的整体观感。';
 
   @override
   String get mechanismPlankOutOfAreaWarning => '当前轨道范围可能超出场地。';

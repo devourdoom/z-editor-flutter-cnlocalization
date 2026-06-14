@@ -2972,7 +2972,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get eventHelpModernPortalsBody =>
-      'Spawns fixed types of spacetime portals on the lawn, commonly seen in Modern Day and Memory Lane';
+      'Spawns a fixed type of spacetime portal on the lawn, commonly seen in Modern Day and Memory Lane.\nOnly one spacetime portal can be configured per event. To have multiple portals appear simultaneously, add multiple Spacetime Portal events within the wave.';
 
   @override
   String get eventHelpModernPortalsType =>
@@ -6141,7 +6141,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get energyGridModuleWarningMessage =>
-      'Due to a game-side issue, generated Taiji Tiles may appear as purple X markers. This does not affect their actual functionality.';
+      'Due to a game-side issue, generated Taiji Tiles may appear as purple X markers. This does not affect their actual functionality. If you want them to display properly, restarting the game is recommended.';
 
   @override
   String get gridOverrideModuleAppearances => 'Wave groups';
@@ -6165,7 +6165,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mechanismPlankEditNotice =>
-      'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.';
+      'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they will appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.';
 
   @override
   String get mechanismPlankOutOfAreaWarning =>
