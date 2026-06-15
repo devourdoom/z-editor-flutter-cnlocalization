@@ -12,7 +12,7 @@ class MusicSuffixCatalog {
 
   static final List<String> _orderedCodenames = [];
   static final Map<String, String> _iconFilenameByCodename = {};
-  static String _iconFolder = 'assets/images/music_suffixes/';
+  static String _iconFolder = 'assets/images/stages/';
   static bool _isLoaded = false;
 
   /// Display order (excluding default empty suffix in JSON list).
