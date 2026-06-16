@@ -775,7 +775,7 @@ class _ProtectTheGridItemEditorState extends State<_ProtectTheGridItemEditor> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            initialValue: item.gridItemType,
+                            initialValue: '${item.gridItemType}',
                             decoration: InputDecoration(
                               labelText: l10n?.gridItemType ?? 'Grid Item Type',
                               border: const OutlineInputBorder(),
