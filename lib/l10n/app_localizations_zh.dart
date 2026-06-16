@@ -3551,9 +3551,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get protectPlants => '保护植物挑战';
 
   @override
-  String get protectItems => '保护物品挑战';
-
-  @override
   String get autoCount => '自动计数';
 
   @override
@@ -4440,7 +4437,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mustProtectCountAll => '必须保护的数量（0表示全部保护）：';
 
   @override
-  String get mustProtectCount => '必须保护的数量 (MustProtectCount)';
+  String mustProtectCount(int count) {
+    return '当前保护目标数量：$count';
+  }
 
   @override
   String get gridItemType => '物品类型';
@@ -5203,7 +5202,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pvz1PassagePortalSpawnPreview => '传送门生成列预览';
 
   @override
-  String get pvz1PassageHelpPreview => '生成范围预览预览';
+  String get pvz1PassageHelpPreview => '生成范围预览';
 
   @override
   String pvz1PassageHelpPreviewBody(int maxIndex) {
@@ -6020,7 +6019,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get mechanismPlankEditNotice =>
-      '该界面仅支持编辑轨道宽度和起始列。其他参数采用预设值，因为修改它们可能会导致连体矿车无法正常使用。如需进一步自定义，请手动编辑JSON文件。\n此外，不建议在功夫世界以外的地图中使用连体矿车。连体矿车在其他地图中会显示为紫色叉号，虽然不影响实际功能，但可能会影响关卡的整体观感。';
+      '该界面仅支持编辑轨道宽度和起始列。其他参数采用预设值，因为修改它们可能会导致连体矿车无法正常使用。如需进一步自定义，请手动编辑JSON文件。\n此外，不建议在功夫世界以外的地图中使用连体矿车。连体矿车在其他地图中更容易显示为紫色叉号，虽然不影响实际功能，但可能会影响关卡的整体观感。';
 
   @override
   String get mechanismPlankOutOfAreaWarning => '当前轨道范围可能超出场地。';
@@ -6293,4 +6292,31 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get waveGeneratorExpectationPoolNote =>
       '期望基于累积 AddToZombiePool。点数足够高时仍可能出现其他僵尸。';
+
+  @override
+  String get protectItems => '保护物品挑战';
+
+  @override
+  String get protectGridItemChallengeHelpTitle => '保护物品挑战说明';
+
+  @override
+  String get briefOverview => '简要介绍';
+
+  @override
+  String get automaticCount => '自动计数';
+
+  @override
+  String get operationGuide => '操作指引';
+
+  @override
+  String get protectGridItemChallengeHelpOverview =>
+      '定义关卡中必须保护的障碍物。如果这些物品被破坏，关卡将立即失败。';
+
+  @override
+  String get protectGridItemChallengeHelpAutoCountBody =>
+      '软件会自动跟随您添加的物品数量更新需要保护的障碍物数量。';
+
+  @override
+  String get protectGridItemChallengeHelpOperationGuide =>
+      '在上方网格中点击选择坐标，然后点击“添加目标”按钮选择要保护的物品类型。';
 }

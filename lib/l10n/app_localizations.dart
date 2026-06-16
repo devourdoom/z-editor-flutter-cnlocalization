@@ -6763,14 +6763,8 @@ abstract class AppLocalizations {
   /// No description provided for @protectPlants.
   ///
   /// In en, this message translates to:
-  /// **'Protect plants'**
+  /// **'Save Our Seeds'**
   String get protectPlants;
-
-  /// No description provided for @protectItems.
-  ///
-  /// In en, this message translates to:
-  /// **'Protect items'**
-  String get protectItems;
 
   /// No description provided for @autoCount.
   ///
@@ -8407,8 +8401,8 @@ abstract class AppLocalizations {
   /// No description provided for @mustProtectCount.
   ///
   /// In en, this message translates to:
-  /// **'Required to Protect (MustProtectCount)'**
-  String get mustProtectCount;
+  /// **'Current protected target count: {count}'**
+  String mustProtectCount(int count);
 
   /// No description provided for @gridItemType.
   ///
@@ -11347,7 +11341,7 @@ abstract class AppLocalizations {
   /// No description provided for @mechanismPlankEditNotice.
   ///
   /// In en, this message translates to:
-  /// **'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they will appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.'**
+  /// **'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they are more likely to appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.'**
   String get mechanismPlankEditNotice;
 
   /// No description provided for @mechanismPlankOutOfAreaWarning.
@@ -11865,6 +11859,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Expectations are based on the cumulative AddToZombiePool. Other zombies may still appear if points are high enough.'**
   String get waveGeneratorExpectationPoolNote;
+
+  /// No description provided for @protectItems.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Our Items'**
+  String get protectItems;
+
+  /// No description provided for @protectGridItemChallengeHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Our Items module'**
+  String get protectGridItemChallengeHelpTitle;
+
+  /// No description provided for @briefOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get briefOverview;
+
+  /// No description provided for @automaticCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic Count'**
+  String get automaticCount;
+
+  /// No description provided for @operationGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation Guide'**
+  String get operationGuide;
+
+  /// No description provided for @protectGridItemChallengeHelpOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Specify the grid items that must be protected in the level. The level will immediately fail if any of them are destroyed.'**
+  String get protectGridItemChallengeHelpOverview;
+
+  /// No description provided for @protectGridItemChallengeHelpAutoCountBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The editor will automatically update the number of grid items that need to be protected based on the number of items you add.'**
+  String get protectGridItemChallengeHelpAutoCountBody;
+
+  /// No description provided for @protectGridItemChallengeHelpOperationGuide.
+  ///
+  /// In en, this message translates to:
+  /// **'Click a position in the grid above, then click the \"Add item\" button to select the type of item to protect.'**
+  String get protectGridItemChallengeHelpOperationGuide;
 }
 
 class _AppLocalizationsDelegate

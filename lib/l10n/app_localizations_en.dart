@@ -3739,10 +3739,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get protectPlants => 'Protect plants';
-
-  @override
-  String get protectItems => 'Protect items';
+  String get protectPlants => 'Save Our Seeds';
 
   @override
   String get autoCount => 'Auto count';
@@ -4679,7 +4676,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get mustProtectCountAll => 'Required to Protect (0 = protect all)';
 
   @override
-  String get mustProtectCount => 'Required to Protect (MustProtectCount)';
+  String mustProtectCount(int count) {
+    return 'Current protected target count: $count';
+  }
 
   @override
   String get gridItemType => 'Grid item type';
@@ -6345,7 +6344,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get mechanismPlankEditNotice =>
-      'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they will appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.';
+      'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they are more likely to appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.';
 
   @override
   String get mechanismPlankOutOfAreaWarning =>
@@ -6635,4 +6634,31 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get waveGeneratorExpectationPoolNote =>
       'Expectations are based on the cumulative AddToZombiePool. Other zombies may still appear if points are high enough.';
+
+  @override
+  String get protectItems => 'Save Our Items';
+
+  @override
+  String get protectGridItemChallengeHelpTitle => 'Save Our Items module';
+
+  @override
+  String get briefOverview => 'Overview';
+
+  @override
+  String get automaticCount => 'Automatic Count';
+
+  @override
+  String get operationGuide => 'Operation Guide';
+
+  @override
+  String get protectGridItemChallengeHelpOverview =>
+      'Specify the grid items that must be protected in the level. The level will immediately fail if any of them are destroyed.';
+
+  @override
+  String get protectGridItemChallengeHelpAutoCountBody =>
+      'The editor will automatically update the number of grid items that need to be protected based on the number of items you add.';
+
+  @override
+  String get protectGridItemChallengeHelpOperationGuide =>
+      'Click a position in the grid above, then click the \"Add item\" button to select the type of item to protect.';
 }

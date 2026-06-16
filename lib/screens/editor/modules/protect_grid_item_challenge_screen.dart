@@ -143,22 +143,30 @@ class _ProtectGridItemChallengeScreenState
           tooltip: l10n?.back ?? 'Back',
           onPressed: widget.onBack,
         ),
-        title: const Text('Protect items'),
+        title: Text(l10n?.protectItems ?? 'Protect items'),
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline),
             tooltip: l10n?.tooltipAboutModule ?? 'About this module',
             onPressed: () => showEditorHelpDialog(
               context,
-              title: 'Protect items',
-              sections: const [
+              title: l10n?.protectGridItemChallengeHelpTitle ??
+                  'Protect Item Challenge Guide',
+              sections: [
                 HelpSectionData(
-                  title: 'Overview',
-                  body: 'Grid items listed here must survive; losing them fails the level.',
+                  title: l10n?.briefOverview ?? 'Brief Overview',
+                  body: l10n?.protectGridItemChallengeHelpOverview ??
+                      'Defines the items that must be protected in the level. If these items are destroyed, the level fails.',
                 ),
                 HelpSectionData(
-                  title: 'Auto count',
-                  body: 'The required count follows the number of listed items.',
+                  title: l10n?.automaticCount ?? 'Automatic Count',
+                  body: l10n?.protectGridItemChallengeHelpAutoCountBody ??
+                      'The editor automatically updates the number of grid items that must be protected based on the items you add.',
+                ),
+                HelpSectionData(
+                  title: l10n?.operationGuide ?? 'Operation Guide',
+                  body: l10n?.protectGridItemChallengeHelpOperationGuide ??
+                      'Tap a coordinate in the grid above, then tap Add Target to choose the type of item to protect.',
                 ),
               ],
             ),
@@ -177,7 +185,7 @@ class _ProtectGridItemChallengeScreenState
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Description',
+                      l10n?.description ?? 'Challenge Description',
                       style: theme.textTheme.titleSmall?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: theme.colorScheme.primary,
@@ -200,7 +208,8 @@ class _ProtectGridItemChallengeScreenState
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Must protect count: ${_data.mustProtectCount}',
+                      l10n?.mustProtectCount(_data.mustProtectCount) ??
+                          'Must protect count: ${_data.mustProtectCount}',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
                       ),
@@ -221,7 +230,7 @@ class _ProtectGridItemChallengeScreenState
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Selected position',
+                              l10n?.selectedPosition ?? 'Target Position',
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
                               ),
@@ -239,7 +248,7 @@ class _ProtectGridItemChallengeScreenState
                         FilledButton.icon(
                           onPressed: _addItem,
                           icon: const Icon(Icons.add, size: 18),
-                          label: const Text('Add item'),
+                          label: Text(l10n?.addItem ?? 'Add Target'),
                         ),
                       ],
                     ),
@@ -251,7 +260,7 @@ class _ProtectGridItemChallengeScreenState
             ),
             const SizedBox(height: 16),
             Text(
-              'Protected list',
+              l10n?.protectedList ?? 'Protected Target List',
               style: theme.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.bold,
                 color: theme.colorScheme.onSurfaceVariant,

@@ -557,6 +557,7 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
                               'Columns dragged (ColNumPlantIsDragged)',
                           border: const OutlineInputBorder(),
                           helperText: l10n?.waveGeneratorBlackHoleFieldHint,
+                          helperMaxLines: 4,
                         ),
                         keyboardType: TextInputType.number,
                         onChanged: (v) {
@@ -856,19 +857,47 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
                       label: Text(l10n?.change ?? 'Change'),
                     ),
                     const SizedBox(height: 8),
-                    FilledButton.icon(
-                      style: FilledButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.error,
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onError,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(ctx);
-                        _removeZombie(index);
-                      },
-                      icon: const Icon(Icons.delete_outline),
-                      label: Text(l10n?.delete ?? 'Delete'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                              final rowStr = rowValue == 0 ? '?' : '$rowValue';
+                              final copy = WaveGeneratorZombieEntryData(
+                                type: zombie.type,
+                                row: rowStr,
+                              );
+                              _wave = _copyWave(
+                                zombies: [
+                                  ..._wave.zombies,
+                                  copy,
+                                ],
+                              );
+                              _sync();
+                              Navigator.pop(ctx);
+                            },
+                            icon: const Icon(Icons.copy),
+                            label: Text(l10n?.copy ?? 'Copy'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            style: FilledButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.error,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.onError,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(ctx);
+                              _removeZombie(index);
+                            },
+                            icon: const Icon(Icons.delete_outline),
+                            label: Text(l10n?.delete ?? 'Delete'),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

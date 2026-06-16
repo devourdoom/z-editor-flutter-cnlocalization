@@ -1179,8 +1179,7 @@
   "noPlantsConfigured": "No plants configured. Please add plants to the list.",
   "batchLevelFormat": "Batch level: {level}",
   "@batchLevelFormat": {"placeholders": {"level": {"type": "int"}}},
-  "protectPlants": "Protect plants",
-  "protectItems": "Protect items",
+  "protectPlants": "Save Our Seeds",
   "autoCount": "Auto count",
   "overrideStartingPlantfood": "Starting Plant Food settings",
   "startingPlantfoodOverride": "Starting Plant Food (StartingPlantfoodOverride)",
@@ -2045,7 +2044,7 @@
   "mechanismPlankSettings": "Connected Minecart settings",
   "mechanismPlankStartColumn": "Starting column (mx)",
   "mechanismPlankTrackLength": "Track length (mWidth)",
-  "mechanismPlankEditNotice": "This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they will appear as purple X markers. This does not affect their actual functionality, but it may impact the level's visual presentation.",
+  "mechanismPlankEditNotice": "This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they are more likely to appear as purple X markers. This does not affect their actual functionality, but it may impact the level's visual presentation.",
   "mechanismPlankOutOfAreaWarning": "The current rail range may go outside the lawn.",
   "portalTypeEgypt": "Ancient Egypt",
   "portalTypeEgypt2": "Ancient Egypt 2",
@@ -2134,5 +2133,21 @@
   "waveGeneratorWaveScreenHelpBody": "Edit scripted spawns and wave-specific options. Random spawns use the cumulative zombie pool and spending points.",
   "waveGeneratorExpectationTapHint": "Tap to view random spawn expectation",
   "waveGeneratorExpectationEmpty": "No eligible pool zombies for random spawns on this wave.",
-  "waveGeneratorExpectationPoolNote": "Expectations are based on the cumulative AddToZombiePool. Other zombies may still appear if points are high enough."
+  "waveGeneratorExpectationPoolNote": "Expectations are based on the cumulative AddToZombiePool. Other zombies may still appear if points are high enough.",
+  "protectItems": "Save Our Items",
+  "protectGridItemChallengeHelpTitle": "Save Our Items module",
+  "briefOverview": "Overview",
+  "automaticCount": "Automatic Count",
+  "operationGuide": "Operation Guide",
+  "protectGridItemChallengeHelpOverview": "Specify the grid items that must be protected in the level. The level will immediately fail if any of them are destroyed.",
+  "protectGridItemChallengeHelpAutoCountBody": "The editor will automatically update the number of grid items that need to be protected based on the number of items you add.",
+  "protectGridItemChallengeHelpOperationGuide": "Click a position in the grid above, then click the \"Add item\" button to select the type of item to protect.",
+  "mustProtectCount": "Current protected target count: {count}",
+  "@mustProtectCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }

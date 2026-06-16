@@ -3696,9 +3696,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get protectPlants => 'Защищать растения';
 
   @override
-  String get protectItems => 'Защищать предметы';
-
-  @override
   String get autoCount => 'Автосчёт';
 
   @override
@@ -4621,7 +4618,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mustProtectCountAll => 'Обязательно защитить (0 = все)';
 
   @override
-  String get mustProtectCount => 'Обязательно защитить';
+  String mustProtectCount(int count) {
+    return 'Current protected target count: $count';
+  }
 
   @override
   String get gridItemType => 'Тип объекта сетки';
@@ -6283,7 +6282,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mechanismPlankEditNotice =>
-      'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they will appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.';
+      'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they are more likely to appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.';
 
   @override
   String get mechanismPlankOutOfAreaWarning =>
@@ -6574,4 +6573,31 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get waveGeneratorExpectationPoolNote =>
       'Ожидание основано на накопленном AddToZombiePool. Другие зомби могут появиться при достаточном количестве очков.';
+
+  @override
+  String get protectItems => 'Save Our Items';
+
+  @override
+  String get protectGridItemChallengeHelpTitle => 'Save Our Items module';
+
+  @override
+  String get briefOverview => 'Overview';
+
+  @override
+  String get automaticCount => 'Automatic Count';
+
+  @override
+  String get operationGuide => 'Operation Guide';
+
+  @override
+  String get protectGridItemChallengeHelpOverview =>
+      'Specify the grid items that must be protected in the level. The level will immediately fail if any of them are destroyed.';
+
+  @override
+  String get protectGridItemChallengeHelpAutoCountBody =>
+      'The editor will automatically update the number of grid items that need to be protected based on the number of items you add.';
+
+  @override
+  String get protectGridItemChallengeHelpOperationGuide =>
+      'Click a position in the grid above, then click the \"Add item\" button to select the type of item to protect.';
 }

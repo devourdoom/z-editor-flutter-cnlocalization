@@ -1186,7 +1186,6 @@
   "batchLevelFormat": "批量设置：{level}",
   "@batchLevelFormat": {"placeholders": {"level": {"type": "int"}}},
   "protectPlants": "保护植物挑战",
-  "protectItems": "保护物品挑战",
   "autoCount": "自动计数",
   "overrideStartingPlantfood": "初始能量豆设置",
   "startingPlantfoodOverride": "初始能量豆数量 (StartingPlantfoodOverride)",
@@ -1751,7 +1750,7 @@
   "pvz1PassageFieldRefreshTime": "传送门位置刷新间隔 (refreshTime，单位：秒)",
   "pvz1PassageHelpRefreshTime": "传送门重新生成位置的间隔。位置生成是逐个进行的，即每次刷新只会改变同一类型中的一个传送门的位置。",
   "pvz1PassagePortalSpawnPreview": "传送门生成列预览",
-  "pvz1PassageHelpPreview": "生成范围预览预览",
+  "pvz1PassageHelpPreview": "生成范围预览",
   "pvz1PassageHelpPreviewBody": "橙色高亮区域表示传送门可能出现在哪些列。当前场地的列范围为 0–{maxIndex}（包含场地两侧的边界）。本模块无法限制传送门生成行的范围。",
   "@pvz1PassageHelpPreviewBody": {
     "placeholders": {
@@ -2018,7 +2017,7 @@
   "mechanismPlankSettings": "连体矿车设置",
   "mechanismPlankStartColumn": "起始列 (mX)",
   "mechanismPlankTrackLength": "轨道宽度 (mWidth)",
-  "mechanismPlankEditNotice": "该界面仅支持编辑轨道宽度和起始列。其他参数采用预设值，因为修改它们可能会导致连体矿车无法正常使用。如需进一步自定义，请手动编辑JSON文件。\n此外，不建议在功夫世界以外的地图中使用连体矿车。连体矿车在其他地图中会显示为紫色叉号，虽然不影响实际功能，但可能会影响关卡的整体观感。",
+  "mechanismPlankEditNotice": "该界面仅支持编辑轨道宽度和起始列。其他参数采用预设值，因为修改它们可能会导致连体矿车无法正常使用。如需进一步自定义，请手动编辑JSON文件。\n此外，不建议在功夫世界以外的地图中使用连体矿车。连体矿车在其他地图中更容易显示为紫色叉号，虽然不影响实际功能，但可能会影响关卡的整体观感。",
   "mechanismPlankOutOfAreaWarning": "当前轨道范围可能超出场地。",
   "portalTypeEgypt": "主线埃及",
   "portalTypeEgypt2": "埃及2号",
@@ -2107,5 +2106,21 @@
   "waveGeneratorWaveScreenHelpBody": "编辑脚本僵尸与各波参数。随机出怪使用累积僵尸池和消耗点数。",
   "waveGeneratorExpectationTapHint": "点击查看随机出怪期望",
   "waveGeneratorExpectationEmpty": "该波没有可用于随机出怪的池内僵尸。",
-  "waveGeneratorExpectationPoolNote": "期望基于累积 AddToZombiePool。点数足够高时仍可能出现其他僵尸。"
+  "waveGeneratorExpectationPoolNote": "期望基于累积 AddToZombiePool。点数足够高时仍可能出现其他僵尸。",
+  "protectItems": "保护物品挑战",
+  "protectGridItemChallengeHelpTitle": "保护物品挑战说明",
+  "briefOverview": "简要介绍",
+  "automaticCount": "自动计数",
+  "operationGuide": "操作指引",
+  "protectGridItemChallengeHelpOverview": "定义关卡中必须保护的障碍物。如果这些物品被破坏，关卡将立即失败。",
+  "protectGridItemChallengeHelpAutoCountBody": "软件会自动跟随您添加的物品数量更新需要保护的障碍物数量。",
+  "protectGridItemChallengeHelpOperationGuide": "在上方网格中点击选择坐标，然后点击“添加目标”按钮选择要保护的物品类型。",
+  "mustProtectCount": "当前保护目标数量：{count}",
+  "@mustProtectCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  }
 }
