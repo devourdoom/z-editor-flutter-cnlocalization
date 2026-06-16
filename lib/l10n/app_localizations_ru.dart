@@ -4066,6 +4066,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get eliteZombiesNotAllowed => 'Элитные зомби здесь не допускаются';
 
   @override
+  String get yetiZombiesNotAllowed => 'Yetis are not allowed here';
+
+  @override
   String fixToAlias(Object alias) {
     return 'Исправить на $alias';
   }
@@ -6462,10 +6465,6 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get waveGeneratorSpendingPointIncrement =>
       'Прирост очков (WaveSpendingPointIncrement)';
-
-  @override
-  String get waveGeneratorSpendingPointsWarning =>
-      'WaveSpendingPoints должно быть ≤ WaveSpendingPointIncrement, иначе уровень крашится при загрузке.';
 
   @override
   String waveGeneratorWaveCountSummary(int count) {

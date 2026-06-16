@@ -7444,6 +7444,12 @@ abstract class AppLocalizations {
   /// **'Elite zombies are not allowed here'**
   String get eliteZombiesNotAllowed;
 
+  /// No description provided for @yetiZombiesNotAllowed.
+  ///
+  /// In en, this message translates to:
+  /// **'Yetis are not allowed here'**
+  String get yetiZombiesNotAllowed;
+
   /// No description provided for @fixToAlias.
   ///
   /// In en, this message translates to:
@@ -8161,7 +8167,7 @@ abstract class AppLocalizations {
   /// No description provided for @waveManagerHelpPoints.
   ///
   /// In en, this message translates to:
-  /// **'Point-based spawning generates additional zombies during valid waves based on point cost.\nNormal waves have a cap of 60,000 points, while flag waves use a 2.5× multiplier.\nWhen points are positive, zombies are selected from the zombie pool. Expected spawn values for each zombie can be viewed in the wave event container.\nWhen points are negative, zombies with equivalent point value are removed from natural spawns.\nDo not include elite or custom zombies in the point-based spawning pool.'**
+  /// **'Point-based spawning generates additional zombies during valid waves based on point cost.\nNormal waves have a cap of 60,000 points, while flag waves use a 2.5× multiplier.\nWhen points are positive, zombies are selected from the zombie pool. Expected spawn values for each zombie can be viewed in the wave event container.\nWhen points are negative, zombies with equivalent point value are removed from natural spawns.\nDo not include Elite Zombies, Yetis, or custom zombies in the point-based spawning pool.'**
   String get waveManagerHelpPoints;
 
   /// No description provided for @pointsSection.
@@ -11692,12 +11698,6 @@ abstract class AppLocalizations {
   /// **'Point increment (WaveSpendingPointIncrement)'**
   String get waveGeneratorSpendingPointIncrement;
 
-  /// No description provided for @waveGeneratorSpendingPointsWarning.
-  ///
-  /// In en, this message translates to:
-  /// **'WaveSpendingPoints must be ≤ WaveSpendingPointIncrement or the level will crash on load.'**
-  String get waveGeneratorSpendingPointsWarning;
-
   /// No description provided for @waveGeneratorWaveCountSummary.
   ///
   /// In en, this message translates to:
@@ -11779,7 +11779,7 @@ abstract class AppLocalizations {
   /// No description provided for @waveGeneratorWaitUntilAllDie.
   ///
   /// In en, this message translates to:
-  /// **'Wait until all zombies die (WaitUntilAllZombiesDie)'**
+  /// **'Spawn this wave only after all zombies from the previous wave have been defeated (WaitUntilAllZombiesDie)'**
   String get waveGeneratorWaitUntilAllDie;
 
   /// No description provided for @waveGeneratorNoScriptedZombies.
@@ -11809,13 +11809,13 @@ abstract class AppLocalizations {
   /// No description provided for @waveGeneratorBlackHoleFieldHint.
   ///
   /// In en, this message translates to:
-  /// **'Built-in black hole event on this wave. Leave empty to disable.'**
+  /// **'Enter the number of columns to summon a black hole at the end of this wave, pulling all plants to the right.\nNote: Black hole can only be summoned if \"Spawn this wave only after all zombies from the previous wave have been defeated\" is enabled.'**
   String get waveGeneratorBlackHoleFieldHint;
 
   /// No description provided for @waveGeneratorBlackHoleWaveHint.
   ///
   /// In en, this message translates to:
-  /// **'Built-in black hole on this wave — plants dragged {cols} column(s) (ColNumPlantIsDragged).'**
+  /// **'A black hole appears at the end of this wave and pulls plants {cols} columns to the right'**
   String waveGeneratorBlackHoleWaveHint(int cols);
 
   /// No description provided for @waveGeneratorWavePoolAdd.

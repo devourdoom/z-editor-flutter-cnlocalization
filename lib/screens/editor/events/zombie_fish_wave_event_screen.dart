@@ -288,7 +288,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                   context,
                   theme,
                   l10n,
-                  label: '${l10n?.row ?? "Row"} $rowVal',
+                  label: l10n?.rowN(rowVal) ?? 'Row $rowVal',
                   rowValue: rowVal,
                   zombies: zombies,
                 );

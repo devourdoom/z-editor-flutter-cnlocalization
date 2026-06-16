@@ -4115,6 +4115,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get eliteZombiesNotAllowed => 'Elite zombies are not allowed here';
 
   @override
+  String get yetiZombiesNotAllowed => 'Yetis are not allowed here';
+
+  @override
   String fixToAlias(Object alias) {
     return 'Fix to $alias';
   }
@@ -4543,7 +4546,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get waveManagerHelpPoints =>
-      'Point-based spawning generates additional zombies during valid waves based on point cost.\nNormal waves have a cap of 60,000 points, while flag waves use a 2.5× multiplier.\nWhen points are positive, zombies are selected from the zombie pool. Expected spawn values for each zombie can be viewed in the wave event container.\nWhen points are negative, zombies with equivalent point value are removed from natural spawns.\nDo not include elite or custom zombies in the point-based spawning pool.';
+      'Point-based spawning generates additional zombies during valid waves based on point cost.\nNormal waves have a cap of 60,000 points, while flag waves use a 2.5× multiplier.\nWhen points are positive, zombies are selected from the zombie pool. Expected spawn values for each zombie can be viewed in the wave event container.\nWhen points are negative, zombies with equivalent point value are removed from natural spawns.\nDo not include Elite Zombies, Yetis, or custom zombies in the point-based spawning pool.';
 
   @override
   String get pointsSection => 'Points';
@@ -6527,10 +6530,6 @@ class AppLocalizationsEn extends AppLocalizations {
       'Point increment (WaveSpendingPointIncrement)';
 
   @override
-  String get waveGeneratorSpendingPointsWarning =>
-      'WaveSpendingPoints must be ≤ WaveSpendingPointIncrement or the level will crash on load.';
-
-  @override
   String waveGeneratorWaveCountSummary(int count) {
     return 'Waves: $count (edit on Waves tab)';
   }
@@ -6581,7 +6580,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get waveGeneratorWaitUntilAllDie =>
-      'Wait until all zombies die (WaitUntilAllZombiesDie)';
+      'Spawn this wave only after all zombies from the previous wave have been defeated (WaitUntilAllZombiesDie)';
 
   @override
   String get waveGeneratorNoScriptedZombies =>
@@ -6600,11 +6599,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get waveGeneratorBlackHoleFieldHint =>
-      'Built-in black hole event on this wave. Leave empty to disable.';
+      'Enter the number of columns to summon a black hole at the end of this wave, pulling all plants to the right.\nNote: Black hole can only be summoned if \"Spawn this wave only after all zombies from the previous wave have been defeated\" is enabled.';
 
   @override
   String waveGeneratorBlackHoleWaveHint(int cols) {
-    return 'Built-in black hole on this wave — plants dragged $cols column(s) (ColNumPlantIsDragged).';
+    return 'A black hole appears at the end of this wave and pulls plants $cols columns to the right';
   }
 
   @override

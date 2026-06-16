@@ -119,60 +119,21 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
     setState(() {});
   }
 
-  WaveGeneratorWaveData _copyWave({
-    bool? disableRandomSpawns,
-    List<WaveGeneratorZombieEntryData>? zombies,
-    int? spawnPlantFoodCount,
-    List<WaveGeneratorPoolEntryData>? addToZombiePool,
-    int? wavePointStart,
-    int? wavePointIncrement,
-    int? colNumPlantIsDragged,
-    bool? waitUntilAllZombiesDie,
-    bool clearSpawnPlantFood = false,
-    bool clearWavePointStart = false,
-    bool clearWavePointIncrement = false,
-    bool clearColNumPlantIsDragged = false,
-  }) {
-    return WaveGeneratorWaveData(
-      disableRandomSpawns: disableRandomSpawns ?? _wave.disableRandomSpawns,
-      zombies: zombies ?? _wave.zombies,
-      spawnPlantFoodCount: clearSpawnPlantFood
-          ? null
-          : (spawnPlantFoodCount ?? _wave.spawnPlantFoodCount),
-      addToZombiePool: addToZombiePool ?? _wave.addToZombiePool,
-      wavePointStart: clearWavePointStart
-          ? null
-          : (wavePointStart ?? _wave.wavePointStart),
-      wavePointIncrement: clearWavePointIncrement
-          ? null
-          : (wavePointIncrement ?? _wave.wavePointIncrement),
-      colNumPlantIsDragged: clearColNumPlantIsDragged
-          ? null
-          : (colNumPlantIsDragged ?? _wave.colNumPlantIsDragged),
-      waitUntilAllZombiesDie:
-          waitUntilAllZombiesDie ?? _wave.waitUntilAllZombiesDie,
+
+  bool _isYetiZombie(String id) {
+    return id == 'yeti' ||
+        id == 'treasureyeti' ||
+        id == 'treasureyeti_egypt';
+  }
+
+  void _showYetiZombieBlockedMessage(AppLocalizations? l10n) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          l10n?.yetiZombiesNotAllowed ?? 'Yetis are not allowed here',
+        ),
+      ),
     );
-  }
-
-  String _zombieDisplayName(String rtid) {
-    return ZombieDisplayUtils.localizedName(
-      context,
-      typeOrRtid: rtid,
-      levelFile: widget.levelFile,
-    );
-  }
-
-  String _zombieCodename(String rtid) {
-    return ZombieDisplayUtils.codename(rtid);
-  }
-
-  String? _zombieIcon(String rtid) {
-    return ZombieDisplayUtils.iconPath(rtid, levelFile: widget.levelFile);
-  }
-
-  int? _rowValue(String? row) {
-    if (row == null || row.isEmpty || row == '?') return 0;
-    return int.tryParse(row) ?? 0;
   }
 
   void _setZombieRow(int index, int rowValue) {
@@ -201,17 +162,6 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
   void _addZombie({required int rowValue}) {
     final l10n = AppLocalizations.of(context);
     widget.onRequestZombieSelection((selectedId) {
-      if (ZombieRepository().isElite(selectedId)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n?.eliteZombiesNotAllowed ??
-                  'Elite zombies are not allowed here',
-            ),
-          ),
-        );
-        return;
-      }
       final rtid = RtidParser.build(
         ZombieRepository().buildZombieAliases(selectedId),
         'ZombieTypes',
@@ -249,7 +199,21 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
     if (_wave.disableRandomSpawns) return;
     final l10n = AppLocalizations.of(context);
     widget.onRequestZombieSelection((selectedId) {
-      if (ZombieRepository().isElite(selectedId)) return;
+      if (_isYetiZombie(selectedId)) {
+        _showYetiZombieBlockedMessage(l10n);
+        return;
+      }
+      if (ZombieRepository().isElite(selectedId)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n?.eliteZombiesNotAllowed ??
+                  'Elite zombies are not allowed here',
+            ),
+          ),
+        );
+        return;
+      }
       final rtid = RtidParser.build(
         ZombieRepository().buildZombieAliases(selectedId),
         'ZombieTypes',
@@ -721,6 +685,7 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
     final l10n = AppLocalizations.of(context);
     final zombie = _wave.zombies[index];
     final iconPath = _zombieIcon(zombie.type);
+    final displayName = _zombieDisplayName(zombie.type);
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -752,7 +717,7 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            _zombieDisplayName(zombie.type),
+                            displayName,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -809,7 +774,6 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
                       onPressed: () {
                         Navigator.pop(ctx);
                         widget.onRequestZombieSelection((id) {
-                          if (ZombieRepository().isElite(id)) return;
                           final rtid = RtidParser.build(
                             ZombieRepository().buildZombieAliases(id),
                             'ZombieTypes',
