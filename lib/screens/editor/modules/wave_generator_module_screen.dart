@@ -70,9 +70,29 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
     setState(() {});
   }
 
+  bool _isYetiZombie(String id) {
+    return id == 'yeti' ||
+        id == 'treasureyeti' ||
+        id == 'treasureyeti_egypt';
+  }
+
+  void _showYetiZombieBlockedMessage(AppLocalizations? l10n) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          l10n?.yetiZombiesNotAllowed ?? 'Yetis are not allowed here',
+        ),
+      ),
+    );
+  }
+
   void _addPoolZombie() {
     final l10n = AppLocalizations.of(context);
     widget.onRequestZombieSelection((selectedId) {
+      if (_isYetiZombie(selectedId)) {
+        _showYetiZombieBlockedMessage(l10n);
+        return;
+      }
       if (ZombieRepository().isElite(selectedId)) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
@@ -208,32 +228,7 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            if (!_data.spendingPointsValid)
-              Card(
-                color: theme.colorScheme.errorContainer,
-                child: Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: Row(
-                    children: [
-                      Icon(
-                        Icons.warning_amber,
-                        color: theme.colorScheme.onErrorContainer,
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          l10n?.waveGeneratorSpendingPointsWarning ??
-                              'WaveSpendingPoints must be ≤ WaveSpendingPointIncrement or the level will crash on load.',
-                          style: TextStyle(
-                            color: theme.colorScheme.onErrorContainer,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            if (!_data.spendingPointsValid) const SizedBox(height: 12),
+            
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),

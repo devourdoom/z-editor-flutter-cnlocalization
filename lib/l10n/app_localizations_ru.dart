@@ -3696,9 +3696,6 @@ class AppLocalizationsRu extends AppLocalizations {
   String get protectPlants => 'Защищать растения';
 
   @override
-  String get protectItems => 'Защищать предметы';
-
-  @override
   String get autoCount => 'Автосчёт';
 
   @override
@@ -4064,6 +4061,9 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get eliteZombiesNotAllowed => 'Элитные зомби здесь не допускаются';
+
+  @override
+  String get yetiZombiesNotAllowed => 'Yetis are not allowed here';
 
   @override
   String fixToAlias(Object alias) {
@@ -4441,7 +4441,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get minCountThreshold => 'Порог мин. количества';
 
   @override
-  String get followAccountLevel => 'Level 0 follows the player’s account level';
+  String get followAccountLevel =>
+      'Level 0 plants use their corresponding tier from the player\'s account.';
 
   @override
   String get enablePointSpawning => 'Включить очки спавна';
@@ -4618,7 +4619,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get mustProtectCountAll => 'Обязательно защитить (0 = все)';
 
   @override
-  String get mustProtectCount => 'Обязательно защитить';
+  String mustProtectCount(int count) {
+    return 'Current protected target count: $count';
+  }
 
   @override
   String get gridItemType => 'Тип объекта сетки';
@@ -6280,7 +6283,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get mechanismPlankEditNotice =>
-      'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they will appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.';
+      'This interface only supports editing the starting column and track length. All other parameters use preset values, as modifying them may cause Connected Minecarts to malfunction. For further customization, please edit the JSON file manually.\nAdditionally, Connected Minecarts are not recommended outside of Kongfu World, as they are more likely to appear as purple X markers. This does not affect their actual functionality, but it may impact the level\'s visual presentation.';
 
   @override
   String get mechanismPlankOutOfAreaWarning =>
@@ -6332,6 +6335,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get portalTypeEndlessWest => 'Wild West (Endless)';
 
   @override
+  String get portalTypeEndlessKongfu => 'Kongfu World (Endless)';
+
+  @override
   String get portalTypeEndlessFuture => 'Far Future (Endless)';
 
   @override
@@ -6344,6 +6350,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get portalTypeEndlessIceAge => 'Frostbite Caves (Endless)';
 
   @override
+  String get portalTypeEndlessSkyCity => 'Sky City (Endless)';
+
+  @override
   String get portalTypeEndlessLostCity => 'Lost City (Endless)';
 
   @override
@@ -6351,6 +6360,24 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get portalTypeEndlessDino => 'Jurassic Marsh (Endless)';
+
+  @override
+  String get portalTypeEndlessModern => 'Modern Day (Endless)';
+
+  @override
+  String get portalTypeMemoryLane1 => 'Memory Lane 1';
+
+  @override
+  String get portalTypeMemoryLane2 => 'Memory Lane 2';
+
+  @override
+  String get portalTypeMemoryLane3 => 'Memory Lane 3';
+
+  @override
+  String get portalTypeShieldGenerator => 'Shield Generator';
+
+  @override
+  String get portalTypeGlacialNianSkill => 'Glacial Nian Skill';
 
   @override
   String get portalTypeZombotany => 'Zombotany';
@@ -6389,6 +6416,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get portalTypeEliteOnmyojiHard => 'Elite Onmyoji (Hard)';
 
   @override
+  String get portalTypeRomeoHard => 'Romeo (Memory Lane)';
+
+  @override
+  String get portalTypeRomeoHard2 => 'Romeo 2 (Memory Lane)';
+
+  @override
+  String get portalTypeJulietHard => 'Juliet (Memory Lane)';
+
+  @override
+  String get portalTypeJulietHard2 => 'Juliet 2 (Memory Lane)';
+
+  @override
+  String get portalTypeSherlockHard => 'Sherlock (Memory Lane)';
+
+  @override
   String get portalTypeEliteHunter => 'Elite Hunter';
 
   @override
@@ -6401,10 +6443,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get portalTypeEliteBumperCar => 'Elite Bumper Car';
 
   @override
+  String get portalTypeGlacialNian => 'Glacial Nian';
+
+  @override
   String get portalTypeEliteWizard => 'Elite Wizard';
 
   @override
   String get portalTypeEliteKing => 'Elite King';
+
+  @override
+  String get portalTypeEliteMirrorQueen => 'Elite Mirror Queen';
 
   @override
   String get waveGeneratorTabLabel => 'Волны';
@@ -6462,10 +6510,6 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get waveGeneratorSpendingPointIncrement =>
       'Прирост очков (WaveSpendingPointIncrement)';
-
-  @override
-  String get waveGeneratorSpendingPointsWarning =>
-      'WaveSpendingPoints должно быть ≤ WaveSpendingPointIncrement, иначе уровень крашится при загрузке.';
 
   @override
   String waveGeneratorWaveCountSummary(int count) {
@@ -6575,4 +6619,31 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get waveGeneratorExpectationPoolNote =>
       'Ожидание основано на накопленном AddToZombiePool. Другие зомби могут появиться при достаточном количестве очков.';
+
+  @override
+  String get protectItems => 'Save Our Items';
+
+  @override
+  String get protectGridItemChallengeHelpTitle => 'Save Our Items module';
+
+  @override
+  String get briefOverview => 'Overview';
+
+  @override
+  String get automaticCount => 'Automatic Count';
+
+  @override
+  String get operationGuide => 'Operation Guide';
+
+  @override
+  String get protectGridItemChallengeHelpOverview =>
+      'Specify the grid items that must be protected in the level. The level will immediately fail if any of them are destroyed.';
+
+  @override
+  String get protectGridItemChallengeHelpAutoCountBody =>
+      'The editor will automatically update the number of grid items that need to be protected based on the number of items you add.';
+
+  @override
+  String get protectGridItemChallengeHelpOperationGuide =>
+      'Click a position in the grid above, then click the \"Add item\" button to select the type of item to protect.';
 }

@@ -679,9 +679,20 @@
     "name": "zombie_future_protector",
     "tags": [
       "West_Future",
-      "Evildave"
+      "Evildave",
+      "Basic"
     ],
     "icon": "zombie_future_protector.webp"
+  },
+  {
+    "id": "wave_elecshieldgenerator",
+    "name": "zombie_wave_elecshieldgenerator",
+    "tags": [
+      "West_Future",
+      "Memory",
+      "Basic"
+    ],
+    "icon": "zombie_wave_elecshieldgenerator.webp"
   },
   {
     "id": "mech_cone",
@@ -1407,7 +1418,8 @@
     "id": "skycity_protector",
     "name": "zombie_skycity_protector",
     "tags": [
-      "Kongfu_Skycity"
+      "Kongfu_Skycity",
+      "Basic"
     ],
     "icon": "zombie_skycity_protector.webp"
   },
@@ -1984,6 +1996,15 @@
       "Modern_Pvz1",
       "Basic",
       "Custom"
+    ],
+    "icon": "zombie_modern_newspaper.webp"
+  },
+  {
+    "id": "beghouled_newspaper",
+    "name": "zombie_beghouled_newspaper",
+    "tags": [
+      "Modern_Pvz1",
+      "Basic"
     ],
     "icon": "zombie_modern_newspaper.webp"
   },

@@ -271,7 +271,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String cacheCleared(Object count) {
-    return '已清理 $count 个缓存文件';
+    return '已清理$count个缓存文件';
   }
 
   @override
@@ -463,13 +463,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get unsavedChanges => '有未保存的更改';
 
   @override
-  String get saveBeforeLeaving => '离开前是否保存？';
+  String get saveBeforeLeaving => '离开前是否保存更改？';
 
   @override
   String get discard => '放弃';
 
   @override
-  String get stayInEditor => '留下';
+  String get stayInEditor => '取消';
 
   @override
   String get saved => '已保存';
@@ -3551,9 +3551,6 @@ class AppLocalizationsZh extends AppLocalizations {
   String get protectPlants => '保护植物挑战';
 
   @override
-  String get protectItems => '保护物品挑战';
-
-  @override
   String get autoCount => '自动计数';
 
   @override
@@ -3835,7 +3832,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ignoreGravestoneSubtitle => '开启后裂缝可无视障碍物生成';
 
   @override
-  String get thisPortalSpawns => '该裂缝将生成以下僵尸：';
+  String get thisPortalSpawns => '该裂缝可能生成以下僵尸：';
 
   @override
   String startEndFormat(int sx, int sy, int ex, int ey) {
@@ -3910,7 +3907,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get cannotAddEliteZombies => '无法添加精英僵尸';
 
   @override
-  String get eliteZombiesNotAllowed => '此处不允许使用精英僵尸';
+  String get eliteZombiesNotAllowed => '此处不允许添加精英僵尸';
+
+  @override
+  String get yetiZombiesNotAllowed => '此处不允许添加雪人僵尸';
 
   @override
   String fixToAlias(Object alias) {
@@ -4264,7 +4264,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get minCountThreshold => '最小数量阈值';
 
   @override
-  String get followAccountLevel => 'Level 0 follows the player’s account level';
+  String get followAccountLevel => '0阶植物将使用玩家账号中的对应阶级';
 
   @override
   String get enablePointSpawning => '启用点数出怪';
@@ -4312,7 +4312,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get waveManagerHelpPoints =>
-      '点数出怪会根据僵尸消耗的点数在有效波次中额外刷新僵尸。常规波次点数上限为60000，旗帜波点数会变为2.5倍。点数为正数时，出怪使用的僵尸从僵尸池中选取。在波次容器编辑页面内可查看每种僵尸的出现期望。点数为负数时，会从自然出怪事件中扣除相应点数的僵尸。注意点数出怪池不应该写精英怪以及自定义僵尸。';
+      '点数出怪会根据僵尸消耗的点数在有效波次中额外刷新僵尸。常规波次点数上限为60000，旗帜波点数会变为2.5倍。点数为正数时，出怪使用的僵尸从僵尸池中选取。在波次容器编辑页面内可查看每种僵尸的出现期望。点数为负数时，会从自然出怪事件中扣除相应点数的僵尸。注意点数出怪池不应该写精英僵尸、雪人僵尸以及自定义僵尸。';
 
   @override
   String get pointsSection => '点数出怪';
@@ -4437,7 +4437,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get mustProtectCountAll => '必须保护的数量（0表示全部保护）：';
 
   @override
-  String get mustProtectCount => '必须保护的数量 (MustProtectCount)';
+  String mustProtectCount(int count) {
+    return '当前保护目标数量：$count';
+  }
 
   @override
   String get gridItemType => '物品类型';
@@ -4926,7 +4928,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get moduleDesc_InitialGridItemGulliverTunnelProperties =>
-      '在场地上预置可以使经过单位变大变小的隧道';
+      '在场地上预置可以使进入单位变大变小的隧道';
 
   @override
   String get witchModuleTitle => '女巫登场设置';
@@ -5200,7 +5202,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pvz1PassagePortalSpawnPreview => '传送门生成列预览';
 
   @override
-  String get pvz1PassageHelpPreview => '生成范围预览预览';
+  String get pvz1PassageHelpPreview => '生成范围预览';
 
   @override
   String pvz1PassageHelpPreviewBody(int maxIndex) {
@@ -5214,7 +5216,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get moduleWaveFieldZeroBased => '波次 (从0开始计数)';
 
   @override
-  String get appearanceLabel => '出场';
+  String get appearanceLabel => '组';
 
   @override
   String get airDropShipGroupLabel => '组';
@@ -5273,16 +5275,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get renaiModuleStatuesInCell => '当前格子中的物品';
 
   @override
-  String get renaiModuleExpectationLabel => '文艺复兴事件预览';
+  String get renaiModuleExpectationLabel => '夜幕降临事件';
 
   @override
   String get renaiModuleNightStarts => '黑夜开始';
 
   @override
-  String get renaiModulePreviewNightStatues => '黑夜雕像：';
+  String get renaiModulePreviewNightStatues => '本波生成的夜间障碍物：';
 
   @override
-  String get renaiModulePreviewRevivingStatues => '复活雕像：';
+  String get renaiModulePreviewRevivingStatues => '本波复活的障碍物：';
 
   @override
   String get renaiModuleStatueCarve => '雕像复活';
@@ -5329,7 +5331,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get airDropShipModuleDropAreaPreview => '投放区域预览';
 
   @override
-  String get airDropShipModuleAreaDropPreviewLabel => '投放区域预览：';
+  String get airDropShipModuleAreaDropPreviewLabel => 'Area drop preview:';
 
   @override
   String get airDropShipModuleExpectationLabel => '空投小鬼';
@@ -5882,7 +5884,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get armrackModuleHelpOverviewBody =>
-      '在场地上放置兵器架。第1波为初始预设（关卡开始前）；后续波次组按 N−1 规则在波次生成器的对应波次出现。';
+      '在第一波于场上放置兵器架。此模块用于让兵器架在编辑器和游戏中正常显示，避免出现错误的阳光贴图。';
 
   @override
   String get armrackModuleHelpPlacement => '放置方式';
@@ -5924,7 +5926,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get energyGridModuleHelpOverviewBody =>
-      '在场地上放置太极瓷砖。第1波为初始预设（关卡开始前）；后续波次组按 N−1 规则在波次生成器的对应波次出现。';
+      '在第一波于场上放置太极瓷砖。使用此模块配置关卡文件中的瓷砖位置。';
 
   @override
   String get energyGridModuleHelpPlacement => '放置方式';
@@ -5955,51 +5957,52 @@ class AppLocalizationsZh extends AppLocalizations {
       '由于游戏端问题，生成的太极瓷砖可能显示为紫色 X 标记，这不影响实际功能。';
 
   @override
-  String get gridOverrideModuleAppearances => '波次组';
+  String get gridOverrideModuleAppearances => '生成组';
 
   @override
-  String get gridOverrideModuleWaveFieldOneBased =>
-      '模块波次（1 = 初始预设，2+ = 在生成器第 N−1 波出现）';
+  String get gridOverrideModuleWaveFieldOneBased => '波次编号';
 
   @override
   String get gridOverrideModuleTimelineNote => '仅第一波条目会显示在波次时间轴中。';
 
   @override
-  String get gridOverrideModuleInitialWaveNote => '此为初始预设，对象会在关卡开始前出现在场地上。';
+  String get gridOverrideModuleInitialWaveNote =>
+      '本波次用于预置障碍物，添加的障碍物会在关卡开始前出现在场地上。';
 
   @override
   String gridOverrideModuleWaveSpawnNote(int waveGeneratorWave) {
-    return '此组在波次生成器第 $waveGeneratorWave 波开始时出现。';
+    return '本波次的障碍物会在波次生成器的第$waveGeneratorWave波开始时生成。';
   }
 
   @override
-  String get gridOverrideModuleWaveSpawnTimelineNote => '这些条目在波次管理器标签页中不生效。';
+  String get gridOverrideModuleWaveSpawnTimelineNote =>
+      '由于新旧写法不兼容，波次管理器中无法通过此模块随波次生成障碍物，请使用障碍物生成等事件进行生成。';
 
   @override
   String get gridOverrideModuleHelpWaveNumbering => '波次编号';
 
   @override
   String get gridOverrideModuleHelpWaveNumberingBody =>
-      '第1波为初始预设：对象在关卡开始前出现在场地上。从第2波起按 N−1 规则：模块第 N 波在波次生成器第 N−1 波时出现（模块第2波 → 生成器第1波，模块第3波 → 生成器第2波，依此类推）。';
+      '波次编号1用于预置障碍物，添加的障碍物会在关卡开始前出现在场地上。从波次编号2开始，编号与波次生成器中的波次一一对应，如波次编号2对应生成器第1波，波次编号3对应生成器第2波。';
 
   @override
-  String get gridOverridePreviewArmrackTitle => '兵器架布局';
+  String get gridOverridePreviewArmrackTitle => '兵器架布局预览';
 
   @override
-  String get gridOverridePreviewEnergyGridTitle => '太极瓷砖布局';
+  String get gridOverridePreviewEnergyGridTitle => '太极地砖布局预览';
 
   @override
-  String get waveGeneratorInitialGridOverridesTitle => '初始功夫网格物品';
+  String get waveGeneratorInitialGridOverridesTitle => '初始功夫障碍物管理';
 
   @override
-  String get waveGeneratorPreviewInitialArmrack => '预览初始兵器架布局';
+  String get waveGeneratorPreviewInitialArmrack => '初始兵器架';
 
   @override
-  String get waveGeneratorPreviewInitialEnergyGrid => '预览初始太极瓷砖布局';
+  String get waveGeneratorPreviewInitialEnergyGrid => '初始太极地砖';
 
   @override
   String waveGeneratorGridOverrideWavePreviewTitle(int wave, String label) {
-    return '第 $wave 波 — $label';
+    return '第$wave波 - $label';
   }
 
   @override
@@ -6013,7 +6016,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get mechanismPlankEditNotice =>
-      '该界面仅支持编辑轨道宽度和起始列。其他参数采用预设值，因为修改它们可能会导致连体矿车无法正常使用。如需进一步自定义，请手动编辑JSON文件。\n此外，不建议在功夫世界以外的地图中使用连体矿车。连体矿车在其他地图中会显示为紫色叉号，虽然不影响实际功能，但可能会影响关卡的整体观感。';
+      '该界面仅支持编辑轨道宽度和起始列。其他参数采用预设值，因为修改它们可能会导致连体矿车无法正常使用。如需进一步自定义，请手动编辑JSON文件。\n此外，不建议在功夫世界以外的地图中使用连体矿车。连体矿车在其他地图中更容易显示为紫色叉号，虽然不影响实际功能，但可能会影响关卡的整体观感。';
 
   @override
   String get mechanismPlankOutOfAreaWarning => '当前轨道范围可能超出场地。';
@@ -6064,6 +6067,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get portalTypeEndlessWest => '无尽西部';
 
   @override
+  String get portalTypeEndlessKongfu => '无尽功夫';
+
+  @override
   String get portalTypeEndlessFuture => '无尽未来';
 
   @override
@@ -6076,6 +6082,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get portalTypeEndlessIceAge => '无尽冰河';
 
   @override
+  String get portalTypeEndlessSkyCity => '无尽天空';
+
+  @override
   String get portalTypeEndlessLostCity => '无尽失落';
 
   @override
@@ -6083,6 +6092,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get portalTypeEndlessDino => '无尽恐龙';
+
+  @override
+  String get portalTypeEndlessModern => '无尽摩登';
+
+  @override
+  String get portalTypeMemoryLane1 => '时空能量1';
+
+  @override
+  String get portalTypeMemoryLane2 => '时空能量2';
+
+  @override
+  String get portalTypeMemoryLane3 => '时空能量3';
+
+  @override
+  String get portalTypeShieldGenerator => '电磁盾发生器';
+
+  @override
+  String get portalTypeGlacialNianSkill => '寒冰年兽技能';
 
   @override
   String get portalTypeZombotany => '植物僵尸';
@@ -6121,6 +6148,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get portalTypeEliteOnmyojiHard => '困难阴阳';
 
   @override
+  String get portalTypeRomeoHard => '回忆罗密欧';
+
+  @override
+  String get portalTypeRomeoHard2 => '回忆罗密欧2';
+
+  @override
+  String get portalTypeJulietHard => '回忆朱丽叶';
+
+  @override
+  String get portalTypeJulietHard2 => '回忆朱丽叶2';
+
+  @override
+  String get portalTypeSherlockHard => '回忆夏洛克';
+
+  @override
   String get portalTypeEliteHunter => '精英猎人';
 
   @override
@@ -6133,10 +6175,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get portalTypeEliteBumperCar => '精英碰碰';
 
   @override
+  String get portalTypeGlacialNian => '寒冰年兽';
+
+  @override
   String get portalTypeEliteWizard => '精英巫师';
 
   @override
   String get portalTypeEliteKing => '精英国王';
+
+  @override
+  String get portalTypeEliteMirrorQueen => '精英魔镜';
 
   @override
   String get waveGeneratorTabLabel => '波次';
@@ -6195,10 +6243,6 @@ class AppLocalizationsZh extends AppLocalizations {
       '点数增量 (WaveSpendingPointIncrement)';
 
   @override
-  String get waveGeneratorSpendingPointsWarning =>
-      'WaveSpendingPoints 必须 ≤ WaveSpendingPointIncrement，否则关卡加载时会崩溃。';
-
-  @override
   String waveGeneratorWaveCountSummary(int count) {
     return '波次数：$count（在「波次」标签页编辑）';
   }
@@ -6243,7 +6287,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get waveGeneratorWaitUntilAllDie =>
-      '等待全部僵尸死亡 (WaitUntilAllZombiesDie)';
+      '在上一波僵尸全部死亡后再生成此波僵尸 (WaitUntilAllZombiesDie)';
 
   @override
   String get waveGeneratorNoScriptedZombies => '该波没有脚本僵尸。';
@@ -6258,11 +6302,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get waveGeneratorWavePointIncrement => '波次点数增量 (WavePointIncrement)';
 
   @override
-  String get waveGeneratorBlackHoleFieldHint => '该波内置黑洞事件。留空则禁用。';
+  String get waveGeneratorBlackHoleFieldHint =>
+      '填写列数以在本波结束时召唤时空黑洞，将所有植物向右吸动。\n注意：只有开启“在上一波僵尸全部死亡后再生成此波僵尸”时，才能召唤成功。';
 
   @override
   String waveGeneratorBlackHoleWaveHint(int cols) {
-    return '内置黑洞——植物被拖拽 $cols 列 (ColNumPlantIsDragged)。';
+    return '时空黑洞在本波结束时出现，将植物向右吸动$cols列';
   }
 
   @override
@@ -6289,4 +6334,31 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get waveGeneratorExpectationPoolNote =>
       '期望基于累积 AddToZombiePool。点数足够高时仍可能出现其他僵尸。';
+
+  @override
+  String get protectItems => '保护物品挑战';
+
+  @override
+  String get protectGridItemChallengeHelpTitle => '保护物品挑战说明';
+
+  @override
+  String get briefOverview => '简要介绍';
+
+  @override
+  String get automaticCount => '自动计数';
+
+  @override
+  String get operationGuide => '操作指引';
+
+  @override
+  String get protectGridItemChallengeHelpOverview =>
+      '定义关卡中必须保护的障碍物。如果这些物品被破坏，关卡将立即失败。';
+
+  @override
+  String get protectGridItemChallengeHelpAutoCountBody =>
+      '软件会自动跟随您添加的物品数量更新需要保护的障碍物数量。';
+
+  @override
+  String get protectGridItemChallengeHelpOperationGuide =>
+      '在上方网格中点击选择坐标，然后点击“添加目标”按钮选择要保护的物品类型。';
 }

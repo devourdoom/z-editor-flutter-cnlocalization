@@ -749,7 +749,7 @@ class _ProtectTheGridItemEditorState extends State<_ProtectTheGridItemEditor> {
         TextFormField(
           initialValue: _data.mustProtectCount.toString(),
           decoration: InputDecoration(
-            labelText: l10n?.mustProtectCount ?? 'Must Protect Count',
+            labelText: l10n?.mustProtectCount(_data.mustProtectCount) ?? 'Must Protect Count',
             border: const OutlineInputBorder(),
           ),
           keyboardType: TextInputType.number,
@@ -775,7 +775,7 @@ class _ProtectTheGridItemEditorState extends State<_ProtectTheGridItemEditor> {
                       children: [
                         Expanded(
                           child: TextFormField(
-                            initialValue: item.gridItemType,
+                            initialValue: '${item.gridItemType}',
                             decoration: InputDecoration(
                               labelText: l10n?.gridItemType ?? 'Grid Item Type',
                               border: const OutlineInputBorder(),

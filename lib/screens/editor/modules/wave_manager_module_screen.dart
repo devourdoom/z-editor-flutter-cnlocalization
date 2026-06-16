@@ -104,6 +104,22 @@ class _WaveManagerModuleScreenState extends State<WaveManagerModuleScreen> {
     setState(() {});
   }
 
+  bool _isYetiZombie(String id) {
+    return id == 'yeti' ||
+        id == 'treasureyeti' ||
+        id == 'treasureyeti_egypt';
+  }
+
+  void _showYetiZombieBlockedMessage(AppLocalizations? l10n) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          l10n?.yetiZombiesNotAllowed ?? 'Yetis are not allowed here',
+        ),
+      ),
+    );
+  }
+
   DynamicZombieGroup get _firstGroup => _data.dynamicZombies.first;
 
   void _updateFirstGroup({
@@ -120,6 +136,10 @@ class _WaveManagerModuleScreenState extends State<WaveManagerModuleScreen> {
   void _addZombie() {
     final l10n = AppLocalizations.of(context);
     widget.onRequestZombieSelection((selectedId) {
+      if (_isYetiZombie(selectedId)) {
+        _showYetiZombieBlockedMessage(l10n);
+        return;
+      }
       final isElite = ZombieRepository().isElite(selectedId);
       if (isElite) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -116,6 +116,8 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
         return l10n?.portalTypeEndlessPirate ?? def.name;
       case 'dangerroom_west':
         return l10n?.portalTypeEndlessWest ?? def.name;
+      case 'dangerroom_Kongfu':
+        return l10n?.portalTypeEndlessKongfu ?? def.name;
       case 'dangerroom_future':
         return l10n?.portalTypeEndlessFuture ?? def.name;
       case 'dangerroom_dark':
@@ -124,16 +126,30 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
         return l10n?.portalTypeEndlessBeach ?? def.name;
       case 'dangerroom_iceage':
         return l10n?.portalTypeEndlessIceAge ?? def.name;
+      case 'dangerroom_skycity':
+        return l10n?.portalTypeEndlessSkyCity ?? def.name;
       case 'dangerroom_lostcity':
         return l10n?.portalTypeEndlessLostCity ?? def.name;
       case 'dangerroom_eighties':
         return l10n?.portalTypeEndlessEighties ?? def.name;
       case 'dangerroom_dino':
         return l10n?.portalTypeEndlessDino ?? def.name;
+      case 'dangerroom_modern':
+        return l10n?.portalTypeEndlessModern ?? def.name;
+      case 'pvz1_A':
+        return l10n?.portalTypeMemoryLane1 ?? def.name;
+      case 'pvz1_B':
+        return l10n?.portalTypeMemoryLane2 ?? def.name;
+      case 'pvz1_C':
+        return l10n?.portalTypeMemoryLane3 ?? def.name;
+      case 'protector':
+        return l10n?.portalTypeShieldGenerator ?? def.name;
       case 'pvz1_Zombotany':
         return l10n?.portalTypeZombotany ?? def.name;
       case 'pvz1_Slime':
         return l10n?.portalTypeSlimeZombies ?? def.name;
+      case 'pvz1_tutorial2':
+        return l10n?.portalTypeGlacialNianSkill ?? def.name;
       case 'pvz1_Universe':
         return l10n?.portalTypeUniverse42 ?? def.name;
       case 'pvz1_Uncharted':
@@ -154,18 +170,32 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
         return l10n?.portalTypeEliteBallistaHard ?? def.name;
       case 'pvz1_elite_heian_onmyoji_hard':
         return l10n?.portalTypeEliteOnmyojiHard ?? def.name;
-      case 'iceage_hunter_elite':
+      case 'pvz1_renai_romeo_hard':
+        return l10n?.portalTypeRomeoHard ?? def.name;
+      case 'pvz1_renai_romeo2_hard':
+        return l10n?.portalTypeRomeoHard2 ?? def.name;
+      case 'pvz1_renai_juliet_hard':
+        return l10n?.portalTypeJulietHard ?? def.name;
+      case 'pvz1_renai_juliet2_hard':
+        return l10n?.portalTypeJulietHard2 ?? def.name;
+      case 'pvz1_renai_sherlock_hard':
+        return l10n?.portalTypeSherlockHard ?? def.name;
+      case 'plantwars_iceage_hunter_elite':
         return l10n?.portalTypeEliteHunter ?? def.name;
-      case 'iceage_chief_elite':
+      case 'plantwars_iceage_chief_elite':
         return l10n?.portalTypeEliteChief ?? def.name;
-      case 'iceage_weaselhoarder_elite':
+      case 'plantwars_iceage_weaselhoarder_elite':
         return l10n?.portalTypeEliteWeasel ?? def.name;
-      case 'bumpercar_elite':
+      case 'plantwars_bumpercar_elite':
         return l10n?.portalTypeEliteBumperCar ?? def.name;
+      case 'plantwars_IceYearMonster':
+        return l10n?.portalTypeGlacialNian ?? def.name;
       case 'dark_wizard_elite':
         return l10n?.portalTypeEliteWizard ?? def.name;
       case 'dark_king_elite':
         return l10n?.portalTypeEliteKing ?? def.name;
+      case 'plantwars_mirror_queen_phase3':
+        return l10n?.portalTypeEliteMirrorQueen ?? def.name;
       default:
         return def.name;
     }

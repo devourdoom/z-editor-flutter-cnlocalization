@@ -119,6 +119,23 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
     setState(() {});
   }
 
+
+  bool _isYetiZombie(String id) {
+    return id == 'yeti' ||
+        id == 'treasureyeti' ||
+        id == 'treasureyeti_egypt';
+  }
+
+  void _showYetiZombieBlockedMessage(AppLocalizations? l10n) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          l10n?.yetiZombiesNotAllowed ?? 'Yetis are not allowed here',
+        ),
+      ),
+    );
+  }
+
   WaveGeneratorWaveData _copyWave({
     bool? disableRandomSpawns,
     List<WaveGeneratorZombieEntryData>? zombies,
@@ -134,7 +151,8 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
     bool clearColNumPlantIsDragged = false,
   }) {
     return WaveGeneratorWaveData(
-      disableRandomSpawns: disableRandomSpawns ?? _wave.disableRandomSpawns,
+      disableRandomSpawns:
+          disableRandomSpawns ?? _wave.disableRandomSpawns,
       zombies: zombies ?? _wave.zombies,
       spawnPlantFoodCount: clearSpawnPlantFood
           ? null
@@ -167,11 +185,16 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
   }
 
   String? _zombieIcon(String rtid) {
-    return ZombieDisplayUtils.iconPath(rtid, levelFile: widget.levelFile);
+    return ZombieDisplayUtils.iconPath(
+      rtid,
+      levelFile: widget.levelFile,
+    );
   }
 
-  int? _rowValue(String? row) {
-    if (row == null || row.isEmpty || row == '?') return 0;
+  int _rowValue(String? row) {
+    if (row == null || row.isEmpty || row == '?') {
+      return 0;
+    }
     return int.tryParse(row) ?? 0;
   }
 
@@ -201,17 +224,6 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
   void _addZombie({required int rowValue}) {
     final l10n = AppLocalizations.of(context);
     widget.onRequestZombieSelection((selectedId) {
-      if (ZombieRepository().isElite(selectedId)) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              l10n?.eliteZombiesNotAllowed ??
-                  'Elite zombies are not allowed here',
-            ),
-          ),
-        );
-        return;
-      }
       final rtid = RtidParser.build(
         ZombieRepository().buildZombieAliases(selectedId),
         'ZombieTypes',
@@ -249,7 +261,21 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
     if (_wave.disableRandomSpawns) return;
     final l10n = AppLocalizations.of(context);
     widget.onRequestZombieSelection((selectedId) {
-      if (ZombieRepository().isElite(selectedId)) return;
+      if (_isYetiZombie(selectedId)) {
+        _showYetiZombieBlockedMessage(l10n);
+        return;
+      }
+      if (ZombieRepository().isElite(selectedId)) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              l10n?.eliteZombiesNotAllowed ??
+                  'Elite zombies are not allowed here',
+            ),
+          ),
+        );
+        return;
+      }
       final rtid = RtidParser.build(
         ZombieRepository().buildZombieAliases(selectedId),
         'ZombieTypes',
@@ -531,6 +557,7 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
                               'Columns dragged (ColNumPlantIsDragged)',
                           border: const OutlineInputBorder(),
                           helperText: l10n?.waveGeneratorBlackHoleFieldHint,
+                          helperMaxLines: 4,
                         ),
                         keyboardType: TextInputType.number,
                         onChanged: (v) {
@@ -721,6 +748,7 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
     final l10n = AppLocalizations.of(context);
     final zombie = _wave.zombies[index];
     final iconPath = _zombieIcon(zombie.type);
+    final displayName = _zombieDisplayName(zombie.type);
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
@@ -752,7 +780,7 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
                         const SizedBox(width: 8),
                         Expanded(
                           child: Text(
-                            _zombieDisplayName(zombie.type),
+                            displayName,
                             style: Theme.of(context)
                                 .textTheme
                                 .titleMedium
@@ -809,7 +837,6 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
                       onPressed: () {
                         Navigator.pop(ctx);
                         widget.onRequestZombieSelection((id) {
-                          if (ZombieRepository().isElite(id)) return;
                           final rtid = RtidParser.build(
                             ZombieRepository().buildZombieAliases(id),
                             'ZombieTypes',
@@ -830,19 +857,47 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
                       label: Text(l10n?.change ?? 'Change'),
                     ),
                     const SizedBox(height: 8),
-                    FilledButton.icon(
-                      style: FilledButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.error,
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onError,
-                      ),
-                      onPressed: () {
-                        Navigator.pop(ctx);
-                        _removeZombie(index);
-                      },
-                      icon: const Icon(Icons.delete_outline),
-                      label: Text(l10n?.delete ?? 'Delete'),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: OutlinedButton.icon(
+                            onPressed: () {
+                              final rowStr = rowValue == 0 ? '?' : '$rowValue';
+                              final copy = WaveGeneratorZombieEntryData(
+                                type: zombie.type,
+                                row: rowStr,
+                              );
+                              _wave = _copyWave(
+                                zombies: [
+                                  ..._wave.zombies,
+                                  copy,
+                                ],
+                              );
+                              _sync();
+                              Navigator.pop(ctx);
+                            },
+                            icon: const Icon(Icons.copy),
+                            label: Text(l10n?.copy ?? 'Copy'),
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: FilledButton.icon(
+                            style: FilledButton.styleFrom(
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.error,
+                              foregroundColor:
+                                  Theme.of(context).colorScheme.onError,
+                            ),
+                            onPressed: () {
+                              Navigator.pop(ctx);
+                              _removeZombie(index);
+                            },
+                            icon: const Icon(Icons.delete_outline),
+                            label: Text(l10n?.delete ?? 'Delete'),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
