@@ -7309,7 +7309,7 @@ abstract class AppLocalizations {
   /// No description provided for @thisPortalSpawns.
   ///
   /// In en, this message translates to:
-  /// **'This portal spawns:'**
+  /// **'This portal can spawn:'**
   String get thisPortalSpawns;
 
   /// No description provided for @startEndFormat.
@@ -8077,7 +8077,7 @@ abstract class AppLocalizations {
   /// No description provided for @followAccountLevel.
   ///
   /// In en, this message translates to:
-  /// **'Level 0 follows the player’s account level'**
+  /// **'Level 0 plants use their corresponding tier from the player\'s account.'**
   String get followAccountLevel;
 
   /// No description provided for @enablePointSpawning.
@@ -9313,7 +9313,7 @@ abstract class AppLocalizations {
   /// No description provided for @moduleTitle_InitialGridItemGulliverTunnelProperties.
   ///
   /// In en, this message translates to:
-  /// **'Gulliver Tunnel'**
+  /// **'Gulliver Tunnels'**
   String get moduleTitle_InitialGridItemGulliverTunnelProperties;
 
   /// No description provided for @moduleDesc_InitialGridItemGulliverTunnelProperties.
@@ -9361,7 +9361,7 @@ abstract class AppLocalizations {
   /// No description provided for @gulliverTunnelTitle.
   ///
   /// In en, this message translates to:
-  /// **'Gulliver Tunnel Settings'**
+  /// **'Gulliver Tunnels'**
   String get gulliverTunnelTitle;
 
   /// No description provided for @gulliverTunnelHelpOverview.
@@ -9967,13 +9967,13 @@ abstract class AppLocalizations {
   /// No description provided for @renaiModulePreviewNightStatues.
   ///
   /// In en, this message translates to:
-  /// **'Night statues:'**
+  /// **'Night grid items to be spawned this wave:'**
   String get renaiModulePreviewNightStatues;
 
   /// No description provided for @renaiModulePreviewRevivingStatues.
   ///
   /// In en, this message translates to:
-  /// **'Reviving statues:'**
+  /// **'Statues to be revived this wave:'**
   String get renaiModulePreviewRevivingStatues;
 
   /// No description provided for @renaiModuleStatueCarve.
@@ -11245,7 +11245,7 @@ abstract class AppLocalizations {
   /// No description provided for @gridOverrideModuleWaveFieldOneBased.
   ///
   /// In en, this message translates to:
-  /// **'Module wave (1 = initial preset, 2+ = spawns on generator wave N−1)'**
+  /// **'Wave index'**
   String get gridOverrideModuleWaveFieldOneBased;
 
   /// No description provided for @gridOverrideModuleTimelineNote.
@@ -11257,67 +11257,67 @@ abstract class AppLocalizations {
   /// No description provided for @gridOverrideModuleInitialWaveNote.
   ///
   /// In en, this message translates to:
-  /// **'These objects are the initial preset and appear on the lawn before the level starts.'**
+  /// **'This wave is used for preset grid items. Added grid items will appear on the lawn before the level starts.'**
   String get gridOverrideModuleInitialWaveNote;
 
   /// No description provided for @gridOverrideModuleWaveSpawnNote.
   ///
   /// In en, this message translates to:
-  /// **'This group spawns when wave-generator wave {waveGeneratorWave} begins.'**
+  /// **'Grid items in this wave will spawn when Wave Generator wave {waveGeneratorWave} begins.'**
   String gridOverrideModuleWaveSpawnNote(int waveGeneratorWave);
 
   /// No description provided for @gridOverrideModuleWaveSpawnTimelineNote.
   ///
   /// In en, this message translates to:
-  /// **'These entries do not take effect in the wave manager tab.'**
+  /// **'Due to incompatibilities between the old and new implementations, Wave Manager cannot spawn Grid Items by wave using this module. Please use events such as Grid Item Spawn instead.'**
   String get gridOverrideModuleWaveSpawnTimelineNote;
 
   /// No description provided for @gridOverrideModuleHelpWaveNumbering.
   ///
   /// In en, this message translates to:
-  /// **'Wave numbering'**
+  /// **'Wave index'**
   String get gridOverrideModuleHelpWaveNumbering;
 
   /// No description provided for @gridOverrideModuleHelpWaveNumberingBody.
   ///
   /// In en, this message translates to:
-  /// **'Wave 1 is the initial preset: objects appear on the lawn before the level starts. From wave 2 onward, module wave N spawns when wave-generator wave N−1 begins (wave 2 → generator wave 1, wave 3 → generator wave 2, and so on).'**
+  /// **'Wave index 1 is used for preset grid items, and added grid items will appear on the lawn before the level starts. Starting from wave index 2, the numbering corresponds directly to Wave Generator waves. For example, wave number 2 corresponds to Wave Generator wave 1, and wave index 3 corresponds to Wave Generator wave 2.'**
   String get gridOverrideModuleHelpWaveNumberingBody;
 
   /// No description provided for @gridOverridePreviewArmrackTitle.
   ///
   /// In en, this message translates to:
-  /// **'Weapon stand placement'**
+  /// **'Weapon stand layout preview'**
   String get gridOverridePreviewArmrackTitle;
 
   /// No description provided for @gridOverridePreviewEnergyGridTitle.
   ///
   /// In en, this message translates to:
-  /// **'Taiji tile placement'**
+  /// **'Taiji tile layout preview'**
   String get gridOverridePreviewEnergyGridTitle;
 
   /// No description provided for @waveGeneratorInitialGridOverridesTitle.
   ///
   /// In en, this message translates to:
-  /// **'Initial kongfu grid items'**
+  /// **'Initial Kongfu World Grid Items Management'**
   String get waveGeneratorInitialGridOverridesTitle;
 
   /// No description provided for @waveGeneratorPreviewInitialArmrack.
   ///
   /// In en, this message translates to:
-  /// **'Preview initial weapon stands placement'**
+  /// **'Initial Weapon Stands'**
   String get waveGeneratorPreviewInitialArmrack;
 
   /// No description provided for @waveGeneratorPreviewInitialEnergyGrid.
   ///
   /// In en, this message translates to:
-  /// **'Preview initial Taiji tiles placement'**
+  /// **'Initial Taiji Tiles'**
   String get waveGeneratorPreviewInitialEnergyGrid;
 
   /// No description provided for @waveGeneratorGridOverrideWavePreviewTitle.
   ///
   /// In en, this message translates to:
-  /// **'Wave {wave} — {label}'**
+  /// **'Wave {wave} - {label}'**
   String waveGeneratorGridOverrideWavePreviewTitle(int wave, String label);
 
   /// No description provided for @mechanismPlankSettings.
@@ -11440,6 +11440,12 @@ abstract class AppLocalizations {
   /// **'Wild West (Endless)'**
   String get portalTypeEndlessWest;
 
+  /// No description provided for @portalTypeEndlessKongfu.
+  ///
+  /// In en, this message translates to:
+  /// **'Kongfu World (Endless)'**
+  String get portalTypeEndlessKongfu;
+
   /// No description provided for @portalTypeEndlessFuture.
   ///
   /// In en, this message translates to:
@@ -11464,6 +11470,12 @@ abstract class AppLocalizations {
   /// **'Frostbite Caves (Endless)'**
   String get portalTypeEndlessIceAge;
 
+  /// No description provided for @portalTypeEndlessSkyCity.
+  ///
+  /// In en, this message translates to:
+  /// **'Sky City (Endless)'**
+  String get portalTypeEndlessSkyCity;
+
   /// No description provided for @portalTypeEndlessLostCity.
   ///
   /// In en, this message translates to:
@@ -11481,6 +11493,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Jurassic Marsh (Endless)'**
   String get portalTypeEndlessDino;
+
+  /// No description provided for @portalTypeEndlessModern.
+  ///
+  /// In en, this message translates to:
+  /// **'Modern Day (Endless)'**
+  String get portalTypeEndlessModern;
+
+  /// No description provided for @portalTypeMemoryLane1.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory Lane 1'**
+  String get portalTypeMemoryLane1;
+
+  /// No description provided for @portalTypeMemoryLane2.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory Lane 2'**
+  String get portalTypeMemoryLane2;
+
+  /// No description provided for @portalTypeMemoryLane3.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory Lane 3'**
+  String get portalTypeMemoryLane3;
+
+  /// No description provided for @portalTypeShieldGenerator.
+  ///
+  /// In en, this message translates to:
+  /// **'Shield Generator'**
+  String get portalTypeShieldGenerator;
+
+  /// No description provided for @portalTypeGlacialNianSkill.
+  ///
+  /// In en, this message translates to:
+  /// **'Glacial Nian Skill'**
+  String get portalTypeGlacialNianSkill;
 
   /// No description provided for @portalTypeZombotany.
   ///
@@ -11554,6 +11602,36 @@ abstract class AppLocalizations {
   /// **'Elite Onmyoji (Hard)'**
   String get portalTypeEliteOnmyojiHard;
 
+  /// No description provided for @portalTypeRomeoHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Romeo (Memory Lane)'**
+  String get portalTypeRomeoHard;
+
+  /// No description provided for @portalTypeRomeoHard2.
+  ///
+  /// In en, this message translates to:
+  /// **'Romeo 2 (Memory Lane)'**
+  String get portalTypeRomeoHard2;
+
+  /// No description provided for @portalTypeJulietHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Juliet (Memory Lane)'**
+  String get portalTypeJulietHard;
+
+  /// No description provided for @portalTypeJulietHard2.
+  ///
+  /// In en, this message translates to:
+  /// **'Juliet 2 (Memory Lane)'**
+  String get portalTypeJulietHard2;
+
+  /// No description provided for @portalTypeSherlockHard.
+  ///
+  /// In en, this message translates to:
+  /// **'Sherlock (Memory Lane)'**
+  String get portalTypeSherlockHard;
+
   /// No description provided for @portalTypeEliteHunter.
   ///
   /// In en, this message translates to:
@@ -11578,6 +11656,12 @@ abstract class AppLocalizations {
   /// **'Elite Bumper Car'**
   String get portalTypeEliteBumperCar;
 
+  /// No description provided for @portalTypeGlacialNian.
+  ///
+  /// In en, this message translates to:
+  /// **'Glacial Nian'**
+  String get portalTypeGlacialNian;
+
   /// No description provided for @portalTypeEliteWizard.
   ///
   /// In en, this message translates to:
@@ -11589,6 +11673,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Elite King'**
   String get portalTypeEliteKing;
+
+  /// No description provided for @portalTypeEliteMirrorQueen.
+  ///
+  /// In en, this message translates to:
+  /// **'Elite Mirror Queen'**
+  String get portalTypeEliteMirrorQueen;
 
   /// No description provided for @waveGeneratorTabLabel.
   ///

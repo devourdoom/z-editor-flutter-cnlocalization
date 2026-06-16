@@ -4031,7 +4031,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Enable to spawn regardless of grid items';
 
   @override
-  String get thisPortalSpawns => 'This portal spawns:';
+  String get thisPortalSpawns => 'This portal can spawn:';
 
   @override
   String startEndFormat(int sx, int sy, int ex, int ey) {
@@ -4493,7 +4493,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get minCountThreshold => 'Min count threshold';
 
   @override
-  String get followAccountLevel => 'Level 0 follows the player’s account level';
+  String get followAccountLevel =>
+      'Level 0 plants use their corresponding tier from the player\'s account.';
 
   @override
   String get enablePointSpawning => 'Enable Point-Based Spawning';
@@ -5199,7 +5200,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get moduleTitle_InitialGridItemGulliverTunnelProperties =>
-      'Gulliver Tunnel';
+      'Gulliver Tunnels';
 
   @override
   String get moduleDesc_InitialGridItemGulliverTunnelProperties =>
@@ -5227,7 +5228,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Witch spawn interval (WitchSpawnInterval, seconds)';
 
   @override
-  String get gulliverTunnelTitle => 'Gulliver Tunnel Settings';
+  String get gulliverTunnelTitle => 'Gulliver Tunnels';
 
   @override
   String get gulliverTunnelHelpOverview =>
@@ -5578,10 +5579,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get renaiModuleNightStarts => 'Night begins';
 
   @override
-  String get renaiModulePreviewNightStatues => 'Night statues:';
+  String get renaiModulePreviewNightStatues =>
+      'Night grid items to be spawned this wave:';
 
   @override
-  String get renaiModulePreviewRevivingStatues => 'Reviving statues:';
+  String get renaiModulePreviewRevivingStatues =>
+      'Statues to be revived this wave:';
 
   @override
   String get renaiModuleStatueCarve => 'Statue revival';
@@ -6283,8 +6286,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get gridOverrideModuleAppearances => 'Wave groups';
 
   @override
-  String get gridOverrideModuleWaveFieldOneBased =>
-      'Module wave (1 = initial preset, 2+ = spawns on generator wave N−1)';
+  String get gridOverrideModuleWaveFieldOneBased => 'Wave index';
 
   @override
   String get gridOverrideModuleTimelineNote =>
@@ -6292,45 +6294,43 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get gridOverrideModuleInitialWaveNote =>
-      'These objects are the initial preset and appear on the lawn before the level starts.';
+      'This wave is used for preset grid items. Added grid items will appear on the lawn before the level starts.';
 
   @override
   String gridOverrideModuleWaveSpawnNote(int waveGeneratorWave) {
-    return 'This group spawns when wave-generator wave $waveGeneratorWave begins.';
+    return 'Grid items in this wave will spawn when Wave Generator wave $waveGeneratorWave begins.';
   }
 
   @override
   String get gridOverrideModuleWaveSpawnTimelineNote =>
-      'These entries do not take effect in the wave manager tab.';
+      'Due to incompatibilities between the old and new implementations, Wave Manager cannot spawn Grid Items by wave using this module. Please use events such as Grid Item Spawn instead.';
 
   @override
-  String get gridOverrideModuleHelpWaveNumbering => 'Wave numbering';
+  String get gridOverrideModuleHelpWaveNumbering => 'Wave index';
 
   @override
   String get gridOverrideModuleHelpWaveNumberingBody =>
-      'Wave 1 is the initial preset: objects appear on the lawn before the level starts. From wave 2 onward, module wave N spawns when wave-generator wave N−1 begins (wave 2 → generator wave 1, wave 3 → generator wave 2, and so on).';
+      'Wave index 1 is used for preset grid items, and added grid items will appear on the lawn before the level starts. Starting from wave index 2, the numbering corresponds directly to Wave Generator waves. For example, wave number 2 corresponds to Wave Generator wave 1, and wave index 3 corresponds to Wave Generator wave 2.';
 
   @override
-  String get gridOverridePreviewArmrackTitle => 'Weapon stand placement';
+  String get gridOverridePreviewArmrackTitle => 'Weapon stand layout preview';
 
   @override
-  String get gridOverridePreviewEnergyGridTitle => 'Taiji tile placement';
+  String get gridOverridePreviewEnergyGridTitle => 'Taiji tile layout preview';
 
   @override
   String get waveGeneratorInitialGridOverridesTitle =>
-      'Initial kongfu grid items';
+      'Initial Kongfu World Grid Items Management';
 
   @override
-  String get waveGeneratorPreviewInitialArmrack =>
-      'Preview initial weapon stands placement';
+  String get waveGeneratorPreviewInitialArmrack => 'Initial Weapon Stands';
 
   @override
-  String get waveGeneratorPreviewInitialEnergyGrid =>
-      'Preview initial Taiji tiles placement';
+  String get waveGeneratorPreviewInitialEnergyGrid => 'Initial Taiji Tiles';
 
   @override
   String waveGeneratorGridOverrideWavePreviewTitle(int wave, String label) {
-    return 'Wave $wave — $label';
+    return 'Wave $wave - $label';
   }
 
   @override
@@ -6396,6 +6396,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get portalTypeEndlessWest => 'Wild West (Endless)';
 
   @override
+  String get portalTypeEndlessKongfu => 'Kongfu World (Endless)';
+
+  @override
   String get portalTypeEndlessFuture => 'Far Future (Endless)';
 
   @override
@@ -6408,6 +6411,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get portalTypeEndlessIceAge => 'Frostbite Caves (Endless)';
 
   @override
+  String get portalTypeEndlessSkyCity => 'Sky City (Endless)';
+
+  @override
   String get portalTypeEndlessLostCity => 'Lost City (Endless)';
 
   @override
@@ -6415,6 +6421,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get portalTypeEndlessDino => 'Jurassic Marsh (Endless)';
+
+  @override
+  String get portalTypeEndlessModern => 'Modern Day (Endless)';
+
+  @override
+  String get portalTypeMemoryLane1 => 'Memory Lane 1';
+
+  @override
+  String get portalTypeMemoryLane2 => 'Memory Lane 2';
+
+  @override
+  String get portalTypeMemoryLane3 => 'Memory Lane 3';
+
+  @override
+  String get portalTypeShieldGenerator => 'Shield Generator';
+
+  @override
+  String get portalTypeGlacialNianSkill => 'Glacial Nian Skill';
 
   @override
   String get portalTypeZombotany => 'Zombotany';
@@ -6453,6 +6477,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String get portalTypeEliteOnmyojiHard => 'Elite Onmyoji (Hard)';
 
   @override
+  String get portalTypeRomeoHard => 'Romeo (Memory Lane)';
+
+  @override
+  String get portalTypeRomeoHard2 => 'Romeo 2 (Memory Lane)';
+
+  @override
+  String get portalTypeJulietHard => 'Juliet (Memory Lane)';
+
+  @override
+  String get portalTypeJulietHard2 => 'Juliet 2 (Memory Lane)';
+
+  @override
+  String get portalTypeSherlockHard => 'Sherlock (Memory Lane)';
+
+  @override
   String get portalTypeEliteHunter => 'Elite Hunter';
 
   @override
@@ -6465,10 +6504,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get portalTypeEliteBumperCar => 'Elite Bumper Car';
 
   @override
+  String get portalTypeGlacialNian => 'Glacial Nian';
+
+  @override
   String get portalTypeEliteWizard => 'Elite Wizard';
 
   @override
   String get portalTypeEliteKing => 'Elite King';
+
+  @override
+  String get portalTypeEliteMirrorQueen => 'Elite Mirror Queen';
 
   @override
   String get waveGeneratorTabLabel => 'Waves';

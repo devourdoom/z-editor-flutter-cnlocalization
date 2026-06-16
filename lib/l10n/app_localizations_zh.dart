@@ -3832,7 +3832,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ignoreGravestoneSubtitle => '开启后裂缝可无视障碍物生成';
 
   @override
-  String get thisPortalSpawns => '该裂缝将生成以下僵尸：';
+  String get thisPortalSpawns => '该裂缝可能生成以下僵尸：';
 
   @override
   String startEndFormat(int sx, int sy, int ex, int ey) {
@@ -4264,7 +4264,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get minCountThreshold => '最小数量阈值';
 
   @override
-  String get followAccountLevel => 'Level 0 follows the player’s account level';
+  String get followAccountLevel => '0阶植物将使用玩家账号中的对应阶级';
 
   @override
   String get enablePointSpawning => '启用点数出怪';
@@ -4928,7 +4928,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get moduleDesc_InitialGridItemGulliverTunnelProperties =>
-      '在场地上预置可以使经过单位变大变小的隧道';
+      '在场地上预置可以使进入单位变大变小的隧道';
 
   @override
   String get witchModuleTitle => '女巫登场设置';
@@ -5216,7 +5216,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get moduleWaveFieldZeroBased => '波次 (从0开始计数)';
 
   @override
-  String get appearanceLabel => '出场';
+  String get appearanceLabel => '组';
 
   @override
   String get airDropShipGroupLabel => '组';
@@ -5281,10 +5281,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get renaiModuleNightStarts => '黑夜开始';
 
   @override
-  String get renaiModulePreviewNightStatues => 'Night statues:';
+  String get renaiModulePreviewNightStatues => '本波生成的夜间障碍物：';
 
   @override
-  String get renaiModulePreviewRevivingStatues => 'Reviving statues:';
+  String get renaiModulePreviewRevivingStatues => '本波复活的障碍物：';
 
   @override
   String get renaiModuleStatueCarve => '雕像复活';
@@ -5957,55 +5957,52 @@ class AppLocalizationsZh extends AppLocalizations {
       '由于游戏端问题，生成的太极瓷砖可能显示为紫色 X 标记，这不影响实际功能。';
 
   @override
-  String get gridOverrideModuleAppearances => '波次组';
+  String get gridOverrideModuleAppearances => '生成组';
 
   @override
-  String get gridOverrideModuleWaveFieldOneBased => '波次（1 = 第一波，2 = 第二波，…）';
+  String get gridOverrideModuleWaveFieldOneBased => '波次编号';
 
   @override
   String get gridOverrideModuleTimelineNote => '仅第一波条目会显示在波次时间轴中。';
 
   @override
   String get gridOverrideModuleInitialWaveNote =>
-      'These objects are the initial preset and appear on the lawn before the level starts.';
+      '本波次用于预置障碍物，添加的障碍物会在关卡开始前出现在场地上。';
 
   @override
   String gridOverrideModuleWaveSpawnNote(int waveGeneratorWave) {
-    return 'This group spawns when wave-generator wave $waveGeneratorWave begins.';
+    return '本波次的障碍物会在波次生成器的第$waveGeneratorWave波开始时生成。';
   }
 
   @override
   String get gridOverrideModuleWaveSpawnTimelineNote =>
-      'These entries do not take effect in the wave manager tab.';
+      '由于新旧写法不兼容，波次管理器中无法通过此模块随波次生成障碍物，请使用障碍物生成等事件进行生成。';
 
   @override
-  String get gridOverrideModuleHelpWaveNumbering => 'Wave numbering';
+  String get gridOverrideModuleHelpWaveNumbering => '波次编号';
 
   @override
   String get gridOverrideModuleHelpWaveNumberingBody =>
-      'Wave 1 is the initial preset: objects appear on the lawn before the level starts. From wave 2 onward, module wave N spawns when wave-generator wave N−1 begins (wave 2 → generator wave 1, wave 3 → generator wave 2, and so on).';
+      '波次编号1用于预置障碍物，添加的障碍物会在关卡开始前出现在场地上。从波次编号2开始，编号与波次生成器中的波次一一对应，如波次编号2对应生成器第1波，波次编号3对应生成器第2波。';
 
   @override
-  String get gridOverridePreviewArmrackTitle => 'Weapon stand placement';
+  String get gridOverridePreviewArmrackTitle => '兵器架布局预览';
 
   @override
-  String get gridOverridePreviewEnergyGridTitle => 'Taiji tile placement';
+  String get gridOverridePreviewEnergyGridTitle => '太极地砖布局预览';
 
   @override
-  String get waveGeneratorInitialGridOverridesTitle =>
-      'Initial kongfu grid items';
+  String get waveGeneratorInitialGridOverridesTitle => '初始功夫障碍物管理';
 
   @override
-  String get waveGeneratorPreviewInitialArmrack =>
-      'Preview initial weapon stands placement';
+  String get waveGeneratorPreviewInitialArmrack => '初始兵器架';
 
   @override
-  String get waveGeneratorPreviewInitialEnergyGrid =>
-      'Preview initial Taiji tiles placement';
+  String get waveGeneratorPreviewInitialEnergyGrid => '初始太极地砖';
 
   @override
   String waveGeneratorGridOverrideWavePreviewTitle(int wave, String label) {
-    return 'Wave $wave — $label';
+    return '第$wave波 - $label';
   }
 
   @override
@@ -6070,6 +6067,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get portalTypeEndlessWest => '无尽西部';
 
   @override
+  String get portalTypeEndlessKongfu => '无尽功夫';
+
+  @override
   String get portalTypeEndlessFuture => '无尽未来';
 
   @override
@@ -6082,6 +6082,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get portalTypeEndlessIceAge => '无尽冰河';
 
   @override
+  String get portalTypeEndlessSkyCity => '无尽天空';
+
+  @override
   String get portalTypeEndlessLostCity => '无尽失落';
 
   @override
@@ -6089,6 +6092,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get portalTypeEndlessDino => '无尽恐龙';
+
+  @override
+  String get portalTypeEndlessModern => '无尽摩登';
+
+  @override
+  String get portalTypeMemoryLane1 => '时空能量1';
+
+  @override
+  String get portalTypeMemoryLane2 => '时空能量2';
+
+  @override
+  String get portalTypeMemoryLane3 => '时空能量3';
+
+  @override
+  String get portalTypeShieldGenerator => '电磁盾发生器';
+
+  @override
+  String get portalTypeGlacialNianSkill => '寒冰年兽技能';
 
   @override
   String get portalTypeZombotany => '植物僵尸';
@@ -6127,6 +6148,21 @@ class AppLocalizationsZh extends AppLocalizations {
   String get portalTypeEliteOnmyojiHard => '困难阴阳';
 
   @override
+  String get portalTypeRomeoHard => '回忆罗密欧';
+
+  @override
+  String get portalTypeRomeoHard2 => '回忆罗密欧2';
+
+  @override
+  String get portalTypeJulietHard => '回忆朱丽叶';
+
+  @override
+  String get portalTypeJulietHard2 => '回忆朱丽叶2';
+
+  @override
+  String get portalTypeSherlockHard => '回忆夏洛克';
+
+  @override
   String get portalTypeEliteHunter => '精英猎人';
 
   @override
@@ -6139,10 +6175,16 @@ class AppLocalizationsZh extends AppLocalizations {
   String get portalTypeEliteBumperCar => '精英碰碰';
 
   @override
+  String get portalTypeGlacialNian => '寒冰年兽';
+
+  @override
   String get portalTypeEliteWizard => '精英巫师';
 
   @override
   String get portalTypeEliteKing => '精英国王';
+
+  @override
+  String get portalTypeEliteMirrorQueen => '精英魔镜';
 
   @override
   String get waveGeneratorTabLabel => '波次';

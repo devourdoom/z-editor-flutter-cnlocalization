@@ -4441,7 +4441,8 @@ class AppLocalizationsRu extends AppLocalizations {
   String get minCountThreshold => 'Порог мин. количества';
 
   @override
-  String get followAccountLevel => 'Level 0 follows the player’s account level';
+  String get followAccountLevel =>
+      'Level 0 plants use their corresponding tier from the player\'s account.';
 
   @override
   String get enablePointSpawning => 'Включить очки спавна';
@@ -6334,6 +6335,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get portalTypeEndlessWest => 'Wild West (Endless)';
 
   @override
+  String get portalTypeEndlessKongfu => 'Kongfu World (Endless)';
+
+  @override
   String get portalTypeEndlessFuture => 'Far Future (Endless)';
 
   @override
@@ -6346,6 +6350,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get portalTypeEndlessIceAge => 'Frostbite Caves (Endless)';
 
   @override
+  String get portalTypeEndlessSkyCity => 'Sky City (Endless)';
+
+  @override
   String get portalTypeEndlessLostCity => 'Lost City (Endless)';
 
   @override
@@ -6353,6 +6360,24 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get portalTypeEndlessDino => 'Jurassic Marsh (Endless)';
+
+  @override
+  String get portalTypeEndlessModern => 'Modern Day (Endless)';
+
+  @override
+  String get portalTypeMemoryLane1 => 'Memory Lane 1';
+
+  @override
+  String get portalTypeMemoryLane2 => 'Memory Lane 2';
+
+  @override
+  String get portalTypeMemoryLane3 => 'Memory Lane 3';
+
+  @override
+  String get portalTypeShieldGenerator => 'Shield Generator';
+
+  @override
+  String get portalTypeGlacialNianSkill => 'Glacial Nian Skill';
 
   @override
   String get portalTypeZombotany => 'Zombotany';
@@ -6391,6 +6416,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get portalTypeEliteOnmyojiHard => 'Elite Onmyoji (Hard)';
 
   @override
+  String get portalTypeRomeoHard => 'Romeo (Memory Lane)';
+
+  @override
+  String get portalTypeRomeoHard2 => 'Romeo 2 (Memory Lane)';
+
+  @override
+  String get portalTypeJulietHard => 'Juliet (Memory Lane)';
+
+  @override
+  String get portalTypeJulietHard2 => 'Juliet 2 (Memory Lane)';
+
+  @override
+  String get portalTypeSherlockHard => 'Sherlock (Memory Lane)';
+
+  @override
   String get portalTypeEliteHunter => 'Elite Hunter';
 
   @override
@@ -6403,10 +6443,16 @@ class AppLocalizationsRu extends AppLocalizations {
   String get portalTypeEliteBumperCar => 'Elite Bumper Car';
 
   @override
+  String get portalTypeGlacialNian => 'Glacial Nian';
+
+  @override
   String get portalTypeEliteWizard => 'Elite Wizard';
 
   @override
   String get portalTypeEliteKing => 'Elite King';
+
+  @override
+  String get portalTypeEliteMirrorQueen => 'Elite Mirror Queen';
 
   @override
   String get waveGeneratorTabLabel => 'Волны';
