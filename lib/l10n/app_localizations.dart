@@ -11746,6 +11746,18 @@ abstract class AppLocalizations {
   /// **'Cannot coexist with Wave Manager modules, Renai module, or Witch module.'**
   String get waveGeneratorModuleHelpIncompatBody;
 
+  /// No description provided for @waveGeneratorModuleHelpRow.
+  ///
+  /// In en, this message translates to:
+  /// **'Row'**
+  String get waveGeneratorModuleHelpRow;
+
+  /// No description provided for @waveGeneratorModuleHelpRowBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Row values are 1-based strings in JSON (\"?\" = random).'**
+  String get waveGeneratorModuleHelpRowBody;
+
   /// No description provided for @waveGeneratorModuleGlobalParams.
   ///
   /// In en, this message translates to:
@@ -11907,12 +11919,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add to pool this wave (AddToZombiePool)'**
   String get waveGeneratorWavePoolAdd;
-
-  /// No description provided for @waveGeneratorRowHint.
-  ///
-  /// In en, this message translates to:
-  /// **'Row values are 1-based strings in JSON (\"?\" = random).'**
-  String get waveGeneratorRowHint;
 
   /// No description provided for @waveGeneratorWaveScreenSubtitle.
   ///

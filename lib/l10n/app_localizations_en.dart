@@ -6553,6 +6553,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Cannot coexist with Wave Manager modules, Renai module, or Witch module.';
 
   @override
+  String get waveGeneratorModuleHelpRow => 'Row';
+
+  @override
+  String get waveGeneratorModuleHelpRowBody =>
+      'Row values are 1-based strings in JSON (\"?\" = random).';
+
+  @override
   String get waveGeneratorModuleGlobalParams => 'Global parameters';
 
   @override
@@ -6653,10 +6660,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get waveGeneratorWavePoolAdd =>
       'Add to pool this wave (AddToZombiePool)';
-
-  @override
-  String get waveGeneratorRowHint =>
-      'Row values are 1-based strings in JSON (\"?\" = random).';
 
   @override
   String get waveGeneratorWaveScreenSubtitle => 'Wave generator wave';

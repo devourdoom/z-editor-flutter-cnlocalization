@@ -6224,6 +6224,13 @@ class AppLocalizationsZh extends AppLocalizations {
       '不能与波次管理器、Renai 模块或 Witch 模块共存。';
 
   @override
+  String get waveGeneratorModuleHelpRow => '行';
+
+  @override
+  String get waveGeneratorModuleHelpRowBody =>
+      'JSON 中行号为从 1 开始的字符串（\"?\" = 随机）。';
+
+  @override
   String get waveGeneratorModuleGlobalParams => '全局参数';
 
   @override
@@ -6312,9 +6319,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get waveGeneratorWavePoolAdd => '本波扩展僵尸池 (AddToZombiePool)';
-
-  @override
-  String get waveGeneratorRowHint => 'JSON 中行号为从 1 开始的字符串（\"?\" = 随机）。';
 
   @override
   String get waveGeneratorWaveScreenSubtitle => '波次生成器波次';

@@ -6492,6 +6492,13 @@ class AppLocalizationsRu extends AppLocalizations {
       'Нельзя использовать вместе с менеджером волн, Renai или Witch.';
 
   @override
+  String get waveGeneratorModuleHelpRow => 'Ряд';
+
+  @override
+  String get waveGeneratorModuleHelpRowBody =>
+      'Ряд в JSON — строка с 1 (\"?\" = случайный).';
+
+  @override
   String get waveGeneratorModuleGlobalParams => 'Глобальные параметры';
 
   @override
@@ -6593,10 +6600,6 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get waveGeneratorWavePoolAdd =>
       'Добавить в пул на этой волне (AddToZombiePool)';
-
-  @override
-  String get waveGeneratorRowHint =>
-      'Ряд в JSON — строка с 1 (\"?\" = случайный).';
 
   @override
   String get waveGeneratorWaveScreenSubtitle => 'Волна генератора волн';
