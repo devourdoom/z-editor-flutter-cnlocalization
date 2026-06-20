@@ -105,6 +105,8 @@ export 'pvz_models/RoofPropertiesData.dart';
 export 'pvz_models/SeedBankData.dart';
 export 'pvz_models/SeedRainItem.dart';
 export 'pvz_models/SeedRainPropertiesData.dart';
+export 'pvz_models/SmokeManholeEntryData.dart';
+export 'pvz_models/SmokePollutionModulePropertiesData.dart';
 export 'pvz_models/SchoolBusDesData.dart';
 export 'pvz_models/SchoolBusParamsData.dart';
 export 'pvz_models/SchoolBusWaveActionPropsData.dart';

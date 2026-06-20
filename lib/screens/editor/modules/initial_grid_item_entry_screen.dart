@@ -311,12 +311,11 @@ class _InitialGridItemEntryScreenState extends State<InitialGridItemEntryScreen>
                                           child: FittedBox(
                                             fit: BoxFit.contain,
                                             child: GridItemIcon(
-                                                typeName: firstItem.typeName,
-                                                size: 32,
-                                                fit: BoxFit.contain,
-                                                borderRadius: 4,
-                                                badgeScaleFactor:
-                                                    1.25 * cellBadgeScale),
+                                              typeName: firstItem.typeName,
+                                              size: 32,
+                                              fit: BoxFit.contain,
+                                              borderRadius: 4,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -439,11 +438,6 @@ class _GridItemCard extends StatelessWidget {
                 typeName: item.typeName,
                 size: 64,
                 fit: BoxFit.contain,
-                iconScaleFactor:
-                    GridItemRepository.isRenaiStatueNonHalf(item.typeName)
-                        ? 3.0
-                        : 1.5,
-                badgeScaleFactor: 1.25,
               ),
             ),
             Padding(

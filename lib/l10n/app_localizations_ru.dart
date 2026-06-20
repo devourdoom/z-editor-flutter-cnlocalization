@@ -1804,6 +1804,14 @@ class AppLocalizationsRu extends AppLocalizations {
       'Трубы в Паровом веке';
 
   @override
+  String get moduleTitle_SmokePollutionModuleProperties =>
+      'Дымовое загрязнение';
+
+  @override
+  String get moduleDesc_SmokePollutionModuleProperties =>
+      'Настраивает люки с ядовитым паром на газоне';
+
+  @override
   String get moduleTitle_RoofProperties => 'Крышные горшки';
 
   @override
@@ -3531,6 +3539,29 @@ class AppLocalizationsRu extends AppLocalizations {
   @override
   String get manholePipelineHelpEditing =>
       'Переключайте режим начала/конца, затем нажмите на сетку для размещения.';
+
+  @override
+  String get smokePollutionModuleTitle => 'Модуль дымового загрязнения';
+
+  @override
+  String get smokePollutionModuleHelpTitle => 'Справка: дымовое загрязнение';
+
+  @override
+  String get smokePollutionModuleHelpOverview => 'Обзор';
+
+  @override
+  String get smokePollutionModuleHelpOverviewBody =>
+      'Размещает на газоне дымовые люки, которые через заданное время выбрасывают ядовитый пар. Часто используется в уровнях Парового века.';
+
+  @override
+  String get smokePollutionModuleHelpManholes => 'Люки';
+
+  @override
+  String get smokePollutionModuleHelpManholesBody =>
+      'Выберите клетку на сетке и добавьте люки в этой позиции. У каждого люка есть Start Time — секунды от начала уровня до выброса ядовитого пара.';
+
+  @override
+  String get smokePollutionModuleStartTimeLabel => 'Start time (с)';
 
   @override
   String manholePipelineStartEndFormat(int sx, int sy, int ex, int ey) {
@@ -5760,6 +5791,50 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get jsonViewerModeEdit => '(режим редактирования)';
+
+  @override
+  String get jsonViewerFontSize => 'Размер шрифта';
+
+  @override
+  String get jsonViewerSearchHint => 'Поиск';
+
+  @override
+  String get jsonViewerReplaceHint => 'Заменить';
+
+  @override
+  String get jsonViewerSearchHistory => 'Недавние запросы';
+
+  @override
+  String get jsonViewerReplaceHistory => 'Недавние замены';
+
+  @override
+  String get jsonViewerInsertNewline => 'Вставить перевод строки';
+
+  @override
+  String get jsonViewerMatchCase => 'Учитывать регистр';
+
+  @override
+  String get jsonViewerWholeWords => 'Слова';
+
+  @override
+  String get jsonViewerRegex => 'Regex';
+
+  @override
+  String get jsonViewerPreviousMatch => 'Предыдущее совпадение';
+
+  @override
+  String get jsonViewerNextMatch => 'Следующее совпадение';
+
+  @override
+  String get jsonViewerReplaceOne => 'Заменить';
+
+  @override
+  String get jsonViewerReplaceAll => 'Заменить все';
+
+  @override
+  String jsonViewerMatchCounter(int current, int total) {
+    return '$current из $total';
+  }
 
   @override
   String get tooltipAboutModule => 'О модуле';

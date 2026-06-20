@@ -7,10 +7,9 @@ import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
-/// Atlantis shell event editor. Based on ZombiePotionActionProps.
-/// Only atlantis_shell type is supported.
-class ShellEventScreen extends StatefulWidget {
-  const ShellEventScreen({
+/// Steam Ages smoke pollution module editor (SmokeManhole placements).
+class SmokePollutionModuleScreen extends StatefulWidget {
+  const SmokePollutionModuleScreen({
     super.key,
     required this.rtid,
     required this.levelFile,
@@ -24,15 +23,18 @@ class ShellEventScreen extends StatefulWidget {
   final VoidCallback onBack;
 
   @override
-  State<ShellEventScreen> createState() => _ShellEventScreenState();
+  State<SmokePollutionModuleScreen> createState() =>
+      _SmokePollutionModuleScreenState();
 }
 
-class _ShellEventScreenState extends State<ShellEventScreen> {
+class _SmokePollutionModuleScreenState extends State<SmokePollutionModuleScreen> {
+  static const _gridItemType = SmokePollutionModulePropertiesData.gridItemType;
+
   late PvzObject _moduleObj;
-  late ZombieAtlantisShellActionPropsData _data;
+  late SmokePollutionModulePropertiesData _data;
   int _selectedX = 0;
   int _selectedY = 0;
-  AtlantisShellTileData? _itemToDelete;
+  SmokeManholeEntryData? _itemToDelete;
 
   bool get _isDeepSeaLawn =>
       LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
@@ -56,17 +58,17 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
     } else {
       _moduleObj = PvzObject(
         aliases: [alias],
-        objClass: 'ZombieAtlantisShellActionProps',
-        objData: ZombieAtlantisShellActionPropsData().toJson(),
+        objClass: 'SmokePollutionModuleProperties',
+        objData: SmokePollutionModulePropertiesData().toJson(),
       );
       widget.levelFile.objects.add(_moduleObj);
     }
     try {
-      _data = ZombieAtlantisShellActionPropsData.fromJson(
+      _data = SmokePollutionModulePropertiesData.fromJson(
         Map<String, dynamic>.from(_moduleObj.objData as Map),
       );
     } catch (_) {
-      _data = ZombieAtlantisShellActionPropsData();
+      _data = SmokePollutionModulePropertiesData();
     }
   }
 
@@ -76,45 +78,76 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
     setState(() {});
   }
 
-  void _addShell() {
-    final newItem = AtlantisShellTileData(
-      location: LocationData(x: _selectedX, y: _selectedY),
-      type: 'atlantis_shell',
-    );
-    _data = ZombieAtlantisShellActionPropsData(
-      tiles: [..._data.tiles, newItem],
+  void _addManhole() {
+    _data = SmokePollutionModulePropertiesData(
+      gridItem: _data.gridItem,
+      smokeManholeList: [
+        ..._data.smokeManholeList,
+        SmokeManholeEntryData(
+          gridColumn: _selectedX,
+          gridRow: _selectedY,
+          startTime: 0,
+        ),
+      ],
     );
     _sync();
   }
 
-  void _removeShell(AtlantisShellTileData item) {
-    _data = ZombieAtlantisShellActionPropsData(
-      tiles: _data.tiles.where((t) => t != item).toList(),
+  void _removeManhole(SmokeManholeEntryData item) {
+    _data = SmokePollutionModulePropertiesData(
+      gridItem: _data.gridItem,
+      smokeManholeList:
+          _data.smokeManholeList.where((t) => t != item).toList(),
     );
     _sync();
   }
+
+  void _updateStartTime(SmokeManholeEntryData item, int startTime) {
+    final index = _data.smokeManholeList.indexOf(item);
+    if (index < 0) return;
+    final updated = [..._data.smokeManholeList];
+    updated[index] = SmokeManholeEntryData(
+      gridColumn: item.gridColumn,
+      gridRow: item.gridRow,
+      startTime: startTime,
+    );
+    _data = SmokePollutionModulePropertiesData(
+      gridItem: _data.gridItem,
+      smokeManholeList: updated,
+    );
+    _sync();
+  }
+
+  List<SmokeManholeEntryData> get _itemsAtPosition => _data.smokeManholeList
+      .where(
+        (t) =>
+            t.gridColumn == _selectedX &&
+            t.gridRow == _selectedY &&
+            t.gridColumn >= 0 &&
+            t.gridRow >= 0 &&
+            t.gridColumn < _gridCols &&
+            t.gridRow < _gridRows,
+      )
+      .toList();
+
+  List<SmokeManholeEntryData> get _itemsOutsideLawn => _data.smokeManholeList
+      .where(
+        (t) =>
+            t.gridColumn < 0 ||
+            t.gridRow < 0 ||
+            t.gridColumn >= _gridCols ||
+            t.gridRow >= _gridRows,
+      )
+      .toList();
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    final alias = LevelParser.extractAlias(widget.rtid);
-    final itemsAtPosition = _data.tiles
-        .where((t) =>
-            t.location.x == _selectedX &&
-            t.location.y == _selectedY &&
-            t.location.x >= 0 &&
-            t.location.y >= 0 &&
-            t.location.x < _gridCols &&
-            t.location.y < _gridRows)
-        .toList();
-    final itemsOutsideLawn = _data.tiles
-        .where((t) =>
-            t.location.x < 0 ||
-            t.location.y < 0 ||
-            t.location.x >= _gridCols ||
-            t.location.y >= _gridRows)
-        .toList();
+    final title =
+        l10n?.smokePollutionModuleTitle ?? 'Smoke pollution module';
+    final helpTitle =
+        l10n?.smokePollutionModuleHelpTitle ?? 'Smoke pollution module help';
 
     return Scaffold(
       appBar: AppBar(
@@ -123,31 +156,22 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
           tooltip: l10n?.back ?? 'Back',
           onPressed: widget.onBack,
         ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(l10n?.editAlias(alias) ?? 'Edit $alias'),
-            Text(
-              l10n?.eventShellSpawn ?? 'Event: Shell spawn',
-              style: theme.textTheme.bodySmall,
-            ),
-          ],
-        ),
+        title: Text(title),
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline),
-            tooltip: l10n?.tooltipAboutEvent ?? 'About this event',
+            tooltip: l10n?.tooltipAboutModule ?? 'About this module',
             onPressed: () => showEditorHelpDialog(
               context,
-              title: l10n?.eventShellSpawn ?? 'Shell spawn event',
+              title: helpTitle,
               sections: [
                 HelpSectionData(
-                  title: l10n?.overview ?? 'Overview',
-                  body: l10n?.eventHelpShellBody ?? '',
+                  title: l10n?.smokePollutionModuleHelpOverview ?? 'Overview',
+                  body: l10n?.smokePollutionModuleHelpOverviewBody ?? '',
                 ),
                 HelpSectionData(
-                  title: l10n?.usage ?? 'Usage',
-                  body: l10n?.eventHelpShellUsage ?? '',
+                  title: l10n?.smokePollutionModuleHelpManholes ?? 'Manholes',
+                  body: l10n?.smokePollutionModuleHelpManholesBody ?? '',
                 ),
               ],
             ),
@@ -169,25 +193,21 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    l10n?.selectedPosition ?? 'Selected position',
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                      color: theme.colorScheme.onSurfaceVariant,
-                                    ),
-                                  ),
-                                  Text(
-                                    'R${_selectedY + 1} : C${_selectedX + 1}',
-                                    style: theme.textTheme.titleLarge?.copyWith(
-                                      fontWeight: FontWeight.bold,
-                                      color: theme.colorScheme.primary,
-                                    ),
-                                  ),
-                                ],
+                              Text(
+                                l10n?.selectedPosition ?? 'Selected position',
+                                style: theme.textTheme.bodySmall?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              Text(
+                                'R${_selectedY + 1} : C${_selectedX + 1}',
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: theme.colorScheme.primary,
+                                ),
                               ),
                             ],
                           ),
@@ -199,7 +219,7 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                   ),
                   const SizedBox(height: 16),
                   Text(
-                    l10n?.itemsSortedByRow ?? 'Items (sorted by row)',
+                    l10n?.itemsSortedByRow ?? 'Item(s) in selected tile',
                     style: theme.textTheme.titleSmall?.copyWith(
                       fontWeight: FontWeight.bold,
                       color: theme.colorScheme.onSurfaceVariant,
@@ -210,21 +230,23 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      ...itemsAtPosition.map((item) => _ShellItemCard(
-                            item: item,
-                            gridRows: _gridRows,
-                            gridCols: _gridCols,
-                            showCoordinates: false,
-                            onDelete: () => setState(() => _itemToDelete = item),
-                            deleteTooltip: l10n?.delete ?? 'Delete',
-                          )),
+                      ..._itemsAtPosition.map(
+                        (item) => _SmokeManholeCard(
+                          item: item,
+                          showCoordinates: false,
+                          onDelete: () => setState(() => _itemToDelete = item),
+                          onStartTimeChanged: (t) => _updateStartTime(item, t),
+                          deleteTooltip: l10n?.delete ?? 'Delete',
+                        ),
+                      ),
                       AddItemCard(
-                        onPressed: _addShell,
-                        minHeight: 130,
+                        onPressed: _addManhole,
+                        width: 140,
+                        minHeight: 195,
                       ),
                     ],
                   ),
-                  if (itemsOutsideLawn.isNotEmpty) ...[
+                  if (_itemsOutsideLawn.isNotEmpty) ...[
                     const SizedBox(height: 24),
                     Text(
                       l10n?.outsideLawnItems ?? 'Objects outside the lawn',
@@ -237,16 +259,18 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: itemsOutsideLawn
-                          .map((item) => _ShellItemCard(
-                                item: item,
-                                gridRows: _gridRows,
-                                gridCols: _gridCols,
-                                showCoordinates: true,
-                                onDelete: () =>
-                                    setState(() => _itemToDelete = item),
-                                deleteTooltip: l10n?.delete ?? 'Delete',
-                              ))
+                      children: _itemsOutsideLawn
+                          .map(
+                            (item) => _SmokeManholeCard(
+                              item: item,
+                              showCoordinates: true,
+                              onDelete: () =>
+                                  setState(() => _itemToDelete = item),
+                              onStartTimeChanged: (t) =>
+                                  _updateStartTime(item, t),
+                              deleteTooltip: l10n?.delete ?? 'Delete',
+                            ),
+                          )
                           .toList(),
                     ),
                   ],
@@ -285,11 +309,11 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                   child: Row(
                     children: List.generate(_gridCols, (col) {
                       final isSelected = row == _selectedY && col == _selectedX;
-                      final cellItems = _data.tiles
-                          .where((t) =>
-                              t.location.x == col && t.location.y == row)
+                      final cellItems = _data.smokeManholeList
+                          .where(
+                            (t) => t.gridColumn == col && t.gridRow == row,
+                          )
                           .toList();
-                      final firstItem = cellItems.firstOrNull;
                       final count = cellItems.length;
                       return Expanded(
                         child: GestureDetector(
@@ -312,7 +336,7 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                                 width: 0.5,
                               ),
                             ),
-                            child: count > 0 && firstItem != null
+                            child: count > 0
                                 ? Stack(
                                     fit: StackFit.expand,
                                     children: [
@@ -326,7 +350,7 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                                                   BorderRadius.circular(4),
                                               child: Image.asset(
                                                 GridItemRepository.getIconPath(
-                                                  firstItem.type,
+                                                  _gridItemType,
                                                 ),
                                                 fit: BoxFit.contain,
                                                 filterQuality:
@@ -341,14 +365,13 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                                           top: 3,
                                           right: 3,
                                           child: Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                               horizontal: 6,
                                               vertical: 3,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: theme.colorScheme
-                                                  .onSurfaceVariant,
+                                              color: theme
+                                                  .colorScheme.onSurfaceVariant,
                                               borderRadius:
                                                   const BorderRadius.only(
                                                 bottomLeft: Radius.circular(6),
@@ -384,15 +407,19 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
   Widget _buildDeleteDialog() {
     final l10n = AppLocalizations.of(context);
     final item = _itemToDelete!;
-    final displayName =
-        ResourceNames.lookup(context, 'griditem_${item.type}');
-    final name = displayName != 'griditem_${item.type}' ? displayName : item.type;
+    final displayName = ResourceNames.lookup(
+      context,
+      'griditem_$_gridItemType',
+    );
+    final name = displayName != 'griditem_$_gridItemType'
+        ? displayName
+        : _gridItemType;
     return AlertDialog(
       title: Text(l10n?.removeItem ?? 'Remove item'),
       content: Text(
         l10n?.removeItemConfirm(
-                'R${item.location.y + 1}:C${item.location.x + 1} $name') ??
-            'Remove R${item.location.y + 1}:C${item.location.x + 1} $name?',
+                'R${item.gridRow + 1}:C${item.gridColumn + 1} $name') ??
+            'Remove R${item.gridRow + 1}:C${item.gridColumn + 1} $name?',
       ),
       actions: [
         TextButton(
@@ -401,7 +428,7 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
         ),
         TextButton(
           onPressed: () {
-            _removeShell(item);
+            _removeManhole(item);
             setState(() => _itemToDelete = null);
           },
           style: TextButton.styleFrom(
@@ -414,43 +441,70 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
   }
 }
 
-class _ShellItemCard extends StatelessWidget {
-  const _ShellItemCard({
+class _SmokeManholeCard extends StatefulWidget {
+  const _SmokeManholeCard({
     required this.item,
-    required this.gridRows,
-    required this.gridCols,
     required this.showCoordinates,
     required this.onDelete,
+    required this.onStartTimeChanged,
     required this.deleteTooltip,
   });
 
-  final AtlantisShellTileData item;
-  final int gridRows;
-  final int gridCols;
+  final SmokeManholeEntryData item;
   final bool showCoordinates;
   final VoidCallback onDelete;
+  final void Function(int startTime) onStartTimeChanged;
   final String deleteTooltip;
+
+  @override
+  State<_SmokeManholeCard> createState() => _SmokeManholeCardState();
+}
+
+class _SmokeManholeCardState extends State<_SmokeManholeCard> {
+  late TextEditingController _startTimeCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    _startTimeCtrl = TextEditingController(text: '${widget.item.startTime}');
+  }
+
+  @override
+  void didUpdateWidget(covariant _SmokeManholeCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.item.startTime != widget.item.startTime) {
+      _startTimeCtrl.text = '${widget.item.startTime}';
+    }
+  }
+
+  @override
+  void dispose() {
+    _startTimeCtrl.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final displayName =
-        ResourceNames.lookup(context, 'griditem_${item.type}');
-    final name = displayName != 'griditem_${item.type}' ? displayName : item.type;
+    final l10n = AppLocalizations.of(context);
+    const typeName = SmokePollutionModulePropertiesData.gridItemType;
+    final displayName = ResourceNames.lookup(context, 'griditem_$typeName');
+    final name =
+        displayName != 'griditem_$typeName' ? displayName : typeName;
 
     return Card(
       clipBehavior: Clip.antiAlias,
       child: SizedBox(
-        width: EditorItemCardLayout.cardWidth(context),
+        width: EditorItemCardLayout.cardWidth(context, base: 140),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             EditorDeletableIconHeader(
-              onDelete: onDelete,
-              deleteTooltip: deleteTooltip,
+              onDelete: widget.onDelete,
+              deleteTooltip: widget.deleteTooltip,
               icon: GridItemIcon(
-                typeName: item.type,
+                typeName: typeName,
                 size: 64,
                 fit: BoxFit.contain,
               ),
@@ -458,37 +512,57 @@ class _ShellItemCard extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
                     name,
                     style: theme.textTheme.labelMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      overflow: TextOverflow.ellipsis,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  if (showCoordinates)
+                  if (widget.showCoordinates)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
                       child: Row(
                         children: [
                           Icon(
                             editorWarningIcon,
-                            color: editorWarningBannerForeground(theme.brightness),
+                            color: editorWarningBannerForeground(
+                              theme.brightness,
+                            ),
                             size: 16,
                           ),
                           const SizedBox(width: 4),
                           Text(
-                            'R${item.location.y + 1}:C${item.location.x + 1}',
+                            'R${widget.item.gridRow + 1}:C${widget.item.gridColumn + 1}',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
+                  const SizedBox(height: 4),
+                  TextField(
+                    controller: _startTimeCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText: l10n?.smokePollutionModuleStartTimeLabel ??
+                          'Start time (s)',
+                      border: const OutlineInputBorder(),
+                      isDense: true,
+                    ),
+                    onChanged: (v) {
+                      final n = int.tryParse(v);
+                      if (n != null && n >= 0) {
+                        widget.onStartTimeChanged(n);
+                      }
+                    },
+                  ),
                 ],
               ),
             ),

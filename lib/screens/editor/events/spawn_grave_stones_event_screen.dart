@@ -420,10 +420,6 @@ class _SpawnGraveStonesEventScreenState
               typeName: alias,
               size: 48,
               fit: BoxFit.contain,
-              iconScaleFactor: GridItemRepository.isRenaiStatueNonHalf(alias)
-                  ? 3.0
-                  : 1.5,
-              badgeScaleFactor: 1.25,
             ),
             const SizedBox(width: 12),
             Expanded(

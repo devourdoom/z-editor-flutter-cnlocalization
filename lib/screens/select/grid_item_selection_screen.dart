@@ -5,8 +5,6 @@ import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/grid_item_module_prompt.dart';
 import 'package:c_editor/theme/app_theme.dart' show pvzBrownDark, pvzBrownLight;
-import 'package:c_editor/widgets/asset_image.dart'
-    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Grid item selection. Ported from Z-Editor-master GridItemSelectionScreen.kt
@@ -145,9 +143,6 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
                             itemCount: displayList.length,
                             itemBuilder: (context, index) {
                               final item = displayList[index];
-                              final iconPath = GridItemRepository.getIconPath(
-                                item.typeName,
-                              );
                               final displayName = ResourceNames.lookup(
                                 context,
                                 'griditem_${item.typeName}',
@@ -159,12 +154,7 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
                               return _GridItemCard(
                                 item: item,
                                 name: name,
-                                iconPath: iconPath,
                                 theme: theme,
-                                showZombossBadge:
-                                    GridItemRepository.needsZombossBadge(
-                                      item.typeName,
-                                    ),
                                 onTap: () => _handleItemTap(item.typeName),
                               );
                             },
@@ -212,29 +202,17 @@ class _GridItemCard extends StatelessWidget {
   const _GridItemCard({
     required this.item,
     required this.name,
-    required this.iconPath,
     required this.theme,
-    this.showZombossBadge = false,
     required this.onTap,
   });
 
   final GridItemInfo item;
   final String name;
-  final String iconPath;
   final ThemeData theme;
-  final bool showZombossBadge;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final image = ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: AssetImageWidget(
-        assetPath: iconPath,
-        altCandidates: imageAltCandidates(iconPath),
-        fit: BoxFit.contain,
-      ),
-    );
     return Card(
       child: InkWell(
         onTap: onTap,
@@ -245,36 +223,10 @@ class _GridItemCard extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Expanded(
-                child: showZombossBadge
-                    ? Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Positioned.fill(child: image),
-                          Positioned(
-                            top: 2,
-                            left: 2,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 3,
-                                vertical: 1,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF7B1FA2),
-                                borderRadius: BorderRadius.circular(3),
-                              ),
-                              child: const Text(
-                                'Z',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : image,
+                child: GridItemIcon(
+                  typeName: item.typeName,
+                  fit: BoxFit.contain,
+                ),
               ),
               const SizedBox(height: 8),
               Text(

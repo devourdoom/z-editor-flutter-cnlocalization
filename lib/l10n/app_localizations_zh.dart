@@ -1708,6 +1708,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get moduleDesc_ManholePipelineModuleProperties => '配置蒸汽时代的地下传输管道';
 
   @override
+  String get moduleTitle_SmokePollutionModuleProperties => '蒸汽毒雾';
+
+  @override
+  String get moduleDesc_SmokePollutionModuleProperties => '配置场地上的蒸汽毒雾井盖';
+
+  @override
   String get moduleTitle_RoofProperties => '屋顶花盆';
 
   @override
@@ -3386,6 +3392,29 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get manholePipelineHelpEditing =>
       '在上方列表选择管道组，下方网格显示管道布局。点击“放置起点”或“放置终点”切换模式，然后点击网格设定位置。';
+
+  @override
+  String get smokePollutionModuleTitle => '蒸汽毒雾模块';
+
+  @override
+  String get smokePollutionModuleHelpTitle => '蒸汽毒雾模块帮助';
+
+  @override
+  String get smokePollutionModuleHelpOverview => '概述';
+
+  @override
+  String get smokePollutionModuleHelpOverviewBody =>
+      '在场地放置蒸汽毒雾井盖，经过设定时间后井盖被喷飞并释放毒雾。常用于蒸汽时代关卡。';
+
+  @override
+  String get smokePollutionModuleHelpManholes => '井盖';
+
+  @override
+  String get smokePollutionModuleHelpManholesBody =>
+      '在网格中选择格子，然后在该位置添加井盖。每个井盖可设置 Start Time——从关卡开始到井盖喷飞释放毒雾的秒数。';
+
+  @override
+  String get smokePollutionModuleStartTimeLabel => 'Start time（秒）';
 
   @override
   String manholePipelineStartEndFormat(int sx, int sy, int ex, int ey) {
@@ -5513,6 +5542,50 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get jsonViewerModeEdit => '（编辑模式）';
+
+  @override
+  String get jsonViewerFontSize => '字体大小';
+
+  @override
+  String get jsonViewerSearchHint => '搜索';
+
+  @override
+  String get jsonViewerReplaceHint => '替换';
+
+  @override
+  String get jsonViewerSearchHistory => '最近搜索';
+
+  @override
+  String get jsonViewerReplaceHistory => '最近替换';
+
+  @override
+  String get jsonViewerInsertNewline => '插入换行';
+
+  @override
+  String get jsonViewerMatchCase => '区分大小写';
+
+  @override
+  String get jsonViewerWholeWords => '全字匹配';
+
+  @override
+  String get jsonViewerRegex => '正则表达式';
+
+  @override
+  String get jsonViewerPreviousMatch => '上一个匹配';
+
+  @override
+  String get jsonViewerNextMatch => '下一个匹配';
+
+  @override
+  String get jsonViewerReplaceOne => '替换';
+
+  @override
+  String get jsonViewerReplaceAll => '全部替换';
+
+  @override
+  String jsonViewerMatchCounter(int current, int total) {
+    return '$current / $total';
+  }
 
   @override
   String get tooltipAboutModule => '关于此模块';

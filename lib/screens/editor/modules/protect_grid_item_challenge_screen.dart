@@ -310,8 +310,6 @@ class _ProtectGridItemChallengeScreenState
                       final item = _data.gridItems.firstWhereOrNull(
                         (p) => p.gridX == col && p.gridY == row,
                       );
-                      final cellBadgeScale =
-                          EditorItemCardLayout.gridCellBadgeScale(context);
                       return Expanded(
                         child: GestureDetector(
                           onTap: () => setState(() {
@@ -342,12 +340,11 @@ class _ProtectGridItemChallengeScreenState
                                           child: FittedBox(
                                             fit: BoxFit.contain,
                                             child: GridItemIcon(
-                                                typeName: item.gridItemType,
-                                                size: 32,
-                                                fit: BoxFit.contain,
-                                                borderRadius: 4,
-                                                badgeScaleFactor:
-                                                    1.25 * cellBadgeScale),
+                                              typeName: item.gridItemType,
+                                              size: 32,
+                                              fit: BoxFit.contain,
+                                              borderRadius: 4,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -416,11 +413,6 @@ class _GridItemTile extends StatelessWidget {
               typeName: item.gridItemType,
               size: 40,
               fit: BoxFit.contain,
-              iconScaleFactor: GridItemRepository.isRenaiStatueNonHalf(
-                      item.gridItemType)
-                  ? 3.0
-                  : 1.5,
-              badgeScaleFactor: 1.25,
             ),
           ],
         ),

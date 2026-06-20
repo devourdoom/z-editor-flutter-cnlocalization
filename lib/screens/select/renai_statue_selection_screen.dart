@@ -3,8 +3,6 @@ import 'package:c_editor/data/repository/grid_item_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/theme/app_theme.dart' show pvzBrownDark, pvzBrownLight;
-import 'package:c_editor/widgets/asset_image.dart'
-    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Dedicated statue selection for Renai module. Shows all Renai statue types.
@@ -81,23 +79,31 @@ class _RenaiStatueSelectionScreenState extends State<RenaiStatueSelectionScreen>
               )
             : LayoutBuilder(
                 builder: (context, constraints) {
-                  final isDesktop = constraints.maxWidth > 600;
-                  final crossAxisCount = isDesktop ? 6 : 3;
-                  final isMobile = !isDesktop;
+                  final crossAxisCount =
+                      RenaiStatueCardLayout.selectionCrossAxisCount(
+                    constraints.maxWidth,
+                  );
+                  const spacing = 12.0;
+                  const padding = 16.0;
+                  final cellWidth = (constraints.maxWidth -
+                          padding * 2 -
+                          spacing * (crossAxisCount - 1)) /
+                      crossAxisCount;
+                  final iconSize =
+                      RenaiStatueCardLayout.selectionIconSize(cellWidth);
+
                   return GridView.builder(
-                    padding: const EdgeInsets.all(16),
-                    gridDelegate:
-                        SliverGridDelegateWithFixedCrossAxisCount(
+                    padding: const EdgeInsets.all(padding),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
-                      childAspectRatio: 0.85,
-                      crossAxisSpacing: 12,
-                      mainAxisSpacing: 12,
+                      childAspectRatio: RenaiStatueCardLayout
+                          .selectionChildAspectRatio(constraints.maxWidth),
+                      crossAxisSpacing: spacing,
+                      mainAxisSpacing: spacing,
                     ),
                     itemCount: displayList.length,
                     itemBuilder: (context, index) {
                       final item = displayList[index];
-                      final iconPath =
-                          GridItemRepository.getIconPath(item.typeName);
                       final displayName = ResourceNames.lookup(
                         context,
                         'griditem_${item.typeName}',
@@ -108,15 +114,9 @@ class _RenaiStatueSelectionScreenState extends State<RenaiStatueSelectionScreen>
                       return _RenaiStatueCard(
                         item: item,
                         name: name,
-                        iconPath: iconPath,
+                        iconSize: iconSize,
                         theme: theme,
-                        isMobile: isMobile,
-                        showZombossBadge:
-                            GridItemRepository.needsZombossBadge(
-                              item.typeName,
-                            ),
-                        onTap: () =>
-                            widget.onStatueSelected(item.typeName),
+                        onTap: () => widget.onStatueSelected(item.typeName),
                       );
                     },
                   );
@@ -131,98 +131,51 @@ class _RenaiStatueCard extends StatelessWidget {
   const _RenaiStatueCard({
     required this.item,
     required this.name,
-    required this.iconPath,
+    required this.iconSize,
     required this.theme,
-    this.isMobile = false,
-    this.showZombossBadge = false,
     required this.onTap,
   });
 
   final GridItemInfo item;
   final String name;
-  final String iconPath;
+  final double iconSize;
   final ThemeData theme;
-  final bool isMobile;
-  final bool showZombossBadge;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    final isNonHalf = GridItemRepository.isRenaiStatueNonHalf(item.typeName);
-    final image = ClipRRect(
-      borderRadius: BorderRadius.circular(8),
-      child: AssetImageWidget(
-        assetPath: iconPath,
-        altCandidates: imageAltCandidates(iconPath),
-        fit: BoxFit.contain,
-      ),
-    );
-    final nonHalfScale = isMobile ? 0.75 : 0.55;
-    final scaledImage = isNonHalf
-        ? Center(
-            child: FractionallySizedBox(
-              widthFactor: nonHalfScale,
-              heightFactor: nonHalfScale,
-              child: image,
-            ),
-          )
-        : image;
     return Card(
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 12),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: showZombossBadge
-                    ? Stack(
-                        clipBehavior: Clip.none,
-                        children: [
-                          Positioned.fill(child: scaledImage),
-                          Positioned(
-                            top: 2,
-                            left: 2,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 4,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF7B1FA2),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: const Text(
-                                'Z',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    : scaledImage,
+                child: Center(
+                  child: GridItemIcon(
+                    typeName: item.typeName,
+                    size: iconSize,
+                    fit: BoxFit.contain,
+                  ),
+                ),
               ),
               const SizedBox(height: 8),
               Text(
                 name,
                 textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
+                maxLines: 3,
                 style: theme.textTheme.bodySmall?.copyWith(
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(height: 2),
               Text(
                 item.typeName,
                 textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
                 style: theme.textTheme.labelSmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),

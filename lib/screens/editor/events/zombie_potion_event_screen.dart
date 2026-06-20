@@ -2,7 +2,6 @@ import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/data/level_parser.dart';
-import 'package:c_editor/data/repository/grid_item_repository.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/widgets/editor_components.dart';
@@ -295,8 +294,6 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
                           .toList();
                       final firstItem = cellItems.firstOrNull;
                       final count = cellItems.length;
-                      final cellBadgeScale =
-                          EditorItemCardLayout.gridCellBadgeScale(context);
                       return Expanded(
                         child: GestureDetector(
                           onTap: () => setState(() {
@@ -328,12 +325,11 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
                                           child: FittedBox(
                                             fit: BoxFit.contain,
                                             child: GridItemIcon(
-                                                typeName: firstItem.type,
-                                                size: 32,
-                                                fit: BoxFit.contain,
-                                                borderRadius: 4,
-                                                badgeScaleFactor:
-                                                    1.25 * cellBadgeScale),
+                                              typeName: firstItem.type,
+                                              size: 32,
+                                              fit: BoxFit.contain,
+                                              borderRadius: 4,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -451,11 +447,6 @@ class _PotionItemCard extends StatelessWidget {
                 typeName: item.type,
                 size: 64,
                 fit: BoxFit.contain,
-                iconScaleFactor:
-                    GridItemRepository.isRenaiStatueNonHalf(item.type)
-                        ? 3.0
-                        : 1.5,
-                badgeScaleFactor: 1.25,
               ),
             ),
             Padding(

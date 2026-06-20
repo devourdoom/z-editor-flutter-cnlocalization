@@ -3316,6 +3316,18 @@ abstract class AppLocalizations {
   /// **'Configures Steam Ages transportation sewers'**
   String get moduleDesc_ManholePipelineModuleProperties;
 
+  /// No description provided for @moduleTitle_SmokePollutionModuleProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Smoke Pollution'**
+  String get moduleTitle_SmokePollutionModuleProperties;
+
+  /// No description provided for @moduleDesc_SmokePollutionModuleProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Configures steam poison fog manholes on the lawn'**
+  String get moduleDesc_SmokePollutionModuleProperties;
+
   /// No description provided for @moduleTitle_RoofProperties.
   ///
   /// In en, this message translates to:
@@ -6447,6 +6459,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select a pipe group from the list above. The grid below shows the layout. Use \"Set Start\" or \"Set End\", then tap a tile to place it.'**
   String get manholePipelineHelpEditing;
+
+  /// No description provided for @smokePollutionModuleTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smoke pollution module'**
+  String get smokePollutionModuleTitle;
+
+  /// No description provided for @smokePollutionModuleHelpTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Smoke pollution module help'**
+  String get smokePollutionModuleHelpTitle;
+
+  /// No description provided for @smokePollutionModuleHelpOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get smokePollutionModuleHelpOverview;
+
+  /// No description provided for @smokePollutionModuleHelpOverviewBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Places smoke manholes on the lawn that erupt after a delay, releasing poison fog. Commonly used in Steam Ages levels.'**
+  String get smokePollutionModuleHelpOverviewBody;
+
+  /// No description provided for @smokePollutionModuleHelpManholes.
+  ///
+  /// In en, this message translates to:
+  /// **'Manholes'**
+  String get smokePollutionModuleHelpManholes;
+
+  /// No description provided for @smokePollutionModuleHelpManholesBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Select a tile on the grid, then add manholes at that position. Each manhole has a Start Time — seconds from level start until it erupts and releases poison fog.'**
+  String get smokePollutionModuleHelpManholesBody;
+
+  /// No description provided for @smokePollutionModuleStartTimeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Start time (s)'**
+  String get smokePollutionModuleStartTimeLabel;
 
   /// No description provided for @manholePipelineStartEndFormat.
   ///
@@ -10401,6 +10455,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'(edit mode)'**
   String get jsonViewerModeEdit;
+
+  /// No description provided for @jsonViewerFontSize.
+  ///
+  /// In en, this message translates to:
+  /// **'Font size'**
+  String get jsonViewerFontSize;
+
+  /// No description provided for @jsonViewerSearchHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get jsonViewerSearchHint;
+
+  /// No description provided for @jsonViewerReplaceHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get jsonViewerReplaceHint;
+
+  /// No description provided for @jsonViewerSearchHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent searches'**
+  String get jsonViewerSearchHistory;
+
+  /// No description provided for @jsonViewerReplaceHistory.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent replacements'**
+  String get jsonViewerReplaceHistory;
+
+  /// No description provided for @jsonViewerInsertNewline.
+  ///
+  /// In en, this message translates to:
+  /// **'Insert newline'**
+  String get jsonViewerInsertNewline;
+
+  /// No description provided for @jsonViewerMatchCase.
+  ///
+  /// In en, this message translates to:
+  /// **'Match case'**
+  String get jsonViewerMatchCase;
+
+  /// No description provided for @jsonViewerWholeWords.
+  ///
+  /// In en, this message translates to:
+  /// **'Words'**
+  String get jsonViewerWholeWords;
+
+  /// No description provided for @jsonViewerRegex.
+  ///
+  /// In en, this message translates to:
+  /// **'Regex'**
+  String get jsonViewerRegex;
+
+  /// No description provided for @jsonViewerPreviousMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Previous match'**
+  String get jsonViewerPreviousMatch;
+
+  /// No description provided for @jsonViewerNextMatch.
+  ///
+  /// In en, this message translates to:
+  /// **'Next match'**
+  String get jsonViewerNextMatch;
+
+  /// No description provided for @jsonViewerReplaceOne.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace'**
+  String get jsonViewerReplaceOne;
+
+  /// No description provided for @jsonViewerReplaceAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace all'**
+  String get jsonViewerReplaceAll;
+
+  /// No description provided for @jsonViewerMatchCounter.
+  ///
+  /// In en, this message translates to:
+  /// **'{current} of {total}'**
+  String jsonViewerMatchCounter(int current, int total);
 
   /// No description provided for @tooltipAboutModule.
   ///

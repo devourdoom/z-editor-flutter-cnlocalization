@@ -151,6 +151,35 @@ abstract final class EditorItemCardLayout {
       compact(context) ? 0.72 : 1.0;
 }
 
+/// Layout metrics for Renai statue cards and the statue picker grid.
+abstract final class RenaiStatueCardLayout {
+  static double tileCardWidth(BuildContext context) =>
+      EditorItemCardLayout.cardWidth(context, base: compact(context) ? 156 : 180);
+
+  static double tileIconSize(BuildContext context) =>
+      EditorItemCardLayout.iconSlotSize(context, base: compact(context) ? 84 : 100);
+
+  static int selectionCrossAxisCount(double maxWidth) {
+    if (maxWidth >= 1100) return 5;
+    if (maxWidth >= 720) return 4;
+    if (maxWidth >= 480) return 3;
+    return 2;
+  }
+
+  static double selectionChildAspectRatio(double maxWidth) {
+    if (maxWidth >= 720) return 0.78;
+    if (maxWidth >= 480) return 0.74;
+    return 0.68;
+  }
+
+  static double selectionIconSize(double cellWidth) {
+    return (cellWidth * 0.78).clamp(72.0, 112.0);
+  }
+
+  static bool compact(BuildContext context) =>
+      EditorItemCardLayout.compact(context);
+}
+
 /// Icon header for editor item cards: artwork in a fixed slot, delete control
 /// in its own top-right column so it never overlaps scaled icons or badges.
 class EditorDeletableIconHeader extends StatelessWidget {
@@ -776,9 +805,7 @@ InputDecoration editorInputDecoration(
   );
 }
 
-/// Icon for grid items. For renai_zomboss_statue_zombie1_half,
-/// overlays a purple "Z" badge on the base statue icon.
-/// Use anywhere grid item icons are displayed (selection, grids, lists).
+/// Icon for grid items. Use anywhere grid item icons are displayed.
 class GridItemIcon extends StatelessWidget {
   const GridItemIcon({
     super.key,
@@ -788,8 +815,6 @@ class GridItemIcon extends StatelessWidget {
     this.height,
     this.fit = BoxFit.cover,
     this.borderRadius = 8,
-    this.iconScaleFactor = 1.0,
-    this.badgeScaleFactor = 1.0,
   });
 
   final String typeName;
@@ -798,27 +823,16 @@ class GridItemIcon extends StatelessWidget {
   final double? height;
   final BoxFit fit;
   final double borderRadius;
-  /// Scale the icon (e.g. 1.25 for grid item editors).
-  final double iconScaleFactor;
-  /// Scale the zomboss badge (e.g. 2.0 for grid item editors).
-  final double badgeScaleFactor;
 
   @override
   Widget build(BuildContext context) {
-    final baseW = width ?? size;
-    final baseH = height ?? size;
-    var scale = iconScaleFactor;
-    if (GridItemRepository.isRenaiStatueNonHalf(typeName)) {
-      scale *= 0.55;
-    }
-    final w = baseW * scale;
-    final h = baseH * scale;
+    final w = width ?? size;
+    final h = height ?? size;
     final path = GridItemRepository.getIconPath(typeName);
-    final showBadge = GridItemRepository.needsZombossBadge(typeName);
     final effectiveFit = GridItemRepository.isRenaiStatue(typeName)
         ? BoxFit.contain
         : fit;
-    final image = ClipRRect(
+    return ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
       child: AssetImageWidget(
         assetPath: path,
@@ -826,62 +840,6 @@ class GridItemIcon extends StatelessWidget {
         height: h,
         fit: effectiveFit,
         altCandidates: imageAltCandidates(path),
-      ),
-    );
-    if (!showBadge) {
-      return _fitToSlot(baseW, baseH, w, h, image);
-    }
-    var badgeScale = (baseW < 48 || baseH < 48) ? 0.5 : 0.65;
-    badgeScale *= badgeScaleFactor;
-    final padH = (4.0 * badgeScale).clamp(2.0, 8.0);
-    final padV = (2.0 * badgeScale).clamp(1.0, 4.0);
-    final fSize = (10.0 * badgeScale).clamp(6.0, 20.0);
-    final radius = (4.0 * badgeScale).clamp(2.0, 8.0);
-    final offset = (2.0 * badgeScale).clamp(1.0, 4.0);
-    final badged = Stack(
-      clipBehavior: Clip.none,
-      children: [
-        image,
-        Positioned(
-          top: offset,
-          left: offset,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),
-            decoration: BoxDecoration(
-              color: const Color(0xFF7B1FA2),
-              borderRadius: BorderRadius.circular(radius),
-            ),
-            child: Text(
-              'Z',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: fSize,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-    return _fitToSlot(baseW, baseH, w, h, badged);
-  }
-
-  static Widget _fitToSlot(
-    double baseW,
-    double baseH,
-    double contentW,
-    double contentH,
-    Widget child,
-  ) {
-    if (contentW == baseW && contentH == baseH) {
-      return SizedBox(width: baseW, height: baseH, child: child);
-    }
-    return SizedBox(
-      width: baseW,
-      height: baseH,
-      child: FittedBox(
-        fit: BoxFit.contain,
-        child: SizedBox(width: contentW, height: contentH, child: child),
       ),
     );
   }
@@ -893,7 +851,7 @@ class RenaiStatueIcon extends StatelessWidget {
     super.key,
     required this.typeName,
     this.size = 40,
-    this.fit = BoxFit.cover,
+    this.fit = BoxFit.contain,
   });
 
   final String typeName;

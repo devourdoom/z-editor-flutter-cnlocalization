@@ -1808,6 +1808,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Configures Steam Ages transportation sewers';
 
   @override
+  String get moduleTitle_SmokePollutionModuleProperties => 'Smoke Pollution';
+
+  @override
+  String get moduleDesc_SmokePollutionModuleProperties =>
+      'Configures steam poison fog manholes on the lawn';
+
+  @override
   String get moduleTitle_RoofProperties => 'Roof Pots';
 
   @override
@@ -3576,6 +3583,29 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get manholePipelineHelpEditing =>
       'Select a pipe group from the list above. The grid below shows the layout. Use \"Set Start\" or \"Set End\", then tap a tile to place it.';
+
+  @override
+  String get smokePollutionModuleTitle => 'Smoke pollution module';
+
+  @override
+  String get smokePollutionModuleHelpTitle => 'Smoke pollution module help';
+
+  @override
+  String get smokePollutionModuleHelpOverview => 'Overview';
+
+  @override
+  String get smokePollutionModuleHelpOverviewBody =>
+      'Places smoke manholes on the lawn that erupt after a delay, releasing poison fog. Commonly used in Steam Ages levels.';
+
+  @override
+  String get smokePollutionModuleHelpManholes => 'Manholes';
+
+  @override
+  String get smokePollutionModuleHelpManholesBody =>
+      'Select a tile on the grid, then add manholes at that position. Each manhole has a Start Time — seconds from level start until it erupts and releases poison fog.';
+
+  @override
+  String get smokePollutionModuleStartTimeLabel => 'Start time (s)';
 
   @override
   String manholePipelineStartEndFormat(int sx, int sy, int ex, int ey) {
@@ -5825,6 +5855,50 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jsonViewerModeEdit => '(edit mode)';
+
+  @override
+  String get jsonViewerFontSize => 'Font size';
+
+  @override
+  String get jsonViewerSearchHint => 'Search';
+
+  @override
+  String get jsonViewerReplaceHint => 'Replace';
+
+  @override
+  String get jsonViewerSearchHistory => 'Recent searches';
+
+  @override
+  String get jsonViewerReplaceHistory => 'Recent replacements';
+
+  @override
+  String get jsonViewerInsertNewline => 'Insert newline';
+
+  @override
+  String get jsonViewerMatchCase => 'Match case';
+
+  @override
+  String get jsonViewerWholeWords => 'Words';
+
+  @override
+  String get jsonViewerRegex => 'Regex';
+
+  @override
+  String get jsonViewerPreviousMatch => 'Previous match';
+
+  @override
+  String get jsonViewerNextMatch => 'Next match';
+
+  @override
+  String get jsonViewerReplaceOne => 'Replace';
+
+  @override
+  String get jsonViewerReplaceAll => 'Replace all';
+
+  @override
+  String jsonViewerMatchCounter(int current, int total) {
+    return '$current of $total';
+  }
 
   @override
   String get tooltipAboutModule => 'About this module';

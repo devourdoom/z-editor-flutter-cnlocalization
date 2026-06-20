@@ -633,11 +633,6 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                       typeName: gridAlias,
                       size: 40,
                       fit: BoxFit.contain,
-                      iconScaleFactor: GridItemRepository.isRenaiStatueNonHalf(
-                              gridAlias)
-                          ? 3.0
-                          : 1.5,
-                      badgeScaleFactor: 1.25,
                     ),
                     title: Text(() {
                       final d = ResourceNames.lookup(context, 'griditem_$gridAlias');

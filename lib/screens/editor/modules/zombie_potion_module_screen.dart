@@ -299,11 +299,6 @@ class _ZombiePotionModuleScreenState extends State<ZombiePotionModuleScreen> {
                             typeName: id,
                             size: 40,
                             fit: BoxFit.contain,
-                            iconScaleFactor:
-                                GridItemRepository.isRenaiStatueNonHalf(id)
-                                    ? 3.0
-                                    : 1.5,
-                            badgeScaleFactor: 1.25,
                           ),
                           title: Text(name),
                           subtitle: Text(id),

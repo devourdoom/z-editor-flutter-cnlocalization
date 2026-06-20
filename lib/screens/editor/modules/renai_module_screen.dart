@@ -1,7 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 import 'package:c_editor/data/level_parser.dart';
-import 'package:c_editor/data/repository/grid_item_repository.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
@@ -586,8 +585,9 @@ class _RenaiModuleScreenState extends State<RenaiModuleScreen> {
                             ),
                             AddItemCard(
                               onPressed: _addStatue,
-                              width: 140,
-                              minHeight: 195,
+                              width: RenaiStatueCardLayout.compact(context)
+                                  ? 156
+                                  : 180,
                             ),
                           ],
                         ),
@@ -725,7 +725,7 @@ class _StatueCardState extends State<_StatueCard> {
     return Card(
       clipBehavior: Clip.antiAlias,
       child: SizedBox(
-        width: EditorItemCardLayout.cardWidth(context, base: 140),
+        width: RenaiStatueCardLayout.tileCardWidth(context),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -733,26 +733,22 @@ class _StatueCardState extends State<_StatueCard> {
             EditorDeletableIconHeader(
               onDelete: widget.onDelete,
               deleteTooltip: widget.deleteTooltip,
+              iconSize: RenaiStatueCardLayout.tileIconSize(context),
               icon: GridItemIcon(
                 typeName: item.typeName,
-                size: 64,
-                iconScaleFactor:
-                    GridItemRepository.isRenaiStatueNonHalf(item.typeName)
-                        ? 3.65
-                        : 2.0,
-                badgeScaleFactor: 2.0,
+                size: RenaiStatueCardLayout.tileIconSize(context),
+                fit: BoxFit.contain,
               ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
                     name,
                     style: theme.textTheme.labelMedium,
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 2,
+                    maxLines: 3,
                   ),
                   if (widget.showCoordinates)
                     Padding(
@@ -765,39 +761,40 @@ class _StatueCardState extends State<_StatueCard> {
                             size: 16,
                           ),
                           const SizedBox(width: 4),
-                          Text(
-                            'R${widget.item.gridY + 1}:C${widget.item.gridX + 1}',
-                            style: theme.textTheme.bodySmall?.copyWith(
-                              color: editorWarningBannerForeground(theme.brightness),
+                          Expanded(
+                            child: Text(
+                              'R${widget.item.gridY + 1}:C${widget.item.gridX + 1}',
+                              style: theme.textTheme.bodySmall?.copyWith(
+                                color: editorWarningBannerForeground(
+                                  theme.brightness,
+                                ),
+                              ),
                             ),
                           ),
                         ],
                       ),
                     ),
                   const SizedBox(height: 4),
-                  SizedBox(
-                    width: 120,
-                    child: TextField(
-                      controller: _waveCtrl,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText:
-                            AppLocalizations.of(
-                              context,
-                            )?.renaiModuleCarveWave ??
-                            'Carve wave',
-                        helperText: AppLocalizations.of(
-                          context,
-                        )?.moduleWaveIndexZeroBasedHint,
-                        border: const OutlineInputBorder(),
-                      ),
-                      onChanged: (v) {
-                        final n = int.tryParse(v);
-                        if (n != null && n >= 0) {
-                          widget.onWaveChanged(n);
-                        }
-                      },
+                  TextField(
+                    controller: _waveCtrl,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      labelText:
+                          AppLocalizations.of(
+                            context,
+                          )?.renaiModuleCarveWave ??
+                          'Carve wave',
+                      helperText: AppLocalizations.of(
+                        context,
+                      )?.moduleWaveIndexZeroBasedHint,
+                      border: const OutlineInputBorder(),
                     ),
+                    onChanged: (v) {
+                      final n = int.tryParse(v);
+                      if (n != null && n >= 0) {
+                        widget.onWaveChanged(n);
+                      }
+                    },
                   ),
                 ],
               ),

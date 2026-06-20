@@ -27,6 +27,7 @@ class ObjectOrderRegistry {
     'PowerTileProperties',
     'ZombiePotionModuleProperties',
     'RenaiModuleProperties',
+    'SmokePollutionModuleProperties',
     'DropShipProperties',
     'HeianWindModuleProperties',
     'WarMistProperties',
