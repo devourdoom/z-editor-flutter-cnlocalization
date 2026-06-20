@@ -191,6 +191,8 @@ class ModuleRegistry {
         return l10n.moduleTitle_ZombieRushModuleProperties;
       case 'moduleTitle_RenaiModuleProperties':
         return l10n.moduleTitle_RenaiModuleProperties;
+      case 'moduleTitle_SmokePollutionModuleProperties':
+        return l10n.moduleTitle_SmokePollutionModuleProperties;
       case 'moduleTitle_DropShipProperties':
         return l10n.moduleTitle_DropShipProperties;
       case 'moduleTitle_GlacierModuleProperties':
@@ -335,6 +337,8 @@ class ModuleRegistry {
         return l10n.moduleDesc_ZombieRushModuleProperties;
       case 'moduleDesc_RenaiModuleProperties':
         return l10n.moduleDesc_RenaiModuleProperties;
+      case 'moduleDesc_SmokePollutionModuleProperties':
+        return l10n.moduleDesc_SmokePollutionModuleProperties;
       case 'moduleDesc_DropShipProperties':
         return l10n.moduleDesc_DropShipProperties;
       case 'moduleDesc_GlacierModuleProperties':
@@ -982,6 +986,17 @@ class ModuleRegistry {
       defaultAlias: 'RenaiModule',
       initialDataFactory: () => RenaiModulePropertiesData(),
       routeId: 'RenaiModule',
+    ),
+    'SmokePollutionModuleProperties': ModuleMetadata(
+      titleKey: 'moduleTitle_SmokePollutionModuleProperties',
+      descriptionKey: 'moduleDesc_SmokePollutionModuleProperties',
+      icon: Icons.cloud,
+      isCore: true,
+      allowMultiple: false,
+      category: ModuleCategory.scene,
+      defaultAlias: 'SmokePollution',
+      initialDataFactory: () => SmokePollutionModulePropertiesData(),
+      routeId: 'SmokePollutionModule',
     ),
     'DropShipProperties': ModuleMetadata(
       titleKey: 'moduleTitle_DropShipProperties',

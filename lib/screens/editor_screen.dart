@@ -60,6 +60,7 @@ import 'package:c_editor/screens/editor/modules/sperm_whale_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/glacier_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/heian_wind_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/renai_module_screen.dart';
+import 'package:c_editor/screens/editor/modules/smoke_pollution_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/penny_classroom_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/manhole_pipeline_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/wave_manager_module_screen.dart';
@@ -2667,6 +2668,21 @@ class _EditorScreenState extends State<EditorScreen> {
         context,
         MaterialPageRoute(
           builder: (context) => RenaiModuleScreen(
+            rtid: rtid,
+            levelFile: _ec.state.levelFile!,
+            onChanged: _markDirty,
+            onBack: () => Navigator.pop(context),
+          ),
+        ),
+      );
+      return;
+    }
+    if (info.source == 'CurrentLevel' &&
+        objClass == 'SmokePollutionModuleProperties') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SmokePollutionModuleScreen(
             rtid: rtid,
             levelFile: _ec.state.levelFile!,
             onChanged: _markDirty,
