@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:c_editor/data/repository/rift_theme_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Multi-select picker for rift themes. Tap to toggle; confirm with the check button.

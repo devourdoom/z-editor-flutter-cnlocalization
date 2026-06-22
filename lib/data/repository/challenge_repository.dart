@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/challenge_resource_l10n.dart';
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 
 /// Challenge type metadata. Ported from Z-Editor-master ChallengeRepository.kt
 class ChallengeTypeInfo {

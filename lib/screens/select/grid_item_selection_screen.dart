@@ -5,7 +5,7 @@ import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/grid_item_module_prompt.dart';
 import 'package:c_editor/theme/app_theme.dart' show pvzBrownDark, pvzBrownLight;
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Grid item selection. Ported from Z-Editor-master GridItemSelectionScreen.kt

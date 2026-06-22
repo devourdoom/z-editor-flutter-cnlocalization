@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
-import 'package:c_editor/util/hujson_codec.dart';
-import 'package:c_editor/util/3rdParty/pyvz2_rton_codec.dart';
-import 'package:c_editor/util/pvz2c_crypto.dart';
+import 'package:c_editor/utils/hujson_codec.dart';
+import 'package:c_editor/utils/3rdParty/pyvz2_rton_codec.dart';
+import 'package:c_editor/utils/pvz2c_crypto.dart';
 
 import '../pvz_models.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:c_editor/data/repository/tool_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget;
 import 'package:c_editor/widgets/editor_components.dart';
 

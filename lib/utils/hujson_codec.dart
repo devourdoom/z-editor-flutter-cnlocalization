@@ -1,8 +1,8 @@
 import 'dart:typed_data';
 
-import 'package:c_editor/util/3rdParty/sen_buffer.dart';
-import 'package:c_editor/util/3rdParty/sen_compiled_text.dart';
-import 'package:c_editor/util/pvz2c_crypto.dart';
+import 'package:c_editor/utils/3rdParty/sen_buffer.dart';
+import 'package:c_editor/utils/3rdParty/sen_compiled_text.dart';
+import 'package:c_editor/utils/pvz2c_crypto.dart';
 
 /// Hujson: ASCII base64 wrapping [CompiledText] (PopCap zlib + AES-CBC + `0x10 0x00` prefix).
 class HuJsonCodec {

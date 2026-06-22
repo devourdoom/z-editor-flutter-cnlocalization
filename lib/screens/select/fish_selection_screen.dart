@@ -3,7 +3,7 @@ import 'package:c_editor/data/repository/fish_type_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/theme/app_theme.dart' show pvzFishDark, pvzFishLight;
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 

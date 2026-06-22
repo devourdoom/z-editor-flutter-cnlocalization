@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:c_editor/util/3rdParty/sen_popcap_zlib.dart';
-import 'package:c_editor/util/3rdParty/sen_buffer.dart';
+import 'package:c_editor/utils/3rdParty/sen_popcap_zlib.dart';
+import 'package:c_editor/utils/3rdParty/sen_buffer.dart';
 
 import '../pvz_models.dart';
 import 'level_repository_base.dart';

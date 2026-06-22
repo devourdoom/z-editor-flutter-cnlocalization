@@ -7,7 +7,7 @@ import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/magic_hat_spawn_preview_screen.dart';
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/asset_image.dart'
     show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart'

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:c_editor/data/registry/module_registry.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Module selection. Ported from Z-Editor-master ModuleSelectionScreen.kt

@@ -7,7 +7,7 @@ import 'package:c_editor/data/zomboss_mech_action_utils.dart';
 import 'package:c_editor/data/zomboss_mech_l10n.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/screens/editor/others/custom_zomboss_mech_action_editor_screen.dart';
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/animated_extended_fab.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 

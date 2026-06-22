@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:c_editor/data/challenge_resource_l10n.dart';
 import 'package:c_editor/data/zombie_conditions.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Multi-select zombie conditions with checkboxes (for star challenges).

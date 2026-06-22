@@ -3,7 +3,7 @@ import 'package:c_editor/data/repository/grid_item_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/theme/app_theme.dart' show pvzBrownDark, pvzBrownLight;
-import 'package:c_editor/util/selection_search.dart';
+import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Dedicated statue selection for Renai module. Shows all Renai statue types.
