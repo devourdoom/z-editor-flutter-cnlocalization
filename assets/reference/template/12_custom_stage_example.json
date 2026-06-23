@@ -1,0 +1,185 @@
+{
+  "objects": [
+    {
+      "objclass": "LevelDefinition",
+      "objdata": {
+        "Description": "Example level using a custom lawn edited in C-Editor.",
+        "LevelNumber": 12,
+        "Loot": "RTID(NoLoot@LevelModules)",
+        "Modules": [
+          "RTID(StandardIntro@LevelModules)",
+          "RTID(DefaultSunDropper@LevelModules)",
+          "RTID(ZombiesDeadWinCon@LevelModules)",
+          "RTID(SeedBank@CurrentLevel)",
+          "RTID(NewWaves@CurrentLevel)",
+          "RTID(DefaultZombieWinCondition@LevelModules)",
+          "RTID(DefaultCustomLevel@LevelModules)"
+        ],
+        "MusicType": "MainPath",
+        "Name": "Custom lawn example",
+        "StageModule": "RTID(CustomEgyptStage@CurrentLevel)",
+        "StartingSun": 200,
+        "VictoryModule": "RTID(VictoryOutro@LevelModules)"
+      }
+    },
+    {
+      "aliases": ["CustomEgyptStage"],
+      "objclass": "EgyptStageProperties",
+      "objdata": {
+        "ResourceGroupNames": [
+          "Egypt_Gravestone",
+          "Game_Tombstones_Dynamic",
+          "Tombstone_Dark_Effects",
+          "DelayLoad_Background_Egypt_Compressed",
+          "Dirt_Spawn_Egypt",
+          "AudioEgypt"
+        ],
+        "GroupsToUnloadForAds": [
+          "DelayLoad_Background_Egypt_Compressed"
+        ],
+        "BelongsToWorld": "egypt",
+        "StagePrefix": "egypt",
+        "BackgroundResourceGroup": "DelayLoad_Background_Egypt_Compressed",
+        "BackgroundImagePrefix": "IMAGE_BACKGROUNDS_EGYPT",
+        "BackgroundImageLeft": "TEXTURE_LEFT",
+        "BackgroundImageMiddle": "TEXTURE",
+        "BackgroundImageRight": "TEXTURE_RIGHT",
+        "GravestoneImagePrefixes": [
+          "IMAGE_TOMBSTONES_TOMBSTONE_EGYPT_HIEROGLYPH"
+        ],
+        "BasicZombieTypeName": "mummy",
+        "FlagZombieTypeName": "mummy_flag",
+        "Armor1ZombieTypeName": "mummy_armor1",
+        "Armor2ZombieTypeName": "mummy_armor2",
+        "MusicSuffix": "Egypt",
+        "RailcartDefaultTypeName": "railcart_egypt",
+        "DirtSpawnEffectName": "POPANIM_EFFECTS_TOMB_DIRT",
+        "ZombieEventType": "sandstorm",
+        "DisabledStreetCells": [
+          {"mX": 0, "mY": 0},
+          {"mX": 0, "mY": 1},
+          {"mX": 0, "mY": 2},
+          {"mX": 0, "mY": 3},
+          {"mX": 0, "mY": 4},
+          {"mX": 0, "mY": 5},
+          {"mX": 0, "mY": 6},
+          {"mX": 0, "mY": 7},
+          {"mX": 0, "mY": 8},
+          {"mX": 0, "mY": 9},
+          {"mX": 1, "mY": 0},
+          {"mX": 1, "mY": 1},
+          {"mX": 1, "mY": 2},
+          {"mX": 1, "mY": 3},
+          {"mX": 1, "mY": 4},
+          {"mX": 1, "mY": 5},
+          {"mX": 1, "mY": 6},
+          {"mX": 1, "mY": 7},
+          {"mX": 1, "mY": 8},
+          {"mX": 1, "mY": 9}
+        ]
+      }
+    },
+    {
+      "aliases": ["SeedBank"],
+      "objclass": "SeedBankProperties",
+      "objdata": {
+        "OverrideSeedSlotsCount": 8,
+        "PlantBlackList": [],
+        "PlantWhiteList": [],
+        "PresetPlantList": [],
+        "SelectionMethod": "chooser"
+      }
+    },
+    {
+      "aliases": ["NewWaves"],
+      "objclass": "WaveManagerModuleProperties",
+      "objdata": {
+        "DynamicZombies": [
+          {
+            "PointIncrementPerWave": 40,
+            "StartingPoints": 200,
+            "StartingWave": 3,
+            "ZombiePool": [
+              "RTID(mummy@ZombieTypes)",
+              "RTID(mummy_armor1@ZombieTypes)",
+              "RTID(mummy_armor2@ZombieTypes)"
+            ]
+          }
+        ],
+        "WaveManagerProps": "RTID(WaveManagerProps@CurrentLevel)"
+      }
+    },
+    {
+      "aliases": ["WaveManagerProps"],
+      "objclass": "WaveManagerProperties",
+      "objdata": {
+        "FlagWaveInterval": 5,
+        "MaxNextWaveHealthPercentage": 0.85,
+        "MinNextWaveHealthPercentage": 0.7,
+        "WaveCount": 5,
+        "Waves": [
+          ["RTID(Wave1@CurrentLevel)"],
+          ["RTID(Wave2@CurrentLevel)"],
+          ["RTID(Wave3@CurrentLevel)"],
+          ["RTID(Wave4@CurrentLevel)"],
+          ["RTID(Wave5@CurrentLevel)"]
+        ]
+      }
+    },
+    {
+      "aliases": ["Wave1"],
+      "objclass": "SpawnZombiesJitteredWaveActionProps",
+      "objdata": {
+        "AdditionalPlantfood": 0,
+        "Zombies": [
+          {"Type": "RTID(mummy@ZombieTypes)"},
+          {"Type": "RTID(mummy@ZombieTypes)"}
+        ]
+      }
+    },
+    {
+      "aliases": ["Wave2"],
+      "objclass": "SpawnZombiesJitteredWaveActionProps",
+      "objdata": {
+        "AdditionalPlantfood": 0,
+        "Zombies": [
+          {"Type": "RTID(mummy_armor1@ZombieTypes)"}
+        ]
+      }
+    },
+    {
+      "aliases": ["Wave3"],
+      "objclass": "SpawnZombiesJitteredWaveActionProps",
+      "objdata": {
+        "AdditionalPlantfood": 0,
+        "Zombies": [
+          {"Type": "RTID(mummy_armor2@ZombieTypes)"}
+        ]
+      }
+    },
+    {
+      "aliases": ["Wave4"],
+      "objclass": "SpawnZombiesJitteredWaveActionProps",
+      "objdata": {
+        "AdditionalPlantfood": 0,
+        "Zombies": [
+          {"Type": "RTID(mummy_armor1@ZombieTypes)"},
+          {"Type": "RTID(mummy_armor2@ZombieTypes)"}
+        ]
+      }
+    },
+    {
+      "aliases": ["Wave5"],
+      "objclass": "SpawnZombiesJitteredWaveActionProps",
+      "objdata": {
+        "AdditionalPlantfood": 1,
+        "Zombies": [
+          {"Type": "RTID(mummy_flag@ZombieTypes)"},
+          {"Type": "RTID(mummy_armor2@ZombieTypes)"},
+          {"Type": "RTID(mummy_armor2@ZombieTypes)"}
+        ]
+      }
+    }
+  ],
+  "version": 1
+}

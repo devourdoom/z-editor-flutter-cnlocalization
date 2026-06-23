@@ -1,0 +1,84 @@
+import 'package:flutter/material.dart';
+import 'package:c_editor/theme/app_theme.dart';
+import 'package:c_editor/widgets/editor_components.dart';
+
+Color customStageAccent(BuildContext context) =>
+    Theme.of(context).brightness == Brightness.dark
+        ? pvzGreenDark
+        : pvzGreenLight;
+
+InputDecoration customStageInputDecoration(
+  BuildContext context, {
+  required String labelText,
+}) {
+  final accent = customStageAccent(context);
+  return editorInputDecoration(
+    context,
+    labelText: labelText,
+    focusColor: accent,
+  ).copyWith(
+    focusedBorder: OutlineInputBorder(
+      borderRadius: BorderRadius.circular(8),
+      borderSide: BorderSide(color: accent, width: 2),
+    ),
+  );
+}
+
+ThemeData customStageInputTheme(BuildContext context) {
+  final theme = Theme.of(context);
+  final accent = customStageAccent(context);
+  return theme.copyWith(
+    colorScheme: theme.colorScheme.copyWith(primary: accent),
+    inputDecorationTheme: theme.inputDecorationTheme.copyWith(
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(8),
+        borderSide: BorderSide(color: accent, width: 2),
+      ),
+    ),
+  );
+}
+
+Color customStageBadgeColor(BuildContext context) =>
+    Theme.of(context).brightness == Brightness.dark
+        ? const Color(0xFF1976D2)
+        : const Color(0xFF42A5F5);
+
+double customStageBadgeFontSize(BuildContext context) {
+  final platform = Theme.of(context).platform;
+  final isDesktop = platform == TargetPlatform.windows ||
+      platform == TargetPlatform.macOS ||
+      platform == TargetPlatform.linux;
+  return isDesktop ? 11 : 9;
+}
+
+EdgeInsets customStageBadgePadding(BuildContext context) {
+  final isDesktop = customStageBadgeFontSize(context) > 10;
+  return EdgeInsets.symmetric(
+    horizontal: isDesktop ? 5 : 4,
+    vertical: isDesktop ? 2 : 1,
+  );
+}
+
+/// Blue "C" badge for custom lawns (selection, basic info, etc.).
+class CustomStageBadge extends StatelessWidget {
+  const CustomStageBadge({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: customStageBadgePadding(context),
+      decoration: BoxDecoration(
+        color: customStageBadgeColor(context),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Text(
+        'C',
+        style: TextStyle(
+          fontSize: customStageBadgeFontSize(context),
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      ),
+    );
+  }
+}

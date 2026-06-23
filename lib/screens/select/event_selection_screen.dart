@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:c_editor/data/level_parser.dart';
+import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/registry/event_registry.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 
@@ -7,11 +9,13 @@ class EventSelectionScreen extends StatelessWidget {
   const EventSelectionScreen({
     super.key,
     required this.waveIndex,
+    required this.levelFile,
     required this.onEventSelected,
     required this.onBack,
   });
 
   final int waveIndex;
+  final PvzLevelFile levelFile;
   final void Function(EventMetadata meta) onEventSelected;
   final VoidCallback onBack;
 
@@ -19,7 +23,14 @@ class EventSelectionScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final events = EventRegistry.getAll();
+    final levelDef = LevelParser.parseLevel(levelFile).levelDef;
+    final events = EventRegistry.getAll().where(
+      (meta) => LevelParser.isWaveEventAvailable(
+        meta.defaultObjClass,
+        levelDef,
+        levelFile,
+      ),
+    ).toList();
 
     return Scaffold(
       appBar: AppBar(

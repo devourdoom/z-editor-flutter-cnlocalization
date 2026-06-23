@@ -45,7 +45,7 @@ class _GulliverTunnelModuleScreenState extends State<GulliverTunnelModuleScreen>
 
   bool get _isDeepSeaLawn {
     final parsed = LevelParser.parseLevel(widget.levelFile);
-    return LevelParser.isDeepSeaLawn(parsed.levelDef);
+    return LevelParser.isDeepSeaLawn(parsed.levelDef, widget.levelFile);
   }
 
   int get _gridCols => _isDeepSeaLawn ? 10 : 9;

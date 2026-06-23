@@ -249,7 +249,7 @@ class _SpawnGraveStonesEventScreenState
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final parsed = LevelParser.parseLevel(widget.levelFile);
-                  final isDeepSea = LevelParser.isDeepSeaLawn(parsed.levelDef);
+                  final isDeepSea = LevelParser.isDeepSeaLawn(parsed.levelDef, widget.levelFile);
                   final cols = isDeepSea ? 10 : 9;
                   final rows = isDeepSea ? 6 : 5;
                   final cellSize = (constraints.maxWidth / cols)

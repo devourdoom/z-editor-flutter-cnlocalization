@@ -151,6 +151,49 @@ abstract final class EditorItemCardLayout {
       compact(context) ? 0.72 : 1.0;
 }
 
+/// Responsive grid metrics for asset picker screens (tools, grid items, statues).
+abstract final class SelectionGridLayout {
+  static const double spacing = 12;
+  static const double padding = 16;
+
+  static int crossAxisCount(double maxWidth) {
+    if (maxWidth >= 1100) return 5;
+    if (maxWidth >= 720) return 4;
+    if (maxWidth >= 480) return 3;
+    return 2;
+  }
+
+  static double childAspectRatio(double maxWidth) {
+    if (maxWidth >= 720) return 0.72;
+    if (maxWidth >= 480) return 0.68;
+    return 0.62;
+  }
+
+  static double cellWidth(double maxWidth, int crossAxisCount) {
+    return (maxWidth -
+            padding * 2 -
+            spacing * (crossAxisCount - 1)) /
+        crossAxisCount;
+  }
+
+  static double iconSize(double cellWidth) {
+    return (cellWidth * 0.82).clamp(80.0, 120.0);
+  }
+
+  static int toolCrossAxisCount(double maxWidth) =>
+      maxWidth >= 600 ? 4 : 2;
+
+  static double toolChildAspectRatio(double maxWidth) =>
+      maxWidth >= 600 ? 0.88 : 0.72;
+
+  static ({double width, double height}) toolIconBox(double maxWidth) {
+    if (maxWidth >= 600) {
+      return (width: 112, height: 96);
+    }
+    return (width: 96, height: 80);
+  }
+}
+
 /// Layout metrics for Renai statue cards and the statue picker grid.
 abstract final class RenaiStatueCardLayout {
   static double tileCardWidth(BuildContext context) =>
@@ -159,22 +202,14 @@ abstract final class RenaiStatueCardLayout {
   static double tileIconSize(BuildContext context) =>
       EditorItemCardLayout.iconSlotSize(context, base: compact(context) ? 84 : 100);
 
-  static int selectionCrossAxisCount(double maxWidth) {
-    if (maxWidth >= 1100) return 5;
-    if (maxWidth >= 720) return 4;
-    if (maxWidth >= 480) return 3;
-    return 2;
-  }
+  static int selectionCrossAxisCount(double maxWidth) =>
+      SelectionGridLayout.crossAxisCount(maxWidth);
 
-  static double selectionChildAspectRatio(double maxWidth) {
-    if (maxWidth >= 720) return 0.78;
-    if (maxWidth >= 480) return 0.74;
-    return 0.68;
-  }
+  static double selectionChildAspectRatio(double maxWidth) =>
+      SelectionGridLayout.childAspectRatio(maxWidth);
 
-  static double selectionIconSize(double cellWidth) {
-    return (cellWidth * 0.78).clamp(72.0, 112.0);
-  }
+  static double selectionIconSize(double cellWidth) =>
+      SelectionGridLayout.iconSize(cellWidth);
 
   static bool compact(BuildContext context) =>
       EditorItemCardLayout.compact(context);

@@ -52,6 +52,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
   double _batchLevel = 1;
 
   bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _supportsLevelJamMusic =>
+      LevelParser.supportsLevelJamMusicFromFile(widget.levelFile);
 
   static const _jamOptions = [
     (null, 'None'),
@@ -640,6 +642,12 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                   title: l10n?.overview ?? 'Overview',
                   body: l10n?.eventHelpStandardOverview ?? 'Configure zombies that spawn in this wave. Level 0 follows map tier.',
                 ),
+                if (!widget.isGroundSpawner && _supportsLevelJamMusic)
+                  HelpSectionData(
+                    title: l10n?.backgroundMusicLevelJam ?? 'Level Jam',
+                    body: l10n?.onlyAppliesRockEra ??
+                        'Only applies to Rock era maps.',
+                  ),
                 HelpSectionData(
                   title: l10n?.row ?? 'Row',
                   body: _isDeepSeaLawn
@@ -660,8 +668,10 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
             children: [
               if (widget.isGroundSpawner) _buildColumnRangeCard(theme, l10n),
               if (widget.isGroundSpawner) const SizedBox(height: 16),
-              if (!widget.isGroundSpawner) _buildNotificationCard(theme, l10n),
-              if (!widget.isGroundSpawner) const SizedBox(height: 16),
+              if (!widget.isGroundSpawner && _supportsLevelJamMusic) ...[
+                _buildNotificationCard(theme, l10n),
+                const SizedBox(height: 16),
+              ],
               _buildLaneRows(context, theme, l10n),
               const SizedBox(height: 16),
               _buildBatchLevelCard(theme, l10n),

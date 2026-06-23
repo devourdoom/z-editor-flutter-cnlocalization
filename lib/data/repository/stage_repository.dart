@@ -1,9 +1,7 @@
-import 'dart:convert';
-
 import 'package:flutter/widgets.dart';
-import 'package:c_editor/data/asset_loader.dart';
+import 'package:c_editor/data/repository/stage_catalog_repository.dart';
 
-/// Stage data for level editor.
+/// Stage data for level editor selection UI.
 enum StageType { all, main, extra, seasons, special }
 
 class StageItem {
@@ -17,31 +15,39 @@ class StageItem {
 class StageRepository {
   StageRepository._();
 
-  static const String _resourcePath = 'assets/resources/Stages.json';
   static final List<StageItem> _database = [];
   static bool _isLoaded = false;
 
   static Future<void> init() async {
     if (_isLoaded) return;
     try {
-      final jsonString = await loadJsonString(_resourcePath);
-      final List<dynamic> jsonList = json.decode(jsonString) as List<dynamic>;
+      await StageCatalogRepository.init();
       _database
         ..clear()
-        ..addAll(
-          jsonList.map((raw) {
-            final item = raw as Map<String, dynamic>;
-            return StageItem(
-              alias: item['alias'] as String,
-              iconName: item['iconName'] as String?,
-              type: _parseType(item['type'] as String?),
-            );
-          }),
-        );
+        ..addAll(_buildItemsFromCatalog());
       _isLoaded = true;
     } catch (e) {
       debugPrint('Error loading stages: $e');
     }
+  }
+
+  static List<StageItem> _buildItemsFromCatalog() {
+    final out = <StageItem>[];
+    final seen = <String>{};
+    for (final section in StageCatalogRepository.sections) {
+      for (final impl in section.implementations) {
+        if (impl.tag == null || !seen.add(impl.alias)) continue;
+        out.add(
+          StageItem(
+            alias: impl.alias,
+            iconName: impl.image,
+            type: _parseType(impl.tag),
+          ),
+        );
+      }
+    }
+    out.sort((a, b) => a.alias.compareTo(b.alias));
+    return out;
   }
 
   static List<StageItem> get allItems => List.unmodifiable(_database);

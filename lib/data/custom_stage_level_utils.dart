@@ -1,0 +1,393 @@
+import 'package:collection/collection.dart';
+import 'package:c_editor/data/models/stage_catalog.dart';
+import 'package:c_editor/data/pvz_models.dart';
+import 'package:c_editor/data/repository/stage_catalog_repository.dart';
+import 'package:c_editor/data/rtid_parser.dart';
+
+abstract final class CustomStageLevelUtils {
+  static const currentLevel = 'CurrentLevel';
+
+  static const ambientAudioOptions = [
+    'Amb_Tutorial_Garden_BG_LP',
+    'Egypt_Wind_BG',
+    'PVZ_Pirate_BG_WaterBubble_LP_02',
+    'WildWest_Wind',
+    'Atlantis_Currents_BG',
+  ];
+
+  static const submarineDisabledInfo = {
+    'Width': 0,
+    'Height': 0,
+    'Hitpoints': 32000,
+    'InitialLocation': {'mX': -10, 'mY': -6},
+  };
+
+  static const submarineEnabledInfoTemplate = {
+    'Width': 4,
+    'Height': 6,
+    'Hitpoints': 32000.0,
+    'InitialLocation': {'mX': 5, 'mY': 3},
+  };
+
+  static const skycityCannonDefaults = {
+    'AutoCannonDamage1': 50,
+    'AutoCannonDamage2': 300,
+    'AutoCannonDamage3': 300,
+    'SkillCannonDamage2': 300,
+    'SkillCannonDamage3': 300,
+    'AutoFireInterval': 5,
+    'SkillFireInterval': 60,
+  };
+
+  static const skycityCannonFieldNames = [
+    'AutoCannonDamage1',
+    'AutoCannonDamage2',
+    'AutoCannonDamage3',
+    'SkillCannonDamage2',
+    'SkillCannonDamage3',
+    'AutoFireInterval',
+    'SkillFireInterval',
+  ];
+
+  static const editableFieldNames = {
+    'BasicZombieTypeName',
+    'FlagZombieTypeName',
+    'Armor1ZombieTypeName',
+    'Armor2ZombieTypeName',
+    'Armor3ZombieTypeName',
+    'ResourceGroupNames',
+    'GroupsToUnloadForAds',
+    'BackgroundImagePrefix',
+    'BackgroundResourceGroup',
+    'MusicSuffix',
+    'AmbientAudioSuffix',
+    'DisabledStreetCells',
+    'LinkedTilePropagationAlpha',
+    'BackgroundImageMiddle',
+    'InitSubmarineInfo',
+    'HasGridItemAirShip',
+    'HasCannon',
+    ...skycityCannonFieldNames,
+  };
+
+  static bool isCustomStageRtid(String? rtid) {
+    if (rtid == null || rtid.isEmpty) return false;
+    return RtidParser.parse(rtid)?.source == currentLevel;
+  }
+
+  static PvzObject? findStageObject(PvzLevelFile levelFile, String alias) {
+    return levelFile.objects.firstWhereOrNull(
+      (o) => o.aliases?.contains(alias) == true,
+    );
+  }
+
+  static String displayNameKey({
+    required String? backgroundImagePrefix,
+    required Map<String, dynamic> objdata,
+  }) {
+    final display = StageCatalogRepository.resolveBackgroundDisplay(
+      backgroundImagePrefix: backgroundImagePrefix,
+      backgroundResourceGroup: objdata['BackgroundResourceGroup'] as String?,
+      resourceGroupNames: stringList(objdata['ResourceGroupNames']),
+      groupsToUnloadForAds: stringList(objdata['GroupsToUnloadForAds']),
+    );
+    return display?.nameKey ?? '';
+  }
+
+  static String createCustomStage({
+    required PvzLevelFile levelFile,
+    required String alias,
+    required String baseObjclass,
+  }) {
+    final template = StageCatalogRepository.templateObjdataForObjclass(baseObjclass);
+    final obj = PvzObject(
+      objClass: baseObjclass,
+      aliases: [alias],
+      objData: _sanitizeForEditor(template, baseObjclass),
+    );
+    levelFile.objects.add(obj);
+    return RtidParser.build(alias, currentLevel);
+  }
+
+  static List<String> stringList(dynamic raw) {
+    if (raw is! List) return const [];
+    return raw.whereType<String>().toList();
+  }
+
+  static List<String> uniqueStrings(Iterable<String> values) {
+    final out = <String>[];
+    final seen = <String>{};
+    for (final value in values) {
+      if (value.isEmpty || seen.contains(value)) continue;
+      seen.add(value);
+      out.add(value);
+    }
+    return out;
+  }
+
+  static void setStringList(
+    Map<String, dynamic> objdata,
+    String key,
+    List<String> values,
+  ) {
+    objdata[key] = uniqueStrings(values);
+  }
+
+  static void applyAmbientEnabled(
+    Map<String, dynamic> objdata, {
+    required bool enabled,
+  }) {
+    if (enabled) {
+      objdata['AmbientAudioSuffix'] ??= ambientAudioOptions.first;
+    } else {
+      objdata.remove('AmbientAudioSuffix');
+    }
+  }
+
+  static bool isAmbientEnabled(Map<String, dynamic> objdata) =>
+      objdata.containsKey('AmbientAudioSuffix');
+
+  static void applyDisabledStreetCellsMode(
+    Map<String, dynamic> objdata, {
+    required String objclass,
+    required bool useDefault,
+  }) {
+    if (useDefault) {
+      objdata['DisabledStreetCells'] =
+          StageCatalogRepository.defaultDisabledStreetCells(objclass);
+    } else {
+      objdata['DisabledStreetCells'] = <Map<String, dynamic>>[];
+    }
+  }
+
+  static bool usesDefaultDisabledStreetCells(
+    Map<String, dynamic> objdata,
+    String objclass,
+  ) {
+    final current = objdata['DisabledStreetCells'];
+    if (current is! List) return false;
+    final defaults =
+        StageCatalogRepository.defaultDisabledStreetCells(objclass);
+    return const DeepCollectionEquality().equals(current, defaults);
+  }
+
+  static bool supportsBeachMinigame(
+    String objclass,
+    Map<String, dynamic> objdata,
+  ) =>
+      objclass == 'BeachStageProperties' &&
+      objdata['BackgroundImagePrefix'] == 'IMAGE_BACKGROUNDS_BEACH';
+
+  static bool isBeachMinigameEnabled(Map<String, dynamic> objdata) =>
+      objdata['BackgroundImageMiddle'] == 'TEXTURE_01';
+
+  static void applyBeachMinigame(
+    Map<String, dynamic> objdata, {
+    required bool enabled,
+  }) {
+    objdata['BackgroundImageMiddle'] = enabled ? 'TEXTURE_01' : 'TEXTURE';
+  }
+
+  static bool supportsSubmarine(String objclass) =>
+      objclass == 'DeepseaStageProperties' ||
+      objclass == 'DeepseaStageLandProperties';
+
+  static bool isSubmarineEnabled(Map<String, dynamic> objdata) {
+    final info = objdata['InitSubmarineInfo'];
+    if (info is! Map) return true;
+    final width = info['Width'];
+    final height = info['Height'];
+    return width != 0 || height != 0;
+  }
+
+  static void applySubmarineEnabled(
+    Map<String, dynamic> objdata, {
+    required bool enabled,
+    double? hitpoints,
+  }) {
+    if (enabled) {
+      final current = objdata['InitSubmarineInfo'];
+      final hp = hitpoints ??
+          (current is Map ? current['Hitpoints'] : null) ??
+          submarineEnabledInfoTemplate['Hitpoints'];
+      objdata['InitSubmarineInfo'] = {
+        ...submarineEnabledInfoTemplate,
+        'Hitpoints': hp,
+      };
+    } else {
+      objdata['InitSubmarineInfo'] =
+          Map<String, dynamic>.from(submarineDisabledInfo);
+    }
+  }
+
+  static double readSubmarineHitpoints(Map<String, dynamic> objdata) {
+    final info = objdata['InitSubmarineInfo'];
+    if (info is Map && info['Hitpoints'] != null) {
+      final raw = info['Hitpoints'];
+      if (raw is num) return raw.toDouble();
+    }
+    return (submarineEnabledInfoTemplate['Hitpoints'] as num).toDouble();
+  }
+
+  static bool supportsSkyCityAirship(String objclass) =>
+      objclass == 'SkyCityStageProperties';
+
+  static bool readBool(Map<String, dynamic> objdata, String key) {
+    final value = objdata[key];
+    if (value is bool) return value;
+    return false;
+  }
+
+  static void applySkyCityAirship(
+    Map<String, dynamic> objdata, {
+    required bool enabled,
+  }) {
+    objdata['HasGridItemAirShip'] = enabled;
+    if (!enabled) {
+      objdata['HasCannon'] = false;
+      for (final key in skycityCannonFieldNames) {
+        objdata.remove(key);
+      }
+    }
+  }
+
+  static void applySkyCityCannon(
+    Map<String, dynamic> objdata, {
+    required bool enabled,
+  }) {
+    objdata['HasCannon'] = enabled;
+    if (enabled) {
+      for (final entry in skycityCannonDefaults.entries) {
+        objdata.putIfAbsent(entry.key, () => entry.value);
+      }
+    } else {
+      for (final key in skycityCannonFieldNames) {
+        objdata.remove(key);
+      }
+    }
+  }
+
+  static bool hasSkyCityCannonFields(Map<String, dynamic> objdata) {
+    return skycityCannonFieldNames.any(objdata.containsKey);
+  }
+
+  static Map<String, dynamic> _sanitizeForEditor(
+    Map<String, dynamic> template,
+    String objclass,
+  ) {
+    final data = Map<String, dynamic>.from(template);
+    data.remove('AmbientAudioSuffix');
+    if (supportsSubmarine(objclass)) {
+      applySubmarineEnabled(data, enabled: true);
+    }
+    if (supportsSkyCityAirship(objclass)) {
+      final hasCannon = hasSkyCityCannonFields(data);
+      data['HasGridItemAirShip'] = hasCannon;
+      data['HasCannon'] = hasCannon;
+      if (!hasCannon) {
+        for (final key in skycityCannonFieldNames) {
+          data.remove(key);
+        }
+      }
+    }
+    return data;
+  }
+
+  static void syncHiddenFieldsFromTemplate({
+    required Map<String, dynamic> objdata,
+    required String objclass,
+    required Map<String, dynamic> template,
+  }) {
+    for (final entry in template.entries) {
+      final key = entry.key;
+      if (editableFieldNames.contains(key)) continue;
+      if (key == 'FlagVeteranZombieTypeNames') continue;
+      objdata[key] = _cloneJson(entry.value);
+    }
+  }
+
+  static dynamic _cloneJson(dynamic value) {
+    if (value is Map) {
+      return value.map(
+        (key, val) => MapEntry(key.toString(), _cloneJson(val)),
+      );
+    }
+    if (value is List) {
+      return value.map(_cloneJson).toList();
+    }
+    return value;
+  }
+
+  static String? displayIconFileName({
+    required String objclass,
+    required Map<String, dynamic> objdata,
+  }) {
+    if (supportsBeachMinigame(objclass, objdata) &&
+        isBeachMinigameEnabled(objdata)) {
+      return 'Stage_BeachSnake.webp';
+    }
+    return StageCatalogRepository.resolveBackgroundDisplay(
+      backgroundImagePrefix: objdata['BackgroundImagePrefix'] as String?,
+      backgroundResourceGroup: objdata['BackgroundResourceGroup'] as String?,
+      resourceGroupNames: stringList(objdata['ResourceGroupNames']),
+      groupsToUnloadForAds: stringList(objdata['GroupsToUnloadForAds']),
+    )?.image;
+  }
+
+  static const displayNameSuffixDefault = ' (Custom)';
+
+  /// Objclasses that must not be offered when creating a custom lawn.
+  static const excludedCustomStageObjclasses = {
+    'AtlantisStageProperties',
+  };
+
+  static const _zombieFieldOrder = [
+    'BasicZombieTypeName',
+    'Armor1ZombieTypeName',
+    'Armor2ZombieTypeName',
+    'Armor3ZombieTypeName',
+    'FlagZombieTypeName',
+  ];
+
+  static List<StageFieldSpec> editableZombieFields(
+    StageCatalogSection? section,
+  ) {
+    if (section == null) return const [];
+    final byName = <String, StageFieldSpec>{};
+    for (final field in section.fields) {
+      if (!field.isZombieType ||
+          field.name == 'FlagVeteranZombieTypeNames' ||
+          field.type != 'zombieType') {
+        continue;
+      }
+      byName[field.name] = field;
+    }
+    return [
+      for (final name in _zombieFieldOrder)
+        if (byName.containsKey(name)) byName[name]!,
+    ];
+  }
+
+  static bool isStagePropertiesObjclass(String objclass) {
+    if (excludedCustomStageObjclasses.contains(objclass)) return false;
+    if (objclass == 'ZombossFinalStageTimeLimitedChallengeProperties') {
+      return false;
+    }
+    return objclass.contains('Stage') && objclass.endsWith('Properties');
+  }
+
+  static List<PvzObject> customStageObjectsInLevel(PvzLevelFile levelFile) {
+    return levelFile.objects
+        .where(
+          (o) =>
+              o.aliases != null &&
+              o.aliases!.isNotEmpty &&
+              isStagePropertiesObjclass(o.objClass),
+        )
+        .toList();
+  }
+
+  static void removeCustomStageFromLevel(PvzLevelFile levelFile, String alias) {
+    levelFile.objects.removeWhere((o) => o.aliases?.contains(alias) == true);
+  }
+}

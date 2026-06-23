@@ -118,6 +118,10 @@ import 'package:c_editor/screens/select/plant_selection_screen.dart';
 import 'package:c_editor/screens/select/zombie_selection_screen.dart';
 import 'package:c_editor/screens/select/tool_selection_screen.dart';
 import 'package:c_editor/screens/select/stage_selection_screen.dart';
+import 'package:c_editor/screens/select/stage_objclass_selection_screen.dart';
+import 'package:c_editor/data/custom_stage_level_utils.dart';
+import 'package:c_editor/data/repository/stage_catalog_repository.dart';
+import 'package:c_editor/screens/editor/others/custom_stage_properties_screen.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:c_editor/bloc/editor/editor_cubit.dart';
 import 'package:c_editor/bloc/settings/settings_cubit.dart';
@@ -558,6 +562,184 @@ class _EditorScreenState extends State<EditorScreen> {
     );
   }
 
+  static const _defaultBuiltinStageRtid = 'RTID(TutorialStage@LevelModules)';
+
+  Future<void> _handleEditCustomStage(String alias) async {
+    if (_ec.state.levelFile == null) return;
+    await Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CustomStagePropertiesScreen(
+          alias: alias,
+          levelFile: _ec.state.levelFile!,
+          onChanged: _markDirty,
+          onBack: () => Navigator.pop(context),
+        ),
+      ),
+    );
+  }
+
+  String _suggestCustomStageAlias(String objclass) {
+    final section = StageCatalogRepository.sectionForObjclass(objclass);
+    final primary = section?.primaryImplementation?.alias;
+    if (primary != null && primary.isNotEmpty) {
+      return '${primary}Custom';
+    }
+    return 'CustomStage';
+  }
+
+  Future<String?> _promptCustomStageAlias(String suggested) async {
+    final l10n = AppLocalizations.of(context);
+    final controller = TextEditingController(text: suggested);
+    final result = await showDialog<String>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n?.customStageAliasPromptTitle ?? 'Custom stage alias'),
+        content: TextField(
+          controller: controller,
+          decoration: InputDecoration(
+            labelText: l10n?.customStageAlias ?? 'Stage alias',
+          ),
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text(l10n?.cancel ?? 'Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, controller.text.trim()),
+            child: Text(l10n?.confirm ?? 'Confirm'),
+          ),
+        ],
+      ),
+    );
+    controller.dispose();
+    return result;
+  }
+
+  Future<bool> _handleDeleteCustomStage({
+    required LevelDefinitionData levelDef,
+    required String alias,
+  }) async {
+    if (_ec.state.levelFile == null) return false;
+    final l10n = AppLocalizations.of(context);
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text(
+          l10n?.customStageDeleteTitle ?? 'Delete custom lawn?',
+        ),
+        content: Text(
+          l10n?.customStageDeleteMessage ??
+              'This permanently removes the custom stage data from this level. If it is the active lawn, the level will switch to the default built-in lawn.',
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l10n?.cancel ?? 'Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx, true),
+            style: FilledButton.styleFrom(
+              backgroundColor: Theme.of(ctx).colorScheme.error,
+            ),
+            child: Text(l10n?.delete ?? 'Delete'),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return false;
+
+    final currentAlias = RtidParser.parse(levelDef.stageModule)?.alias;
+    final wasActive =
+        CustomStageLevelUtils.isCustomStageRtid(levelDef.stageModule) &&
+            currentAlias == alias;
+
+    CustomStageLevelUtils.removeCustomStageFromLevel(
+      _ec.state.levelFile!,
+      alias,
+    );
+    _ec.state.parsedData?.objectMap.remove(alias);
+
+    if (wasActive) {
+      levelDef.stageModule = _defaultBuiltinStageRtid;
+      for (final o in _ec.state.levelFile!.objects) {
+        if (o.objClass == 'LevelDefinition') {
+          o.objData = levelDef.toJson();
+          break;
+        }
+      }
+    }
+    _markDirty();
+    return true;
+  }
+
+  Future<void> _createCustomStage({
+    required LevelDefinitionData levelDef,
+    VoidCallback? onStagePicked,
+  }) async {
+    if (_ec.state.levelFile == null) return;
+    if (CustomStageLevelUtils.customStageObjectsInLevel(_ec.state.levelFile!)
+        .isNotEmpty) {
+      return;
+    }
+    String? objclass;
+    await Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => StageObjclassSelectionScreen(
+          onObjclassSelected: (value) {
+            objclass = value;
+            Navigator.pop(ctx);
+          },
+          onBack: () => Navigator.pop(ctx),
+        ),
+      ),
+    );
+    if (objclass == null || !mounted) return;
+
+    var suggested = _suggestCustomStageAlias(objclass!);
+    while (_ec.state.levelFile!.objects.any(
+      (o) => o.aliases?.contains(suggested) == true,
+    )) {
+      suggested = '${suggested}_1';
+    }
+
+    final alias = await _promptCustomStageAlias(suggested);
+    if (alias == null || alias.isEmpty || !mounted) return;
+    if (_ec.state.levelFile!.objects.any(
+      (o) => o.aliases?.contains(alias) == true,
+    )) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(
+            AppLocalizations.of(context)?.customStageAliasTaken ??
+                'That alias is already used in this level.',
+          ),
+        ),
+      );
+      return;
+    }
+
+    final rtid = CustomStageLevelUtils.createCustomStage(
+      levelFile: _ec.state.levelFile!,
+      alias: alias,
+      baseObjclass: objclass!,
+    );
+    levelDef.stageModule = rtid;
+    for (final o in _ec.state.levelFile!.objects) {
+      if (o.objClass == 'LevelDefinition') {
+        o.objData = levelDef.toJson();
+        break;
+      }
+    }
+    _markDirty();
+    onStagePicked?.call();
+    await _handleEditCustomStage(alias);
+  }
+
   Future<void> _openStageSelection({
     required LevelDefinitionData levelDef,
     VoidCallback? onStagePicked,
@@ -570,10 +752,77 @@ class _EditorScreenState extends State<EditorScreen> {
       MaterialPageRoute<void>(
         builder: (stageRouteContext) => StageSelectionScreen(
           currentStageRtid: current,
+          levelFile: _ec.state.levelFile!,
+          onCreateCustomStage: () {
+            Navigator.pop(stageRouteContext);
+            _createCustomStage(
+              levelDef: levelDef,
+              onStagePicked: onStagePicked,
+            );
+          },
+          onOpenCustomStageEditor: (alias) async {
+            final rtid = RtidParser.build(
+              alias,
+              CustomStageLevelUtils.currentLevel,
+            );
+            if (levelDef.stageModule != rtid) {
+              levelDef.stageModule = rtid;
+              for (final o in _ec.state.levelFile!.objects) {
+                if (o.objClass == 'LevelDefinition') {
+                  o.objData = levelDef.toJson();
+                  break;
+                }
+              }
+              _markDirty();
+              onStagePicked?.call();
+            }
+            Navigator.pop(stageRouteContext);
+            await _handleEditCustomStage(alias);
+          },
+          onDeleteCustomStage: (alias) => _handleDeleteCustomStage(
+            levelDef: levelDef,
+            alias: alias,
+          ),
+          onSwitchFromCustomToBuiltin: (alias) async {
+            final l10n = AppLocalizations.of(context);
+            final confirmed = await showDialog<bool>(
+              context: stageRouteContext,
+              builder: (ctx) => AlertDialog(
+                title: Text(
+                  l10n?.customStageSwitchToBuiltinTitle ??
+                      'Switch to built-in lawn?',
+                ),
+                content: Text(
+                  l10n?.customStageSwitchToBuiltinMessage ??
+                      'This permanently removes the custom stage data from this level. This cannot be undone.',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () => Navigator.pop(ctx, false),
+                    child: Text(l10n?.cancel ?? 'Cancel'),
+                  ),
+                  FilledButton(
+                    onPressed: () => Navigator.pop(ctx, true),
+                    child: Text(l10n?.confirm ?? 'Confirm'),
+                  ),
+                ],
+              ),
+            );
+            if (confirmed == true) {
+              CustomStageLevelUtils.removeCustomStageFromLevel(
+                _ec.state.levelFile!,
+                alias,
+              );
+              _ec.state.parsedData?.objectMap.remove(alias);
+              _markDirty();
+            }
+            return confirmed ?? false;
+          },
           onStageSelected: (newRtid) async {
-            final newAlias = LevelParser.extractAlias(newRtid);
-            final willBeDeepSea =
-                newAlias == 'DeepseaStage' || newAlias == 'DeepseaLandStage';
+            final willBeDeepSea = LevelParser.willBeDeepSeaStageRtid(
+              newRtid,
+              _ec.state.levelFile!,
+            );
             if (wasDeepSea && !willBeDeepSea) {
               final has6RowData = LevelParser.has6RowDataInLevel(
                 _ec.state.levelFile!,
@@ -1543,6 +1792,7 @@ class _EditorScreenState extends State<EditorScreen> {
       MaterialPageRoute(
         builder: (context) => EventSelectionScreen(
           waveIndex: waveIndex,
+          levelFile: _ec.state.levelFile!,
           onEventSelected: (m) => Navigator.pop(context, m),
           onBack: () => Navigator.pop(context),
         ),

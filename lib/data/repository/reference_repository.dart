@@ -47,6 +47,8 @@ class ReferenceRepository {
     return _moduleCache?[alias]?.objClass;
   }
 
+  PvzObject? objectForAlias(String alias) => _moduleCache?[alias];
+
   /// Returns true if alias is in GridItemTypes.json. If not loaded, returns true (permissive).
   bool isValidGridItem(String alias) {
     if (_validGridItemAliases.isEmpty) return true;

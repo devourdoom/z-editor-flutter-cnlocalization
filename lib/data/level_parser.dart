@@ -1,7 +1,22 @@
+import 'package:collection/collection.dart';
+import 'package:c_editor/data/custom_stage_level_utils.dart';
+import 'package:c_editor/data/repository/reference_repository.dart';
+import 'package:c_editor/data/rtid_parser.dart';
+
 import 'pvz_models.dart';
 
 /// Parses PvzLevelFile into ParsedLevelData (from Z-Editor-master LevelParser.kt)
 class LevelParser {
+  static const deepSeaStageObjclasses = {
+    'DeepseaStageProperties',
+    'DeepseaStageLandProperties',
+  };
+
+  static const levelJamMusicStageObjclasses = {
+    'EightiesStageProperties',
+    'ModernStageProperties',
+  };
+
   static ParsedLevelData parseLevel(PvzLevelFile levelFile) {
     final objectMap = <String, PvzObject>{};
     for (final obj in levelFile.objects) {
@@ -64,27 +79,145 @@ class LevelParser {
     return rtid;
   }
 
+  static String? resolveStagePropertiesObjclass(
+    LevelDefinitionData? levelDef,
+    PvzLevelFile? levelFile,
+  ) {
+    if (levelDef == null || levelDef.stageModule.isEmpty) return null;
+    final info = RtidParser.parse(levelDef.stageModule);
+    if (info == null) return null;
+
+    if (info.source == CustomStageLevelUtils.currentLevel && levelFile != null) {
+      final obj = levelFile.objects.firstWhereOrNull(
+        (o) => o.aliases?.contains(info.alias) == true,
+      );
+      return obj?.objClass;
+    }
+
+    return ReferenceRepository.instance.getObjClass(info.alias);
+  }
+
+  static Map<String, dynamic>? resolveStageObjdata(
+    LevelDefinitionData? levelDef,
+    PvzLevelFile levelFile,
+  ) {
+    if (levelDef == null || levelDef.stageModule.isEmpty) return null;
+    final info = RtidParser.parse(levelDef.stageModule);
+    if (info == null) return null;
+
+    dynamic raw;
+    if (info.source == CustomStageLevelUtils.currentLevel) {
+      final obj = levelFile.objects.firstWhereOrNull(
+        (o) => o.aliases?.contains(info.alias) == true,
+      );
+      raw = obj?.objData;
+    } else {
+      raw = ReferenceRepository.instance.objectForAlias(info.alias)?.objData;
+    }
+
+    if (raw is Map) {
+      return Map<String, dynamic>.from(raw);
+    }
+    return null;
+  }
+
+  static bool isDeepSeaStageObjclass(String? objclass) {
+    if (objclass == null) return false;
+    return deepSeaStageObjclasses.contains(objclass);
+  }
+
   /// Returns true if the lawn uses DeepSea or DeepSeaLand grid (6x10).
-  static bool isDeepSeaLawn(LevelDefinitionData? levelDef) {
-    if (levelDef == null || levelDef.stageModule.isEmpty) return false;
-    final alias = extractAlias(levelDef.stageModule);
-    return alias == 'DeepseaStage' || alias == 'DeepseaLandStage';
+  static bool isDeepSeaLawn(
+    LevelDefinitionData? levelDef, [
+    PvzLevelFile? levelFile,
+  ]) {
+    return isDeepSeaStageObjclass(
+      resolveStagePropertiesObjclass(levelDef, levelFile),
+    );
   }
 
   /// Returns true if level uses 6-row grid. Convenience for screens with levelFile only.
   static bool isDeepSeaLawnFromFile(PvzLevelFile levelFile) {
     final parsed = parseLevel(levelFile);
-    return isDeepSeaLawn(parsed.levelDef);
+    return isDeepSeaLawn(parsed.levelDef, levelFile);
+  }
+
+  static bool isSubmarineEnabledOnLawn(
+    LevelDefinitionData? levelDef,
+    PvzLevelFile levelFile,
+  ) {
+    final objclass = resolveStagePropertiesObjclass(levelDef, levelFile);
+    if (objclass == null || !CustomStageLevelUtils.supportsSubmarine(objclass)) {
+      return false;
+    }
+    final objdata = resolveStageObjdata(levelDef, levelFile);
+    if (objdata == null) return false;
+    return CustomStageLevelUtils.isSubmarineEnabled(objdata);
+  }
+
+  static bool showsTideWaveEvents(
+    LevelDefinitionData? levelDef,
+    PvzLevelFile levelFile,
+  ) {
+    return isDeepSeaLawn(levelDef, levelFile) &&
+        isSubmarineEnabledOnLawn(levelDef, levelFile);
+  }
+
+  static bool supportsLevelJamMusic(
+    LevelDefinitionData? levelDef,
+    PvzLevelFile levelFile,
+  ) {
+    final objclass = resolveStagePropertiesObjclass(levelDef, levelFile);
+    if (objclass == null) return false;
+    return levelJamMusicStageObjclasses.contains(objclass);
+  }
+
+  static bool supportsLevelJamMusicFromFile(PvzLevelFile levelFile) {
+    final parsed = parseLevel(levelFile);
+    return supportsLevelJamMusic(parsed.levelDef, levelFile);
+  }
+
+  static bool isWaveEventAvailable(
+    String objClass,
+    LevelDefinitionData? levelDef,
+    PvzLevelFile levelFile,
+  ) {
+    switch (objClass) {
+      case 'SpawnZombiesFishWaveActionProps':
+        return isDeepSeaLawn(levelDef, levelFile);
+      case 'TideWaveWaveActionProps':
+      case 'TidalChangeWaveActionProps':
+        return showsTideWaveEvents(levelDef, levelFile);
+      default:
+        return true;
+    }
+  }
+
+  static bool willBeDeepSeaStageRtid(String rtid, PvzLevelFile levelFile) {
+    final info = RtidParser.parse(rtid);
+    if (info == null) return false;
+    if (info.source == CustomStageLevelUtils.currentLevel) {
+      final obj = levelFile.objects.firstWhereOrNull(
+        (o) => o.aliases?.contains(info.alias) == true,
+      );
+      return isDeepSeaStageObjclass(obj?.objClass);
+    }
+    return isDeepSeaStageObjclass(
+      ReferenceRepository.instance.getObjClass(info.alias),
+    );
   }
 
   /// Returns (rows, cols) for the lawn. DeepSea: (6, 10), standard: (5, 9).
-  static (int rows, int cols) getGridDimensions(LevelDefinitionData? levelDef) {
-    return isDeepSeaLawn(levelDef) ? (6, 10) : (5, 9);
+  static (int rows, int cols) getGridDimensions(
+    LevelDefinitionData? levelDef, [
+    PvzLevelFile? levelFile,
+  ]) {
+    return isDeepSeaLawn(levelDef, levelFile) ? (6, 10) : (5, 9);
   }
 
   static (int rows, int cols) getGridDimensionsFromFile(PvzLevelFile levelFile) {
     final parsed = parseLevel(levelFile);
-    return getGridDimensions(parsed.levelDef);
+    return getGridDimensions(parsed.levelDef, levelFile);
   }
 
   /// Returns true if level contains any data referencing row 5 (0-indexed) or higher.

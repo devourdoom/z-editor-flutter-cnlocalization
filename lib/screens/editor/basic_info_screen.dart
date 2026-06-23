@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:c_editor/data/custom_stage_level_utils.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/data/repository/stage_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/custom_stage_editor_widgets.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 // Options matching LevelDefinitionEP.kt (keep codenames)
 const _musicTypeOptions = [
@@ -117,6 +119,20 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
     final def = widget.levelDef;
     final theme = Theme.of(context);
     final stageInfo = RtidParser.parse(def.stageModule);
+    final isCustomStage =
+        CustomStageLevelUtils.isCustomStageRtid(def.stageModule);
+    PvzObject? customStageObj;
+    Map<String, dynamic>? customStageData;
+    if (isCustomStage && stageInfo != null) {
+      customStageObj =
+          CustomStageLevelUtils.findStageObject(widget.levelFile, stageInfo.alias);
+      if (customStageObj?.objData is Map) {
+        customStageData =
+            Map<String, dynamic>.from(customStageObj!.objData as Map);
+      }
+    }
+    final customSuffix = l10n?.customStageNameSuffix ??
+        CustomStageLevelUtils.displayNameSuffixDefault;
     final isDesktop = theme.platform == TargetPlatform.windows ||
         theme.platform == TargetPlatform.macOS ||
         theme.platform == TargetPlatform.linux;
@@ -217,6 +233,34 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                                 fit: BoxFit.cover,
                               );
                             }
+                            if (isCustomStage && customStageData != null) {
+                              final iconFile =
+                                  CustomStageLevelUtils.displayIconFileName(
+                                objclass: customStageObj!.objClass,
+                                objdata: customStageData,
+                              );
+                              final iconPath = iconFile == null
+                                  ? 'assets/images/others/unknown.webp'
+                                  : 'assets/images/round_icons/$iconFile';
+                              return Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  AssetImageWidget(
+                                    assetPath: iconPath,
+                                    altCandidates:
+                                        imageAltCandidates(iconPath),
+                                    width: 96,
+                                    height: 96,
+                                    fit: BoxFit.cover,
+                                  ),
+                                  const Positioned(
+                                    top: 4,
+                                    left: 4,
+                                    child: CustomStageBadge(),
+                                  ),
+                                ],
+                              );
+                            }
                             final stageItem = StageRepository.allItems
                                 .where((s) => s.alias == stageInfo.alias)
                                 .firstOrNull;
@@ -252,12 +296,25 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                               ),
                             ),
                             Text(
-                              stageInfo != null
-                                  ? ResourceNames.lookup(
-                                      context,
-                                      StageRepository.getName(stageInfo.alias),
-                                    )
-                                  : def.stageModule,
+                              () {
+                                if (stageInfo == null) return def.stageModule;
+                                if (isCustomStage && customStageData != null) {
+                                  final nameKey =
+                                      CustomStageLevelUtils.displayNameKey(
+                                    backgroundImagePrefix: customStageData[
+                                        'BackgroundImagePrefix'] as String?,
+                                    objdata: customStageData,
+                                  );
+                                  if (nameKey.isNotEmpty) {
+                                    return '${ResourceNames.lookup(context, nameKey)}$customSuffix';
+                                  }
+                                  return '${stageInfo.alias}$customSuffix';
+                                }
+                                return ResourceNames.lookup(
+                                  context,
+                                  StageRepository.getName(stageInfo.alias),
+                                );
+                              }(),
                               style: theme.textTheme.titleMedium,
                             ),
                           ],

@@ -55,15 +55,6 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
   bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _maxRow => _isDeepSeaLawn ? 6 : 5;
 
-  static const _jamOptions = [
-    (null, 'None'),
-    ('jam_pop', 'Pop'),
-    ('jam_rap', 'Rap'),
-    ('jam_metal', 'Metal'),
-    ('jam_punk', 'Punk'),
-    ('jam_8bit', '8-Bit'),
-  ];
-
   @override
   void initState() {
     super.initState();
@@ -253,10 +244,6 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                   body: l10n?.eventHelpBatchLevel ?? 'Set level for all non-elite zombies in this wave.',
                 ),
                 HelpSectionData(
-                  title: l10n?.backgroundMusicLevelJam ?? 'Level Jam',
-                  body: l10n?.onlyAppliesRockEra ?? 'Only applies to Rock era maps.',
-                ),
-                HelpSectionData(
                   title: l10n?.dropConfigPlantFood ?? 'Drop config',
                   body: l10n?.eventHelpDropConfig ?? 'Plant food or plant cards carried by zombies.',
                 ),
@@ -308,8 +295,6 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                     .toList(),
                 color: theme.colorScheme.onSurfaceVariant,
               ),
-              const SizedBox(height: 16),
-              _buildNotificationCard(theme, l10n),
               const SizedBox(height: 16),
               _buildBatchLevelCard(theme, l10n),
               const SizedBox(height: 16),
@@ -373,18 +358,6 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     _sync();
   }
 
-  void _updateNotificationEvent(String? value) {
-    final list = value == null ? null : <String>[value];
-    _data = SpawnZombiesFishWaveActionPropsData(
-      notificationEvents: list,
-      additionalPlantFood: _data.additionalPlantFood,
-      spawnPlantName: _data.spawnPlantName,
-      zombies: _data.zombies,
-      fishes: _data.fishes,
-    );
-    _sync();
-  }
-
   void _updateAdditionalPlantFood(int count) {
     final plants = _data.spawnPlantName ?? [];
     final newPlants = count <= plants.length
@@ -424,55 +397,6 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
       fishes: _data.fishes,
     );
     _sync();
-  }
-
-  Widget _buildNotificationCard(ThemeData theme, AppLocalizations? l10n) {
-    final current = _data.notificationEvents?.isNotEmpty == true
-        ? _data.notificationEvents!.first
-        : null;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Icon(Icons.music_note, color: theme.colorScheme.secondary),
-                const SizedBox(width: 8),
-                Text(
-                  l10n?.backgroundMusicLevelJam ?? 'Background music (LevelJam)',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            DropdownButtonFormField<String?>(
-              initialValue: current,
-              decoration: const InputDecoration(border: OutlineInputBorder()),
-              items: _jamOptions
-                  .map(
-                    (e) => DropdownMenuItem<String?>(
-                      value: e.$1,
-                      child: Text(e.$2),
-                    ),
-                  )
-                  .toList(),
-              onChanged: _updateNotificationEvent,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              l10n?.onlyAppliesRockEra ?? 'Only applies to Rock era maps.',
-              style: theme.textTheme.bodySmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 
   Widget _buildBatchLevelCard(ThemeData theme, AppLocalizations? l10n) {

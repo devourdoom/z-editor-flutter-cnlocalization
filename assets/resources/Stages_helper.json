@@ -1,0 +1,366 @@
+{
+  "DelayLoad_Background_Aquarium_Compressed": {
+    "IMAGE_BACKGROUNDS_AQUARIUM": {
+      "image": "Stage_Aquarium.webp",
+      "nameKey": "stage_AquariumStage"
+    }
+  },
+  "DelayLoad_Background_ArenaLawn": {
+    "IMAGE_BACKGROUNDS_ARENALAWN": {
+      "image": "unknown.webp",
+      "nameKey": "stage_ArenaStage"
+    }
+  },
+  "DelayLoad_Background_Atlantis_Compressed": {
+    "IMAGE_BACKGROUNDS_ATLANTIS": {
+      "image": "Stage_Atlantis.webp",
+      "nameKey": "stage_AtlantisStage"
+    }
+  },
+  "DelayLoad_Background_Autumn_Late": {
+    "IMAGE_BACKGROUNDS_AUTUMN_LATE": {
+      "image": "Stage_Autumn.webp",
+      "nameKey": "stage_AutumnEarlyStage"
+    }
+  },
+  "DelayLoad_Background_Beach_Compressed": {
+    "IMAGE_BACKGROUNDS_BEACH": {
+      "image": "Stage_Beach.webp",
+      "nameKey": "stage_BeachStage"
+    }
+  },
+  "DelayLoad_Background_Birthday_9_DayLight": {
+    "IMAGE_BACKGROUNDS_BIRTHDAY_9_DAYLIGHT": {
+      "image": "unknown.webp",
+      "nameKey": "stage_Birthday9DaylightStage"
+    }
+  },
+  "DelayLoad_Background_Card_Game": {
+    "IMAGE_BACKGROUNDS_CARD": {
+      "image": "Stage_CardGame.webp",
+      "nameKey": "stage_CardGameStage"
+    }
+  },
+  "DelayLoad_Background_Dark": {
+    "IMAGE_BACKGROUNDS_DARK": {
+      "image": "Stage_Dark.webp",
+      "nameKey": "stage_DarkStage"
+    }
+  },
+  "DelayLoad_Background_Dark_Compressed": {
+    "IMAGE_BACKGROUNDS_DARK": {
+      "image": "Stage_TheatreDark.webp",
+      "nameKey": "stage_RiftStageScore"
+    }
+  },
+  "DelayLoad_Background_DaveCup": {
+    "IMAGE_BACKGROUNDS_DAVECUP": {
+      "image": "Stage_DaveCup.webp",
+      "nameKey": "stage_DaveCupStage"
+    }
+  },
+  "DelayLoad_Background_Deepsea": {
+    "IMAGE_BACKGROUNDS_DEEPSEA": {
+      "image": "Stage_Atlantis.webp",
+      "nameKey": "stage_DeepseaStage"
+    },
+    "IMAGE_BACKGROUNDS_DEEPSEALAND": {
+      "image": "Stage_Atlantis.webp",
+      "nameKey": "stage_DeepseaLandStage"
+    }
+  },
+  "DelayLoad_Background_Dino_Compressed": {
+    "IMAGE_BACKGROUNDS_DINO": {
+      "image": "Stage_Dino.webp",
+      "nameKey": "stage_DinoStage"
+    }
+  },
+  "DelayLoad_Background_Egypt_Compressed": {
+    "IMAGE_BACKGROUNDS_EGYPT": {
+      "image": "Stage_Egypt.webp",
+      "nameKey": "stage_EgyptStage"
+    }
+  },
+  "DelayLoad_Background_Eighties_Compressed": {
+    "IMAGE_BACKGROUNDS_EIGHTIES": {
+      "image": "Stage_Eighties.webp",
+      "nameKey": "stage_EightiesStage"
+    }
+  },
+  "DelayLoad_Background_FairyTale": {
+    "IMAGE_BACKGROUNDS_FAIRY_TALE": {
+      "image": "Stage_Fairytale.webp",
+      "nameKey": "stage_FairyTaleStage"
+    }
+  },
+  "DelayLoad_Background_FrontLawn": {
+    "IMAGE_BACKGROUNDS_FRONTLAWN": {
+      "image": "Stage_Modern.webp",
+      "nameKey": "stage_TutorialStage"
+    },
+    "IMAGE_BACKGROUNDS_FRONTLAWN_SPRING": {
+      "image": "Stage_Easter.webp",
+      "nameKey": "stage_FrontLawnSpringStage"
+    }
+  },
+  "DelayLoad_Background_Frontlawn_Lod_Halloween": {
+    "IMAGE_BACKGROUNDS_FRONTLAWN_LOD_HALLOWEEN": {
+      "image": "Stage_Halloween.webp",
+      "nameKey": "stage_HalloweenStage"
+    }
+  },
+  "DelayLoad_Background_Future": {
+    "IMAGE_BACKGROUNDS_FUTURE": {
+      "image": "Stage_Future.webp",
+      "nameKey": "stage_FutureStage"
+    }
+  },
+  "DelayLoad_Background_Heian_Compressed": {
+    "IMAGE_BACKGROUNDS_HEIAN": {
+      "image": "Stage_Heian.webp",
+      "nameKey": "stage_HeianStage"
+    }
+  },
+  "DelayLoad_Background_Iceage_Compressed": {
+    "IMAGE_BACKGROUNDS_ICEAGE": {
+      "image": "Stage_Iceage.webp",
+      "nameKey": "stage_IceageStage"
+    }
+  },
+  "DelayLoad_Background_Joust": {
+    "IMAGE_BACKGROUNDS_JOUST": {
+      "image": "Stage_Joust.webp",
+      "nameKey": "stage_JoustStage"
+    }
+  },
+  "DelayLoad_Background_KongFu_Compressed": {
+    "IMAGE_BACKGROUNDS_KONGFU": {
+      "image": "Stage_Kongfu.webp",
+      "nameKey": "stage_KongfuStage"
+    }
+  },
+  "DelayLoad_Background_LostCity_Compressed": {
+    "IMAGE_BACKGROUNDS_LOSTCITY": {
+      "image": "Stage_LostCity.webp",
+      "nameKey": "stage_LostCityStage"
+    }
+  },
+  "DelayLoad_Background_Modern_Compressed": {
+    "IMAGE_BACKGROUNDS_MODERN": {
+      "image": "Stage_Modern.webp",
+      "nameKey": "stage_ModernStage"
+    }
+  },
+  "DelayLoad_Background_NewYear_Daylight": {
+    "IMAGE_BACKGROUNDS_NEWYEAR_DAYLIGHT": {
+      "image": "Stage_NewYearDaylight.webp",
+      "nameKey": "stage_NewYearDaylightStage"
+    }
+  },
+  "DelayLoad_Background_NewYear_Night": {
+    "IMAGE_BACKGROUNDS_NEWYEAR_NIGHT": {
+      "image": "Stage_NewYearNight.webp",
+      "nameKey": "stage_NewYearNightStage"
+    }
+  },
+  "DelayLoad_Background_New_PVP": {
+    "IMAGE_BACKGROUNDS_PVP": {
+      "image": "unknown.webp",
+      "nameKey": "stage_NewPVPStage"
+    }
+  },
+  "DelayLoad_Background_Night": {
+    "IMAGE_BACKGROUNDS_NIGHT": {
+      "image": "Stage_Night.webp",
+      "nameKey": "stage_NightStage"
+    }
+  },
+  "DelayLoad_Background_Pirate": {
+    "IMAGE_BACKGROUNDS_PIRATE": {
+      "image": "Stage_Pirate.webp",
+      "nameKey": "stage_PirateStage"
+    }
+  },
+  "DelayLoad_Background_PlantWars": {
+    "IMAGE_BACKGROUNDS_PLANTWARS": {
+      "image": "Stage_JTTW.webp",
+      "nameKey": "stage_JourneyToTheWestStage"
+    }
+  },
+  "DelayLoad_Background_Pool_Daylight": {
+    "IMAGE_BACKGROUNDS_POOL_DAYLIGHT": {
+      "image": "Stage_PoolDaylight.webp",
+      "nameKey": "stage_PoolDaylightStage"
+    }
+  },
+  "DelayLoad_Background_Pool_Night": {
+    "IMAGE_BACKGROUNDS_POOL_NIGHT": {
+      "image": "Stage_PoolNight.webp",
+      "nameKey": "stage_PoolNightStage"
+    }
+  },
+  "DelayLoad_Background_Renai_Compressed": {
+    "IMAGE_BACKGROUNDS_RENAI": {
+      "image": "Stage_Renai.webp",
+      "nameKey": "stage_RenaiStage"
+    }
+  },
+  "DelayLoad_Background_Rift": {
+    "IMAGE_BACKGROUNDS_RIFT": {
+      "image": "Stage_Rift.webp",
+      "nameKey": "stage_RiftStage"
+    }
+  },
+  "DelayLoad_Background_Roof": {
+    "IMAGE_BACKGROUNDS_ROOF": {
+      "image": "Stage_Roof.webp",
+      "nameKey": "stage_RoofStage"
+    },
+    "IMAGE_BACKGROUNDS_ROOF_NIGHT": {
+      "image": "Stage_RoofNight.webp",
+      "nameKey": "stage_RoofNightStage"
+    }
+  },
+  "DelayLoad_Background_Running_Subway": {
+    "IMAGE_BACKGROUNDS_RUNNING": {
+      "image": "unknown.webp",
+      "nameKey": "stage_RunningSubwayStage"
+    }
+  },
+  "DelayLoad_Background_Skycity_Compressed": {
+    "IMAGE_BACKGROUNDS_SKYCITY": {
+      "image": "Stage_Skycity.webp",
+      "nameKey": "stage_SkycityStage"
+    }
+  },
+  "DelayLoad_Background_Snow_Modern": {
+    "IMAGE_BACKGROUNDS_SNOW_MODERN": {
+      "image": "Stage_SnowModern.webp",
+      "nameKey": "stage_SnowModernStage"
+    }
+  },
+  "DelayLoad_Background_Snow_Night": {
+    "IMAGE_BACKGROUNDS_SNOW_NIGHT": {
+      "image": "Stage_SnowNight.webp",
+      "nameKey": "stage_SnowNightStage"
+    }
+  },
+  "DelayLoad_Background_Snow_Roof": {
+    "IMAGE_BACKGROUNDS_SNOW_ROOF": {
+      "image": "Stage_SnowRoof.webp",
+      "nameKey": "stage_SnowRoofStage"
+    }
+  },
+  "DelayLoad_Background_Soccer": {
+    "IMAGE_BACKGROUNDS_SOCCER": {
+      "image": "unknown.webp",
+      "nameKey": "stage_SoccerStage"
+    }
+  },
+  "DelayLoad_Background_Spring_Daylight": {
+    "IMAGE_BACKGROUNDS_SPRING_DAYLIGHT": {
+      "image": "Stage_SpringDaylight.webp",
+      "nameKey": "stage_SpringDaylightStage"
+    }
+  },
+  "DelayLoad_Background_Spring_Night": {
+    "IMAGE_BACKGROUNDS_SPRING_NIGHT": {
+      "image": "Stage_SpringNight.webp",
+      "nameKey": "stage_SpringNightStage"
+    }
+  },
+  "DelayLoad_Background_Steam_Compressed": {
+    "IMAGE_BACKGROUNDS_STEAM": {
+      "image": "Stage_Steam.webp",
+      "nameKey": "stage_SteamStage"
+    }
+  },
+  "DelayLoad_Background_Summer_Daylight": {
+    "IMAGE_BACKGROUNDS_SUMMER_DAYLIGHT": {
+      "image": "Stage_SummerDaylight.webp",
+      "nameKey": "stage_SummerDaylightStage"
+    }
+  },
+  "DelayLoad_Background_Summer_Night": {
+    "IMAGE_BACKGROUNDS_SUMMER_NIGHT": {
+      "image": "Stage_SummerNight.webp",
+      "nameKey": "stage_SummerNightStage"
+    }
+  },
+  "DelayLoad_Background_Team_Boss": {
+    "IMAGE_BACKGROUNDS_TEAM_BOSS": {
+      "image": "unknown.webp",
+      "nameKey": "stage_TeamBossStage"
+    }
+  },
+  "DelayLoad_Background_Theatre_Dark": {
+    "IMAGE_BACKGROUNDS_THEATRE_DARK": {
+      "image": "Stage_TheatreDark.webp",
+      "nameKey": "stage_TheatreDarkStage"
+    }
+  },
+  "DelayLoad_Background_Uncharted_Anniversary": {
+    "IMAGE_BACKGROUNDS_UNCHARTED_ANNIVERSARY": {
+      "image": "Stage_Anniversary.webp",
+      "nameKey": "stage_UnchartedAnniversaryStage"
+    }
+  },
+  "DelayLoad_Background_Uncharted_Arborday": {
+    "IMAGE_BACKGROUNDS_UNCHARTED_ARBORDAY": {
+      "image": "Stage_WSSS.webp",
+      "nameKey": "stage_UnchartedArbordayStage"
+    }
+  },
+  "DelayLoad_Background_Uncharted_Iceage": {
+    "IMAGE_BACKGROUNDS_UNCHARTED_ICEAGE": {
+      "image": "Stage_FBCR.webp",
+      "nameKey": "stage_UnchartedIceageStage"
+    }
+  },
+  "DelayLoad_Background_Uncharted_Mausoleum": {
+    "IMAGE_BACKGROUNDS_UNCHARTED_MAUSOLEUM": {
+      "image": "Stage_Underground.webp",
+      "nameKey": "stage_UnchartedMausoleumStage"
+    },
+    "IMAGE_BACKGROUNDS_UNCHARTED_MAUSOLEUM_2": {
+      "image": "Stage_Underground.webp",
+      "nameKey": "stage_UnchartedMausoleum2Stage"
+    }
+  },
+  "DelayLoad_Background_Uncharted_Needforspeed": {
+    "IMAGE_BACKGROUNDS_UNCHARTED_NEEDFORSPEED": {
+      "image": "Stage_NFS.webp",
+      "nameKey": "stage_UnchartedNeedforspeedStage"
+    }
+  },
+  "DelayLoad_Background_Uncharted_No42Universe": {
+    "IMAGE_BACKGROUNDS_UNCHARTED_NO42_UNIVERSE": {
+      "image": "Stage_PU41.webp",
+      "nameKey": "stage_UnchartedNo42UniverseStage"
+    }
+  },
+  "DelayLoad_Background_Uncharted_Running": {
+    "IMAGE_BACKGROUNDS_UNCHARTED_RUNNING": {
+      "image": "Stage_Subway.webp",
+      "nameKey": "stage_RunningNormalStage"
+    }
+  },
+  "DelayLoad_Background_Volcano": {
+    "IMAGE_BACKGROUNDS_VOLCANO": {
+      "image": "Stage_LostVolcano.webp",
+      "nameKey": "stage_VacationDarkStage"
+    }
+  },
+  "DelayLoad_Background_West_Compressed": {
+    "IMAGE_BACKGROUNDS_OLDWEST": {
+      "image": "Stage_West.webp",
+      "nameKey": "stage_WestStage"
+    }
+  },
+  "DelayLoad_Background_ZCorp": {
+    "IMAGE_BACKGROUNDS_ZCORP_BG": {
+      "image": "Stage_ZCorp.webp",
+      "nameKey": "stage_ZCorpStage"
+    }
+  }
+}

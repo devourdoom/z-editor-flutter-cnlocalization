@@ -41,7 +41,7 @@ class _BungeeWaveEventScreenState extends State<BungeeWaveEventScreen> {
 
   bool get _isDeepSeaLawn {
     final parsed = LevelParser.parseLevel(widget.levelFile);
-    return LevelParser.isDeepSeaLawn(parsed.levelDef);
+    return LevelParser.isDeepSeaLawn(parsed.levelDef, widget.levelFile);
   }
 
   int get _gridRows => _isDeepSeaLawn ? 6 : 5;
