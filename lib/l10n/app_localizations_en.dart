@@ -6841,7 +6841,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Import at least one DelayLoad_Background group listed in the stage helper, or the lawn may appear completely black.';
 
   @override
-  String get customStageEnableAmbient => 'Enable ambient';
+  String get customStageEnableAmbient => 'Enable ambient audio';
+
+  @override
+  String get stageField_MusicSuffix => 'Music module (MusicSuffix)';
+
+  @override
+  String get stageField_AmbientAudioSuffix =>
+      'Ambient sound (AmbientAudioSuffix)';
+
+  @override
+  String get customStageDisabledStreetCells =>
+      'Zombie positions on the seed selection screen (DisabledStreetCells)';
 
   @override
   String get customStageDisabledCellsEmpty => 'Empty';
@@ -6850,19 +6861,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customStageDisabledCellsDefault => 'Default';
 
   @override
-  String get customStageBeachMinigame => 'Use minigame version';
-
-  @override
   String get customStageEnableSubmarine => 'Enable submarine';
 
   @override
-  String get customStageSubmarineHitpoints => 'Submarine hitpoints';
+  String get customStageSubmarineHitpoints => 'Submarine health';
 
   @override
   String get customStageNameSuffix => ' (Custom)';
 
   @override
-  String get customStageLawnAppearance => 'Lawn type (objclass)';
+  String get customStageLawnAppearance => 'Lawn type';
 
   @override
   String get selectCustomStageBase => 'Select base lawn';

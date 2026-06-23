@@ -12241,8 +12241,26 @@ abstract class AppLocalizations {
   /// No description provided for @customStageEnableAmbient.
   ///
   /// In en, this message translates to:
-  /// **'Enable ambient'**
+  /// **'Enable ambient audio'**
   String get customStageEnableAmbient;
+
+  /// No description provided for @stageField_MusicSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'Music module (MusicSuffix)'**
+  String get stageField_MusicSuffix;
+
+  /// No description provided for @stageField_AmbientAudioSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'Ambient sound (AmbientAudioSuffix)'**
+  String get stageField_AmbientAudioSuffix;
+
+  /// No description provided for @customStageDisabledStreetCells.
+  ///
+  /// In en, this message translates to:
+  /// **'Zombie positions on the seed selection screen (DisabledStreetCells)'**
+  String get customStageDisabledStreetCells;
 
   /// No description provided for @customStageDisabledCellsEmpty.
   ///
@@ -12256,12 +12274,6 @@ abstract class AppLocalizations {
   /// **'Default'**
   String get customStageDisabledCellsDefault;
 
-  /// No description provided for @customStageBeachMinigame.
-  ///
-  /// In en, this message translates to:
-  /// **'Use minigame version'**
-  String get customStageBeachMinigame;
-
   /// No description provided for @customStageEnableSubmarine.
   ///
   /// In en, this message translates to:
@@ -12271,7 +12283,7 @@ abstract class AppLocalizations {
   /// No description provided for @customStageSubmarineHitpoints.
   ///
   /// In en, this message translates to:
-  /// **'Submarine hitpoints'**
+  /// **'Submarine health'**
   String get customStageSubmarineHitpoints;
 
   /// No description provided for @customStageNameSuffix.
@@ -12283,7 +12295,7 @@ abstract class AppLocalizations {
   /// No description provided for @customStageLawnAppearance.
   ///
   /// In en, this message translates to:
-  /// **'Lawn type (objclass)'**
+  /// **'Lawn type'**
   String get customStageLawnAppearance;
 
   /// No description provided for @selectCustomStageBase.

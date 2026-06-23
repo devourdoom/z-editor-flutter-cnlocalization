@@ -465,7 +465,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get templateOldStyleExample => '旧式关卡';
 
   @override
-  String get templateCustomStageExample => '自定义场地示例';
+  String get templateCustomStageExample => '自定义地图示例';
 
   @override
   String get unsavedChanges => '有未保存的更改';
@@ -2348,10 +2348,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get selectionDefinedByUser => '用户自定义';
 
   @override
-  String get aliasAlreadyTakenTitle => '别名已被占用';
+  String get aliasAlreadyTakenTitle => '代号已被占用';
 
   @override
-  String get aliasRenameConfirmTitle => '重命名别名？';
+  String get aliasRenameConfirmTitle => '重命名代号？';
 
   @override
   String aliasRenameConfirmMessage(String oldAlias, String newAlias) {
@@ -2391,7 +2391,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get aliasAlreadyExists => '本关卡中已存在该别名。';
+  String get aliasAlreadyExists => '本关卡中已存在该代号。';
 
   @override
   String zombieTypeLabel(Object type) {
@@ -2446,7 +2446,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get aliasLabel => '别名';
+  String get aliasLabel => '代号';
 
   @override
   String get add => '添加';
@@ -2774,7 +2774,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get fishPropertiesEntryHelp =>
-      '点击选中网格后可以添加海洋生物。点击“+”可添加内置海洋生物。点击海洋生物图标可进行复制、删除、自定义等更多操作，自定义的海洋生物会显示蓝色的“C”角标。海洋生物放置在场地外会显示警告。';
+      '点击选中网格后可以添加海洋生物。点击“+”可添加默认海洋生物。点击海洋生物图标可进行复制、删除、自定义等更多操作，自定义的海洋生物会显示蓝色的“C”角标。海洋生物放置在场地外会显示警告。';
 
   @override
   String get fishAddCustom => '添加自定义海洋生物';
@@ -2783,7 +2783,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get addFishLabel => '添加海洋生物';
 
   @override
-  String get addBuiltInFishLabel => '添加内置海洋生物';
+  String get addBuiltInFishLabel => '添加默认海洋生物';
 
   @override
   String get makeFishAsCustom => '设为自定义';
@@ -5832,7 +5832,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get zombossMechPropertiesLabel => '属性';
 
   @override
-  String get zombossMechAliasLabel => '别名';
+  String get zombossMechAliasLabel => '代号';
 
   @override
   String get zombossMechDeletePhase => '删除阶段';
@@ -5901,7 +5901,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get zombossMechActionAliasHint =>
-      '用于 RTID(别名@CurrentLevel) 的代号，可稍后修改；本属性表中的引用会自动更新。';
+      '用于 RTID(僵王机甲@CurrentLevel) 的代号，可稍后修改；本属性表中的引用会自动更新。';
 
   @override
   String get zombossMechActionBaseObjclass => '基础 objclass';
@@ -5919,7 +5919,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get zombossMechNoZombiesInList => '列表中暂无僵尸';
 
   @override
-  String get zombossMechCatalogActionReadOnly => '内置动作无法在此编辑。请创建自定义动作以修改僵尸列表。';
+  String get zombossMechCatalogActionReadOnly => '默认动作无法在此编辑。请创建自定义动作以修改僵尸列表。';
 
   @override
   String get zombossMechRetreatDisabled => '已禁用';
@@ -6310,7 +6310,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get waveGeneratorModuleHelpPoolBody =>
-      'AddToZombiePool 从指定波次起扩展随机出怪池。仅支持内置僵尸类型——自定义僵尸会导致崩溃。';
+      'AddToZombiePool 从指定波次起扩展随机出怪池。仅支持默认僵尸类型——自定义僵尸会导致崩溃。';
 
   @override
   String get waveGeneratorModuleHelpIncompat => '不兼容模块';
@@ -6463,10 +6463,10 @@ class AppLocalizationsZh extends AppLocalizations {
       '在上方网格中点击选择坐标，然后点击“添加目标”按钮选择要保护的物品类型。';
 
   @override
-  String get customStageProperties => '自定义场地属性';
+  String get customStageProperties => '自定义地图属性';
 
   @override
-  String get customStageNotFound => '未找到自定义场地对象。';
+  String get customStageNotFound => '未找到自定义地图对象。';
 
   @override
   String get customStageSectionGeneral => '常规';
@@ -6484,26 +6484,32 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customStageSectionAdvanced => '高级设置';
 
   @override
-  String get customStageAlias => '场地别名';
+  String get customStageAlias => '地图代号';
 
   @override
   String get customStageNoResourceGroups => '列表中没有资源组';
 
   @override
   String get customStageMissingBackgroundWarning =>
-      '请至少导入一个在场地助手中列出的 DelayLoad_Background 资源组，否则草坪可能完全显示为黑色。';
+      '请至少导入一个该地图拥有列出的 DelayLoad_Background 资源组，否则地图无法正常显示。';
 
   @override
   String get customStageEnableAmbient => '启用环境音';
 
   @override
-  String get customStageDisabledCellsEmpty => '空';
+  String get stageField_MusicSuffix => '音乐模块 (MusicSuffix)';
+
+  @override
+  String get stageField_AmbientAudioSuffix => '环境音效 (AmbientAudioSuffix)';
+
+  @override
+  String get customStageDisabledStreetCells => '选卡界面僵尸位置 (DisabledStreetCells)';
+
+  @override
+  String get customStageDisabledCellsEmpty => '留空';
 
   @override
   String get customStageDisabledCellsDefault => '默认';
-
-  @override
-  String get customStageBeachMinigame => '使用小游戏版本';
 
   @override
   String get customStageEnableSubmarine => '启用潜艇';
@@ -6515,25 +6521,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get customStageNameSuffix => '（自定义）';
 
   @override
-  String get customStageLawnAppearance => '场地类型 (objclass)';
+  String get customStageLawnAppearance => '地图类型';
 
   @override
-  String get selectCustomStageBase => '选择基础场地';
+  String get selectCustomStageBase => '选择基础地图';
 
   @override
-  String get noStageBaseFound => '未找到草坪';
+  String get noStageBaseFound => '未找到地图';
 
   @override
   String get importResourceGroup => '导入资源组';
 
   @override
-  String get importResourceGroupGlobal => '从全局列表';
+  String get importResourceGroupGlobal => '全局列表';
 
   @override
-  String get importResourceGroupFromStage => '从场地导入';
+  String get importResourceGroupFromStage => '从地图导入';
 
   @override
-  String get importResourceGroupSourceStage => '来源场地';
+  String get importResourceGroupSourceStage => '来自地图';
 
   @override
   String get searchResourceGroup => '搜索资源组';
@@ -6542,7 +6548,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get noResourceGroupFound => '未找到资源组';
 
   @override
-  String get importResourceGroupsFromStageTitle => '从场地添加资源组？';
+  String get importResourceGroupsFromStageTitle => '从地图添加资源组？';
 
   @override
   String importResourceGroupsFromStageMessage(String stageName) {
@@ -6551,48 +6557,49 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String importResourceGroupsFromStageSkipped(int count) {
-    return '已有$count个资源组在本关卡中，将跳过。';
+    return '自定义地图已包含该地图的$count个资源组，这些资源组将不再重复添加。';
   }
 
   @override
-  String get importResourceGroupsFromStageAllPresent => '该场地的所有资源组已在本关卡中。';
+  String get importResourceGroupsFromStageAllPresent =>
+      '该地图的所有资源组已在自定义地图中，无需再次添加。';
 
   @override
   String get createCustomStage => '创建自定义地图';
 
   @override
-  String get createCustomStageHint => '选择基础草坪外观，并在此关卡中本地编辑。';
+  String get createCustomStageHint => '选择基础地图外观并编辑地图属性';
 
   @override
-  String get customStageAliasPromptTitle => '自定义场地别名';
+  String get customStageAliasPromptTitle => '自定义地图代号';
 
   @override
-  String get customStageAliasTaken => '该别名已在此关卡中使用。';
+  String get customStageAliasTaken => '该代号在关卡中已被占用，请另想一个代号。';
 
   @override
-  String get stageSelectionTabBuiltin => '内置';
+  String get stageSelectionTabBuiltin => '默认';
 
   @override
   String get stageSelectionTabCustom => '自定义';
 
   @override
-  String get customStageSelectionEmpty => '此关卡中尚无自定义地图。';
+  String get customStageSelectionEmpty => '此关卡中尚无自定义地图';
 
   @override
-  String get customStageSelectionInLevel => '此关卡中的自定义地图';
+  String get customStageSelectionInLevel => '关卡使用的自定义地图';
 
   @override
-  String get customStageSwitchToBuiltinTitle => '切换为内置草坪？';
+  String get customStageSwitchToBuiltinTitle => '确定要切换为默认地图吗？';
 
   @override
-  String get customStageSwitchToBuiltinMessage => '这将永久删除此关卡中的自定义场地数据，且无法撤销。';
+  String get customStageSwitchToBuiltinMessage => '将永久删除原本使用的自定义地图数据，此操作不可撤销。';
 
   @override
-  String get customStageDeleteTitle => '删除自定义地图？';
+  String get customStageDeleteTitle => '确定要删除自定义地图吗？';
 
   @override
   String get customStageDeleteMessage =>
-      '这将永久删除此关卡中的自定义场地数据。若其为当前草坪，关卡将切换为默认内置草坪。';
+      '将在关卡中永久删除该自定义地图的相关数据，并将当前地图切换为默认的教程庭院地图。';
 
   @override
   String get customStagePresetSectionTitle => '预设自定义地图';
