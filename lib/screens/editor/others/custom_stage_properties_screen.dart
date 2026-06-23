@@ -531,13 +531,14 @@ class _CustomStagePropertiesScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              _sectionTitle(l10n?.customStageSectionGeneral ?? 'General'),
               _lawnAppearanceSummaryCard(
-                label: 'Lawn appearance',
+                label:
+                    l10n?.customStageLawnAppearance ?? 'Lawn appearance',
                 value: lawnAppearanceName,
                 iconFileName: lawnAppearanceIcon,
               ),
-              const SizedBox(height: 16),
-              _sectionTitle(l10n?.customStageSectionGeneral ?? 'General'),
+              const SizedBox(height: 8),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -619,7 +620,9 @@ class _CustomStagePropertiesScreenState
                 targetUnloadList: true,
               ),
               const SizedBox(height: 16),
-              _sectionTitle(l10n?.customStageSectionMusicAndOther ?? 'Music & Other'),
+              _sectionTitle(
+                l10n?.customStageSectionMusicAndOther ?? 'Music & Other',
+              ),
               _pickerTile(
                 label: _fieldLabel(context, 'MusicSuffix'),
                 value: musicName,

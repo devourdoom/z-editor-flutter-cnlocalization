@@ -295,6 +295,12 @@ class _StageSelectionScreenState extends State<StageSelectionScreen> {
         ? _selectedPresetForAlias(presets, currentAlias)
         : null;
     final presetsLocked = selectedPreset != null;
+    final displayPresets = selectedPreset == null
+        ? presets
+        : [
+            selectedPreset,
+            ...presets.where((preset) => preset.alias != selectedPreset.alias),
+          ];
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -439,7 +445,7 @@ class _StageSelectionScreenState extends State<StageSelectionScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          ...presets.map(
+          ...displayPresets.map(
             (preset) {
               final isSelectedPreset = selectedPreset?.alias == preset.alias;
               final isDisabled =
