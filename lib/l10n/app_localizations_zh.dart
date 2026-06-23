@@ -36,6 +36,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uiSize => '界面大小';
 
   @override
+  String get plantTagInternational => '国际的';
+
+  @override
+  String get plantTagChinese => '中国人';
+
+  @override
   String get aboutSoftware => '关于软件';
 
   @override

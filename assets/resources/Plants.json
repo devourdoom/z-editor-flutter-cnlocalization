@@ -5,7 +5,8 @@
         "tags": [
             "White",
             "Ranger",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_peashooter.webp"
     },
@@ -15,7 +16,8 @@
         "tags": [
             "White",
             "SunProducer",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_sunflower.webp"
     },
@@ -25,7 +27,8 @@
         "tags": [
             "White",
             "Defence",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_wallnut.webp"
     },
@@ -36,7 +39,8 @@
             "White",
             "Trapper",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_potatomine.webp"
     },
@@ -47,7 +51,8 @@
             "White",
             "Ranger",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_cabbagepult.webp"
     },
@@ -57,7 +62,8 @@
         "tags": [
             "White",
             "Trapper",
-            "Ice"
+            "Ice",
+            "International"
         ],
         "icon": "icon_iceburg.webp"
     },
@@ -67,7 +73,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_bloomerang.webp"
     },
@@ -77,7 +84,8 @@
         "tags": [
             "Blue",
             "SunProducer",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_twinsunflower.webp"
     },
@@ -87,7 +95,8 @@
         "tags": [
             "Blue",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_bonkchoy.webp"
     },
@@ -96,7 +105,8 @@
         "name": "plant_springbean",
         "tags": [
             "White",
-            "Trapper"
+            "Trapper",
+            "International"
         ],
         "icon": "icon_springbean.webp"
     },
@@ -107,7 +117,8 @@
             "White",
             "Trapper",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_spikeweed.webp"
     },
@@ -118,7 +129,8 @@
             "Orange",
             "Vanguard",
             "Fire",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_snapdragon.webp"
     },
@@ -128,7 +140,8 @@
         "tags": [
             "Blue",
             "Support",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_powerlily.webp"
     },
@@ -139,7 +152,8 @@
             "Blue",
             "Trapper",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_squash.webp"
     },
@@ -149,7 +163,8 @@
         "tags": [
             "White",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_chilibean.webp"
     },
@@ -160,7 +175,8 @@
             "White",
             "Ranger",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_splitpea.webp"
     },
@@ -171,7 +187,8 @@
             "Blue",
             "Trapper",
             "Fire",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_jalapeno.webp"
     },
@@ -182,7 +199,8 @@
             "White",
             "Trapper",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_gravebuster.webp"
     },
@@ -193,7 +211,8 @@
             "Green",
             "Ranger",
             "Ice",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_snowpea.webp"
     },
@@ -204,7 +223,8 @@
             "Green",
             "Support",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_torchwood.webp"
     },
@@ -215,7 +235,8 @@
             "White",
             "Ranger",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_kernelpult.webp"
     },
@@ -225,7 +246,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_lightningreed.webp"
     },
@@ -235,7 +257,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_coconutcannon.webp"
     },
@@ -246,7 +269,8 @@
             "Green",
             "Ranger",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_melonpult.webp"
     },
@@ -256,7 +280,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_peapod.webp"
     },
@@ -267,7 +292,8 @@
             "Purple",
             "Trapper",
             "Magic",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_imitater.webp"
     },
@@ -278,7 +304,8 @@
             "Blue",
             "Ranger",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_repeater.webp"
     },
@@ -289,7 +316,8 @@
             "Green",
             "Trapper",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_spikerock.webp"
     },
@@ -300,7 +328,8 @@
             "Green",
             "Defence",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_tallnut.webp"
     },
@@ -311,7 +340,8 @@
             "Green",
             "Ranger",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_threepeater.webp"
     },
@@ -322,7 +352,8 @@
             "Orange",
             "Ranger",
             "Ice",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_wintermelon.gif"
     },
@@ -333,7 +364,8 @@
             "Blue",
             "Trapper",
             "Fire",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_cherry_bomb.webp"
     },
@@ -343,7 +375,8 @@
         "tags": [
             "White",
             "Support",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_peach.webp"
     },
@@ -353,7 +386,8 @@
         "tags": [
             "White",
             "Vanguard",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_firegourd.webp"
     },
@@ -363,7 +397,8 @@
         "tags": [
             "White",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_turnip.webp"
     },
@@ -373,7 +408,8 @@
         "tags": [
             "White",
             "Trapper",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_bamboo.webp"
     },
@@ -383,7 +419,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_magnifyinggrass.webp"
     },
@@ -393,7 +430,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_laser_bean.webp"
     },
@@ -405,7 +443,8 @@
             "Ranger",
             "Electric",
             "Magic",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_starfruit.webp"
     },
@@ -416,7 +455,8 @@
             "Blue",
             "Trapper",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_blover.webp"
     },
@@ -425,7 +465,8 @@
         "name": "plant_empea",
         "tags": [
             "Green",
-            "Trapper"
+            "Trapper",
+            "International"
         ],
         "icon": "icon_empea.webp"
     },
@@ -435,7 +476,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_citron.webp"
     },
@@ -444,7 +486,8 @@
         "name": "plant_holonut",
         "tags": [
             "Blue",
-            "Defence"
+            "Defence",
+            "International"
         ],
         "icon": "icon_holonut.webp"
     },
@@ -454,7 +497,8 @@
         "tags": [
             "Orange",
             "Support",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_powerplant.webp"
     },
@@ -464,7 +508,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_carrotlauncher.webp"
     },
@@ -475,7 +520,8 @@
             "White",
             "Vanguard",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_puffshroom.webp"
     },
@@ -486,7 +532,8 @@
             "White",
             "Vanguard",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_fumeshroom.webp"
     },
@@ -497,7 +544,8 @@
             "Blue",
             "Trapper",
             "Magic",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_hypnoshroom.webp"
     },
@@ -507,7 +555,8 @@
         "tags": [
             "Orange",
             "SunProducer",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_sunshroom.gif"
     },
@@ -517,7 +566,8 @@
         "tags": [
             "White",
             "SunProducer",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_sunbean.webp"
     },
@@ -527,7 +577,8 @@
         "tags": [
             "White",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_peanut.webp"
     },
@@ -537,7 +588,8 @@
         "tags": [
             "White",
             "Trapper",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_magnetshroom.webp"
     },
@@ -548,7 +600,8 @@
             "White",
             "Trapper",
             "Magic",
-            "Original"
+            "Original",
+            "Chinese"
         ],
         "icon": "icon_streetlamp.webp"
     },
@@ -559,7 +612,8 @@
             "White",
             "Support",
             "Magic",
-            "Original"
+            "Original",
+            "Chinese"
         ],
         "icon": "icon_coffeebean.webp"
     },
@@ -570,7 +624,8 @@
             "Orange",
             "Ranger",
             "Ice",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_iceshroom.webp"
     },
@@ -580,7 +635,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_fireshroom.webp"
     },
@@ -590,7 +646,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_oakshooter.webp"
     },
@@ -600,7 +657,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_dandelion.webp"
     },
@@ -610,7 +668,8 @@
         "tags": [
             "Blue",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_broccoli.webp"
     },
@@ -620,7 +679,8 @@
         "tags": [
             "Green",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_pamegranate.webp"
     },
@@ -631,7 +691,8 @@
             "White",
             "Support",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_lilypad.webp"
     },
@@ -641,7 +702,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_bowlingbulb.webp"
     },
@@ -651,7 +713,8 @@
         "tags": [
             "White",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_tanglekelp.webp"
     },
@@ -661,7 +724,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_banana.webp"
     },
@@ -671,7 +735,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_guacodile.webp"
     },
@@ -681,7 +746,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_homingthistle.webp"
     },
@@ -692,7 +758,8 @@
             "Blue",
             "Vanguard",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_chomper.webp"
     },
@@ -702,7 +769,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_lemon.webp"
     },
@@ -712,7 +780,8 @@
         "tags": [
             "Purple",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_ghostpepper.webp"
     },
@@ -721,7 +790,8 @@
         "name": "plant_sweetpotato",
         "tags": [
             "Green",
-            "Defence"
+            "Defence",
+            "International"
         ],
         "icon": "icon_sweetpotato.webp"
     },
@@ -731,7 +801,8 @@
         "tags": [
             "Blue",
             "Vanguard",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_cracker.webp"
     },
@@ -741,7 +812,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_lotusshower.webp"
     },
@@ -751,7 +823,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_sapfling.webp"
     },
@@ -761,7 +834,8 @@
         "tags": [
             "Blue",
             "Trapper",
-            "Ice"
+            "Ice",
+            "International"
         ],
         "icon": "icon_hurrikale.webp"
     },
@@ -771,7 +845,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_firepeashooter.webp"
     },
@@ -781,7 +856,8 @@
         "tags": [
             "White",
             "Support",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_hotpotato.webp"
     },
@@ -791,7 +867,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_pepperpult.webp"
     },
@@ -800,7 +877,8 @@
         "name": "plant_chardguard",
         "tags": [
             "Purple",
-            "Defence"
+            "Defence",
+            "International"
         ],
         "icon": "icon_chardguard.webp"
     },
@@ -810,7 +888,8 @@
         "tags": [
             "Green",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_stunion.webp"
     },
@@ -820,7 +899,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_rafflesia.webp"
     },
@@ -830,7 +910,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_acorn.webp"
     },
@@ -840,7 +921,8 @@
         "tags": [
             "Blue",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_chestnut.webp"
     },
@@ -850,7 +932,8 @@
         "tags": [
             "Green",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_sugarcane.webp"
     },
@@ -860,7 +943,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_xshot.webp"
     },
@@ -870,7 +954,8 @@
         "tags": [
             "Green",
             "Trapper",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_doublesamara.webp"
     },
@@ -880,7 +965,8 @@
         "tags": [
             "Green",
             "Ranger",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_anthurium.webp"
     },
@@ -890,7 +976,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_asparagus.webp"
     },
@@ -900,7 +987,8 @@
         "tags": [
             "Green",
             "Trapper",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_saucer.webp"
     },
@@ -910,7 +998,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_horsebean.webp"
     },
@@ -920,7 +1009,8 @@
         "tags": [
             "White",
             "Trapper",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_groundcherry.webp"
     },
@@ -930,7 +1020,8 @@
         "tags": [
             "Green",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_pineapple.webp"
     },
@@ -941,7 +1032,8 @@
             "Orange",
             "Ranger",
             "Physical",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_magicshroom.webp"
     },
@@ -951,7 +1043,8 @@
         "tags": [
             "Blue",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_roseswordman.webp"
     },
@@ -961,7 +1054,9 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Electric"
+            "Electric",
+            "International",
+            "Chinese"
         ],
         "icon": "icon_electricblueberry.webp"
     },
@@ -971,7 +1066,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_greenturnip.webp"
     },
@@ -980,7 +1076,8 @@
         "name": "plant_birthsunflower",
         "tags": [
             "Purple",
-            "SunProducer"
+            "SunProducer",
+            "Chinese"
         ],
         "icon": "icon_birthsunflower.webp"
     },
@@ -990,7 +1087,8 @@
         "tags": [
             "Green",
             "Defence",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_endurian.webp"
     },
@@ -1000,7 +1098,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_pumpkinwitch.webp"
     },
@@ -1010,7 +1109,8 @@
         "tags": [
             "White",
             "SunProducer",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_goldleaf.webp"
     },
@@ -1020,7 +1120,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_akee.webp"
     },
@@ -1030,7 +1131,8 @@
         "tags": [
             "Blue",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_redstinger.webp"
     },
@@ -1040,7 +1142,8 @@
         "tags": [
             "White",
             "Trapper",
-            "Poison"
+            "Poison",
+            "International"
         ],
         "icon": "icon_stallia.webp"
     },
@@ -1050,7 +1153,8 @@
         "tags": [
             "Blue",
             "Trapper",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_lavaguava.webp"
     },
@@ -1060,7 +1164,8 @@
         "tags": [
             "Blue",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_toadstool.webp"
     },
@@ -1071,7 +1176,8 @@
             "Blue",
             "Ranger",
             "Magic",
-            "Ice"
+            "Ice",
+            "Chinese"
         ],
         "icon": "icon_cottonyeti.webp"
     },
@@ -1081,7 +1187,8 @@
         "tags": [
             "Blue",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_agave.webp"
     },
@@ -1091,7 +1198,8 @@
         "tags": [
             "Green",
             "Trapper",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_jackfruit.webp"
     },
@@ -1101,7 +1209,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_kiwifruit.webp"
     },
@@ -1111,7 +1220,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_wintersweet.webp"
     },
@@ -1121,7 +1231,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_dragonfruit.webp"
     },
@@ -1132,7 +1243,8 @@
             "Orange",
             "Ranger",
             "Electric",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_pinkstarfruit.webp"
     },
@@ -1142,7 +1254,8 @@
         "tags": [
             "Purple",
             "Vanguard",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_matchflower.webp"
     },
@@ -1153,7 +1266,8 @@
             "Orange",
             "Ranger",
             "Fire",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_flamelady.webp"
     },
@@ -1164,7 +1278,8 @@
             "Orange",
             "Original",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_gatlingpea.webp"
     },
@@ -1175,7 +1290,8 @@
             "Blue",
             "Vanguard",
             "Physical",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_phatbeet.webp"
     },
@@ -1185,7 +1301,8 @@
         "tags": [
             "Purple",
             "Trapper",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_thymewarp.webp"
     },
@@ -1195,7 +1312,8 @@
         "tags": [
             "Blue",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_celerystalker.webp"
     },
@@ -1205,7 +1323,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_sporeshroom.webp"
     },
@@ -1216,7 +1335,8 @@
             "Green",
             "Trapper",
             "Original",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_garlic.webp"
     },
@@ -1226,7 +1346,8 @@
         "tags": [
             "Green",
             "Support",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_intensivecarrot.webp"
     },
@@ -1237,7 +1358,8 @@
             "Orange",
             "Original",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_cactus.webp"
     },
@@ -1248,7 +1370,8 @@
             "Orange",
             "Original",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_nekotail.gif"
     },
@@ -1258,7 +1381,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_morningglory.webp"
     },
@@ -1268,7 +1392,8 @@
         "tags": [
             "Orange",
             "Trapper",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_grapeshot.webp"
     },
@@ -1279,7 +1404,8 @@
             "Orange",
             "Vanguard",
             "Ice",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_coldsnapdragon.webp"
     },
@@ -1289,7 +1415,8 @@
         "tags": [
             "Purple",
             "Trapper",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_shrinkingviolet.webp"
     },
@@ -1299,7 +1426,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_primalpeashooter.webp"
     },
@@ -1309,7 +1437,8 @@
         "tags": [
             "Blue",
             "Defence",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_primalwallnut.webp"
     },
@@ -1319,7 +1448,8 @@
         "tags": [
             "Green",
             "Trapper",
-            "Poison"
+            "Poison",
+            "International"
         ],
         "icon": "icon_perfumeshroom.webp"
     },
@@ -1328,7 +1458,8 @@
         "name": "plant_primalsunflower",
         "tags": [
             "Blue",
-            "SunProducer"
+            "SunProducer",
+            "International"
         ],
         "icon": "icon_primalsunflower.webp"
     },
@@ -1338,7 +1469,8 @@
         "tags": [
             "Purple",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_primalpotatomine.webp"
     },
@@ -1348,7 +1480,8 @@
         "tags": [
             "Purple",
             "Vanguard",
-            "Poison"
+            "Poison",
+            "Chinese"
         ],
         "icon": "icon_dragonroar.webp"
     },
@@ -1357,7 +1490,8 @@
         "name": "plant_bramble",
         "tags": [
             "White",
-            "Trapper"
+            "Trapper",
+            "Chinese"
         ],
         "icon": "icon_bramble.webp"
     },
@@ -1367,7 +1501,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Poison"
+            "Poison",
+            "Chinese"
         ],
         "icon": "icon_primalrafflesia.webp"
     },
@@ -1377,7 +1512,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_dragoncane.webp"
     },
@@ -1388,7 +1524,8 @@
             "Orange",
             "Ranger",
             "Physical",
-            "Original"
+            "Original",
+            "Chinese"
         ],
         "icon": "icon_cobcannon.webp"
     },
@@ -1398,7 +1535,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_applemortar.webp"
     },
@@ -1408,7 +1546,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_witchhazel.webp"
     },
@@ -1418,7 +1557,8 @@
         "tags": [
             "Orange",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_escaperoot.gif"
     },
@@ -1428,7 +1568,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_electriccurrant.webp"
     },
@@ -1438,7 +1579,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_whitemelon.webp"
     },
@@ -1448,7 +1590,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_caulipower.webp"
     },
@@ -1458,7 +1601,8 @@
         "tags": [
             "Blue",
             "Trapper",
-            "Poison"
+            "Poison",
+            "International"
         ],
         "icon": "icon_shadowshroom.webp"
     },
@@ -1468,7 +1612,8 @@
         "tags": [
             "Green",
             "Support",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_moonflower.webp"
     },
@@ -1478,7 +1623,9 @@
         "tags": [
             "Green",
             "Defence",
-            "Fire"
+            "Fire",
+            "Original",
+            "International"
         ],
         "icon": "icon_explodeonut.webp"
     },
@@ -1488,7 +1635,8 @@
         "tags": [
             "Purple",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_nightshade.webp"
     },
@@ -1498,7 +1646,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_dusklobber.webp"
     },
@@ -1508,7 +1657,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_bloominghearts.webp"
     },
@@ -1518,7 +1668,8 @@
         "tags": [
             "Purple",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_grimrose.webp"
     },
@@ -1528,7 +1679,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_wasabiwhip.webp"
     },
@@ -1538,7 +1690,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_parsnip.webp"
     },
@@ -1549,7 +1702,8 @@
             "Purple",
             "Ranger",
             "Magic",
-            "Ice"
+            "Ice",
+            "International"
         ],
         "icon": "icon_missiletoe.webp"
     },
@@ -1559,7 +1713,8 @@
         "tags": [
             "Purple",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_kiwibeast.webp"
     },
@@ -1569,7 +1724,8 @@
         "tags": [
             "White",
             "SunProducer",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_goldbloom.webp"
     },
@@ -1578,7 +1734,8 @@
         "name": "plant_flattenedshroom",
         "tags": [
             "White",
-            "Trapper"
+            "Trapper",
+            "Chinese"
         ],
         "icon": "icon_flattenedshroom.webp"
     },
@@ -1588,7 +1745,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Ice"
+            "Ice",
+            "Chinese"
         ],
         "icon": "icon_lotusshooter.webp"
     },
@@ -1598,7 +1756,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_passionflower.webp"
     },
@@ -1608,7 +1767,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Poison"
+            "Poison",
+            "Chinese"
         ],
         "icon": "icon_convallariachemist.gif"
     },
@@ -1618,7 +1778,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_vanilla.webp"
     },
@@ -1629,7 +1790,8 @@
             "Orange",
             "Ranger",
             "Physical",
-            "Poison"
+            "Poison",
+            "Chinese"
         ],
         "icon": "icon_mulberry.webp"
     },
@@ -1639,7 +1801,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_electricpeashooter.webp"
     },
@@ -1649,7 +1812,8 @@
         "tags": [
             "Orange",
             "Trapper",
-            "Ice"
+            "Ice",
+            "Chinese"
         ],
         "icon": "icon_icycurrant.webp"
     },
@@ -1659,7 +1823,8 @@
         "tags": [
             "Purple",
             "Trapper",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_hotdate.webp"
     },
@@ -1670,7 +1835,8 @@
             "Orange",
             "Ranger",
             "Magic",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_tuliptrumpeter.webp"
     },
@@ -1680,7 +1846,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_eggplantninja.webp"
     },
@@ -1690,7 +1857,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_plantain.webp"
     },
@@ -1700,7 +1868,8 @@
         "tags": [
             "Purple",
             "Vanguard",
-            "Ice"
+            "Ice",
+            "Chinese"
         ],
         "icon": "icon_narcissusshooter.webp"
     },
@@ -1710,7 +1879,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_pinecone.webp"
     },
@@ -1720,7 +1890,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_hollyknight.webp"
     },
@@ -1730,7 +1901,8 @@
         "tags": [
             "Orange",
             "Trapper",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_alarmsagittifolia.webp"
     },
@@ -1740,7 +1912,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_shadowpeashooter.webp"
     },
@@ -1750,7 +1923,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_snappea.webp"
     },
@@ -1761,7 +1935,8 @@
             "Purple",
             "Vanguard",
             "Ice",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_monotropa.webp"
     },
@@ -1771,7 +1946,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_slingpea.webp"
     },
@@ -1782,7 +1958,8 @@
             "Orange",
             "Vanguard",
             "Magic",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_thundersnapdragon.gif"
     },
@@ -1792,7 +1969,8 @@
         "tags": [
             "Purple",
             "Support",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_aloes.webp"
     },
@@ -1802,7 +1980,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_bearberry.webp"
     },
@@ -1812,7 +1991,8 @@
         "tags": [
             "Green",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_waxgourd.webp"
     },
@@ -1822,7 +2002,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_electricitea.webp"
     },
@@ -1831,7 +2012,8 @@
         "name": "plant_imppear",
         "tags": [
             "Purple",
-            "Trapper"
+            "Trapper",
+            "International"
         ],
         "icon": "icon_imppear.webp"
     },
@@ -1841,7 +2023,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_pomegranatejeweler.webp"
     },
@@ -1851,7 +2034,8 @@
         "tags": [
             "Green",
             "Trapper",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_olive.webp"
     },
@@ -1861,7 +2045,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_egretflower.webp"
     },
@@ -1871,7 +2056,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_strawburst.webp"
     },
@@ -1881,7 +2067,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Poison"
+            "Poison",
+            "International"
         ],
         "icon": "icon_poisonpeashooter.webp"
     },
@@ -1891,7 +2078,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_elaeocarpus.webp"
     },
@@ -1901,7 +2089,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_dartichoke.webp"
     },
@@ -1911,7 +2100,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Ice"
+            "Ice",
+            "Chinese"
         ],
         "icon": "icon_eleocurling.webp"
     },
@@ -1921,7 +2111,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Poison"
+            "Poison",
+            "International"
         ],
         "icon": "icon_pokra.webp"
     },
@@ -1931,7 +2122,8 @@
         "tags": [
             "Purple",
             "Support",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_hydrocotyledrummer.webp"
     },
@@ -1941,7 +2133,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_ultomato.webp"
     },
@@ -1951,7 +2144,8 @@
         "tags": [
             "Purple",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_tupistrastalker.webp"
     },
@@ -1961,7 +2155,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_shadowvanilla.webp"
     },
@@ -1971,7 +2166,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_bromelblade.webp"
     },
@@ -1981,7 +2177,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_stephania.webp"
     },
@@ -1991,7 +2188,8 @@
         "tags": [
             "White",
             "Trapper",
-            "Ice"
+            "Ice",
+            "Chinese"
         ],
         "icon": "icon_icelotus.webp"
     },
@@ -2001,7 +2199,8 @@
         "tags": [
             "Green",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_dendrobiumguard.webp"
     },
@@ -2011,7 +2210,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_cypripedium.webp"
     },
@@ -2020,7 +2220,8 @@
         "name": "plant_gumnut",
         "tags": [
             "Orange",
-            "Trapper"
+            "Trapper",
+            "International"
         ],
         "icon": "icon_gumnut.webp"
     },
@@ -2029,7 +2230,8 @@
         "name": "plant_olivepit",
         "tags": [
             "Orange",
-            "Trapper"
+            "Trapper",
+            "International"
         ],
         "icon": "icon_olivepit.webp"
     },
@@ -2039,7 +2241,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_boophonegeisha.webp"
     },
@@ -2049,7 +2252,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_stickybombrice.webp"
     },
@@ -2059,7 +2263,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_nukelauncher.webp"
     },
@@ -2069,7 +2274,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_headbutterlettuce.webp"
     },
@@ -2079,7 +2285,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_dazeychain.webp"
     },
@@ -2089,7 +2296,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_boomflower.webp"
     },
@@ -2099,7 +2307,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_beercoconut.webp"
     },
@@ -2109,7 +2318,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_clawgloriosa.webp"
     },
@@ -2119,7 +2329,8 @@
         "tags": [
             "White",
             "Support",
-            "Original"
+            "Original",
+            "Chinese"
         ],
         "icon": "icon_flowerpot.webp"
     },
@@ -2129,7 +2340,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_impatiensshooter.webp"
     },
@@ -2139,7 +2351,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_turkeypult.webp"
     },
@@ -2149,7 +2362,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_hammerflower.webp"
     },
@@ -2159,7 +2373,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_mangosteen.webp"
     },
@@ -2169,7 +2384,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_fishhookgrass.webp"
     },
@@ -2179,7 +2395,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_inferno.webp"
     },
@@ -2189,7 +2406,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_tigerstool.webp"
     },
@@ -2199,7 +2417,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_draftodil.webp"
     },
@@ -2209,7 +2428,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_gardenergrass.webp"
     },
@@ -2219,7 +2439,8 @@
         "tags": [
             "Blue",
             "Trapper",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_heathseeker.webp"
     },
@@ -2229,7 +2450,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_ents.webp"
     },
@@ -2240,7 +2462,8 @@
             "Orange",
             "Ranger",
             "Physical",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_hatmushroom.webp"
     },
@@ -2250,7 +2473,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_hocuscrocus.webp"
     },
@@ -2260,7 +2484,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_springprincess.webp"
     },
@@ -2270,7 +2495,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_riflebamboo.webp"
     },
@@ -2280,7 +2506,8 @@
         "tags": [
             "Purple",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_buttercup.webp"
     },
@@ -2290,7 +2517,8 @@
         "tags": [
             "Purple",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_byttneriameteorhammer.webp"
     },
@@ -2300,7 +2528,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_crownflower.webp"
     },
@@ -2309,7 +2538,8 @@
         "name": "plant_zoybeanpod",
         "tags": [
             "Orange",
-            "Trapper"
+            "Trapper",
+            "International"
         ],
         "icon": "icon_zoybeanpod.webp"
     },
@@ -2319,7 +2549,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_orchidmage.webp"
     },
@@ -2330,7 +2561,8 @@
             "Orange",
             "Vanguard",
             "Magic",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_jackolantern.webp"
     },
@@ -2340,7 +2572,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_beanchemist.webp"
     },
@@ -2350,7 +2583,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_jewelrabbit.gif"
     },
@@ -2360,7 +2594,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_lancerhoya.webp"
     },
@@ -2370,7 +2605,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_burdockbatter.webp"
     },
@@ -2380,7 +2616,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_vamporcini.webp"
     },
@@ -2390,7 +2627,8 @@
         "tags": [
             "Blue",
             "Defence",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_pumpkin.webp"
     },
@@ -2400,7 +2638,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_geraniifencer.webp"
     },
@@ -2410,7 +2649,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_deodarcedar.webp"
     },
@@ -2420,7 +2660,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_meteorflower.webp"
     },
@@ -2430,7 +2671,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_sarracenia.webp"
     },
@@ -2440,7 +2682,8 @@
         "tags": [
             "Orange",
             "Electric",
-            "Ranger"
+            "Ranger",
+            "International"
         ],
         "icon": "icon_powervine.webp"
     },
@@ -2450,7 +2693,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_mandrake.webp"
     },
@@ -2460,7 +2704,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_cthulhuactinia.webp"
     },
@@ -2470,7 +2715,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_devilsflower.webp"
     },
@@ -2479,7 +2725,8 @@
         "name": "plant_hoyacordata",
         "tags": [
             "Orange",
-            "Support"
+            "Support",
+            "Chinese"
         ],
         "icon": "icon_hoyacordata.webp"
     },
@@ -2489,7 +2736,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_peavine.webp"
     },
@@ -2499,7 +2747,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_maybee.webp"
     },
@@ -2509,7 +2758,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_rapeflower.webp"
     },
@@ -2519,7 +2769,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_dracaena.webp"
     },
@@ -2529,7 +2780,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_spartanbamboo.webp"
     },
@@ -2539,7 +2791,8 @@
         "tags": [
             "Orange",
             "SunProducer",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_shinevine.webp"
     },
@@ -2549,7 +2802,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Poison"
+            "Poison",
+            "International"
         ],
         "icon": "icon_nightcap.gif"
     },
@@ -2559,7 +2813,8 @@
         "tags": [
             "Orange",
             "SunProducer",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_happyleek.webp"
     },
@@ -2569,7 +2824,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Fire"
+            "Fire",
+            "International"
         ],
         "icon": "icon_pyrevine.webp"
     },
@@ -2579,7 +2835,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_gluttonydragon.webp"
     },
@@ -2589,7 +2846,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_waterrabbit.webp"
     },
@@ -2599,7 +2857,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_heliconiagunner.webp"
     },
@@ -2609,7 +2868,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Electric"
+            "Electric",
+            "International"
         ],
         "icon": "icon_electricpeel.webp"
     },
@@ -2620,7 +2880,8 @@
             "Orange",
             "Ranger",
             "Poison",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_wizardthorns.webp"
     },
@@ -2630,7 +2891,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_tristerixaphyllus.webp"
     },
@@ -2640,7 +2902,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Fire"
+            "Fire",
+            "Chinese"
         ],
         "icon": "icon_chainsawburmannii.webp"
     },
@@ -2650,7 +2913,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_eagleclaw.webp"
     },
@@ -2660,7 +2924,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Poison"
+            "Poison",
+            "International"
         ],
         "icon": "icon_dragonbruit.webp"
     },
@@ -2669,7 +2934,8 @@
         "name": "plant_gloomvine",
         "tags": [
             "Orange",
-            "Vanguard"
+            "Vanguard",
+            "International"
         ],
         "icon": "icon_gloomvine.webp"
     },
@@ -2679,7 +2945,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_heavendatura.webp"
     },
@@ -2689,7 +2956,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_firecrackerflower.webp"
     },
@@ -2701,7 +2969,8 @@
             "Ranger",
             "Fire",
             "Ice",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_twinshoneysuckle.webp"
     },
@@ -2711,7 +2980,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_rhubarbarian.webp"
     },
@@ -2720,7 +2990,8 @@
         "name": "plant_aquavine",
         "tags": [
             "Orange",
-            "Ranger"
+            "Ranger",
+            "International"
         ],
         "icon": "icon_aquavine.webp"
     },
@@ -2730,7 +3001,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Ice"
+            "Ice",
+            "Chinese"
         ],
         "icon": "icon_winterrambutan.webp"
     },
@@ -2740,7 +3012,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_wiregelsemium.webp"
     },
@@ -2750,7 +3023,8 @@
         "tags": [
             "Orange",
             "Trapper",
-            "Ice"
+            "Ice",
+            "International"
         ],
         "icon": "icon_iceweed.webp"
     },
@@ -2760,7 +3034,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_bubblecoral.webp"
     },
@@ -2770,7 +3045,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_paphiopedilum.webp"
     },
@@ -2780,7 +3056,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_eywa.webp"
     },
@@ -2790,7 +3067,8 @@
         "tags": [
             "Blue",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_buduhboom.webp"
     },
@@ -2800,7 +3078,8 @@
         "tags": [
             "Orange",
             "Vanguard",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_mapleblade.webp"
     },
@@ -2810,7 +3089,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_guardshroom.webp"
     },
@@ -2820,7 +3100,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_rheumnobile.webp"
     },
@@ -2830,7 +3111,9 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International",
+            "Chinese"
         ],
         "icon": "icon_megagatling.webp"
     },
@@ -2840,7 +3123,8 @@
         "tags": [
             "White",
             "SunProducer",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_oxygenalgae.webp"
     },
@@ -2851,7 +3135,8 @@
             "Blue",
             "Vanguard",
             "Physical",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_seashroom.webp"
     },
@@ -2861,7 +3146,8 @@
         "tags": [
             "Purple",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_kelpguard.webp"
     },
@@ -2871,7 +3157,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_aquaweed.webp"
     },
@@ -2881,7 +3168,8 @@
         "tags": [
             "Green",
             "Trapper",
-            "Poison"
+            "Poison",
+            "Chinese"
         ],
         "icon": "icon_seaderris.webp"
     },
@@ -2891,7 +3179,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "International"
         ],
         "icon": "icon_seashooter.webp"
     },
@@ -2901,7 +3190,8 @@
         "tags": [
             "White",
             "Support",
-            "Original"
+            "Original",
+            "International"
         ],
         "icon": "icon_marigold.webp"
     },
@@ -2912,7 +3202,8 @@
             "Orange",
             "Ranger",
             "Physical",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_animnuts.webp"
     },
@@ -2922,7 +3213,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_actinostemma.webp"
     },
@@ -2933,7 +3225,9 @@
             "Purple",
             "Ranger",
             "Physical",
-            "Original"
+            "Original",
+            "International",
+            "Chinese"
         ],
         "icon": "icon_scaredyshroom.webp"
     },
@@ -2943,7 +3237,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_aeonium.webp"
     },
@@ -2953,7 +3248,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_peonychi.webp"
     },
@@ -2963,7 +3259,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Poison"
+            "Poison",
+            "Chinese"
         ],
         "icon": "icon_poisonvine.webp"
     },
@@ -2973,7 +3270,9 @@
         "tags": [
             "Orange",
             "Original",
-            "Fire"
+            "Fire",
+            "International",
+            "Chinese"
         ],
         "icon": "icon_doomshroom.gif"
     },
@@ -2984,7 +3283,8 @@
             "Purple",
             "Trapper",
             "Support",
-            "Original"
+            "Original",
+            "Chinese"
         ],
         "icon": "icon_umbrellaleaf.webp"
     },
@@ -2994,7 +3294,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_duckpear.webp"
     },
@@ -3005,7 +3306,8 @@
             "Orange",
             "Ranger",
             "Fire",
-            "Ice"
+            "Ice",
+            "Chinese"
         ],
         "icon": "icon_longmalily.gif"
     },
@@ -3015,7 +3317,8 @@
         "tags": [
             "Orange",
             "Defence",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_goldencassia.webp"
     },
@@ -3025,7 +3328,8 @@
         "tags": [
             "Blue",
             "Ranger",
-            "Electric"
+            "Electric",
+            "Chinese"
         ],
         "icon": "icon_moton.webp"
     },
@@ -3035,7 +3339,8 @@
         "tags": [
             "Orange",
             "Ranger",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_levitater.webp"
     },
@@ -3045,7 +3350,8 @@
         "tags": [
             "Orange",
             "Support",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_apsarlotus.webp"
     },
@@ -3065,7 +3371,8 @@
             "Orange",
             "Trapper",
             "Magic",
-            "Original"
+            "Original",
+            "Chinese"
         ],
         "icon": "icon_goldmagnet.webp"
     },
@@ -3076,7 +3383,9 @@
             "Orange",
             "Ice",
             "Vanguard",
-            "Original"
+            "Original",
+            "International",
+            "Chinese"
         ],
         "icon": "icon_glaciershroom.webp"
     },
@@ -3086,7 +3395,8 @@
         "tags": [
             "Purple",
             "Trapper",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_gloombara.webp"
     },
@@ -3096,7 +3406,8 @@
         "tags": [
             "Purple",
             "Ranger",
-            "Magic"
+            "Magic",
+            "Chinese"
         ],
         "icon": "icon_exorcislily.webp"
     },
@@ -3106,7 +3417,8 @@
         "tags": [
             "Blue",
             "Defence",
-            "Physical"
+            "Physical",
+            "Chinese"
         ],
         "icon": "icon_doombell.webp"
     },
@@ -3116,7 +3428,8 @@
         "tags": [
             "Orange",
             "Productor",
-            "Magic"
+            "Magic",
+            "International"
         ],
         "icon": "icon_solarsage.webp"
     },
@@ -3137,7 +3450,8 @@
             "Parallel",
             "_internal_mausoleum",
             "White",
-            "Support"
+            "Support",
+            "Chinese"
         ],
         "icon": "icon_uncharted_haystack.webp"
     },

@@ -15,7 +15,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get about => 'О программе';
 
   @override
-  String get back => 'Back';
+  String get back => 'Назад';
 
   @override
   String get refresh => 'Обновить';
@@ -34,6 +34,12 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get uiSize => 'Размер интерфейса';
+
+  @override
+  String get plantTagInternational => 'Интернациональные';
+
+  @override
+  String get plantTagChinese => 'Китайские';
 
   @override
   String get aboutSoftware => 'О программе';
@@ -99,7 +105,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get confirm => 'Подтвердить';
 
   @override
-  String get convert => 'Convert';
+  String get convert => 'Преобразовать';
 
   @override
   String get convertHelpTooltip =>
@@ -139,14 +145,14 @@ class AppLocalizationsRu extends AppLocalizations {
   String get renameFail => 'Ошибка переименования, файл уже существует';
 
   @override
-  String get uploadLevel => 'Upload to Creative Courtyard';
+  String get uploadLevel => 'Опубликовать на Креаторскую Площадку';
 
   @override
   String get uploadLevelConfirm =>
-      'You are about to leave the editor and open the official Advanced Creation Courtyard Creator Hub website. After signing in with your email account, you can upload JSON level files from the editor to the in-game Creative Courtyard for other players to enjoy. Do you want to continue?';
+      'Сейчас вы покинете редактор и перейдёте на официальный сайт продвинутой Креаторской Площадки. После регистрации/входа через эл. почту, вы сможете загружать JSON файлы уровней из редактора прямо в игровую Креаторскую Площадку, чтобы другие люди могли сыграть в ваш уровень. Хотите продолжить?';
 
   @override
-  String get proceed => 'Continue';
+  String get proceed => 'Продолжить';
 
   @override
   String get copyReferenceOrDeep =>

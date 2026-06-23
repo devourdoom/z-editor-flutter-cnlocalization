@@ -46,6 +46,8 @@ enum PlantTag {
   physical,
   original,
   parallel,
+  international,
+  chinese,
   special
 }
 
@@ -97,6 +99,10 @@ extension PlantTagExtension on PlantTag {
         return s.plantTagParallel;
       case PlantTag.special:
         return s.plantTagSpecial;
+      case PlantTag.international:
+        return s.plantTagInternational;
+      case PlantTag.chinese:
+        return s.plantTagChinese;
     }
   }
 
@@ -170,6 +176,10 @@ extension PlantTagExtension on PlantTag {
       case PlantTag.original:
       case PlantTag.parallel:
       case PlantTag.special:
+      case PlantTag.international:
+      case PlantTag.chinese:
+        return PlantCategory.other;
+
         return PlantCategory.other;
     }
   }

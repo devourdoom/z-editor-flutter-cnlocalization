@@ -36,6 +36,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get uiSize => 'UI size';
 
   @override
+  String get plantTagInternational => 'International';
+
+  @override
+  String get plantTagChinese => 'Chinese';
+
+  @override
   String get aboutSoftware => 'About';
 
   @override

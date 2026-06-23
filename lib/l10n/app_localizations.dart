@@ -154,6 +154,18 @@ abstract class AppLocalizations {
   /// **'UI size'**
   String get uiSize;
 
+  /// No description provided for @plantTagInternational.
+  ///
+  /// In en, this message translates to:
+  /// **'International'**
+  String get plantTagInternational;
+
+  /// No description provided for @plantTagChinese.
+  ///
+  /// In en, this message translates to:
+  /// **'Chinese'**
+  String get plantTagChinese;
+
   /// No description provided for @aboutSoftware.
   ///
   /// In en, this message translates to:
