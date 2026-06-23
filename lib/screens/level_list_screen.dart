@@ -1868,7 +1868,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
               Slider(
                 value: tempScale,
                 min: 0.75,
-                max: 1.25,
+                max: 1.5,
                 onChanged: (v) => setDialogState(() => tempScale = v),
               ),
               Row(
@@ -1882,6 +1882,9 @@ class _LevelListScreenState extends State<LevelListScreen> {
                   ),
                   Flexible(
                     child: Text(l10n.large, overflow: TextOverflow.ellipsis),
+                  ),
+                  Flexible(
+                    child: Text(l10n.ultra, overflow: TextOverflow.ellipsis),
                   ),
                 ],
               ),

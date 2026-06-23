@@ -30,7 +30,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clearCache => 'Clear cache';
 
   @override
+  String get ultra => 'Ultra';
+
+  @override
   String get uiSize => 'UI size';
+
+  @override
+  String get plantTagInternational => 'International';
+
+  @override
+  String get plantTagChinese => 'Chinese';
 
   @override
   String get aboutSoftware => 'About';
