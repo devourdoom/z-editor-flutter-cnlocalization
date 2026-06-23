@@ -133,16 +133,28 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
                       )
                     : LayoutBuilder(
                         builder: (context, constraints) {
-                          final isDesktop = constraints.maxWidth > 600;
-                          final crossAxisCount = isDesktop ? 6 : 3;
+                          final crossAxisCount =
+                              SelectionGridLayout.crossAxisCount(
+                            constraints.maxWidth,
+                          );
+                          final cellWidth = SelectionGridLayout.cellWidth(
+                            constraints.maxWidth,
+                            crossAxisCount,
+                          );
+                          final iconSize =
+                              SelectionGridLayout.iconSize(cellWidth);
+
                           return GridView.builder(
-                            padding: const EdgeInsets.all(16),
+                            padding: const EdgeInsets.all(
+                              SelectionGridLayout.padding,
+                            ),
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: crossAxisCount,
-                                  childAspectRatio: 0.85,
-                                  crossAxisSpacing: 12,
-                                  mainAxisSpacing: 12,
+                                  childAspectRatio: SelectionGridLayout
+                                      .childAspectRatio(constraints.maxWidth),
+                                  crossAxisSpacing: SelectionGridLayout.spacing,
+                                  mainAxisSpacing: SelectionGridLayout.spacing,
                                 ),
                             itemCount: displayList.length,
                             itemBuilder: (context, index) {
@@ -158,6 +170,7 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
                               return _GridItemCard(
                                 item: item,
                                 name: name,
+                                iconSize: iconSize,
                                 theme: theme,
                                 onTap: () => _handleItemTap(item.typeName),
                               );
@@ -206,12 +219,14 @@ class _GridItemCard extends StatelessWidget {
   const _GridItemCard({
     required this.item,
     required this.name,
+    required this.iconSize,
     required this.theme,
     required this.onTap,
   });
 
   final GridItemInfo item;
   final String name;
+  final double iconSize;
   final ThemeData theme;
   final VoidCallback onTap;
 
@@ -222,14 +237,17 @@ class _GridItemCard extends StatelessWidget {
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
         child: Padding(
-          padding: const EdgeInsets.all(12),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 12),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: GridItemIcon(
-                  typeName: item.typeName,
-                  fit: BoxFit.contain,
+                child: Center(
+                  child: GridItemIcon(
+                    typeName: item.typeName,
+                    size: iconSize,
+                    fit: BoxFit.contain,
+                  ),
                 ),
               ),
               const SizedBox(height: 8),

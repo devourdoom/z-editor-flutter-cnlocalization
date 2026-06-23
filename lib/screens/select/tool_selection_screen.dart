@@ -70,17 +70,20 @@ class _ToolSelectionScreenState extends State<ToolSelectionScreen> {
         color: theme.colorScheme.surface,
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final isDesktop = constraints.maxWidth > 600;
-            final crossAxisCount = isDesktop ? 4 : 2;
-            final childAspectRatio = isDesktop ? 1.25 : 0.95;
-            final showToolId = isDesktop;
+            final isDesktop = constraints.maxWidth >= 600;
+            final crossAxisCount =
+                SelectionGridLayout.toolCrossAxisCount(constraints.maxWidth);
+            final iconBox =
+                SelectionGridLayout.toolIconBox(constraints.maxWidth);
             return GridView.builder(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(SelectionGridLayout.padding),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: crossAxisCount,
-                childAspectRatio: childAspectRatio,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
+                childAspectRatio: SelectionGridLayout.toolChildAspectRatio(
+                  constraints.maxWidth,
+                ),
+                crossAxisSpacing: SelectionGridLayout.spacing,
+                mainAxisSpacing: SelectionGridLayout.spacing,
               ),
               itemCount: tools.length,
               itemBuilder: (context, index) {
@@ -92,8 +95,10 @@ class _ToolSelectionScreenState extends State<ToolSelectionScreen> {
                   id: tool.id,
                   name: ToolRepository.localizedName(context, tool.id),
                   iconPath: iconPath,
+                  iconWidth: iconBox.width,
+                  iconHeight: iconBox.height,
                   theme: theme,
-                  showToolId: showToolId,
+                  showToolId: isDesktop,
                   onTap: () => widget.onToolSelected(tool.id),
                 );
               },
@@ -110,6 +115,8 @@ class _ToolCard extends StatelessWidget {
     required this.id,
     required this.name,
     required this.iconPath,
+    required this.iconWidth,
+    required this.iconHeight,
     required this.theme,
     required this.showToolId,
     required this.onTap,
@@ -118,6 +125,8 @@ class _ToolCard extends StatelessWidget {
   final String id;
   final String name;
   final String? iconPath;
+  final double iconWidth;
+  final double iconHeight;
   final ThemeData theme;
   final bool showToolId;
   final VoidCallback onTap;
@@ -134,7 +143,12 @@ class _ToolCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _ToolIcon(iconPath: iconPath, theme: theme),
+              _ToolIcon(
+                iconPath: iconPath,
+                width: iconWidth,
+                height: iconHeight,
+                theme: theme,
+              ),
               const SizedBox(height: 10),
               Text(
                 name,
@@ -166,19 +180,30 @@ class _ToolCard extends StatelessWidget {
 }
 
 class _ToolIcon extends StatelessWidget {
-  const _ToolIcon({required this.iconPath, required this.theme});
+  const _ToolIcon({
+    required this.iconPath,
+    required this.width,
+    required this.height,
+    required this.theme,
+  });
 
   final String? iconPath;
+  final double width;
+  final double height;
   final ThemeData theme;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 88,
-      height: 72,
+      width: width,
+      height: height,
       child: iconPath != null
           ? AssetImageWidget(assetPath: iconPath!, fit: BoxFit.contain)
-          : Icon(Icons.build, size: 42, color: theme.colorScheme.outline),
+          : Icon(
+              Icons.build,
+              size: height * 0.5,
+              color: theme.colorScheme.outline,
+            ),
     );
   }
 }
