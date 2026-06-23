@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:c_editor/data/custom_stage_level_utils.dart';
 import 'package:c_editor/data/models/stage_catalog.dart';
 import 'package:c_editor/data/repository/stage_catalog_repository.dart';
-import 'package:c_editor/data/repository/stage_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/utils/selection_search.dart';
@@ -82,15 +81,19 @@ class _StageResourceGroupImportScreenState
     return items;
   }
 
-  List<StageImplementation> _filteredStages() {
-    var items = StageCatalogRepository.catalogStagesWithIcon();
+  List<StageBaseOption> _filteredStages() {
+    var items = StageCatalogRepository.stageBaseOptions();
     if (normalizeSelectionSearchQuery(_searchQuery).isNotEmpty) {
-      items = items.where((impl) {
-        final nameKey = StageRepository.getName(impl.alias);
+      items = items.where((option) {
+        final nameKey = _stageNameKey(option.alias);
+        final name = ResourceNames.lookup(context, nameKey);
         return matchesSelectionSearch(_searchQuery, [
-          impl.alias,
+          name,
           nameKey,
-          ResourceNames.lookup(context, nameKey),
+          option.alias,
+          option.objclass,
+          option.backgroundImagePrefix ?? '',
+          option.backgroundResourceGroup ?? '',
         ]);
       }).toList();
     }
@@ -102,14 +105,16 @@ class _StageResourceGroupImportScreenState
         StageCatalogRepository.resourceGroupKey(group),
       );
 
-  Future<void> _confirmImportFromStage(StageImplementation impl) async {
+  String _stageNameKey(String alias) => 'stage_$alias';
+
+  Future<void> _confirmImportFromStage(StageBaseOption option) async {
     final l10n = AppLocalizations.of(context);
     final stageName = ResourceNames.lookup(
       context,
-      StageRepository.getName(impl.alias),
+      _stageNameKey(option.alias),
     );
-    final toAdd = _groupsToAddForStage(impl.alias);
-    final skipped = _skippedGroupCountForStage(impl.alias);
+    final toAdd = _groupsToAddForStage(option.alias);
+    final skipped = _skippedGroupCountForStage(option.alias);
 
     if (toAdd.isEmpty) {
       await showDialog<void>(
@@ -214,7 +219,7 @@ class _StageResourceGroupImportScreenState
     if (confirmed != true || !mounted) return;
     widget.onImport(
       groups: toAdd,
-      sourceStageAlias: impl.alias,
+      sourceStageAlias: option.alias,
     );
   }
 
@@ -315,38 +320,26 @@ class _StageResourceGroupImportScreenState
       );
     }
 
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        final isDesktop = constraints.maxWidth >= 600;
-        final maxCrossAxisExtent = isDesktop ? 180.0 : 150.0;
-        final childAspectRatio = isDesktop ? 0.85 : 0.82;
-
-        return GridView.builder(
-          padding: const EdgeInsets.all(16),
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: maxCrossAxisExtent,
-            mainAxisSpacing: 12,
-            crossAxisSpacing: 12,
-            childAspectRatio: childAspectRatio,
-          ),
-          itemCount: stages.length,
-          itemBuilder: (_, i) {
-            final impl = stages[i];
-            final stageName = ResourceNames.lookup(
-              context,
-              StageRepository.getName(impl.alias),
-            );
-            final iconSize = RenaiStatueCardLayout.selectionIconSize(
-              maxCrossAxisExtent,
-            );
-            return _CatalogStageGridItem(
-              stageName: stageName,
-              alias: impl.alias,
-              iconFileName: impl.image ?? 'unknown.webp',
-              iconSize: iconSize,
-              onTap: () => _confirmImportFromStage(impl),
-            );
-          },
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+        maxCrossAxisExtent: 180,
+        mainAxisSpacing: 12,
+        crossAxisSpacing: 12,
+        childAspectRatio: 0.72,
+      ),
+      itemCount: stages.length,
+      itemBuilder: (_, i) {
+        final option = stages[i];
+        final stageName = ResourceNames.lookup(
+          context,
+          _stageNameKey(option.alias),
+        );
+        return _CatalogStageGridItem(
+          stageName: stageName,
+          alias: option.alias,
+          iconFileName: option.iconName,
+          onTap: () => _confirmImportFromStage(option),
         );
       },
     );
@@ -358,14 +351,12 @@ class _CatalogStageGridItem extends StatelessWidget {
     required this.stageName,
     required this.alias,
     required this.iconFileName,
-    required this.iconSize,
     required this.onTap,
   });
 
   final String stageName;
   final String alias;
   final String iconFileName;
-  final double iconSize;
   final VoidCallback onTap;
 
   @override
@@ -385,13 +376,13 @@ class _CatalogStageGridItem extends StatelessWidget {
             children: [
               ClipOval(
                 child: SizedBox(
-                  width: iconSize,
-                  height: iconSize,
+                  width: 96,
+                  height: 96,
                   child: AssetImageWidget(
                     assetPath: iconPath,
                     altCandidates: imageAltCandidates(iconPath),
-                    width: iconSize,
-                    height: iconSize,
+                    width: 96,
+                    height: 96,
                     fit: BoxFit.cover,
                   ),
                 ),

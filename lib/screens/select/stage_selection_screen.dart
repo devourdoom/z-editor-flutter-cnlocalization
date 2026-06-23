@@ -123,6 +123,24 @@ class _StageSelectionScreenState extends State<StageSelectionScreen> {
     );
   }
 
+  CustomStagePreset? _selectedPresetForAlias(
+    List<CustomStagePreset> presets,
+    String? alias,
+  ) {
+    if (!_isCustomCurrent || alias == null || alias.isEmpty) return null;
+    for (final preset in presets) {
+      if (_isAliasFromPreset(alias, preset.alias)) return preset;
+    }
+    return null;
+  }
+
+  bool _isAliasFromPreset(String alias, String presetAlias) {
+    if (alias == presetAlias) return true;
+    if (!alias.startsWith(presetAlias)) return false;
+    final suffix = alias.substring(presetAlias.length);
+    return suffix.isNotEmpty && int.tryParse(suffix) != null;
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -268,6 +286,21 @@ class _StageSelectionScreenState extends State<StageSelectionScreen> {
     final customStages = _customStages;
     final presets = CustomStagePresetRepository.presets;
     final currentAlias = _currentAlias;
+    final currentCustomStageExists =
+        currentAlias != null &&
+        customStages.any(
+          (stageObj) => stageObj.aliases?.contains(currentAlias) == true,
+        );
+    final selectedPreset = currentCustomStageExists
+        ? _selectedPresetForAlias(presets, currentAlias)
+        : null;
+    final presetsLocked = selectedPreset != null;
+    final displayPresets = selectedPreset == null
+        ? presets
+        : [
+            selectedPreset,
+            ...presets.where((preset) => preset.alias != selectedPreset.alias),
+          ];
 
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -334,34 +367,34 @@ class _StageSelectionScreenState extends State<StageSelectionScreen> {
                   onTap: () => widget.onOpenCustomStageEditor?.call(alias),
                   borderRadius: BorderRadius.circular(12),
                   child: Padding(
-                    padding: const EdgeInsets.all(12),
+                    padding: const EdgeInsets.all(14),
                     child: Row(
                       children: [
                         Stack(
                           children: [
                             ClipOval(
                               child: SizedBox(
-                                width: 72,
-                                height: 72,
+                                width: 96,
+                                height: 96,
                                 child: AssetImageWidget(
                                   assetPath: iconPath,
                                   altCandidates: imageAltCandidates(iconPath),
-                                  width: 72,
-                                  height: 72,
+                                  width: 96,
+                                  height: 96,
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
                             Positioned(
-                              top: 2,
-                              left: 2,
+                              top: 4,
+                              left: 4,
                               child: _CurrentCustomStageBadge(
                                 fromPreset: isPresetCopy,
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -412,22 +445,27 @@ class _StageSelectionScreenState extends State<StageSelectionScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          ...presets.map(
-            (preset) => Padding(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: _PresetCustomStageCard(
-                preset: preset,
-                displayName: _localizedPresetText(
-                  context,
-                  l10n,
-                  preset.nameKey,
+          ...displayPresets.map(
+            (preset) {
+              final isSelectedPreset = selectedPreset?.alias == preset.alias;
+              final isDisabled =
+                  presetsLocked || widget.onCreateCustomStageFromPreset == null;
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: _PresetCustomStageCard(
+                  preset: preset,
+                  displayName: _localizedPresetText(
+                    context,
+                    l10n,
+                    preset.nameKey,
+                  ),
+                  source: _localizedPresetText(context, l10n, preset.sourceKey),
+                  selected: isSelectedPreset,
+                  disabled: isDisabled,
+                  onTap: () => _copyPreset(preset),
                 ),
-                source: _localizedPresetText(context, l10n, preset.sourceKey),
-                onTap: widget.onCreateCustomStageFromPreset == null
-                    ? null
-                    : () => _copyPreset(preset),
-              ),
-            ),
+              );
+            },
           ),
         ],
       ],
@@ -506,8 +544,8 @@ class _CurrentCustomStageBadge extends StatelessWidget {
   Color _badgeColor(BuildContext context) {
     if (fromPreset) {
       return Theme.of(context).brightness == Brightness.dark
-          ? const Color(0xFFE65100)
-          : const Color(0xFFFF9800);
+          ? const Color(0xFF1B5E20)
+          : const Color(0xFF2E7D32);
     }
     return customStageBadgeColor(context);
   }
@@ -518,82 +556,95 @@ class _PresetCustomStageCard extends StatelessWidget {
     required this.preset,
     required this.displayName,
     required this.source,
+    required this.selected,
+    required this.disabled,
     required this.onTap,
   });
 
   final CustomStagePreset preset;
   final String displayName;
   final String source;
-  final VoidCallback? onTap;
+  final bool selected;
+  final bool disabled;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final iconPath = 'assets/images/round_icons/${preset.iconName}';
+    final effectiveOnTap = disabled || selected ? null : onTap;
+    final visualDisabled = disabled && !selected;
 
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(8),
-        child: Padding(
-          padding: const EdgeInsets.all(12),
-          child: Row(
-            children: [
-              ClipOval(
-                child: SizedBox(
-                  width: 96,
-                  height: 96,
-                  child: AssetImageWidget(
-                    assetPath: iconPath,
-                    altCandidates: imageAltCandidates(iconPath),
+    return Opacity(
+      opacity: visualDisabled ? 0.48 : 1,
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        child: InkWell(
+          onTap: effectiveOnTap,
+          borderRadius: BorderRadius.circular(8),
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                ClipOval(
+                  child: SizedBox(
                     width: 96,
                     height: 96,
-                    fit: BoxFit.cover,
+                    child: AssetImageWidget(
+                      assetPath: iconPath,
+                      altCandidates: imageAltCandidates(iconPath),
+                      width: 96,
+                      height: 96,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      displayName,
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.bold,
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        displayName,
+                        style: theme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      source,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                      const SizedBox(height: 2),
+                      Text(
+                        source,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                        maxLines: 4,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      preset.alias,
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
+                      const SizedBox(height: 2),
+                      Text(
+                        preset.alias,
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-              IconButton(
-                tooltip: l10n?.createCustomStage ?? 'Create custom lawn',
-                icon: const Icon(Icons.add_circle_outline),
-                onPressed: onTap,
-              ),
-            ],
+                IconButton(
+                  tooltip: selected
+                      ? displayName
+                      : l10n?.createCustomStage ?? 'Create custom lawn',
+                  icon: Icon(
+                    selected ? Icons.check : Icons.add_circle_outline,
+                  ),
+                  onPressed: effectiveOnTap,
+                ),
+              ],
+            ),
           ),
         ),
       ),

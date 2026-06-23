@@ -87,7 +87,7 @@ class _MusicSuffixSelectionScreenState extends State<MusicSuffixSelectionScreen>
                 maxCrossAxisExtent: 180,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 0.85,
+                childAspectRatio: 0.72,
               ),
               itemCount: items.length,
               itemBuilder: (_, i) {

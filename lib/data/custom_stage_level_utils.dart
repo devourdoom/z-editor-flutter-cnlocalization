@@ -238,23 +238,6 @@ abstract final class CustomStageLevelUtils {
     return const DeepCollectionEquality().equals(current, defaults);
   }
 
-  static bool supportsBeachMinigame(
-    String objclass,
-    Map<String, dynamic> objdata,
-  ) =>
-      objclass == 'BeachStageProperties' &&
-      objdata['BackgroundImagePrefix'] == 'IMAGE_BACKGROUNDS_BEACH';
-
-  static bool isBeachMinigameEnabled(Map<String, dynamic> objdata) =>
-      objdata['BackgroundImageMiddle'] == 'TEXTURE_01';
-
-  static void applyBeachMinigame(
-    Map<String, dynamic> objdata, {
-    required bool enabled,
-  }) {
-    objdata['BackgroundImageMiddle'] = enabled ? 'TEXTURE_01' : 'TEXTURE';
-  }
-
   static bool supportsSubmarine(String objclass) =>
       objclass == 'DeepseaStageProperties' ||
       objclass == 'DeepseaStageLandProperties';
@@ -372,10 +355,6 @@ abstract final class CustomStageLevelUtils {
       objdata: objdata,
     );
     if (option != null) return option.iconName;
-    if (supportsBeachMinigame(objclass, objdata) &&
-        isBeachMinigameEnabled(objdata)) {
-      return 'Stage_BeachSnake.webp';
-    }
     return StageCatalogRepository.resolveBackgroundDisplay(
       backgroundImagePrefix: objdata['BackgroundImagePrefix'] as String?,
       backgroundResourceGroup: objdata['BackgroundResourceGroup'] as String?,

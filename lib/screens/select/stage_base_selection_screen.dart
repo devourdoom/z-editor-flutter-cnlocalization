@@ -69,7 +69,7 @@ class _StageBaseSelectionScreenState extends State<StageBaseSelectionScreen> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: SelectionSearchField(
-                  hintText: 'Search by lawn name or codename',
+                  hintText: l10n?.searchStage ?? 'Search stage',
                   query: _searchQuery,
                   onChanged: (v) => setState(() => _searchQuery = v),
                   onClear: () => setState(() => _searchQuery = ''),
@@ -113,7 +113,7 @@ class _StageBaseSelectionScreenState extends State<StageBaseSelectionScreen> {
                 maxCrossAxisExtent: 180,
                 mainAxisSpacing: 12,
                 crossAxisSpacing: 12,
-                childAspectRatio: 0.85,
+                childAspectRatio: 0.72,
               ),
               itemCount: items.length,
               itemBuilder: (_, i) {
@@ -202,7 +202,7 @@ class _StageBaseGridItem extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
-                maxLines: 1,
+                maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
               Text(

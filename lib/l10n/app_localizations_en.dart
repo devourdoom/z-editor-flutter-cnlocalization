@@ -6819,16 +6819,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customStageSectionGeneral => 'General';
 
   @override
-  String get customStageSectionZombies => 'Zombie types';
+  String get customStageSectionZombies => 'Zombie Types';
 
   @override
-  String get customStageSectionResourceGroups => 'Resource groups';
+  String get customStageSectionResourceGroups => 'Resource Groups';
 
   @override
-  String get customStageSectionAppearance => 'Appearance';
+  String get customStageSectionMusicAndOther => 'Music & Other';
 
   @override
-  String get customStageSectionAdvanced => 'Advanced';
+  String get customStageSectionAdvanced => 'Advanced Settings';
 
   @override
   String get customStageAlias => 'Stage alias';
@@ -6841,7 +6841,18 @@ class AppLocalizationsEn extends AppLocalizations {
       'Import at least one DelayLoad_Background group listed in the stage helper, or the lawn may appear completely black.';
 
   @override
-  String get customStageEnableAmbient => 'Enable ambient';
+  String get customStageEnableAmbient => 'Enable ambient audio';
+
+  @override
+  String get stageField_MusicSuffix => 'Music module (MusicSuffix)';
+
+  @override
+  String get stageField_AmbientAudioSuffix =>
+      'Ambient sound (AmbientAudioSuffix)';
+
+  @override
+  String get customStageDisabledStreetCells =>
+      'Zombie positions on the seed selection screen (DisabledStreetCells)';
 
   @override
   String get customStageDisabledCellsEmpty => 'Empty';
@@ -6850,25 +6861,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customStageDisabledCellsDefault => 'Default';
 
   @override
-  String get customStageBeachMinigame => 'Use minigame version';
-
-  @override
   String get customStageEnableSubmarine => 'Enable submarine';
 
   @override
-  String get customStageSubmarineHitpoints => 'Submarine hitpoints';
+  String get customStageSubmarineHitpoints => 'Submarine health';
 
   @override
   String get customStageNameSuffix => ' (Custom)';
 
   @override
-  String get customStageLawnAppearance => 'Lawn appearance';
+  String get customStageLawnAppearance => 'Lawn type';
 
   @override
   String get selectCustomStageBase => 'Select base lawn';
-
-  @override
-  String get searchStageBase => 'Search by lawn name or codename';
 
   @override
   String get noStageBaseFound => 'No lawn found';

@@ -6767,7 +6767,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get customStageSectionResourceGroups => 'Группы ресурсов';
 
   @override
-  String get customStageSectionAppearance => 'Внешний вид';
+  String get customStageSectionMusicAndOther => 'Music & Other';
 
   @override
   String get customStageSectionAdvanced => 'Дополнительно';
@@ -6786,13 +6786,21 @@ class AppLocalizationsRu extends AppLocalizations {
   String get customStageEnableAmbient => 'Включить эмбиент';
 
   @override
+  String get stageField_MusicSuffix => 'Music module (MusicSuffix)';
+
+  @override
+  String get stageField_AmbientAudioSuffix =>
+      'Ambient sound (AmbientAudioSuffix)';
+
+  @override
+  String get customStageDisabledStreetCells =>
+      'Zombie positions on the seed selection screen (DisabledStreetCells)';
+
+  @override
   String get customStageDisabledCellsEmpty => 'Пусто';
 
   @override
   String get customStageDisabledCellsDefault => 'По умолчанию';
-
-  @override
-  String get customStageBeachMinigame => 'Использовать мини-игровую версию';
 
   @override
   String get customStageEnableSubmarine => 'Включить подлодку';
@@ -6808,9 +6816,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get selectCustomStageBase => 'Выберите базовую локацию';
-
-  @override
-  String get searchStageBase => 'Поиск по названию или коду газона';
 
   @override
   String get noStageBaseFound => 'Газон не найден';

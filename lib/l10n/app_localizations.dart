@@ -12199,25 +12199,25 @@ abstract class AppLocalizations {
   /// No description provided for @customStageSectionZombies.
   ///
   /// In en, this message translates to:
-  /// **'Zombie types'**
+  /// **'Zombie Types'**
   String get customStageSectionZombies;
 
   /// No description provided for @customStageSectionResourceGroups.
   ///
   /// In en, this message translates to:
-  /// **'Resource groups'**
+  /// **'Resource Groups'**
   String get customStageSectionResourceGroups;
 
-  /// No description provided for @customStageSectionAppearance.
+  /// No description provided for @customStageSectionMusicAndOther.
   ///
   /// In en, this message translates to:
-  /// **'Appearance'**
-  String get customStageSectionAppearance;
+  /// **'Music & Other'**
+  String get customStageSectionMusicAndOther;
 
   /// No description provided for @customStageSectionAdvanced.
   ///
   /// In en, this message translates to:
-  /// **'Advanced'**
+  /// **'Advanced Settings'**
   String get customStageSectionAdvanced;
 
   /// No description provided for @customStageAlias.
@@ -12241,8 +12241,26 @@ abstract class AppLocalizations {
   /// No description provided for @customStageEnableAmbient.
   ///
   /// In en, this message translates to:
-  /// **'Enable ambient'**
+  /// **'Enable ambient audio'**
   String get customStageEnableAmbient;
+
+  /// No description provided for @stageField_MusicSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'Music module (MusicSuffix)'**
+  String get stageField_MusicSuffix;
+
+  /// No description provided for @stageField_AmbientAudioSuffix.
+  ///
+  /// In en, this message translates to:
+  /// **'Ambient sound (AmbientAudioSuffix)'**
+  String get stageField_AmbientAudioSuffix;
+
+  /// No description provided for @customStageDisabledStreetCells.
+  ///
+  /// In en, this message translates to:
+  /// **'Zombie positions on the seed selection screen (DisabledStreetCells)'**
+  String get customStageDisabledStreetCells;
 
   /// No description provided for @customStageDisabledCellsEmpty.
   ///
@@ -12256,12 +12274,6 @@ abstract class AppLocalizations {
   /// **'Default'**
   String get customStageDisabledCellsDefault;
 
-  /// No description provided for @customStageBeachMinigame.
-  ///
-  /// In en, this message translates to:
-  /// **'Use minigame version'**
-  String get customStageBeachMinigame;
-
   /// No description provided for @customStageEnableSubmarine.
   ///
   /// In en, this message translates to:
@@ -12271,7 +12283,7 @@ abstract class AppLocalizations {
   /// No description provided for @customStageSubmarineHitpoints.
   ///
   /// In en, this message translates to:
-  /// **'Submarine hitpoints'**
+  /// **'Submarine health'**
   String get customStageSubmarineHitpoints;
 
   /// No description provided for @customStageNameSuffix.
@@ -12283,7 +12295,7 @@ abstract class AppLocalizations {
   /// No description provided for @customStageLawnAppearance.
   ///
   /// In en, this message translates to:
-  /// **'Lawn appearance'**
+  /// **'Lawn type'**
   String get customStageLawnAppearance;
 
   /// No description provided for @selectCustomStageBase.
@@ -12291,12 +12303,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Select base lawn'**
   String get selectCustomStageBase;
-
-  /// No description provided for @searchStageBase.
-  ///
-  /// In en, this message translates to:
-  /// **'Search by lawn name or codename'**
-  String get searchStageBase;
 
   /// No description provided for @noStageBaseFound.
   ///

@@ -132,6 +132,15 @@ class _CustomStagePropertiesScreenState
     return localized == key ? fieldName : localized;
   }
 
+  String _disabledStreetCellsLabel(BuildContext context) {
+    const key = 'customStageDisabledStreetCells';
+    final localized = ResourceNames.lookup(context, key);
+    if (localized != key) return localized;
+    return Localizations.localeOf(context).languageCode == 'zh'
+        ? '禁用格子'
+        : 'Disabled street cells';
+  }
+
   void _sync({bool renameAlias = false}) {
     if (_stageObj == null) return;
     CustomStageLevelUtils.syncHiddenFieldsFromTemplate(
@@ -261,6 +270,33 @@ class _CustomStagePropertiesScreenState
     );
   }
 
+  Widget _warningCard(String message) {
+    final theme = Theme.of(context);
+    return Card(
+      color: theme.colorScheme.errorContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          children: [
+            Icon(
+              Icons.error_outline,
+              color: theme.colorScheme.onErrorContainer,
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onErrorContainer,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget _resourceGroupSection({
     required String title,
     required List<String> groups,
@@ -375,25 +411,27 @@ class _CustomStagePropertiesScreenState
           child: Row(
             children: [
               if (iconPath != null)
-                ClipOval(
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
                   child: SizedBox(
-                    width: 56,
-                    height: 56,
+                    width: 96,
+                    height: 96,
                     child: AssetImageWidget(
                       assetPath: iconPath,
                       altCandidates: imageAltCandidates(iconPath),
-                      width: 56,
-                      height: 56,
+                      width: 96,
+                      height: 96,
                       fit: BoxFit.cover,
                     ),
                   ),
                 )
               else
-                const SizedBox(width: 56, height: 56),
-              const SizedBox(width: 12),
+                const SizedBox(width: 96, height: 96),
+              const SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       label,
@@ -401,7 +439,7 @@ class _CustomStagePropertiesScreenState
                         color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    Text(value, style: Theme.of(context).textTheme.titleSmall),
+                    Text(value, style: Theme.of(context).textTheme.titleMedium),
                   ],
                 ),
               ),
@@ -529,13 +567,14 @@ class _CustomStagePropertiesScreenState
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              _sectionTitle(l10n?.customStageSectionGeneral ?? 'General'),
               _lawnAppearanceSummaryCard(
-                label: 'Lawn appearance',
+                label:
+                    l10n?.customStageLawnAppearance ?? 'Lawn appearance',
                 value: lawnAppearanceName,
                 iconFileName: lawnAppearanceIcon,
               ),
-              const SizedBox(height: 16),
-              _sectionTitle(l10n?.customStageSectionGeneral ?? 'General'),
+              const SizedBox(height: 8),
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(12),
@@ -591,18 +630,13 @@ class _CustomStagePropertiesScreenState
               _sectionTitle(
                 l10n?.customStageSectionResourceGroups ?? 'Resource groups',
               ),
-              if (_missingKnownBackground)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: MaterialBanner(
-                    backgroundColor: theme.colorScheme.errorContainer,
-                    content: Text(
-                      l10n?.customStageMissingBackgroundWarning ??
-                          'Import at least one DelayLoad_Background group listed in the stage helper, or the lawn may appear completely black.',
-                    ),
-                    actions: const [SizedBox.shrink()],
-                  ),
+              if (_missingKnownBackground) ...[
+                _warningCard(
+                  l10n?.customStageMissingBackgroundWarning ??
+                      'Import at least one DelayLoad_Background group listed in the stage helper, or the lawn may appear completely black.',
                 ),
+                const SizedBox(height: 8),
+              ],
               _resourceGroupSection(
                 title: _fieldLabel(context, 'ResourceGroupNames'),
                 groups: _resourceGroups,
@@ -617,7 +651,9 @@ class _CustomStagePropertiesScreenState
                 targetUnloadList: true,
               ),
               const SizedBox(height: 16),
-              _sectionTitle(l10n?.customStageSectionAppearance ?? 'Appearance'),
+              _sectionTitle(
+                l10n?.customStageSectionMusicAndOther ?? 'Music & Other',
+              ),
               _pickerTile(
                 label: _fieldLabel(context, 'MusicSuffix'),
                 value: musicName,
@@ -687,7 +723,7 @@ class _CustomStagePropertiesScreenState
                     initialValue: _disabledCellsMode,
                     decoration: customStageInputDecoration(
                       context,
-                      labelText: _fieldLabel(context, 'DisabledStreetCells'),
+                      labelText: _disabledStreetCellsLabel(context),
                     ),
                     items: [
                       DropdownMenuItem(
@@ -742,30 +778,6 @@ class _CustomStagePropertiesScreenState
                         }
                       },
                     ),
-                  ),
-                ),
-              ],
-              if (CustomStageLevelUtils.supportsBeachMinigame(
-                _objclass,
-                _objdata,
-              )) ...[
-                const SizedBox(height: 8),
-                Card(
-                  child: SwitchListTile(
-                    title: Text(
-                      l10n?.customStageBeachMinigame ?? 'Use minigame version',
-                    ),
-                    value: CustomStageLevelUtils.isBeachMinigameEnabled(
-                      _objdata,
-                    ),
-                    activeThumbColor: accent,
-                    onChanged: (enabled) {
-                      CustomStageLevelUtils.applyBeachMinigame(
-                        _objdata,
-                        enabled: enabled,
-                      );
-                      _sync();
-                    },
                   ),
                 ),
               ],
