@@ -10,11 +10,11 @@
                 "Loot": "RTID(DefaultLoot@LevelModules)",
                 "Modules": [
                     "RTID(ZombossLastStand@CurrentLevel)",
-                    "RTID(MausoleumMowers@LevelModules)",
                     "RTID(ConveyorBelt@CurrentLevel)",
                     "RTID(TunnelDefend@CurrentLevel)",
                     "RTID(DefaultZombieWinCondition@LevelModules)",
-                    "RTID(FinalStageTimeLimitedChallenge@LevelModules)"
+                    "RTID(FinalStageTimeLimitedChallenge@LevelModules)",
+                    "RTID(DefaultCustomLevel@LevelModules)"
                 ],
                 "Name": "[NOQIN_LEVEL_NAME_10]",
                 "NormalPresentTable": "egypt_normal_01",

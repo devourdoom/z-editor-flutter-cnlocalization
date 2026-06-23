@@ -6,7 +6,9 @@
         "Description": "",
         "LevelNumber": 1,
         "Loot": "RTID(DefaultLoot@LevelModules)",
-        "Modules": [],
+        "Modules": [
+          "RTID(DefaultCustomLevel@LevelModules)"
+        ],
         "Name": "",
         "StageModule": "RTID(TutorialStage@LevelModules)",
         "StartingSun": 200,
