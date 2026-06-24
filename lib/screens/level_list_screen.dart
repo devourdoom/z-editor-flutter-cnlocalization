@@ -1806,6 +1806,12 @@ class _LevelListScreenState extends State<LevelListScreen> {
       next ? l10n.addedToFavorites : l10n.removedFromFavorites,
     );
     await _loadCurrentDirectory();
+    if (!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _resetListScrollToTop();
+      setState(() {});
+    });
   }
 
   void _showCopyDialog() {
