@@ -3,7 +3,7 @@
   "platform": "ios",
   "github": {
     "owner": "CyberSteve777",
-    "repo": "z-editor-flutter"
+    "repo": "c-editor-flutter"
   },
   "ios": {
     "path": "ios"
