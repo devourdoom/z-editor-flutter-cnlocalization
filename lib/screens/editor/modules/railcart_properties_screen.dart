@@ -98,14 +98,15 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
     _railsGrid = List.generate(_gridCols, (_) => List.filled(_gridRows, false));
     for (final rail in _data.rails) {
       for (var r = rail.rowStart; r <= rail.rowEnd; r++) {
-        if (rail.column >= 0 && rail.column < _gridCols && r >= 0 && r < _gridRows) {
+        if (rail.column >= 0 &&
+            rail.column < _gridCols &&
+            r >= 0 &&
+            r < _gridRows) {
           _railsGrid[rail.column][r] = true;
         }
       }
     }
-    _cartSet = _data.railcarts
-        .map((c) => '${c.column},${c.row}')
-        .toSet();
+    _cartSet = _data.railcarts.map((c) => '${c.column},${c.row}').toSet();
   }
 
   void _sync() {
@@ -124,7 +125,9 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
         }
       }
       if (start != null) {
-        newRails.add(RailData(column: c, rowStart: start, rowEnd: _gridRows - 1));
+        newRails.add(
+          RailData(column: c, rowStart: start, rowEnd: _gridRows - 1),
+        );
       }
     }
     final newCarts = _cartSet.map((s) {
@@ -160,14 +163,18 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
 
   bool _hasOutOfAreaWarning() {
     for (final r in _data.rails) {
-      if (r.column < 0 || r.column >= _gridCols ||
-          r.rowStart < 0 || r.rowEnd >= _gridRows) {
+      if (r.column < 0 ||
+          r.column >= _gridCols ||
+          r.rowStart < 0 ||
+          r.rowEnd >= _gridRows) {
         return true;
       }
     }
     for (final c in _data.railcarts) {
-      if (c.column < 0 || c.column >= _gridCols ||
-          c.row < 0 || c.row >= _gridRows) {
+      if (c.column < 0 ||
+          c.column >= _gridCols ||
+          c.row < 0 ||
+          c.row >= _gridRows) {
         return true;
       }
     }
@@ -200,7 +207,9 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final gridColor = isDark ? const Color(0xFF503C34) : const Color(0xFFD7CCC8);
+    final gridColor = isDark
+        ? const Color(0xFF503C34)
+        : const Color(0xFFD7CCC8);
     final borderColor = isDark ? Colors.grey.shade700 : Colors.grey.shade400;
 
     return Scaffold(
@@ -220,13 +229,15 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
             if (_hasOutOfAreaWarning())
               EditorWarningBanner(
                 margin: EdgeInsets.zero,
-                message: l10n?.warningObjectsOutsideArea(_gridRows, _gridCols) ??
+                message:
+                    l10n?.warningObjectsOutsideArea(_gridRows, _gridCols) ??
                     'Some objects are outside the playable area ($_gridRows rows × $_gridCols cols).',
               ),
             if (_hasStageSwitchWarning())
               EditorWarningBanner(
                 margin: EdgeInsets.zero,
-                message: l10n?.warningStageSwitchedTo5Rows ??
+                message:
+                    l10n?.warningStageSwitchedTo5Rows ??
                     'Stage uses 5 rows but some data references row 6.',
               ),
             if (_hasOutOfAreaWarning() || _hasStageSwitchWarning())
@@ -239,7 +250,8 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
                   children: [
                     DropdownButtonFormField<String>(
                       key: ValueKey(_data.railcartType),
-                      initialValue: _cartTypeOptions.contains(_data.railcartType)
+                      initialValue:
+                          _cartTypeOptions.contains(_data.railcartType)
                           ? _data.railcartType
                           : _cartTypeOptions.first,
                       decoration: InputDecoration(
@@ -247,10 +259,12 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
                         border: const OutlineInputBorder(),
                       ),
                       items: _cartTypeOptions
-                          .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(_railcartDisplayName(context, e)),
-                              ))
+                          .map(
+                            (e) => DropdownMenuItem(
+                              value: e,
+                              child: Text(_railcartDisplayName(context, e)),
+                            ),
+                          )
                           .toList(),
                       onChanged: (v) {
                         if (v != null) {
@@ -273,8 +287,9 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
                                 icon: Icons.add_road,
                                 label: l10n?.layRails ?? 'Lay rails',
                                 selected: _editMode == _RailEditMode.rails,
-                                onTap: () =>
-                                    setState(() => _editMode = _RailEditMode.rails),
+                                onTap: () => setState(
+                                  () => _editMode = _RailEditMode.rails,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 8),
@@ -283,8 +298,9 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
                                 icon: Icons.inbox,
                                 label: l10n?.placeCarts ?? 'Place carts',
                                 selected: _editMode == _RailEditMode.carts,
-                                onTap: () =>
-                                    setState(() => _editMode = _RailEditMode.carts),
+                                onTap: () => setState(
+                                  () => _editMode = _RailEditMode.carts,
+                                ),
                               ),
                             ),
                           ],
@@ -321,27 +337,31 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
                                   decoration: BoxDecoration(
                                     border: Border(
                                       right: BorderSide(
-                                          color: borderColor, width: 0.5),
+                                        color: borderColor,
+                                        width: 0.5,
+                                      ),
                                       bottom: BorderSide(
-                                          color: borderColor, width: 0.5),
+                                        color: borderColor,
+                                        width: 0.5,
+                                      ),
                                     ),
                                   ),
                                   child: Stack(
                                     alignment: Alignment.center,
                                     children: [
                                       if (hasRail)
-                                      Positioned.fill(
-                                        child: Opacity(
-                                          opacity: 0.85,
-                                          child: AssetImageWidget(
-                                            assetPath: _railsAssetPath,
-                                            altCandidates: imageAltCandidates(
-                                              _railsAssetPath,
+                                        Positioned.fill(
+                                          child: Opacity(
+                                            opacity: 0.85,
+                                            child: AssetImageWidget(
+                                              assetPath: _railsAssetPath,
+                                              altCandidates: imageAltCandidates(
+                                                _railsAssetPath,
+                                              ),
+                                              fit: BoxFit.cover,
                                             ),
-                                            fit: BoxFit.cover,
                                           ),
                                         ),
-                                      ),
                                       if (hasCart)
                                         Positioned.fill(
                                           child: Center(
@@ -351,8 +371,8 @@ class _RailcartPropertiesScreenState extends State<RailcartPropertiesScreen> {
                                                 assetPath: _cartsAssetPath,
                                                 altCandidates:
                                                     imageAltCandidates(
-                                                  _cartsAssetPath,
-                                                ),
+                                                      _cartsAssetPath,
+                                                    ),
                                                 fit: BoxFit.contain,
                                               ),
                                             ),

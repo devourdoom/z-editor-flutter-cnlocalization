@@ -15,5 +15,3 @@ class TileLocationData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'mX': mx, 'mY': my};
 }
-
-

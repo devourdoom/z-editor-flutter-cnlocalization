@@ -20,4 +20,3 @@ class ModifyConveyorRemoveData extends PvzModel {
     return {'Type': type};
   }
 }
-

@@ -8,4 +8,3 @@ class StarChallengePlantSurviveData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'Count': count};
 }
-

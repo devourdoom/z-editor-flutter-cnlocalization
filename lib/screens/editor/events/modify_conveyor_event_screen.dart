@@ -78,16 +78,16 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
   }
 
   String _wrapRtid(String plantId) => 'RTID($plantId@PlantTypes)';
-  String _unwrapRtid(String rtid) =>
-      RtidParser.parse(rtid)?.alias ?? rtid;
+  String _unwrapRtid(String rtid) => RtidParser.parse(rtid)?.alias ?? rtid;
 
   bool _hasPowerTileModule() =>
       widget.levelFile.objects.any((o) => o.objClass == 'PowerTileProperties');
 
   static bool _isPowerTileTool(String id) => id.startsWith('tool_powertile_');
 
-  bool _hasCustomLevelModule() => widget.levelFile.objects
-      .any((o) => o.objClass == 'CustomLevelModuleProperties');
+  bool _hasCustomLevelModule() => widget.levelFile.objects.any(
+    (o) => o.objClass == 'CustomLevelModuleProperties',
+  );
 
   void _openAddPlantPicker() {
     widget.onRequestPlantSelection((id) {
@@ -97,11 +97,13 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
         type: rtid,
         weight: existing >= 0 ? _data.addList[existing].weight : 100,
         maxCount: existing >= 0 ? _data.addList[existing].maxCount : 0,
-        maxWeightFactor:
-            existing >= 0 ? _data.addList[existing].maxWeightFactor : 1.0,
+        maxWeightFactor: existing >= 0
+            ? _data.addList[existing].maxWeightFactor
+            : 1.0,
         minCount: existing >= 0 ? _data.addList[existing].minCount : 0,
-        minWeightFactor:
-            existing >= 0 ? _data.addList[existing].minWeightFactor : 1.0,
+        minWeightFactor: existing >= 0
+            ? _data.addList[existing].minWeightFactor
+            : 1.0,
         iLevel: existing >= 0 ? _data.addList[existing].iLevel : null,
         iAvatar: existing >= 0 ? _data.addList[existing].iAvatar : null,
       );
@@ -117,11 +119,13 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
           type: id,
           weight: existing >= 0 ? _data.addList[existing].weight : 100,
           maxCount: existing >= 0 ? _data.addList[existing].maxCount : 0,
-          maxWeightFactor:
-              existing >= 0 ? _data.addList[existing].maxWeightFactor : 1.0,
+          maxWeightFactor: existing >= 0
+              ? _data.addList[existing].maxWeightFactor
+              : 1.0,
           minCount: existing >= 0 ? _data.addList[existing].minCount : 0,
-          minWeightFactor:
-              existing >= 0 ? _data.addList[existing].minWeightFactor : 1.0,
+          minWeightFactor: existing >= 0
+              ? _data.addList[existing].minWeightFactor
+              : 1.0,
         );
         _showModifyEntryDialog(base, isTool: true);
       }
@@ -234,10 +238,7 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
       return ToolRepository.localizedName(context, p.type);
     }
     final plantId = _unwrapRtid(p.type);
-    return ResourceNames.lookup(
-      context,
-      PlantRepository().getName(plantId),
-    );
+    return ResourceNames.lookup(context, PlantRepository().getName(plantId));
   }
 
   String? _addEntryIconPath(ModifyConveyorPlantData p) {
@@ -246,9 +247,7 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
       return t?.icon != null ? 'assets/images/tools/${t!.icon}' : null;
     }
     final plantId = _unwrapRtid(p.type);
-    return PlantRepository()
-        .getPlantInfoById(plantId)
-        ?.iconAssetPath;
+    return PlantRepository().getPlantInfoById(plantId)?.iconAssetPath;
   }
 
   String _removeEntryTitle(ModifyConveyorRemoveData r, AppLocalizations? l10n) {
@@ -256,10 +255,7 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
       return ToolRepository.localizedName(context, r.type);
     }
     final plantId = _unwrapRtid(r.type);
-    return ResourceNames.lookup(
-      context,
-      PlantRepository().getName(plantId),
-    );
+    return ResourceNames.lookup(context, PlantRepository().getName(plantId));
   }
 
   String? _removeEntryIconPath(ModifyConveyorRemoveData r) {
@@ -268,9 +264,7 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
       return t?.icon != null ? 'assets/images/tools/${t!.icon}' : null;
     }
     final plantId = _unwrapRtid(r.type);
-    return PlantRepository()
-        .getPlantInfoById(plantId)
-        ?.iconAssetPath;
+    return PlantRepository().getPlantInfoById(plantId)?.iconAssetPath;
   }
 
   @override
@@ -279,8 +273,9 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
     final l10n = AppLocalizations.of(context);
     final info = RtidParser.parse(widget.rtid);
     final alias = info?.alias ?? '';
-    final hasConveyor = widget.levelFile.objects
-        .any((o) => o.objClass == 'ConveyorSeedBankProperties');
+    final hasConveyor = widget.levelFile.objects.any(
+      (o) => o.objClass == 'ConveyorSeedBankProperties',
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -367,74 +362,74 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-                Text(
-                  l10n?.modifyConveyorAddPoolTitle ?? 'Add to conveyor pool',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+            Text(
+              l10n?.modifyConveyorAddPoolTitle ?? 'Add to conveyor pool',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _openAddPlantPicker,
+                    icon: const Icon(Icons.eco, size: 18),
+                    label: Text(l10n?.addPlantConveyor ?? 'Add plant'),
                   ),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: _openAddPlantPicker,
-                        icon: const Icon(Icons.eco, size: 18),
-                        label: Text(l10n?.addPlantConveyor ?? 'Add plant'),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: _openAddToolPicker,
-                        icon: const Icon(Icons.build, size: 18),
-                        label: Text(l10n?.addTool ?? 'Add tool'),
-                      ),
-                    ),
-                  ],
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _openAddToolPicker,
+                    icon: const Icon(Icons.build, size: 18),
+                    label: Text(l10n?.addTool ?? 'Add tool'),
+                  ),
                 ),
-                const SizedBox(height: 12),
-                if (_data.addList.isEmpty)
-                  Text(
-                    l10n?.modifyConveyorAddPoolEmpty ??
-                        'No entries. Add a plant or tool, then configure weights.',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
+              ],
+            ),
+            const SizedBox(height: 12),
+            if (_data.addList.isEmpty)
+              Text(
+                l10n?.modifyConveyorAddPoolEmpty ??
+                    'No entries. Add a plant or tool, then configure weights.',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              )
+            else
+              ..._data.addList.asMap().entries.map((e) {
+                final idx = e.key;
+                final p = e.value;
+                final iconPath = _addEntryIconPath(p);
+                return Card(
+                  margin: const EdgeInsets.only(bottom: 8),
+                  child: ListTile(
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                  )
-                else
-                  ..._data.addList.asMap().entries.map((e) {
-                    final idx = e.key;
-                    final p = e.value;
-                    final iconPath = _addEntryIconPath(p);
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16,
-                          vertical: 8,
-                        ),
-                        onTap: () => _editAddEntry(idx),
-                        leading: _modifyConveyorLeadingAvatar(
-                          theme,
-                          iconPath,
-                          p.isToolEntry,
-                        ),
-                        title: Text(_addEntryTitle(p, l10n)),
-                        subtitle: Text(
-                          l10n?.weightMaxFormat(p.weight, p.maxCount) ??
-                              'Weight: ${p.weight}, Max: ${p.maxCount}',
-                        ),
-                        trailing: IconButton(
-                          icon: const Icon(Icons.delete_outline),
-                          onPressed: () {
-                            _data.addList.removeAt(idx);
-                            _sync();
-                          },
-                        ),
-                      ),
-                    );
-                  }),
+                    onTap: () => _editAddEntry(idx),
+                    leading: _modifyConveyorLeadingAvatar(
+                      theme,
+                      iconPath,
+                      p.isToolEntry,
+                    ),
+                    title: Text(_addEntryTitle(p, l10n)),
+                    subtitle: Text(
+                      l10n?.weightMaxFormat(p.weight, p.maxCount) ??
+                          'Weight: ${p.weight}, Max: ${p.maxCount}',
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete_outline),
+                      onPressed: () {
+                        _data.addList.removeAt(idx);
+                        _sync();
+                      },
+                    ),
+                  ),
+                );
+              }),
           ],
         ),
       ),
@@ -448,60 +443,60 @@ class _ModifyConveyorEventScreenState extends State<ModifyConveyorEventScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-                Text(
-                  l10n?.modifyConveyorRemovePoolTitle ?? 'Remove from conveyor',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
+            Text(
+              l10n?.modifyConveyorRemovePoolTitle ?? 'Remove from conveyor',
+              style: theme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _openRemovePlantPicker,
+                    icon: const Icon(Icons.eco, size: 18),
+                    label: Text(l10n?.addPlantConveyor ?? 'Add plant'),
                   ),
                 ),
-                const SizedBox(height: 8),
-                Row(
-                  children: [
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: _openRemovePlantPicker,
-                        icon: const Icon(Icons.eco, size: 18),
-                        label: Text(l10n?.addPlantConveyor ?? 'Add plant'),
-                      ),
-                    ),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: OutlinedButton.icon(
-                        onPressed: _openRemoveToolPicker,
-                        icon: const Icon(Icons.build, size: 18),
-                        label: Text(l10n?.addTool ?? 'Add tool'),
-                      ),
-                    ),
-                  ],
+                const SizedBox(width: 8),
+                Expanded(
+                  child: OutlinedButton.icon(
+                    onPressed: _openRemoveToolPicker,
+                    icon: const Icon(Icons.build, size: 18),
+                    label: Text(l10n?.addTool ?? 'Add tool'),
+                  ),
                 ),
-                const SizedBox(height: 12),
-                ..._data.removeList.asMap().entries.map((e) {
-                  final idx = e.key;
-                  final r = e.value;
-                  final iconPath = _removeEntryIconPath(r);
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      leading: _modifyConveyorLeadingAvatar(
-                        theme,
-                        iconPath,
-                        r.isToolEntry,
-                      ),
-                      title: Text(_removeEntryTitle(r, l10n)),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.delete_outline),
-                        onPressed: () {
-                          _data.removeList.removeAt(idx);
-                          _sync();
-                        },
-                      ),
-                    ),
-                  );
-                }),
+              ],
+            ),
+            const SizedBox(height: 12),
+            ..._data.removeList.asMap().entries.map((e) {
+              final idx = e.key;
+              final r = e.value;
+              final iconPath = _removeEntryIconPath(r);
+              return Card(
+                margin: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  contentPadding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 8,
+                  ),
+                  leading: _modifyConveyorLeadingAvatar(
+                    theme,
+                    iconPath,
+                    r.isToolEntry,
+                  ),
+                  title: Text(_removeEntryTitle(r, l10n)),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.delete_outline),
+                    onPressed: () {
+                      _data.removeList.removeAt(idx);
+                      _sync();
+                    },
+                  ),
+                ),
+              );
+            }),
           ],
         ),
       ),
@@ -576,7 +571,8 @@ class _ModifyConveyorEntryDialog extends StatefulWidget {
       _ModifyConveyorEntryDialogState();
 }
 
-class _ModifyConveyorEntryDialogState extends State<_ModifyConveyorEntryDialog> {
+class _ModifyConveyorEntryDialogState
+    extends State<_ModifyConveyorEntryDialog> {
   late int _weight;
   late int _level;
   late bool _iAvatar;
@@ -647,8 +643,7 @@ class _ModifyConveyorEntryDialogState extends State<_ModifyConveyorEntryDialog> 
                     child: _McNumField(
                       label: l10n?.plantLevelLabel ?? 'Plant level (iLevel)',
                       value: _level,
-                      onChanged: (v) =>
-                          setState(() => _level = v.clamp(0, 5)),
+                      onChanged: (v) => setState(() => _level = v.clamp(0, 5)),
                     ),
                   ),
                 ],
@@ -661,7 +656,8 @@ class _ModifyConveyorEntryDialogState extends State<_ModifyConveyorEntryDialog> 
                   child: SwitchListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      l10n?.conveyorPlantWearCostume ?? 'Wear costume (iAvatar)',
+                      l10n?.conveyorPlantWearCostume ??
+                          'Wear costume (iAvatar)',
                     ),
                     value: _iAvatar,
                     onChanged: widget.hasCustomLevelModule
@@ -674,9 +670,9 @@ class _ModifyConveyorEntryDialogState extends State<_ModifyConveyorEntryDialog> 
             const Divider(height: 20),
             Text(
               l10n?.maxLimits ?? 'Max limits',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Row(
@@ -701,9 +697,9 @@ class _ModifyConveyorEntryDialogState extends State<_ModifyConveyorEntryDialog> 
             const SizedBox(height: 12),
             Text(
               l10n?.minLimits ?? 'Min limits',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Row(
@@ -733,10 +729,7 @@ class _ModifyConveyorEntryDialogState extends State<_ModifyConveyorEntryDialog> 
           onPressed: widget.onDismiss,
           child: Text(l10n?.cancel ?? 'Cancel'),
         ),
-        FilledButton(
-          onPressed: _apply,
-          child: Text(l10n?.ok ?? 'OK'),
-        ),
+        FilledButton(onPressed: _apply, child: Text(l10n?.ok ?? 'OK')),
       ],
     );
   }

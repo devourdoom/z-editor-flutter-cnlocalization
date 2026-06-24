@@ -35,7 +35,8 @@ class _PiratePlankPropertiesScreenState
   late PiratePlankPropertiesData _data;
   bool _isPirateStage = false;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _gridRows => _isDeepSeaLawn ? 6 : 5;
 
   @override
@@ -138,7 +139,8 @@ class _PiratePlankPropertiesScreenState
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              l10n?.currentStageNotPirate ?? 'Current stage is not Pirate. This module may not work correctly.',
+                              l10n?.currentStageNotPirate ??
+                                  'Current stage is not Pirate. This module may not work correctly.',
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.onErrorContainer,
                               ),

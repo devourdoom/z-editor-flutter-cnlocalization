@@ -79,38 +79,42 @@ void main() {
       ],
     );
 
-    final removed =
-        GridItemRepository.cleanupUnusedCustomGridItemTypes(levelFile);
+    final removed = GridItemRepository.cleanupUnusedCustomGridItemTypes(
+      levelFile,
+    );
 
     expect(removed, 0);
     expect(_hasGridItemType(levelFile, 'armrack'), isTrue);
   });
 
-  test('removes custom GridItemType when no CurrentLevel references remain', () {
-    GridItemRepository.staticItems.add(_customGridItem('armrack'));
-    final levelFile = PvzLevelFile(
-      objects: [
-        _gridItemType('armrack'),
-        PvzObject(
-          aliases: ['SpawnFromGridItem'],
-          objClass: 'SpawnZombiesFromGridItemSpawnerProps',
-          objData: {
-            'GridTypes': ['RTID(armrack@GridItemTypes)'],
-          },
-        ),
-      ],
-    );
+  test(
+    'removes custom GridItemType when no CurrentLevel references remain',
+    () {
+      GridItemRepository.staticItems.add(_customGridItem('armrack'));
+      final levelFile = PvzLevelFile(
+        objects: [
+          _gridItemType('armrack'),
+          PvzObject(
+            aliases: ['SpawnFromGridItem'],
+            objClass: 'SpawnZombiesFromGridItemSpawnerProps',
+            objData: {
+              'GridTypes': ['RTID(armrack@GridItemTypes)'],
+            },
+          ),
+        ],
+      );
 
-    final removed =
-        GridItemRepository.cleanupUnusedCustomGridItemTypes(levelFile);
+      final removed = GridItemRepository.cleanupUnusedCustomGridItemTypes(
+        levelFile,
+      );
 
-    expect(removed, 1);
-    expect(_hasGridItemType(levelFile, 'armrack'), isFalse);
-    expect(
-      (levelFile.objects.single.objData as Map)['GridTypes'],
-      ['RTID(armrack@GridItemTypes)'],
-    );
-  });
+      expect(removed, 1);
+      expect(_hasGridItemType(levelFile, 'armrack'), isFalse);
+      expect((levelFile.objects.single.objData as Map)['GridTypes'], [
+        'RTID(armrack@GridItemTypes)',
+      ]);
+    },
+  );
 
   test('preserves unrelated custom GridItemType objects', () {
     GridItemRepository.staticItems.addAll([
@@ -132,8 +136,9 @@ void main() {
       ],
     );
 
-    final removed =
-        GridItemRepository.cleanupUnusedCustomGridItemTypes(levelFile);
+    final removed = GridItemRepository.cleanupUnusedCustomGridItemTypes(
+      levelFile,
+    );
 
     expect(removed, 1);
     expect(_hasGridItemType(levelFile, 'armrack'), isFalse);

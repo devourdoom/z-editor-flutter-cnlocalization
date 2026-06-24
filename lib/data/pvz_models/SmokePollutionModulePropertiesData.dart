@@ -18,9 +18,11 @@ class SmokePollutionModulePropertiesData extends PvzModel {
   ) {
     return SmokePollutionModulePropertiesData(
       gridItem: json['GridItem'] as String? ?? gridItemType,
-      smokeManholeList: (json['SmokeManholeList'] as List<dynamic>?)
+      smokeManholeList:
+          (json['SmokeManholeList'] as List<dynamic>?)
               ?.map(
-                (e) => SmokeManholeEntryData.fromJson(e as Map<String, dynamic>),
+                (e) =>
+                    SmokeManholeEntryData.fromJson(e as Map<String, dynamic>),
               )
               .toList() ??
           [],
@@ -29,9 +31,8 @@ class SmokePollutionModulePropertiesData extends PvzModel {
 
   @override
   Map<String, dynamic> toJson() => {
-        'GridItem': gridItem,
-        if (smokeManholeList.isNotEmpty)
-          'SmokeManholeList':
-              smokeManholeList.map((e) => e.toJson()).toList(),
-      };
+    'GridItem': gridItem,
+    if (smokeManholeList.isNotEmpty)
+      'SmokeManholeList': smokeManholeList.map((e) => e.toJson()).toList(),
+  };
 }

@@ -58,10 +58,12 @@ class _SunBombChallengeScreenState extends State<SunBombChallengeScreen> {
     } catch (_) {
       _data = SunBombChallengeData();
     }
-    _plantRadiusCtrl =
-        TextEditingController(text: '${_data.plantBombExplosionRadius}');
-    _zombieRadiusCtrl =
-        TextEditingController(text: '${_data.zombieBombExplosionRadius}');
+    _plantRadiusCtrl = TextEditingController(
+      text: '${_data.plantBombExplosionRadius}',
+    );
+    _zombieRadiusCtrl = TextEditingController(
+      text: '${_data.zombieBombExplosionRadius}',
+    );
     _plantDamageCtrl = TextEditingController(text: '${_data.plantDamage}');
     _zombieDamageCtrl = TextEditingController(text: '${_data.zombieDamage}');
   }
@@ -225,7 +227,10 @@ class _SunBombChallengeScreenState extends State<SunBombChallengeScreen> {
     return TextField(
       controller: controller,
       keyboardType: TextInputType.number,
-      decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+      ),
       onChanged: onChanged,
     );
   }

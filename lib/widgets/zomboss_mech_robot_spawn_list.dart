@@ -39,10 +39,7 @@ class ZombossMechRobotSpawnListEditor extends StatelessWidget {
         builder: (ctx) => ZombieSelectionScreen(
           onZombieSelected: (id) {
             Navigator.pop(ctx);
-            onChanged([
-              ...entries,
-              ZombossRobotSpawnEntry(zombieTypeName: id),
-            ]);
+            onChanged([...entries, ZombossRobotSpawnEntry(zombieTypeName: id)]);
           },
           onBack: () => Navigator.pop(ctx),
         ),
@@ -64,10 +61,7 @@ class ZombossMechRobotSpawnListEditor extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    fieldLabel,
-                    style: theme.textTheme.titleSmall,
-                  ),
+                  child: Text(fieldLabel, style: theme.textTheme.titleSmall),
                 ),
                 IconButton(
                   visualDensity: VisualDensity.compact,
@@ -158,7 +152,8 @@ class _RobotSpawnEntryCard extends StatelessWidget {
         : entry.zombieTypeName;
     final iconPath = info?.iconAssetPath ?? _kUnknownZombieIcon;
 
-    final rowValue = entry.row == -1 || (entry.row >= 0 && entry.row <= maxRowIndex)
+    final rowValue =
+        entry.row == -1 || (entry.row >= 0 && entry.row <= maxRowIndex)
         ? entry.row
         : -1;
     final levelValue = entry.level.clamp(0, 10);
@@ -246,8 +241,7 @@ class _RobotSpawnEntryCard extends StatelessWidget {
                     initialValue: '${entry.weight}',
                     decoration: editorInputDecoration(
                       context,
-                      labelText:
-                          l10n?.zombossMechRobotSpawnWeight ?? 'Weight',
+                      labelText: l10n?.zombossMechRobotSpawnWeight ?? 'Weight',
                     ),
                     keyboardType: TextInputType.number,
                     onChanged: (v) {
@@ -273,15 +267,11 @@ class _RobotSpawnEntryCard extends StatelessWidget {
                       DropdownMenuItem(
                         value: -1,
                         child: Text(
-                          l10n?.zombossMechRobotSpawnRowRandom ??
-                              'Random (-1)',
+                          l10n?.zombossMechRobotSpawnRowRandom ?? 'Random (-1)',
                         ),
                       ),
                       for (var r = 0; r <= maxRowIndex; r++)
-                        DropdownMenuItem(
-                          value: r,
-                          child: Text('$r'),
-                        ),
+                        DropdownMenuItem(value: r, child: Text('$r')),
                     ],
                     onChanged: (v) {
                       if (v == null) return;
@@ -302,10 +292,7 @@ class _RobotSpawnEntryCard extends StatelessWidget {
                     ),
                     items: [
                       for (final lv in _levelOptions)
-                        DropdownMenuItem(
-                          value: lv,
-                          child: Text('$lv'),
-                        ),
+                        DropdownMenuItem(value: lv, child: Text('$lv')),
                     ],
                     onChanged: (v) {
                       if (v == null) return;

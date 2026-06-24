@@ -26,4 +26,3 @@ class DropShipPropertiesData extends PvzModel {
     'AppearWaves': appearWaves.map((e) => e.toJson()).toList(),
   };
 }
-

@@ -5,7 +5,9 @@ import 'dart:io';
 
 void main() async {
   final baseDir = Directory.current;
-  final projectRoot = baseDir.path.endsWith('c_editor') ? baseDir.path : '$baseDir/c_editor';
+  final projectRoot = baseDir.path.endsWith('c_editor')
+      ? baseDir.path
+      : '$baseDir/c_editor';
   final assetsDir = Directory('$projectRoot/assets');
 
   final plantsJson = File('${assetsDir.path}/resources/Plants.json');
@@ -36,17 +38,19 @@ void main() async {
 
   final zh = {...plantZh, ...zombieZh};
   final en = zh.map((k, v) => MapEntry(k, _toEnglishFallback(k)));
-  final ru = zh.map((k, v) => MapEntry(k, _toEnglishFallback(k))); // Use EN as fallback for RU
+  final ru = zh.map(
+    (k, v) => MapEntry(k, _toEnglishFallback(k)),
+  ); // Use EN as fallback for RU
 
-  await File('${l10nDir.path}/resource_zh.json').writeAsString(
-    const JsonEncoder.withIndent('  ').convert(zh),
-  );
-  await File('${l10nDir.path}/resource_en.json').writeAsString(
-    const JsonEncoder.withIndent('  ').convert(en),
-  );
-  await File('${l10nDir.path}/resource_ru.json').writeAsString(
-    const JsonEncoder.withIndent('  ').convert(ru),
-  );
+  await File(
+    '${l10nDir.path}/resource_zh.json',
+  ).writeAsString(const JsonEncoder.withIndent('  ').convert(zh));
+  await File(
+    '${l10nDir.path}/resource_en.json',
+  ).writeAsString(const JsonEncoder.withIndent('  ').convert(en));
+  await File(
+    '${l10nDir.path}/resource_ru.json',
+  ).writeAsString(const JsonEncoder.withIndent('  ').convert(ru));
 
   // Update Plants.json - replace name with key
   if (plantsJson.existsSync()) {
@@ -56,7 +60,9 @@ void main() async {
       final id = item['id'] as String;
       item['name'] = 'plant_$id';
     }
-    await plantsJson.writeAsString(const JsonEncoder.withIndent('    ').convert(list));
+    await plantsJson.writeAsString(
+      const JsonEncoder.withIndent('    ').convert(list),
+    );
   }
 
   // Update Zombies.json - replace name with key
@@ -67,7 +73,9 @@ void main() async {
       final id = item['id'] as String;
       item['name'] = 'zombie_$id';
     }
-    await zombiesJson.writeAsString(const JsonEncoder.withIndent('    ').convert(list));
+    await zombiesJson.writeAsString(
+      const JsonEncoder.withIndent('    ').convert(list),
+    );
   }
 
   // ignore: avoid_print
@@ -78,5 +86,8 @@ void main() async {
 
 String _toEnglishFallback(String key) {
   final id = key.replaceFirst(RegExp(r'^(plant|zombie)_'), '');
-  return id.split('_').map((s) => s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}').join(' ');
+  return id
+      .split('_')
+      .map((s) => s.isEmpty ? s : '${s[0].toUpperCase()}${s.substring(1)}')
+      .join(' ');
 }

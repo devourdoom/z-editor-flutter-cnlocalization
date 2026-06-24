@@ -83,7 +83,8 @@ class JsonViewerSearchBar extends StatelessWidget {
               onNextMatch: onNextMatch,
               onSearchSubmitted: onSearchSubmitted,
               hintText: l10n?.jsonViewerSearchHint ?? 'Search',
-              historyTooltip: l10n?.jsonViewerSearchHistory ?? 'Recent searches',
+              historyTooltip:
+                  l10n?.jsonViewerSearchHistory ?? 'Recent searches',
             ),
             if (showReplace) ...[
               const SizedBox(height: 6),
@@ -153,7 +154,9 @@ class _SearchRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    final borderColor = regexError ? theme.colorScheme.error : theme.dividerColor;
+    final borderColor = regexError
+        ? theme.colorScheme.error
+        : theme.dividerColor;
 
     return Row(
       children: [
@@ -162,7 +165,9 @@ class _SearchRow extends StatelessWidget {
           history: history,
           onSelected: (value) {
             controller.text = value;
-            controller.selection = TextSelection.collapsed(offset: value.length);
+            controller.selection = TextSelection.collapsed(
+              offset: value.length,
+            );
             onChanged(value);
             onHistorySelected(value);
           },
@@ -177,8 +182,13 @@ class _SearchRow extends StatelessWidget {
             decoration: InputDecoration(
               isDense: true,
               hintText: hintText,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4),
                 borderSide: BorderSide(color: borderColor),
@@ -186,7 +196,9 @@ class _SearchRow extends StatelessWidget {
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(4),
                 borderSide: BorderSide(
-                  color: regexError ? theme.colorScheme.error : theme.colorScheme.primary,
+                  color: regexError
+                      ? theme.colorScheme.error
+                      : theme.colorScheme.primary,
                   width: 1.5,
                 ),
               ),
@@ -278,7 +290,9 @@ class _ReplaceRow extends StatelessWidget {
           history: history,
           onSelected: (value) {
             controller.text = value;
-            controller.selection = TextSelection.collapsed(offset: value.length);
+            controller.selection = TextSelection.collapsed(
+              offset: value.length,
+            );
             onChanged(value);
             onReplaceHistorySelected(value);
           },
@@ -292,8 +306,13 @@ class _ReplaceRow extends StatelessWidget {
             decoration: InputDecoration(
               isDense: true,
               hintText: hintText,
-              contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              border: OutlineInputBorder(borderRadius: BorderRadius.circular(4)),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 10,
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(4),
+              ),
             ),
           ),
         ),
@@ -301,7 +320,8 @@ class _ReplaceRow extends StatelessWidget {
         _InsertNewlineButton(
           controller: controller,
           onChanged: onChanged,
-          tooltip: AppLocalizations.of(context)?.jsonViewerInsertNewline ??
+          tooltip:
+              AppLocalizations.of(context)?.jsonViewerInsertNewline ??
               'Insert newline',
         ),
         IconButton(
@@ -508,10 +528,7 @@ class JsonViewerFontSizeButton extends StatelessWidget {
                     (size) => CheckedPopupMenuItem<double>(
                       value: size.toDouble(),
                       checked: currentSize.round() == size,
-                      child: Text(
-                        '$size',
-                        style: theme.textTheme.bodyMedium,
-                      ),
+                      child: Text('$size', style: theme.textTheme.bodyMedium),
                     ),
                   )
                   .toList();

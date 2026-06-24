@@ -21,5 +21,3 @@ class ProtectPlantData extends PvzModel {
     'PlantType': plantType,
   };
 }
-
-

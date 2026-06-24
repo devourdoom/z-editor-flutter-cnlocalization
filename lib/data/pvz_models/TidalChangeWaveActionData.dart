@@ -18,4 +18,3 @@ class TidalChangeWaveActionData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'TidalChange': tidalChange.toJson()};
 }
-

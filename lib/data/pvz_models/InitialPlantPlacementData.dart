@@ -33,5 +33,3 @@ class InitialPlantPlacementData extends PvzModel {
     if (condition != null) 'Condition': condition,
   };
 }
-
-

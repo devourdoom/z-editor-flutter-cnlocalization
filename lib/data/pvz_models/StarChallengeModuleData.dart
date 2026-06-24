@@ -24,4 +24,3 @@ class StarChallengeModuleData extends PvzModel {
     'Challenges': challenges,
   };
 }
-

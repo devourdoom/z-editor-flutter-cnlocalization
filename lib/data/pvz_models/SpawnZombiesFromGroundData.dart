@@ -53,4 +53,3 @@ class SpawnZombiesFromGroundData extends PvzModel {
     return data;
   }
 }
-

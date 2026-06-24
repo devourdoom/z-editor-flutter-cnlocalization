@@ -33,4 +33,3 @@ class WaveManagerModuleData extends PvzModel {
     if (manualStartup != null) 'ManualStartup': manualStartup,
   };
 }
-

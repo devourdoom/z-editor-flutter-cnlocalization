@@ -7,7 +7,8 @@ import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/screens/select/plant_selection_screen.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Initial plant entry. Ported from Z-Editor-master InitialPlantEntryEP.kt
@@ -28,7 +29,8 @@ class InitialPlantEntryScreen extends StatefulWidget {
   final void Function(String objClass)? onAddModule;
 
   @override
-  State<InitialPlantEntryScreen> createState() => _InitialPlantEntryScreenState();
+  State<InitialPlantEntryScreen> createState() =>
+      _InitialPlantEntryScreenState();
 }
 
 class _InitialPlantEntryScreenState extends State<InitialPlantEntryScreen> {
@@ -83,13 +85,15 @@ class _InitialPlantEntryScreenState extends State<InitialPlantEntryScreen> {
           onPlantSelected: (id) {
             Navigator.pop(context);
             final newList = List<InitialPlantData>.from(_data.plants);
-            newList.add(InitialPlantData(
-              gridX: _selectedX,
-              gridY: _selectedY,
-              level: 1,
-              plantTypes: [id],
-              avatar: false,
-            ));
+            newList.add(
+              InitialPlantData(
+                gridX: _selectedX,
+                gridY: _selectedY,
+                level: 1,
+                plantTypes: [id],
+                avatar: false,
+              ),
+            );
             _data = InitialPlantEntryData(plants: newList);
             _sync();
           },
@@ -131,20 +135,24 @@ class _InitialPlantEntryScreenState extends State<InitialPlantEntryScreen> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final plantsAtPosition = _data.plants
-        .where((p) =>
-            p.gridX == _selectedX &&
-            p.gridY == _selectedY &&
-            p.gridX >= 0 &&
-            p.gridY >= 0 &&
-            p.gridX < _gridCols &&
-            p.gridY < _gridRows)
+        .where(
+          (p) =>
+              p.gridX == _selectedX &&
+              p.gridY == _selectedY &&
+              p.gridX >= 0 &&
+              p.gridY >= 0 &&
+              p.gridX < _gridCols &&
+              p.gridY < _gridRows,
+        )
         .toList();
     final plantsOutsideLawn = _data.plants
-        .where((p) =>
-            p.gridX < 0 ||
-            p.gridY < 0 ||
-            p.gridX >= _gridCols ||
-            p.gridY >= _gridRows)
+        .where(
+          (p) =>
+              p.gridX < 0 ||
+              p.gridY < 0 ||
+              p.gridX >= _gridCols ||
+              p.gridY >= _gridRows,
+        )
         .toList();
 
     return Scaffold(
@@ -212,22 +220,22 @@ class _InitialPlantEntryScreenState extends State<InitialPlantEntryScreen> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    ...plantsAtPosition.map((p) => _InitialPlantCard(
-                      plant: p,
-                      gridRows: _gridRows,
-                      gridCols: _gridCols,
-                      showCoordinates: false,
-                      onTap: () {
-                        setState(() {
-                          _selectedX = p.gridX;
-                          _selectedY = p.gridY;
-                          _editingPlant = p;
-                        });
-                      },
-                    )),
-                    AddItemCard(
-                      onPressed: _handleSelectPlant,
+                    ...plantsAtPosition.map(
+                      (p) => _InitialPlantCard(
+                        plant: p,
+                        gridRows: _gridRows,
+                        gridCols: _gridCols,
+                        showCoordinates: false,
+                        onTap: () {
+                          setState(() {
+                            _selectedX = p.gridX;
+                            _selectedY = p.gridY;
+                            _editingPlant = p;
+                          });
+                        },
+                      ),
                     ),
+                    AddItemCard(onPressed: _handleSelectPlant),
                   ],
                 ),
                 if (plantsOutsideLawn.isNotEmpty) ...[
@@ -244,19 +252,21 @@ class _InitialPlantEntryScreenState extends State<InitialPlantEntryScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: plantsOutsideLawn
-                        .map((p) => _InitialPlantCard(
-                              plant: p,
-                              gridRows: _gridRows,
-                              gridCols: _gridCols,
-                              showCoordinates: true,
-                              onTap: () {
-                                setState(() {
-                                  _selectedX = p.gridX;
-                                  _selectedY = p.gridY;
-                                  _editingPlant = p;
-                                });
-                              },
-                            ))
+                        .map(
+                          (p) => _InitialPlantCard(
+                            plant: p,
+                            gridRows: _gridRows,
+                            gridCols: _gridCols,
+                            showCoordinates: true,
+                            onTap: () {
+                              setState(() {
+                                _selectedX = p.gridX;
+                                _selectedY = p.gridY;
+                                _editingPlant = p;
+                              });
+                            },
+                          ),
+                        )
                         .toList(),
                   ),
                 ],
@@ -294,8 +304,9 @@ class _InitialPlantEntryScreenState extends State<InitialPlantEntryScreen> {
                       final cellPlants = _data.plants
                           .where((p) => p.gridX == col && p.gridY == row)
                           .toList();
-                      final firstPlant =
-                          cellPlants.isNotEmpty ? cellPlants.first : null;
+                      final firstPlant = cellPlants.isNotEmpty
+                          ? cellPlants.first
+                          : null;
                       final count = cellPlants.length;
                       return Expanded(
                         child: GestureDetector(
@@ -328,7 +339,8 @@ class _InitialPlantEntryScreenState extends State<InitialPlantEntryScreen> {
                                           child: FittedBox(
                                             fit: BoxFit.contain,
                                             child: _PlantIconSmall(
-                                              firstPlant.plantTypes
+                                              firstPlant
+                                                      .plantTypes
                                                       .firstOrNull ??
                                                   '',
                                             ),
@@ -345,12 +357,15 @@ class _InitialPlantEntryScreenState extends State<InitialPlantEntryScreen> {
                                               vertical: 3,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: theme.colorScheme
+                                              color: theme
+                                                  .colorScheme
                                                   .onSurfaceVariant,
                                               borderRadius:
                                                   const BorderRadius.only(
-                                                bottomLeft: Radius.circular(6),
-                                              ),
+                                                    bottomLeft: Radius.circular(
+                                                      6,
+                                                    ),
+                                                  ),
                                             ),
                                             child: Text(
                                               '+${count - 1}',
@@ -538,7 +553,9 @@ class _InitialPlantCard extends StatelessWidget {
                           children: [
                             Icon(
                               editorWarningIcon,
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                               size: 16,
                             ),
                             const SizedBox(width: 4),
@@ -546,7 +563,9 @@ class _InitialPlantCard extends StatelessWidget {
                               child: Text(
                                 'R${plant.gridY + 1}:C${plant.gridX + 1}',
                                 style: theme.textTheme.bodySmall?.copyWith(
-                                  color: editorWarningBannerForeground(theme.brightness),
+                                  color: editorWarningBannerForeground(
+                                    theme.brightness,
+                                  ),
                                 ),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -581,7 +600,8 @@ class _InitialPlantEditDialog extends StatefulWidget {
   final VoidCallback onCancel;
 
   @override
-  State<_InitialPlantEditDialog> createState() => _InitialPlantEditDialogState();
+  State<_InitialPlantEditDialog> createState() =>
+      _InitialPlantEditDialogState();
 }
 
 class _InitialPlantEditDialogState extends State<_InitialPlantEditDialog> {
@@ -607,7 +627,10 @@ class _InitialPlantEditDialogState extends State<_InitialPlantEditDialog> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text('${l10n?.level ?? 'Level'}: $_level', style: const TextStyle(fontWeight: FontWeight.bold)),
+          Text(
+            '${l10n?.level ?? 'Level'}: $_level',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
           Slider(
             value: _level.toDouble(),
             min: 1,
@@ -633,16 +656,21 @@ class _InitialPlantEditDialogState extends State<_InitialPlantEditDialog> {
           ),
           child: Text(l10n?.delete ?? 'Delete'),
         ),
-        TextButton(onPressed: widget.onCancel, child: Text(l10n?.cancel ?? 'Cancel')),
+        TextButton(
+          onPressed: widget.onCancel,
+          child: Text(l10n?.cancel ?? 'Cancel'),
+        ),
         FilledButton(
           onPressed: () {
-            widget.onSave(InitialPlantData(
-              gridX: widget.plant.gridX,
-              gridY: widget.plant.gridY,
-              level: _level,
-              avatar: _avatar,
-              plantTypes: widget.plant.plantTypes,
-            ));
+            widget.onSave(
+              InitialPlantData(
+                gridX: widget.plant.gridX,
+                gridY: widget.plant.gridY,
+                level: _level,
+                avatar: _avatar,
+                plantTypes: widget.plant.plantTypes,
+              ),
+            );
           },
           child: Text(l10n?.save ?? 'Save'),
         ),

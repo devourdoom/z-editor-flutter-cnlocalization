@@ -21,7 +21,8 @@ class RaidingPartyEventScreen extends StatefulWidget {
   final VoidCallback onBack;
 
   @override
-  State<RaidingPartyEventScreen> createState() => _RaidingPartyEventScreenState();
+  State<RaidingPartyEventScreen> createState() =>
+      _RaidingPartyEventScreenState();
 }
 
 class _RaidingPartyEventScreenState extends State<RaidingPartyEventScreen> {

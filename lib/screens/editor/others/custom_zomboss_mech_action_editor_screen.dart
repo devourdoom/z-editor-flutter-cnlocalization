@@ -63,7 +63,8 @@ class _CustomZombossMechActionEditorScreenState
     } else {
       final group = _groups.firstOrNull ?? widget.catalog.actions.first;
       _objclass = group.objclass;
-      final sampleAlias = group.implementations.keys.firstOrNull ?? 'CustomAction';
+      final sampleAlias =
+          group.implementations.keys.firstOrNull ?? 'CustomAction';
       _alias = ZombossMechActionUtils.uniqueCustomAlias(
         widget.levelFile,
         sampleAlias,
@@ -87,8 +88,8 @@ class _CustomZombossMechActionEditorScreenState
     _data = raw is Map<String, dynamic>
         ? Map<String, dynamic>.from(raw)
         : raw is Map
-            ? Map<String, dynamic>.from(raw)
-            : {};
+        ? Map<String, dynamic>.from(raw)
+        : {};
   }
 
   @override
@@ -216,10 +217,7 @@ class _CustomZombossMechActionEditorScreenState
               : (l10n?.zombossMechEditCustomAction ?? 'Edit custom action'),
         ),
         actions: [
-          TextButton(
-            onPressed: _saveAndPop,
-            child: Text(l10n?.save ?? 'Save'),
-          ),
+          TextButton(onPressed: _saveAndPop, child: Text(l10n?.save ?? 'Save')),
         ],
       ),
       body: ListView(
@@ -230,7 +228,8 @@ class _CustomZombossMechActionEditorScreenState
             decoration: editorInputDecoration(
               context,
               labelText: l10n?.aliasLabel ?? 'Alias',
-              hintText: l10n?.zombossMechActionAliasHint ??
+              hintText:
+                  l10n?.zombossMechActionAliasHint ??
                   'Codename used in RTID(alias@CurrentLevel).',
             ),
             onFieldSubmitted: _applyAlias,

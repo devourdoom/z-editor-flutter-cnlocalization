@@ -25,5 +25,3 @@ class WarMistPropertiesData extends PvzModel {
     'm_iBloverEffectInterval': bloverEffectInterval,
   };
 }
-
-

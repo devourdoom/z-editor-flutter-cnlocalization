@@ -37,5 +37,3 @@ class PVZ1PassageModulePropertiesData extends PvzModel {
     'refreshTime': refreshTime,
   };
 }
-
-

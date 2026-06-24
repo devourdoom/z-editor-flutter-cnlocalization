@@ -53,4 +53,3 @@ class SpawnZombiesFishWaveActionPropsData extends PvzModel {
     return m;
   }
 }
-

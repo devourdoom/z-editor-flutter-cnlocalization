@@ -31,5 +31,3 @@ class LevelScoringData extends PvzModel {
     'StartingPlantfood': startingPlantfood,
   };
 }
-
-

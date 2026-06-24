@@ -27,7 +27,8 @@ class SmokePollutionModuleScreen extends StatefulWidget {
       _SmokePollutionModuleScreenState();
 }
 
-class _SmokePollutionModuleScreenState extends State<SmokePollutionModuleScreen> {
+class _SmokePollutionModuleScreenState
+    extends State<SmokePollutionModuleScreen> {
   static const _gridItemType = SmokePollutionModulePropertiesData.gridItemType;
 
   late PvzObject _moduleObj;
@@ -96,8 +97,7 @@ class _SmokePollutionModuleScreenState extends State<SmokePollutionModuleScreen>
   void _removeManhole(SmokeManholeEntryData item) {
     _data = SmokePollutionModulePropertiesData(
       gridItem: _data.gridItem,
-      smokeManholeList:
-          _data.smokeManholeList.where((t) => t != item).toList(),
+      smokeManholeList: _data.smokeManholeList.where((t) => t != item).toList(),
     );
     _sync();
   }
@@ -144,8 +144,7 @@ class _SmokePollutionModuleScreenState extends State<SmokePollutionModuleScreen>
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    final title =
-        l10n?.smokePollutionModuleTitle ?? 'Smoke pollution module';
+    final title = l10n?.smokePollutionModuleTitle ?? 'Smoke pollution module';
     final helpTitle =
         l10n?.smokePollutionModuleHelpTitle ?? 'Smoke pollution module help';
 
@@ -310,9 +309,7 @@ class _SmokePollutionModuleScreenState extends State<SmokePollutionModuleScreen>
                     children: List.generate(_gridCols, (col) {
                       final isSelected = row == _selectedY && col == _selectedX;
                       final cellItems = _data.smokeManholeList
-                          .where(
-                            (t) => t.gridColumn == col && t.gridRow == row,
-                          )
+                          .where((t) => t.gridColumn == col && t.gridRow == row)
                           .toList();
                       final count = cellItems.length;
                       return Expanded(
@@ -371,11 +368,14 @@ class _SmokePollutionModuleScreenState extends State<SmokePollutionModuleScreen>
                                             ),
                                             decoration: BoxDecoration(
                                               color: theme
-                                                  .colorScheme.onSurfaceVariant,
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
                                               borderRadius:
                                                   const BorderRadius.only(
-                                                bottomLeft: Radius.circular(6),
-                                              ),
+                                                    bottomLeft: Radius.circular(
+                                                      6,
+                                                    ),
+                                                  ),
                                             ),
                                             child: Text(
                                               '+${count - 1}',
@@ -418,7 +418,8 @@ class _SmokePollutionModuleScreenState extends State<SmokePollutionModuleScreen>
       title: Text(l10n?.removeItem ?? 'Remove item'),
       content: Text(
         l10n?.removeItemConfirm(
-                'R${item.gridRow + 1}:C${item.gridColumn + 1} $name') ??
+              'R${item.gridRow + 1}:C${item.gridColumn + 1} $name',
+            ) ??
             'Remove R${item.gridRow + 1}:C${item.gridColumn + 1} $name?',
       ),
       actions: [
@@ -489,8 +490,7 @@ class _SmokeManholeCardState extends State<_SmokeManholeCard> {
     final l10n = AppLocalizations.of(context);
     const typeName = SmokePollutionModulePropertiesData.gridItemType;
     final displayName = ResourceNames.lookup(context, 'griditem_$typeName');
-    final name =
-        displayName != 'griditem_$typeName' ? displayName : typeName;
+    final name = displayName != 'griditem_$typeName' ? displayName : typeName;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -551,7 +551,8 @@ class _SmokeManholeCardState extends State<_SmokeManholeCard> {
                     controller: _startTimeCtrl,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: l10n?.smokePollutionModuleStartTimeLabel ??
+                      labelText:
+                          l10n?.smokePollutionModuleStartTimeLabel ??
                           'Start time (s)',
                       border: const OutlineInputBorder(),
                       isDense: true,

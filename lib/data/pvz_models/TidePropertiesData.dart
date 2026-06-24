@@ -15,5 +15,3 @@ class TidePropertiesData extends PvzModel {
     'StartingWaveLocation': startingWaveLocation,
   };
 }
-
-

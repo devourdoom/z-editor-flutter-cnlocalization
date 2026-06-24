@@ -21,8 +21,8 @@ class SmokeManholeEntryData extends PvzModel {
 
   @override
   Map<String, dynamic> toJson() => {
-        'GridColumn': gridColumn,
-        'GridRow': gridRow,
-        'StartTime': startTime,
-      };
+    'GridColumn': gridColumn,
+    'GridRow': gridRow,
+    'StartTime': startTime,
+  };
 }

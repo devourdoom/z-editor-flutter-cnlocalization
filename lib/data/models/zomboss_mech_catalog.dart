@@ -22,11 +22,13 @@ class ZombossMechFieldSpec {
       defaultValue: json['default'],
       objectFields: nested is List
           ? nested
-              .whereType<Map>()
-              .map((e) => ZombossMechFieldSpec.fromJson(
+                .whereType<Map>()
+                .map(
+                  (e) => ZombossMechFieldSpec.fromJson(
                     Map<String, dynamic>.from(e),
-                  ))
-              .toList()
+                  ),
+                )
+                .toList()
           : const [],
     );
   }
@@ -69,8 +71,9 @@ class ZombossMechObjclassGroup {
     if (implRaw is Map) {
       for (final entry in implRaw.entries) {
         if (entry.value is Map) {
-          implementations[entry.key] =
-              Map<String, dynamic>.from(entry.value as Map);
+          implementations[entry.key] = Map<String, dynamic>.from(
+            entry.value as Map,
+          );
         }
       }
     }
@@ -80,11 +83,13 @@ class ZombossMechObjclassGroup {
       tag: json['tag'] as String? ?? '',
       fields: fieldsRaw is List
           ? fieldsRaw
-              .whereType<Map>()
-              .map((e) => ZombossMechFieldSpec.fromJson(
+                .whereType<Map>()
+                .map(
+                  (e) => ZombossMechFieldSpec.fromJson(
                     Map<String, dynamic>.from(e),
-                  ))
-              .toList()
+                  ),
+                )
+                .toList()
           : const [],
       implementations: implementations,
     );
@@ -224,9 +229,10 @@ class ZombossMechCatalogEntry {
       if (raw is! List) return const [];
       return raw
           .whereType<Map>()
-          .map((e) => ZombossMechObjclassGroup.fromJson(
-                Map<String, dynamic>.from(e),
-              ))
+          .map(
+            (e) =>
+                ZombossMechObjclassGroup.fromJson(Map<String, dynamic>.from(e)),
+          )
           .toList();
     }
 
@@ -247,9 +253,7 @@ class ZombossMechCatalogEntry {
   }
 
   static Map<String, dynamic> _cloneMap(Map<String, dynamic> source) {
-    return Map<String, dynamic>.from(
-      jsonDecode(jsonEncode(source)) as Map,
-    );
+    return Map<String, dynamic>.from(jsonDecode(jsonEncode(source)) as Map);
   }
 
   static dynamic _cloneValue(dynamic value) {

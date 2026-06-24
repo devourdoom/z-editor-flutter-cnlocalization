@@ -100,20 +100,24 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
     final l10n = AppLocalizations.of(context);
     final alias = LevelParser.extractAlias(widget.rtid);
     final itemsAtPosition = _data.tiles
-        .where((t) =>
-            t.location.x == _selectedX &&
-            t.location.y == _selectedY &&
-            t.location.x >= 0 &&
-            t.location.y >= 0 &&
-            t.location.x < _gridCols &&
-            t.location.y < _gridRows)
+        .where(
+          (t) =>
+              t.location.x == _selectedX &&
+              t.location.y == _selectedY &&
+              t.location.x >= 0 &&
+              t.location.y >= 0 &&
+              t.location.x < _gridCols &&
+              t.location.y < _gridRows,
+        )
         .toList();
     final itemsOutsideLawn = _data.tiles
-        .where((t) =>
-            t.location.x < 0 ||
-            t.location.y < 0 ||
-            t.location.x >= _gridCols ||
-            t.location.y >= _gridRows)
+        .where(
+          (t) =>
+              t.location.x < 0 ||
+              t.location.y < 0 ||
+              t.location.x >= _gridCols ||
+              t.location.y >= _gridRows,
+        )
         .toList();
 
     return Scaffold(
@@ -175,7 +179,8 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    l10n?.selectedPosition ?? 'Selected position',
+                                    l10n?.selectedPosition ??
+                                        'Selected position',
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       color: theme.colorScheme.onSurfaceVariant,
                                     ),
@@ -210,18 +215,17 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      ...itemsAtPosition.map((item) => _ShellItemCard(
-                            item: item,
-                            gridRows: _gridRows,
-                            gridCols: _gridCols,
-                            showCoordinates: false,
-                            onDelete: () => setState(() => _itemToDelete = item),
-                            deleteTooltip: l10n?.delete ?? 'Delete',
-                          )),
-                      AddItemCard(
-                        onPressed: _addShell,
-                        minHeight: 130,
+                      ...itemsAtPosition.map(
+                        (item) => _ShellItemCard(
+                          item: item,
+                          gridRows: _gridRows,
+                          gridCols: _gridCols,
+                          showCoordinates: false,
+                          onDelete: () => setState(() => _itemToDelete = item),
+                          deleteTooltip: l10n?.delete ?? 'Delete',
+                        ),
                       ),
+                      AddItemCard(onPressed: _addShell, minHeight: 130),
                     ],
                   ),
                   if (itemsOutsideLawn.isNotEmpty) ...[
@@ -238,15 +242,17 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                       spacing: 8,
                       runSpacing: 8,
                       children: itemsOutsideLawn
-                          .map((item) => _ShellItemCard(
-                                item: item,
-                                gridRows: _gridRows,
-                                gridCols: _gridCols,
-                                showCoordinates: true,
-                                onDelete: () =>
-                                    setState(() => _itemToDelete = item),
-                                deleteTooltip: l10n?.delete ?? 'Delete',
-                              ))
+                          .map(
+                            (item) => _ShellItemCard(
+                              item: item,
+                              gridRows: _gridRows,
+                              gridCols: _gridCols,
+                              showCoordinates: true,
+                              onDelete: () =>
+                                  setState(() => _itemToDelete = item),
+                              deleteTooltip: l10n?.delete ?? 'Delete',
+                            ),
+                          )
                           .toList(),
                     ),
                   ],
@@ -286,8 +292,9 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                     children: List.generate(_gridCols, (col) {
                       final isSelected = row == _selectedY && col == _selectedX;
                       final cellItems = _data.tiles
-                          .where((t) =>
-                              t.location.x == col && t.location.y == row)
+                          .where(
+                            (t) => t.location.x == col && t.location.y == row,
+                          )
                           .toList();
                       final firstItem = cellItems.firstOrNull;
                       final count = cellItems.length;
@@ -341,18 +348,20 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
                                           top: 3,
                                           right: 3,
                                           child: Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                               horizontal: 6,
                                               vertical: 3,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: theme.colorScheme
+                                              color: theme
+                                                  .colorScheme
                                                   .onSurfaceVariant,
                                               borderRadius:
                                                   const BorderRadius.only(
-                                                bottomLeft: Radius.circular(6),
-                                              ),
+                                                    bottomLeft: Radius.circular(
+                                                      6,
+                                                    ),
+                                                  ),
                                             ),
                                             child: Text(
                                               '+${count - 1}',
@@ -384,14 +393,16 @@ class _ShellEventScreenState extends State<ShellEventScreen> {
   Widget _buildDeleteDialog() {
     final l10n = AppLocalizations.of(context);
     final item = _itemToDelete!;
-    final displayName =
-        ResourceNames.lookup(context, 'griditem_${item.type}');
-    final name = displayName != 'griditem_${item.type}' ? displayName : item.type;
+    final displayName = ResourceNames.lookup(context, 'griditem_${item.type}');
+    final name = displayName != 'griditem_${item.type}'
+        ? displayName
+        : item.type;
     return AlertDialog(
       title: Text(l10n?.removeItem ?? 'Remove item'),
       content: Text(
         l10n?.removeItemConfirm(
-                'R${item.location.y + 1}:C${item.location.x + 1} $name') ??
+              'R${item.location.y + 1}:C${item.location.x + 1} $name',
+            ) ??
             'Remove R${item.location.y + 1}:C${item.location.x + 1} $name?',
       ),
       actions: [
@@ -434,9 +445,10 @@ class _ShellItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final displayName =
-        ResourceNames.lookup(context, 'griditem_${item.type}');
-    final name = displayName != 'griditem_${item.type}' ? displayName : item.type;
+    final displayName = ResourceNames.lookup(context, 'griditem_${item.type}');
+    final name = displayName != 'griditem_${item.type}'
+        ? displayName
+        : item.type;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -476,14 +488,18 @@ class _ShellItemCard extends StatelessWidget {
                         children: [
                           Icon(
                             editorWarningIcon,
-                            color: editorWarningBannerForeground(theme.brightness),
+                            color: editorWarningBannerForeground(
+                              theme.brightness,
+                            ),
                             size: 16,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             'R${item.location.y + 1}:C${item.location.x + 1}',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                             ),
                           ),
                         ],

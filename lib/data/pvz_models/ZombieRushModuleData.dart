@@ -22,5 +22,3 @@ class ZombieRushModuleData extends PvzModel {
     if (plantBlackList.isNotEmpty) 'PlantBlackList': plantBlackList,
   };
 }
-
-

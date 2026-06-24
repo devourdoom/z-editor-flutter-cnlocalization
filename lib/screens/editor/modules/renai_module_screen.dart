@@ -414,9 +414,10 @@ class _RenaiModuleScreenState extends State<RenaiModuleScreen> {
                           context: context,
                           child: Container(
                             constraints: BoxConstraints(
-                              maxWidth: EditorItemCardLayout.gridPreviewMaxWidth(
-                                context,
-                              ),
+                              maxWidth:
+                                  EditorItemCardLayout.gridPreviewMaxWidth(
+                                    context,
+                                  ),
                             ),
                             child: AspectRatio(
                               aspectRatio: _gridCols / _gridRows,
@@ -745,11 +746,7 @@ class _StatueCardState extends State<_StatueCard> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text(
-                    name,
-                    style: theme.textTheme.labelMedium,
-                    maxLines: 3,
-                  ),
+                  Text(name, style: theme.textTheme.labelMedium, maxLines: 3),
                   if (widget.showCoordinates)
                     Padding(
                       padding: const EdgeInsets.only(top: 4),
@@ -757,7 +754,9 @@ class _StatueCardState extends State<_StatueCard> {
                         children: [
                           Icon(
                             editorWarningIcon,
-                            color: editorWarningBannerForeground(theme.brightness),
+                            color: editorWarningBannerForeground(
+                              theme.brightness,
+                            ),
                             size: 16,
                           ),
                           const SizedBox(width: 4),
@@ -780,9 +779,7 @@ class _StatueCardState extends State<_StatueCard> {
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       labelText:
-                          AppLocalizations.of(
-                            context,
-                          )?.renaiModuleCarveWave ??
+                          AppLocalizations.of(context)?.renaiModuleCarveWave ??
                           'Carve wave',
                       helperText: AppLocalizations.of(
                         context,

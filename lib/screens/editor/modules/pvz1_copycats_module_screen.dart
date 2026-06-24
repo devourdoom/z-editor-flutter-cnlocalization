@@ -292,7 +292,8 @@ class _PVZ1CopycatsModuleScreenState extends State<PVZ1CopycatsModuleScreen> {
                 child: _buildIdListCard(
                   context,
                   accentColor: accentColor,
-                  title: l10n?.pvz1CopycatsSectionPlantBlackList ??
+                  title:
+                      l10n?.pvz1CopycatsSectionPlantBlackList ??
                       'Plants that cannot be summoned',
                   emptyHint: l10n?.pvz1CopycatsPlantListEmpty ?? 'No entries',
                   ids: _data.plantBlackList,
@@ -319,7 +320,8 @@ class _PVZ1CopycatsModuleScreenState extends State<PVZ1CopycatsModuleScreen> {
                 child: _buildIdListCard(
                   context,
                   accentColor: accentColor,
-                  title: l10n?.pvz1CopycatsSectionZombieWhiteList ??
+                  title:
+                      l10n?.pvz1CopycatsSectionZombieWhiteList ??
                       'Zombies that can be summoned',
                   emptyHint: l10n?.pvz1CopycatsZombieListEmpty ?? 'No entries',
                   ids: _data.zombieWhiteList,

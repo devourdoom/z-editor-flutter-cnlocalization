@@ -21,8 +21,10 @@ class JitteredEventScreen extends StatelessWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(String) onSelected) onRequestZombieSelection;
-  final void Function(void Function(String) onSelected)? onRequestPlantSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestZombieSelection;
+  final void Function(void Function(String) onSelected)?
+  onRequestPlantSelection;
   final void Function(String rtid)? onEditCustomZombie;
   final String? Function(String alias)? onInjectCustomZombie;
 
@@ -34,7 +36,9 @@ class JitteredEventScreen extends StatelessWidget {
       levelFile: levelFile,
       onChanged: onChanged,
       onBack: onBack,
-      eventSubtitle: l10n?.eventTitle_SpawnZombiesJitteredWaveActionProps ?? 'Jittered Event',
+      eventSubtitle:
+          l10n?.eventTitle_SpawnZombiesJitteredWaveActionProps ??
+          'Jittered Event',
       isGroundSpawner: false,
       onRequestZombieSelection: onRequestZombieSelection,
       onRequestPlantSelection: onRequestPlantSelection,

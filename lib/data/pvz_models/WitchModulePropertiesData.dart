@@ -12,7 +12,5 @@ class WitchModulePropertiesData extends PvzModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'WitchSpawnInterval': witchSpawnInterval,
-  };
+  Map<String, dynamic> toJson() => {'WitchSpawnInterval': witchSpawnInterval};
 }

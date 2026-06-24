@@ -7,27 +7,33 @@ import 'package:c_editor/data/asset_loader.dart';
 class AmbientAudioCatalog {
   AmbientAudioCatalog._();
 
-  static const String _resourcePath = 'assets/resources/AmbientAudioSuffixes.json';
+  static const String _resourcePath =
+      'assets/resources/AmbientAudioSuffixes.json';
 
   static final Map<String, List<String>> _groupsByCodename = {};
   static List<String> _orderedCodenames = [];
   static bool _isLoaded = false;
 
   /// Codenames including `""` default if present first in JSON.
-  static List<String> get orderedCodenames => List.unmodifiable(_orderedCodenames);
+  static List<String> get orderedCodenames =>
+      List.unmodifiable(_orderedCodenames);
 
   static Future<void> init() async {
     if (_isLoaded) return;
     try {
-      final raw = json.decode(await loadJsonString(_resourcePath)) as Map<String, dynamic>;
+      final raw =
+          json.decode(await loadJsonString(_resourcePath))
+              as Map<String, dynamic>;
       final list = raw['entries'] as List<dynamic>? ?? [];
       _groupsByCodename.clear();
       _orderedCodenames = [];
       for (final item in list) {
         final m = item as Map<String, dynamic>;
         final codename = (m['codename'] as String?) ?? '';
-        final groups = (m['resourceGroups'] as List<dynamic>?)
-                ?.map((e) => '$e').toList()
+        final groups =
+            (m['resourceGroups'] as List<dynamic>?)
+                ?.map((e) => '$e')
+                .toList()
                 .where((s) => s.isNotEmpty)
                 .toList() ??
             <String>[];

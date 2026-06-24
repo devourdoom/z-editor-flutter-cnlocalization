@@ -10,4 +10,3 @@ class StarChallengeSpendSunHoldoutData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'HoldoutSeconds': holdoutSeconds};
 }
-

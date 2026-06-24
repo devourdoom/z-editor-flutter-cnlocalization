@@ -21,7 +21,9 @@ class MusicSuffixCatalog {
   static Future<void> init() async {
     if (_isLoaded) return;
     try {
-      final raw = json.decode(await loadJsonString(_resourcePath)) as Map<String, dynamic>;
+      final raw =
+          json.decode(await loadJsonString(_resourcePath))
+              as Map<String, dynamic>;
       final folder = raw['iconFolder'] as String?;
       if (folder != null && folder.isNotEmpty) {
         final f = folder.endsWith('/') ? folder : '$folder/';

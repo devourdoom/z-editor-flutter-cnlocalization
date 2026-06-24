@@ -17,4 +17,3 @@ class ZombieStats {
   double eatDPS;
   String sizeType;
 }
-

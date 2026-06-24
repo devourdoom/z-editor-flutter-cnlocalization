@@ -141,8 +141,9 @@ class _EnergyGridModuleScreenState extends State<EnergyGridModuleScreen> {
   }
 
   bool _hasTileAt(int col, int row) {
-    return (_selectedOverride?.itemList ?? [])
-        .any((e) => e.mX == col && e.mY == row);
+    return (_selectedOverride?.itemList ?? []).any(
+      (e) => e.mX == col && e.mY == row,
+    );
   }
 
   void _placeAt(int col, int row) {
@@ -247,9 +248,8 @@ class _EnergyGridModuleScreenState extends State<EnergyGridModuleScreen> {
                   itemCount: _data.overrides.length,
                   selectedIndex: _selectedIndex,
                   onSelected: (idx) => setState(() => _selectedIndex = idx),
-                  onDeleteAt: (idx) => setState(
-                    () => _overrideToDelete = _data.overrides[idx],
-                  ),
+                  onDeleteAt: (idx) =>
+                      setState(() => _overrideToDelete = _data.overrides[idx]),
                   onAdd: _addOverride,
                   groupLabel: (idx) =>
                       '${l10n?.airDropShipGroupLabel ?? "Group"} ${idx + 1}',

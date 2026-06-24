@@ -10,4 +10,3 @@ class StarChallengeSunUsedData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'MaximumSun': maximumSun};
 }
-

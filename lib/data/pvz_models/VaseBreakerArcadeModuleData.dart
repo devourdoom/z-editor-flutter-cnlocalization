@@ -6,4 +6,3 @@ class VaseBreakerArcadeModuleData extends PvzModel {
       VaseBreakerArcadeModuleData();
   Map<String, dynamic> toJson() => {};
 }
-

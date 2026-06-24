@@ -24,7 +24,10 @@ class WaveGeneratorLevelUtils {
     }
   }
 
-  static void writeData(PvzLevelFile levelFile, WaveGeneratorPropertiesData data) {
+  static void writeData(
+    PvzLevelFile levelFile,
+    WaveGeneratorPropertiesData data,
+  ) {
     final obj = findObject(levelFile);
     if (obj == null) return;
     data.syncWaveCount();

@@ -82,7 +82,10 @@ class _ThunderWaveEventScreenState extends State<ThunderWaveEventScreen> {
 
   void _addThunder() {
     _data = ThunderWaveActionPropsData(
-      thunders: [..._data.thunders, ThunderEntryData(type: _typePositive)],
+      thunders: [
+        ..._data.thunders,
+        ThunderEntryData(type: _typePositive),
+      ],
       killRate: _data.killRate,
     );
     _sync();
@@ -184,11 +187,13 @@ class _ThunderWaveEventScreenState extends State<ThunderWaveEventScreen> {
                           hintText: '0.0 - 1.0',
                           border: const OutlineInputBorder(),
                           isDense: true,
-                          helperText: l10n?.thunderWaveKillRateHint ??
+                          helperText:
+                              l10n?.thunderWaveKillRateHint ??
                               'Probability of killing plants on lightning strike (0.0–1.0)',
                         ),
-                        keyboardType:
-                            const TextInputType.numberWithOptions(decimal: true),
+                        keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true,
+                        ),
                         onChanged: (v) {
                           final rate = double.tryParse(v);
                           if (rate != null && rate >= 0 && rate <= 1) {
@@ -244,9 +249,7 @@ class _ThunderWaveEventScreenState extends State<ThunderWaveEventScreen> {
           children: [
             Icon(
               Icons.thunderstorm,
-              color: entry.type == _typePositive
-                  ? Colors.blue
-                  : Colors.red,
+              color: entry.type == _typePositive ? Colors.blue : Colors.red,
               size: 28,
             ),
             const SizedBox(width: 12),
@@ -260,7 +263,8 @@ class _ThunderWaveEventScreenState extends State<ThunderWaveEventScreen> {
             ),
             Expanded(
               child: DropdownButtonFormField<String>(
-                initialValue: entry.type == _typePositive || entry.type == _typeNegative
+                initialValue:
+                    entry.type == _typePositive || entry.type == _typeNegative
                     ? entry.type
                     : _typePositive,
                 items: [

@@ -44,4 +44,3 @@ class MagicMirrorArrayData extends PvzModel {
     return map;
   }
 }
-

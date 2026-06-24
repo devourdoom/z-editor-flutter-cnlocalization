@@ -83,9 +83,7 @@ class _PumpkinHouseEventScreenState extends State<PumpkinHouseEventScreen> {
       location: LocationData(x: _selectedX, y: _selectedY),
       type: _pumpkinHouseType,
     );
-    _data = PumpkinHouseActionPropsData(
-      tiles: [..._data.tiles, newItem],
-    );
+    _data = PumpkinHouseActionPropsData(tiles: [..._data.tiles, newItem]);
     _sync();
   }
 
@@ -220,10 +218,7 @@ class _PumpkinHouseEventScreenState extends State<PumpkinHouseEventScreen> {
                           deleteTooltip: l10n?.delete ?? 'Delete',
                         ),
                       ),
-                      AddItemCard(
-                        onPressed: _addHouse,
-                        minHeight: 130,
-                      ),
+                      AddItemCard(onPressed: _addHouse, minHeight: 130),
                     ],
                   ),
                   if (itemsOutsideLawn.isNotEmpty) ...[
@@ -289,8 +284,7 @@ class _PumpkinHouseEventScreenState extends State<PumpkinHouseEventScreen> {
                       final isSelected = row == _selectedY && col == _selectedX;
                       final cellItems = _data.tiles
                           .where(
-                            (t) =>
-                                t.location.x == col && t.location.y == row,
+                            (t) => t.location.x == col && t.location.y == row,
                           )
                           .toList();
                       final firstItem = cellItems.firstOrNull;
@@ -349,8 +343,10 @@ class _PumpkinHouseEventScreenState extends State<PumpkinHouseEventScreen> {
                                                   .onSurfaceVariant,
                                               borderRadius:
                                                   const BorderRadius.only(
-                                                bottomLeft: Radius.circular(6),
-                                              ),
+                                                    bottomLeft: Radius.circular(
+                                                      6,
+                                                    ),
+                                                  ),
                                             ),
                                             child: Text(
                                               '+${count - 1}',
@@ -382,10 +378,10 @@ class _PumpkinHouseEventScreenState extends State<PumpkinHouseEventScreen> {
   Widget _buildDeleteDialog() {
     final l10n = AppLocalizations.of(context);
     final item = _itemToDelete!;
-    final displayName =
-        ResourceNames.lookup(context, 'griditem_${item.type}');
-    final name =
-        displayName != 'griditem_${item.type}' ? displayName : item.type;
+    final displayName = ResourceNames.lookup(context, 'griditem_${item.type}');
+    final name = displayName != 'griditem_${item.type}'
+        ? displayName
+        : item.type;
     return AlertDialog(
       title: Text(l10n?.removeItem ?? 'Remove item'),
       content: Text(
@@ -430,10 +426,10 @@ class _PumpkinHouseItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final displayName =
-        ResourceNames.lookup(context, 'griditem_${item.type}');
-    final name =
-        displayName != 'griditem_${item.type}' ? displayName : item.type;
+    final displayName = ResourceNames.lookup(context, 'griditem_${item.type}');
+    final name = displayName != 'griditem_${item.type}'
+        ? displayName
+        : item.type;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -476,14 +472,18 @@ class _PumpkinHouseItemCard extends StatelessWidget {
                         children: [
                           Icon(
                             editorWarningIcon,
-                            color: editorWarningBannerForeground(theme.brightness),
+                            color: editorWarningBannerForeground(
+                              theme.brightness,
+                            ),
                             size: 16,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             'R${item.location.y + 1}:C${item.location.x + 1}',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                             ),
                           ),
                         ],

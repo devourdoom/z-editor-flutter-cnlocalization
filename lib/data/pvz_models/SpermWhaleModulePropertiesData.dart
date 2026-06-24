@@ -30,5 +30,3 @@ class SpermWhaleModulePropertiesData extends PvzModel {
     'PoisonTriggerCount': poisonTriggerCount,
   };
 }
-
-

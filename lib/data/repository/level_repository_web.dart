@@ -119,6 +119,7 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
     final normalized = _normalizeWebDirPath(dirPath);
     _directories.add(_webPathPrefix);
 
+    final favoritePaths = await readFavoriteLevelPaths();
     final items = <FileItem>[];
 
     final childDirs = _directories
@@ -150,12 +151,16 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
           isDirectory: false,
           lastModified: 0,
           size: entry.value.length,
+          isFavorite: favoritePaths.contains(fullPath),
         ),
       );
     }
 
     items.sort((a, b) {
       if (a.isDirectory != b.isDirectory) return a.isDirectory ? -1 : 1;
+      if (!a.isDirectory && a.isFavorite != b.isFavorite) {
+        return a.isFavorite ? -1 : 1;
+      }
       return naturalCompare(a.name, b.name);
     });
     return items;
@@ -231,6 +236,7 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
             : '$newPath/${full.substring(oldPrefix.length)}';
         _memoryCache[_relativeFromWebPath(renamedFull)] = e.value;
       }
+      await moveFavoriteLevelPathPrefix(oldPath, newPath);
       return true;
     }
 
@@ -242,6 +248,7 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
     }
     final content = _memoryCache.remove(oldKey)!;
     _memoryCache[newKey] = content;
+    await moveFavoriteLevelPath(oldPath, newPath);
     return true;
   }
 
@@ -261,9 +268,11 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
         return full == targetPath || full.startsWith(prefix);
       });
       _directories.add(_webPathPrefix);
+      await removeFavoriteLevelPathPrefix(targetPath);
       return;
     }
     _memoryCache.remove(_relativeFromWebPath(targetPath));
+    await removeFavoriteLevelPath(targetPath);
   }
 
   @override
@@ -278,6 +287,7 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
     if (!_memoryCache.containsKey(srcName)) return false;
     if (_memoryCache.containsKey(targetKey)) return false;
     _memoryCache[targetKey] = _memoryCache[srcName]!;
+    await removeFavoriteLevelPath(targetPath);
     return true;
   }
 
@@ -294,6 +304,10 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
       return false;
     }
     _memoryCache[dstKey] = _memoryCache.remove(srcKey)!;
+    await moveFavoriteLevelPath(
+      _webJoin(srcDirPath, fileName),
+      _webJoin(destDirPath, fileName),
+    );
     return true;
   }
 
@@ -304,11 +318,14 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
     String destDirPath,
   ) async {
     if (srcDirPath == destDirPath) return false;
+    final srcPath = _webJoin(srcDirPath, fileName);
+    final destPath = _webJoin(destDirPath, fileName);
     final srcKey = _relativeFromWebPath(_webJoin(srcDirPath, fileName));
     final dstKey = _relativeFromWebPath(_webJoin(destDirPath, fileName));
     if (!_memoryCache.containsKey(srcKey)) return false;
     _memoryCache.remove(dstKey);
     _memoryCache[dstKey] = _memoryCache.remove(srcKey)!;
+    await moveFavoriteLevelPath(srcPath, destPath, clearDestination: true);
     return true;
   }
 
@@ -320,11 +337,14 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
     String newFileName,
   ) async {
     if (srcDirPath == destDirPath) return null;
+    final srcPath = _webJoin(srcDirPath, fileName);
+    final destPath = _webJoin(destDirPath, newFileName);
     final srcKey = _relativeFromWebPath(_webJoin(srcDirPath, fileName));
     final dstKey = _relativeFromWebPath(_webJoin(destDirPath, newFileName));
     if (!_memoryCache.containsKey(srcKey)) return null;
     if (_memoryCache.containsKey(dstKey)) return null;
     _memoryCache[dstKey] = _memoryCache.remove(srcKey)!;
+    await moveFavoriteLevelPath(srcPath, destPath);
     return newFileName;
   }
 
@@ -455,6 +475,7 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
     final key = _relativeFromWebPath(filePath);
     if (_memoryCache.containsKey(key)) return false;
     _memoryCache[key] = Uint8List.fromList(utf8.encode(assetContent));
+    await removeFavoriteLevelPath(filePath);
     return true;
   }
 
@@ -474,9 +495,11 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
     final targetNameOnly =
         targetName ??
         '${baseNameWithoutLevelExtension(sourceName)}$targetExtension';
-    final target = _relativeFromWebPath(_webJoin(sourceDir, targetNameOnly));
+    final targetPath = _webJoin(sourceDir, targetNameOnly);
+    final target = _relativeFromWebPath(targetPath);
     if (_memoryCache.containsKey(target)) return null;
     _memoryCache[target] = encodeLevelBytes(target, level);
+    await removeFavoriteLevelPath(targetPath);
     return target;
   }
 }

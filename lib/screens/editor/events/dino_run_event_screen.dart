@@ -29,7 +29,8 @@ class _DinoRunEventScreenState extends State<DinoRunEventScreen> {
   late DinoRunActionPropsData _data;
   late TextEditingController _waveStartMessageCtrl;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _maxRowIndex => _isDeepSeaLawn ? 5 : 4;
 
   @override
@@ -171,7 +172,8 @@ class _DinoRunEventScreenState extends State<DinoRunEventScreen> {
                       Row(
                         children: [
                           Text(
-                            l10n?.dinoRow(_data.dinoRow + 1) ?? 'Row (DinoRow): ${_data.dinoRow + 1}',
+                            l10n?.dinoRow(_data.dinoRow + 1) ??
+                                'Row (DinoRow): ${_data.dinoRow + 1}',
                             style: theme.textTheme.bodyLarge,
                           ),
                           const SizedBox(width: 8),
@@ -207,7 +209,8 @@ class _DinoRunEventScreenState extends State<DinoRunEventScreen> {
                       TextFormField(
                         initialValue: _data.timeInterval.toString(),
                         decoration: InputDecoration(
-                          labelText: 'TimeInterval (${l10n?.timeInterval ?? 'Time interval'})',
+                          labelText:
+                              'TimeInterval (${l10n?.timeInterval ?? 'Time interval'})',
                           border: const OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.number,
@@ -235,7 +238,8 @@ class _DinoRunEventScreenState extends State<DinoRunEventScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n?.waveStartMessageLabel ?? 'Red subtitle (WaveStartMessage)',
+                        l10n?.waveStartMessageLabel ??
+                            'Red subtitle (WaveStartMessage)',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -244,7 +248,9 @@ class _DinoRunEventScreenState extends State<DinoRunEventScreen> {
                       TextField(
                         controller: _waveStartMessageCtrl,
                         decoration: InputDecoration(
-                          hintText: l10n?.optionalWarningText ?? 'Optional warning text before spawn',
+                          hintText:
+                              l10n?.optionalWarningText ??
+                              'Optional warning text before spawn',
                           border: const OutlineInputBorder(),
                         ),
                         onChanged: (v) {

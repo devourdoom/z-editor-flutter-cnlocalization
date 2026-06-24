@@ -16,7 +16,5 @@ class ZombossFinalStageTimeLimitedChallengePropertiesData extends PvzModel {
   }
 
   @override
-  Map<String, dynamic> toJson() => {
-        'ZombossTimeLimit': zombossTimeLimit,
-      };
+  Map<String, dynamic> toJson() => {'ZombossTimeLimit': zombossTimeLimit};
 }

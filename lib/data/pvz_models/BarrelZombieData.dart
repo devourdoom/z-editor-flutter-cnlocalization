@@ -16,5 +16,4 @@ class BarrelZombieData extends PvzModel {
   Map<String, dynamic> toJson() => {'TypeName': typeName, 'Level': level};
 }
 
-
 /// Thunder type: positive or negative

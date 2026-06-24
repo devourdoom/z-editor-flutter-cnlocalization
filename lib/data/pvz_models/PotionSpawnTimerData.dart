@@ -15,5 +15,3 @@ class PotionSpawnTimerData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'Min': min, 'Max': max};
 }
-
-

@@ -872,16 +872,8 @@ class ModuleRegistry {
       category: ModuleCategory.scene,
       defaultAlias: 'MechanismPlank',
       initialDataFactory: () => {
-        'MechanismGearsRect': {
-        'mHeight': 5,
-        'mWidth': 4,
-        'mX': 0,
-        'mY': 0,
-        },
-        'MechanismPlankRows': [
-          '0',
-          '4',
-        ],
+        'MechanismGearsRect': {'mHeight': 5, 'mWidth': 4, 'mX': 0, 'mY': 0},
+        'MechanismPlankRows': ['0', '4'],
       },
       routeId: 'MechanismPlank',
     ),

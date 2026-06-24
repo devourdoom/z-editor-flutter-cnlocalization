@@ -12,5 +12,3 @@ class ThunderEntryData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'Type': type};
 }
-
-

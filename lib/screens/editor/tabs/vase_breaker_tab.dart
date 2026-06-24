@@ -10,7 +10,8 @@ import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/plant_selection_screen.dart';
 import 'package:c_editor/screens/select/zombie_selection_screen.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 class VaseBreakerTab extends StatefulWidget {
@@ -36,7 +37,8 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
   late VaseBreakerPresetData _data;
   bool _isLoading = true;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _gridRows => _isDeepSeaLawn ? 6 : 5;
   int get _gridCols => _isDeepSeaLawn ? 10 : 9;
 
@@ -104,7 +106,10 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
     final minCol = _data.minColumnIndex;
     final maxCol = _data.maxColumnIndex;
     final blacklistCount = _data.gridSquareBlacklist.where((loc) {
-      return loc.x >= minCol && loc.x <= maxCol && loc.y >= 0 && loc.y < _gridRows;
+      return loc.x >= minCol &&
+          loc.x <= maxCol &&
+          loc.y >= 0 &&
+          loc.y < _gridRows;
     }).length;
 
     final totalSlots = (maxCol - minCol + 1) * _gridRows - blacklistCount;
@@ -112,10 +117,16 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
     final isCapacityError = totalSlots != currentAssigned;
 
     final outOfArea = _data.gridSquareBlacklist
-        .where((loc) => loc.x < 0 || loc.x >= _gridCols || loc.y < 0 || loc.y >= _gridRows)
+        .where(
+          (loc) =>
+              loc.x < 0 ||
+              loc.x >= _gridCols ||
+              loc.y < 0 ||
+              loc.y >= _gridRows,
+        )
         .toList();
-    final has6RowData = !_isDeepSeaLawn &&
-        _data.gridSquareBlacklist.any((loc) => loc.y >= 5);
+    final has6RowData =
+        !_isDeepSeaLawn && _data.gridSquareBlacklist.any((loc) => loc.y >= 5);
     final showStageWarning = has6RowData;
     final showOutOfAreaWarning = outOfArea.isNotEmpty;
 
@@ -126,15 +137,18 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
         children: [
           if (showStageWarning)
             EditorWarningBanner(
-              message: l10n?.warningStageSwitchedTo5Rows ??
+              message:
+                  l10n?.warningStageSwitchedTo5Rows ??
                   'Stage uses 5 rows but some data references row 6. These objects may not display correctly in-game.',
             ),
           if (showOutOfAreaWarning)
             _InfoBanner(
-              message: l10n?.warningObjectsOutsideArea(_gridRows, _gridCols) ??
+              message:
+                  l10n?.warningObjectsOutsideArea(_gridRows, _gridCols) ??
                   'Some objects are outside the playable area ($_gridRows rows × $_gridCols cols).',
             ),
-          if (showStageWarning || showOutOfAreaWarning) const SizedBox(height: 16),
+          if (showStageWarning || showOutOfAreaWarning)
+            const SizedBox(height: 16),
           _buildRangeSection(l10n),
           const SizedBox(height: 16),
           _buildGridSection(l10n),
@@ -229,7 +243,8 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
               desktopScale: 0.5,
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final cellSize = (constraints.maxWidth / _gridCols).floorToDouble();
+                  final cellSize = (constraints.maxWidth / _gridCols)
+                      .floorToDouble();
                   return Column(
                     children: List.generate(_gridRows, (row) {
                       return Row(
@@ -410,7 +425,9 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
       return const Icon(Icons.local_florist, color: Colors.green, size: size);
     }
     if (vase.zombieTypeName != null) {
-      final typeName = ZombiePropertiesRepository.getTypeNameByAlias(vase.zombieTypeName!);
+      final typeName = ZombiePropertiesRepository.getTypeNameByAlias(
+        vase.zombieTypeName!,
+      );
       final zombie = ZombieRepository().allZombies.firstWhereOrNull(
         (z) => z.id == typeName,
       );
@@ -430,8 +447,9 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
       final info = _collectableTypes.firstWhereOrNull(
         (e) => e.id == vase.collectableTypeName,
       );
-      final iconPath =
-          info != null ? 'assets/images/others/${info.iconName}' : null;
+      final iconPath = info != null
+          ? 'assets/images/others/${info.iconName}'
+          : null;
       if (iconPath != null) {
         return AssetImageWidget(
           assetPath: iconPath,
@@ -445,7 +463,11 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
     return const Icon(Icons.inventory, color: Colors.amber, size: size);
   }
 
-  String _getVaseTitle(BuildContext context, VaseDefinition vase, AppLocalizations? l10n) {
+  String _getVaseTitle(
+    BuildContext context,
+    VaseDefinition vase,
+    AppLocalizations? l10n,
+  ) {
     if (vase.plantTypeName != null) {
       final plants = PlantRepository().allPlants.where(
         (p) => p.id == vase.plantTypeName,
@@ -455,7 +477,9 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
           : vase.plantTypeName!;
     }
     if (vase.zombieTypeName != null) {
-      final typeName = ZombiePropertiesRepository.getTypeNameByAlias(vase.zombieTypeName!);
+      final typeName = ZombiePropertiesRepository.getTypeNameByAlias(
+        vase.zombieTypeName!,
+      );
       final zombies = ZombieRepository().allZombies.where(
         (z) => z.id == typeName,
       );
@@ -474,14 +498,10 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
   String _getVaseSubtitle(VaseDefinition vase, AppLocalizations? l10n) {
     final parts = <String>[];
     if (vase.plantTypeName != null) {
-      parts.add(
-        '${l10n?.plantLabel ?? "Plant"}: ${vase.plantTypeName}',
-      );
+      parts.add('${l10n?.plantLabel ?? "Plant"}: ${vase.plantTypeName}');
     }
     if (vase.zombieTypeName != null) {
-      parts.add(
-        '${l10n?.zombieLabel ?? "Zombie"}: ${vase.zombieTypeName}',
-      );
+      parts.add('${l10n?.zombieLabel ?? "Zombie"}: ${vase.zombieTypeName}');
     }
     if (vase.collectableTypeName != null) {
       parts.add(
@@ -501,18 +521,14 @@ class _VaseBreakerTabState extends State<VaseBreakerTab> {
           mainAxisSize: MainAxisSize.min,
           children: [
             ListTile(
-              title: Text(
-                l10n?.plantVaseOption ?? 'Plant Vase',
-              ),
+              title: Text(l10n?.plantVaseOption ?? 'Plant Vase'),
               onTap: () {
                 Navigator.pop(ctx);
                 _showPlantPicker();
               },
             ),
             ListTile(
-              title: Text(
-                l10n?.zombieVaseOption ?? 'Zombie Vase',
-              ),
+              title: Text(l10n?.zombieVaseOption ?? 'Zombie Vase'),
               onTap: () {
                 Navigator.pop(ctx);
                 _showZombiePicker();

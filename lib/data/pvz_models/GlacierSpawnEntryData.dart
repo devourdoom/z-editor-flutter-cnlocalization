@@ -2,11 +2,7 @@ import 'package:c_editor/data/pvz_models/PvzModel.dart';
 
 /// One weighted zombie entry inside a glacier column (`Entries` item).
 class GlacierSpawnEntryData extends PvzModel {
-  GlacierSpawnEntryData({
-    this.typeName = '',
-    this.weight = 1,
-    this.level = 0,
-  });
+  GlacierSpawnEntryData({this.typeName = '', this.weight = 1, this.level = 0});
 
   String typeName;
   int weight;

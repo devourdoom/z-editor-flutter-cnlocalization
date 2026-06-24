@@ -54,4 +54,3 @@ class ModifyConveyorPlantData extends PvzModel {
     return data;
   }
 }
-

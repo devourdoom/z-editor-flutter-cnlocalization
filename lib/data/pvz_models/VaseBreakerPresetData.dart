@@ -48,4 +48,3 @@ class VaseBreakerPresetData extends PvzModel {
     'Vases': vases.map((e) => e.toJson()).toList(),
   };
 }
-

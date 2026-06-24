@@ -249,7 +249,10 @@ class _SpawnGraveStonesEventScreenState
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   final parsed = LevelParser.parseLevel(widget.levelFile);
-                  final isDeepSea = LevelParser.isDeepSeaLawn(parsed.levelDef, widget.levelFile);
+                  final isDeepSea = LevelParser.isDeepSeaLawn(
+                    parsed.levelDef,
+                    widget.levelFile,
+                  );
                   final cols = isDeepSea ? 10 : 9;
                   final rows = isDeepSea ? 6 : 5;
                   final cellSize = (constraints.maxWidth / cols)
@@ -377,10 +380,7 @@ class _SpawnGraveStonesEventScreenState
         const SizedBox(width: 8),
         Tooltip(
           message: l10n?.addType ?? 'Add type',
-          child: PvzAddButton(
-            onPressed: _addItem,
-            size: 40,
-          ),
+          child: PvzAddButton(onPressed: _addItem, size: 40),
         ),
       ],
     );
@@ -416,11 +416,7 @@ class _SpawnGraveStonesEventScreenState
         padding: const EdgeInsets.all(12),
         child: Row(
           children: [
-            GridItemIcon(
-              typeName: alias,
-              size: 48,
-              fit: BoxFit.contain,
-            ),
+            GridItemIcon(typeName: alias, size: 48, fit: BoxFit.contain),
             const SizedBox(width: 12),
             Expanded(
               child: Column(

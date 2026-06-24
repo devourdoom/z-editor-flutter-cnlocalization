@@ -53,8 +53,9 @@ class FishTypeRepository {
   Future<void> init() async {
     if (_isLoaded) return;
     try {
-      final jsonString =
-          await loadJsonString('assets/reference/CreatureTypes.json');
+      final jsonString = await loadJsonString(
+        'assets/reference/CreatureTypes.json',
+      );
       final map = json.decode(jsonString) as Map<String, dynamic>?;
       final list = map?['objects'] as List<dynamic>? ?? [];
       _allFishes = [];
@@ -68,14 +69,17 @@ class FishTypeRepository {
         if (!creatureClass.contains('Fish')) continue;
         final typeName = objdata['TypeName'] as String? ?? '';
         final aliases = item['aliases'] as List<dynamic>?;
-        final alias = (aliases?.isNotEmpty == true ? aliases!.first : typeName) as String;
+        final alias =
+            (aliases?.isNotEmpty == true ? aliases!.first : typeName) as String;
         final props = objdata['Properties'] as String?;
-        _allFishes.add(FishInfo(
-          typeName: typeName,
-          alias: alias,
-          creatureClass: creatureClass,
-          propertiesRtid: props,
-        ));
+        _allFishes.add(
+          FishInfo(
+            typeName: typeName,
+            alias: alias,
+            creatureClass: creatureClass,
+            propertiesRtid: props,
+          ),
+        );
       }
       _isLoaded = true;
     } catch (e) {
@@ -86,8 +90,9 @@ class FishTypeRepository {
   FishInfo? getFishByTypeName(String typeName) {
     final key = FishInfo.normalizeFishAlias(typeName);
     try {
-      return _allFishes
-          .firstWhere((f) => FishInfo.normalizeFishAlias(f.typeName) == key);
+      return _allFishes.firstWhere(
+        (f) => FishInfo.normalizeFishAlias(f.typeName) == key,
+      );
     } catch (_) {
       return null;
     }
@@ -96,8 +101,9 @@ class FishTypeRepository {
   FishInfo? getFishByAlias(String alias) {
     final key = FishInfo.normalizeFishAlias(alias);
     try {
-      return _allFishes
-          .firstWhere((f) => FishInfo.normalizeFishAlias(f.alias) == key);
+      return _allFishes.firstWhere(
+        (f) => FishInfo.normalizeFishAlias(f.alias) == key,
+      );
     } catch (_) {
       return null;
     }

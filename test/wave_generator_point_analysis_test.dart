@@ -54,7 +54,9 @@ void main() {
           WaveGeneratorWaveData(
             disableRandomSpawns: false,
             addToZombiePool: [
-              WaveGeneratorPoolEntryData(type: 'RTID(kongfu_basic@ZombieTypes)'),
+              WaveGeneratorPoolEntryData(
+                type: 'RTID(kongfu_basic@ZombieTypes)',
+              ),
             ],
           ),
         ],

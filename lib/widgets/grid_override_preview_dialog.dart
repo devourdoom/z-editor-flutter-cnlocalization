@@ -132,9 +132,7 @@ Future<void> showDropShipGridPreviewDialog(
     context: context,
     builder: (ctx) => AlertDialog(
       title: Text(
-        title ??
-            l10n?.airDropShipModuleDropAreaPreview ??
-            'Drop area preview',
+        title ?? l10n?.airDropShipModuleDropAreaPreview ?? 'Drop area preview',
       ),
       content: SingleChildScrollView(
         child: Column(

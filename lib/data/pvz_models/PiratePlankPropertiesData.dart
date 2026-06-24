@@ -13,5 +13,3 @@ class PiratePlankPropertiesData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'PlankRows': plankRows};
 }
-
-

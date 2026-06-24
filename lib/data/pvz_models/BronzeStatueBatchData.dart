@@ -3,7 +3,7 @@ import 'package:c_editor/data/pvz_models/PvzModel.dart';
 
 class BronzeStatueBatchData extends PvzModel {
   BronzeStatueBatchData({List<BronzeStatueItemData>? itemList})
-      : itemList = itemList ?? [];
+    : itemList = itemList ?? [];
 
   List<BronzeStatueItemData> itemList;
 

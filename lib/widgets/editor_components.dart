@@ -5,7 +5,8 @@ import 'package:c_editor/data/level_parser.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/repository/grid_item_repository.dart';
 import 'package:c_editor/theme/app_theme.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 
 export 'package:c_editor/theme/app_theme.dart'
     show
@@ -87,6 +88,7 @@ class PvzAddButton extends StatelessWidget {
   final VoidCallback onPressed;
   final double size;
   final String? label;
+
   /// When true, uses gray (surface variant) instead of green (e.g. for random row).
   final bool useSecondaryColor;
 
@@ -100,7 +102,9 @@ class PvzAddButton extends StatelessWidget {
       bgColor = theme.colorScheme.surfaceContainerHighest;
       iconColor = theme.colorScheme.onSurfaceVariant;
     } else {
-      bgColor = isDark ? pvzGreenDark.withValues(alpha: 0.35) : const Color(0xFFC8E6C9);
+      bgColor = isDark
+          ? pvzGreenDark.withValues(alpha: 0.35)
+          : const Color(0xFFC8E6C9);
       iconColor = pvzGreenDark;
     }
     final btn = Material(
@@ -170,9 +174,7 @@ abstract final class SelectionGridLayout {
   }
 
   static double cellWidth(double maxWidth, int crossAxisCount) {
-    return (maxWidth -
-            padding * 2 -
-            spacing * (crossAxisCount - 1)) /
+    return (maxWidth - padding * 2 - spacing * (crossAxisCount - 1)) /
         crossAxisCount;
   }
 
@@ -180,8 +182,7 @@ abstract final class SelectionGridLayout {
     return (cellWidth * 0.82).clamp(80.0, 120.0);
   }
 
-  static int toolCrossAxisCount(double maxWidth) =>
-      maxWidth >= 600 ? 4 : 2;
+  static int toolCrossAxisCount(double maxWidth) => maxWidth >= 600 ? 4 : 2;
 
   static double toolChildAspectRatio(double maxWidth) =>
       maxWidth >= 600 ? 0.88 : 0.72;
@@ -197,10 +198,16 @@ abstract final class SelectionGridLayout {
 /// Layout metrics for Renai statue cards and the statue picker grid.
 abstract final class RenaiStatueCardLayout {
   static double tileCardWidth(BuildContext context) =>
-      EditorItemCardLayout.cardWidth(context, base: compact(context) ? 156 : 180);
+      EditorItemCardLayout.cardWidth(
+        context,
+        base: compact(context) ? 156 : 180,
+      );
 
   static double tileIconSize(BuildContext context) =>
-      EditorItemCardLayout.iconSlotSize(context, base: compact(context) ? 84 : 100);
+      EditorItemCardLayout.iconSlotSize(
+        context,
+        base: compact(context) ? 84 : 100,
+      );
 
   static int selectionCrossAxisCount(double maxWidth) =>
       SelectionGridLayout.crossAxisCount(maxWidth);
@@ -250,11 +257,7 @@ class EditorDeletableIconHeader extends StatelessWidget {
           children: [
             Expanded(
               child: Center(
-                child: SizedBox(
-                  width: slotSize,
-                  height: slotSize,
-                  child: icon,
-                ),
+                child: SizedBox(width: slotSize, height: slotSize, child: icon),
               ),
             ),
             SizedBox(
@@ -297,8 +300,10 @@ class AddItemCard extends StatelessWidget {
   });
 
   final VoidCallback onPressed;
+
   /// Card width. Use 140 to match [RenaiModuleScreen] statue cards.
   final double width;
+
   /// When set, card uses this height and centers the plus button vertically.
   /// Use to align with taller item cards (e.g. Renai statue cards).
   final double? minHeight;
@@ -336,11 +341,7 @@ class AddItemCard extends StatelessWidget {
           );
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: SizedBox(
-        width: cardWidth,
-        height: minHeight,
-        child: content,
-      ),
+      child: SizedBox(width: cardWidth, height: minHeight, child: content),
     );
   }
 }
@@ -381,7 +382,9 @@ class AccentBarChoiceChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final selectedBg = isDark ? const Color(0xFFEEEEEE) : Colors.white;
-    final selectedFg = isDark ? const Color(0xFF1B1B1B) : const Color(0xFF212121);
+    final selectedFg = isDark
+        ? const Color(0xFF1B1B1B)
+        : const Color(0xFF212121);
     final unselectedBg = Colors.black.withValues(alpha: isDark ? 0.32 : 0.24);
     const unselectedFg = Colors.white;
 
@@ -437,7 +440,9 @@ class EventChipWidget extends StatelessWidget {
 
     final bgColor = isInvalid
         ? theme.colorScheme.error
-        : (isDark ? (meta?.darkColor ?? theme.colorScheme.primary) : (meta?.color ?? theme.colorScheme.primary));
+        : (isDark
+              ? (meta?.darkColor ?? theme.colorScheme.primary)
+              : (meta?.color ?? theme.colorScheme.primary));
 
     String? summaryText;
     if (!isInvalid) {
@@ -462,7 +467,11 @@ class EventChipWidget extends StatelessWidget {
               if (isInvalid)
                 Padding(
                   padding: const EdgeInsets.only(right: 4),
-                  child: Icon(Icons.error_outline, size: 14, color: theme.colorScheme.onError),
+                  child: Icon(
+                    Icons.error_outline,
+                    size: 14,
+                    color: theme.colorScheme.onError,
+                  ),
                 )
               else if (meta != null)
                 Padding(
@@ -488,14 +497,20 @@ class EventChipWidget extends StatelessWidget {
               if (summaryText != null && summaryText.isNotEmpty) ...[
                 const SizedBox(width: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 4,
+                    vertical: 1,
+                  ),
                   decoration: BoxDecoration(
                     color: Colors.white.withValues(alpha: 0.3),
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     summaryText,
-                    style: TextStyle(color: theme.colorScheme.onPrimary, fontSize: 10),
+                    style: TextStyle(
+                      color: theme.colorScheme.onPrimary,
+                      fontSize: 10,
+                    ),
                     maxLines: 1,
                   ),
                 ),
@@ -520,9 +535,15 @@ void showEditorHelpDialog(
     builder: (ctx) => AlertDialog(
       title: Row(
         children: [
-          Icon(Icons.help_outline, color: themeColor ?? Theme.of(ctx).colorScheme.primary),
+          Icon(
+            Icons.help_outline,
+            color: themeColor ?? Theme.of(ctx).colorScheme.primary,
+          ),
           const SizedBox(width: 8),
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
         ],
       ),
       content: SingleChildScrollView(
@@ -530,41 +551,49 @@ void showEditorHelpDialog(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: sections
-              .map((s) => Padding(
-                    padding: const EdgeInsets.only(bottom: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          '• ${s.title}',
+              .map(
+                (s) => Padding(
+                  padding: const EdgeInsets.only(bottom: 12),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '• ${s.title}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color:
+                              themeColor ?? Theme.of(ctx).colorScheme.primary,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 12),
+                        child: Text(
+                          s.body,
                           style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: themeColor ?? Theme.of(ctx).colorScheme.primary,
+                            fontSize: 13,
+                            color: Theme.of(ctx).colorScheme.onSurfaceVariant,
+                            height: 1.4,
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 12),
-                          child: Text(
-                            s.body,
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Theme.of(ctx).colorScheme.onSurfaceVariant,
-                              height: 1.4,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ))
+                      ),
+                    ],
+                  ),
+                ),
+              )
               .toList(),
         ),
       ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx),
-          child: Text('OK', style: TextStyle(color: themeColor ?? Theme.of(ctx).colorScheme.primary)),
+          child: Text(
+            'OK',
+            style: TextStyle(
+              color: themeColor ?? Theme.of(ctx).colorScheme.primary,
+            ),
+          ),
         ),
       ],
     ),
@@ -835,7 +864,9 @@ InputDecoration editorInputDecoration(
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: focusColor, width: 2),
     ),
-    floatingLabelStyle: TextStyle(color: isFocused ? focusColor : unfocusedColor),
+    floatingLabelStyle: TextStyle(
+      color: isFocused ? focusColor : unfocusedColor,
+    ),
     focusColor: focusColor,
   );
 }
@@ -990,12 +1021,13 @@ class SelectionSearchField extends StatelessWidget {
     final hintColor = foregroundColor != null
         ? foregroundColor!.withValues(alpha: 0.75)
         : (isDark
-            ? theme.colorScheme.onSurface.withValues(alpha: 0.65)
-            : theme.colorScheme.onSurface.withValues(alpha: 0.55));
+              ? theme.colorScheme.onSurface.withValues(alpha: 0.65)
+              : theme.colorScheme.onSurface.withValues(alpha: 0.55));
     final iconColor = foregroundColor != null
         ? foregroundColor!.withValues(alpha: 0.9)
         : theme.colorScheme.onSurface.withValues(alpha: 0.7);
-    final bg = fillColor ??
+    final bg =
+        fillColor ??
         (foregroundColor != null
             ? foregroundColor!.withValues(alpha: 0.18)
             : theme.colorScheme.surfaceContainerHighest);
@@ -1040,7 +1072,10 @@ class SelectionSearchField extends StatelessWidget {
         focusedBorder: useOutlineBorder
             ? OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
-                borderSide: BorderSide(color: theme.colorScheme.primary, width: 1.5),
+                borderSide: BorderSide(
+                  color: theme.colorScheme.primary,
+                  width: 1.5,
+                ),
               )
             : OutlineInputBorder(
                 borderRadius: BorderRadius.circular(borderRadius),
@@ -1059,11 +1094,11 @@ class MouseDragScrollBehavior extends MaterialScrollBehavior {
 
   @override
   Set<PointerDeviceKind> get dragDevices => {
-        PointerDeviceKind.touch,
-        PointerDeviceKind.mouse,
-        PointerDeviceKind.stylus,
-        PointerDeviceKind.trackpad,
-      };
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.stylus,
+    PointerDeviceKind.trackpad,
+  };
 }
 
 /// Applies [MouseDragScrollBehavior] to [child] (e.g. filter strips with [TabBar]).

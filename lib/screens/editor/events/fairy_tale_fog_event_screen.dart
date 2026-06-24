@@ -21,7 +21,8 @@ class FairyTaleFogEventScreen extends StatefulWidget {
   final VoidCallback onBack;
 
   @override
-  State<FairyTaleFogEventScreen> createState() => _FairyTaleFogEventScreenState();
+  State<FairyTaleFogEventScreen> createState() =>
+      _FairyTaleFogEventScreenState();
 }
 
 class _FairyTaleFogEventScreenState extends State<FairyTaleFogEventScreen> {
@@ -149,8 +150,8 @@ class _FairyTaleFogEventScreenState extends State<FairyTaleFogEventScreen> {
                       ),
                       const SizedBox(height: 16),
                       DropdownButtonFormField<String>(
-                        initialValue: _fogOptions
-                                .any((e) => e.$1 == _data.fogType)
+                        initialValue:
+                            _fogOptions.any((e) => e.$1 == _data.fogType)
                             ? _data.fogType
                             : null,
                         decoration: const InputDecoration(
@@ -158,10 +159,12 @@ class _FairyTaleFogEventScreenState extends State<FairyTaleFogEventScreen> {
                           border: OutlineInputBorder(),
                         ),
                         items: _fogOptions
-                            .map((e) => DropdownMenuItem(
-                                  value: e.$1,
-                                  child: Text(e.$2),
-                                ))
+                            .map(
+                              (e) => DropdownMenuItem(
+                                value: e.$1,
+                                child: Text(e.$2),
+                              ),
+                            )
                             .toList(),
                         onChanged: (v) {
                           if (v != null) {
@@ -347,29 +350,31 @@ class _FairyTaleFogEventScreenState extends State<FairyTaleFogEventScreen> {
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: _gridCols,
-                                childAspectRatio: 1,
-                              ),
+                                    crossAxisCount: _gridCols,
+                                    childAspectRatio: 1,
+                                  ),
                               itemCount: _gridCols * _gridRows,
                               itemBuilder: (context, i) {
                                 final col = i % _gridCols;
                                 final row = i ~/ _gridCols;
-                            final inFog = _isCellInFog(col, row);
-                            return Container(
-                              decoration: BoxDecoration(
-                                color: inFog
-                                    ? Colors.purple.withValues(alpha: 0.5)
-                                    : theme.colorScheme.surfaceContainerHighest,
-                                border: Border.all(
-                                  color: theme.colorScheme.outlineVariant,
-                                ),
-                              ),
-                            );
-                          },
+                                final inFog = _isCellInFog(col, row);
+                                return Container(
+                                  decoration: BoxDecoration(
+                                    color: inFog
+                                        ? Colors.purple.withValues(alpha: 0.5)
+                                        : theme
+                                              .colorScheme
+                                              .surfaceContainerHighest,
+                                    border: Border.all(
+                                      color: theme.colorScheme.outlineVariant,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
                     ],
                   ),
                 ),

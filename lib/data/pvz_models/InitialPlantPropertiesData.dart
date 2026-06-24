@@ -33,4 +33,3 @@ class InitialPlantPropertiesData extends PvzModel {
       'IsInitialIntensiveCarrotPlacements': isInitialIntensiveCarrotPlacements,
   };
 }
-

@@ -233,7 +233,10 @@ class _ZEditorAppState extends State<ZEditorApp> {
           children: [
             Padding(
               padding: const EdgeInsets.all(16),
-              child: Text(languageTitle, style: Theme.of(ctx).textTheme.titleLarge),
+              child: Text(
+                languageTitle,
+                style: Theme.of(ctx).textTheme.titleLarge,
+              ),
             ),
             ListTile(
               leading: const Icon(Icons.language),

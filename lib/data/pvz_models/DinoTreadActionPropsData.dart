@@ -41,4 +41,3 @@ class DinoTreadActionPropsData extends PvzModel {
     'WaveStartMessage': waveStartMessage,
   };
 }
-

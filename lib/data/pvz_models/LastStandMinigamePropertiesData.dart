@@ -21,5 +21,3 @@ class LastStandMinigamePropertiesData extends PvzModel {
     'StartingPlantfood': startingPlantfood,
   };
 }
-
-

@@ -15,4 +15,3 @@ class RailcartData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'Column': column, 'Row': row};
 }
-

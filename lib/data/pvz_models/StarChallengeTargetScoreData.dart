@@ -31,5 +31,3 @@ class StarChallengeTargetScoreData extends PvzModel {
     'TargetScore': targetScore,
   };
 }
-
-

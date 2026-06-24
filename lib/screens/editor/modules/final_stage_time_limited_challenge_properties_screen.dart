@@ -162,8 +162,7 @@ class _FinalStageTimeLimitedChallengePropertiesScreenState
           onPressed: widget.onBack,
         ),
         title: Text(
-          l10n?.finalStageTimeLimitedChallengeTitle ??
-              'Final stage time limit',
+          l10n?.finalStageTimeLimitedChallengeTitle ?? 'Final stage time limit',
         ),
         backgroundColor: themeColor,
         foregroundColor: theme.colorScheme.onPrimary,
@@ -172,19 +171,23 @@ class _FinalStageTimeLimitedChallengePropertiesScreenState
             icon: const Icon(Icons.help_outline),
             onPressed: () => showEditorHelpDialog(
               context,
-              title: l10n?.finalStageTimeLimitedChallengeHelpTitle ??
+              title:
+                  l10n?.finalStageTimeLimitedChallengeHelpTitle ??
                   'Final stage time limit challenge',
               themeColor: themeColor,
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.finalStageTimeLimitedChallengeHelpIntro ??
+                  body:
+                      l10n?.finalStageTimeLimitedChallengeHelpIntro ??
                       'Adds a timed kill challenge during the final zomboss stage.',
                 ),
                 HelpSectionData(
-                  title: l10n?.finalStageTimeLimitedChallengeHelpParams ??
+                  title:
+                      l10n?.finalStageTimeLimitedChallengeHelpParams ??
                       'Parameter configuration',
-                  body: l10n?.finalStageTimeLimitedChallengeHelpParamsBody ??
+                  body:
+                      l10n?.finalStageTimeLimitedChallengeHelpParamsBody ??
                       'By default this module uses the game definition from LevelModules. Enable custom local parameters to override ZombossTimeLimit.',
                 ),
               ],
@@ -210,7 +213,8 @@ class _FinalStageTimeLimitedChallengePropertiesScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            l10n?.customLocalParams ?? 'Custom local parameters',
+                            l10n?.customLocalParams ??
+                                'Custom local parameters',
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: themeColor,
@@ -219,9 +223,9 @@ class _FinalStageTimeLimitedChallengePropertiesScreenState
                           Text(
                             isCustom
                                 ? (l10n?.currentModeLocal ??
-                                    'Current: local (@CurrentLevel)')
+                                      'Current: local (@CurrentLevel)')
                                 : (l10n?.currentModeSystem ??
-                                    'Current: system default (@LevelModules)'),
+                                      'Current: system default (@LevelModules)'),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
@@ -233,23 +237,18 @@ class _FinalStageTimeLimitedChallengePropertiesScreenState
                       data: theme.copyWith(
                         switchTheme: SwitchThemeData(
                           thumbColor: WidgetStateProperty.resolveWith(
-                            (states) =>
-                                states.contains(WidgetState.selected)
-                                    ? themeColor
-                                    : null,
+                            (states) => states.contains(WidgetState.selected)
+                                ? themeColor
+                                : null,
                           ),
                           trackColor: WidgetStateProperty.resolveWith(
-                            (states) =>
-                                states.contains(WidgetState.selected)
-                                    ? themeColor.withValues(alpha: 0.5)
-                                    : null,
+                            (states) => states.contains(WidgetState.selected)
+                                ? themeColor.withValues(alpha: 0.5)
+                                : null,
                           ),
                         ),
                       ),
-                      child: Switch(
-                        value: isCustom,
-                        onChanged: _onToggleMode,
-                      ),
+                      child: Switch(value: isCustom, onChanged: _onToggleMode),
                     ),
                   ],
                 ),
@@ -276,12 +275,13 @@ class _FinalStageTimeLimitedChallengePropertiesScreenState
                             const SizedBox(height: 12),
                             TextField(
                               controller: _timeLimitCtrl,
-                              keyboardType: const TextInputType.numberWithOptions(
-                                decimal: true,
-                              ),
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                    decimal: true,
+                                  ),
                               decoration: InputDecoration(
-                                labelText: l10n
-                                        ?.finalStageTimeLimitedChallengeTimeLimit ??
+                                labelText:
+                                    l10n?.finalStageTimeLimitedChallengeTimeLimit ??
                                     'Zomboss time limit (ZombossTimeLimit, seconds)',
                                 border: const OutlineInputBorder(),
                               ),

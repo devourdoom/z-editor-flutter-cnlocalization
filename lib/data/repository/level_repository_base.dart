@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:c_editor/utils/hujson_codec.dart';
 import 'package:c_editor/utils/3rdParty/pyvz2_rton_codec.dart';
 import 'package:c_editor/utils/pvz2c_crypto.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../pvz_models.dart';
 
@@ -14,6 +15,7 @@ class FileItem {
     required this.isDirectory,
     required this.lastModified,
     required this.size,
+    this.isFavorite = false,
   });
 
   final String name;
@@ -21,9 +23,12 @@ class FileItem {
   final bool isDirectory;
   final int lastModified;
   final int size;
+  final bool isFavorite;
 }
 
 abstract class LevelRepositoryBase {
+  static const favoriteLevelPathsPrefsKey = 'favorite_level_file_paths';
+
   static const Set<String> levelExtensions = {
     '.json',
     '.hujson',
@@ -102,6 +107,88 @@ abstract class LevelRepositoryBase {
     required String targetExtension,
     String? targetName,
   });
+
+  Future<Set<String>> readFavoriteLevelPaths() async {
+    final prefs = await SharedPreferences.getInstance();
+    return (prefs.getStringList(favoriteLevelPathsPrefsKey) ?? const <String>[])
+        .toSet();
+  }
+
+  Future<void> writeFavoriteLevelPaths(Set<String> paths) async {
+    final prefs = await SharedPreferences.getInstance();
+    final sorted = paths.toList()..sort();
+    await prefs.setStringList(favoriteLevelPathsPrefsKey, sorted);
+  }
+
+  Future<void> setFavoriteLevelPath(String path, bool isFavorite) async {
+    final favorites = await readFavoriteLevelPaths();
+    if (isFavorite) {
+      favorites.add(path);
+    } else {
+      favorites.remove(path);
+    }
+    await writeFavoriteLevelPaths(favorites);
+  }
+
+  Future<void> removeFavoriteLevelPath(String path) async {
+    final favorites = await readFavoriteLevelPaths();
+    if (!favorites.remove(path)) return;
+    await writeFavoriteLevelPaths(favorites);
+  }
+
+  Future<void> removeFavoriteLevelPathPrefix(String pathPrefix) async {
+    final favorites = await readFavoriteLevelPaths();
+    final next = favorites
+        .where((path) => !_pathEqualsOrStartsWith(path, pathPrefix))
+        .toSet();
+    if (next.length == favorites.length) return;
+    await writeFavoriteLevelPaths(next);
+  }
+
+  Future<void> moveFavoriteLevelPath(
+    String oldPath,
+    String newPath, {
+    bool clearDestination = false,
+  }) async {
+    final favorites = await readFavoriteLevelPaths();
+    final wasFavorite = favorites.remove(oldPath);
+    if (clearDestination) favorites.remove(newPath);
+    if (wasFavorite) favorites.add(newPath);
+    if (wasFavorite || clearDestination) {
+      await writeFavoriteLevelPaths(favorites);
+    }
+  }
+
+  Future<void> moveFavoriteLevelPathPrefix(
+    String oldPrefix,
+    String newPrefix,
+  ) async {
+    final favorites = await readFavoriteLevelPaths();
+    var changed = false;
+    final next = <String>{};
+    for (final path in favorites) {
+      final moved = _replacePathPrefix(path, oldPrefix, newPrefix);
+      changed = changed || moved != path;
+      next.add(moved);
+    }
+    if (changed) await writeFavoriteLevelPaths(next);
+  }
+
+  bool _pathEqualsOrStartsWith(String path, String prefix) {
+    if (path == prefix) return true;
+    return path.startsWith('$prefix/') || path.startsWith('$prefix\\');
+  }
+
+  String _replacePathPrefix(String path, String oldPrefix, String newPrefix) {
+    if (path == oldPrefix) return newPrefix;
+    if (path.startsWith('$oldPrefix/')) {
+      return '$newPrefix/${path.substring(oldPrefix.length + 1)}';
+    }
+    if (path.startsWith('$oldPrefix\\')) {
+      return '$newPrefix\\${path.substring(oldPrefix.length + 1)}';
+    }
+    return path;
+  }
 
   bool isSupportedLevelFileName(String name) {
     final lower = name.toLowerCase();

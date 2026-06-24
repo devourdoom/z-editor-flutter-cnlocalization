@@ -82,11 +82,9 @@ class _SeedRainPropertiesScreenState extends State<SeedRainPropertiesScreen> {
   void _addPlant(List<String> ids) {
     final newList = List<SeedRainItem>.from(_data.seedRains);
     for (final id in ids) {
-      newList.add(SeedRainItem(
-        seedRainType: 0,
-        plantTypeName: id,
-        zombieTypeName: null,
-      ));
+      newList.add(
+        SeedRainItem(seedRainType: 0, plantTypeName: id, zombieTypeName: null),
+      );
     }
     _data = SeedRainPropertiesData(
       rainInterval: _data.rainInterval,
@@ -98,11 +96,13 @@ class _SeedRainPropertiesScreenState extends State<SeedRainPropertiesScreen> {
   void _addZombie(List<String> ids) {
     final newList = List<SeedRainItem>.from(_data.seedRains);
     for (final id in ids) {
-      newList.add(SeedRainItem(
-        seedRainType: 1,
-        plantTypeName: null,
-        zombieTypeName: ZombieRepository().buildZombieAliases(id),
-      ));
+      newList.add(
+        SeedRainItem(
+          seedRainType: 1,
+          plantTypeName: null,
+          zombieTypeName: ZombieRepository().buildZombieAliases(id),
+        ),
+      );
     }
     _data = SeedRainPropertiesData(
       rainInterval: _data.rainInterval,
@@ -210,14 +210,21 @@ class _SeedRainPropertiesScreenState extends State<SeedRainPropertiesScreen> {
   String _getItemName(BuildContext context, SeedRainItem item) {
     switch (item.seedRainType) {
       case 0:
-        final alias = RtidParser.parse(item.plantTypeName ?? '')?.alias ??
-            item.plantTypeName ?? '';
+        final alias =
+            RtidParser.parse(item.plantTypeName ?? '')?.alias ??
+            item.plantTypeName ??
+            '';
         return ResourceNames.lookup(context, PlantRepository().getName(alias));
       case 1:
-        final alias = RtidParser.parse(item.zombieTypeName ?? '')?.alias ??
-            item.zombieTypeName ?? '';
+        final alias =
+            RtidParser.parse(item.zombieTypeName ?? '')?.alias ??
+            item.zombieTypeName ??
+            '';
         final typeName = ZombiePropertiesRepository.getTypeNameByAlias(alias);
-        return ResourceNames.lookup(context, ZombieRepository().getName(typeName));
+        return ResourceNames.lookup(
+          context,
+          ZombieRepository().getName(typeName),
+        );
       case 2:
         return 'Plant Food';
       default:
@@ -234,7 +241,10 @@ class _SeedRainPropertiesScreenState extends State<SeedRainPropertiesScreen> {
         return StatefulBuilder(
           builder: (ctx, setDialogState) {
             return AlertDialog(
-              title: Text(l10n?.editAlias(_getItemName(ctx, item)) ?? 'Edit: ${_getItemName(ctx, item)}'),
+              title: Text(
+                l10n?.editAlias(_getItemName(ctx, item)) ??
+                    'Edit: ${_getItemName(ctx, item)}',
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -352,7 +362,9 @@ class _SeedRainPropertiesScreenState extends State<SeedRainPropertiesScreen> {
                       controller: _rainIntervalCtrl,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: l10n?.rainIntervalSeconds ?? 'Rain interval (seconds)',
+                        labelText:
+                            l10n?.rainIntervalSeconds ??
+                            'Rain interval (seconds)',
                         border: const OutlineInputBorder(),
                       ),
                       onChanged: (v) {
@@ -384,14 +396,15 @@ class _SeedRainPropertiesScreenState extends State<SeedRainPropertiesScreen> {
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(24),
-                    child: Center(
-                      child: Text(
-                        l10n?.noItemsAddHint ?? 'No items. Add plants, zombies, or collectables.',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
+                  child: Center(
+                    child: Text(
+                      l10n?.noItemsAddHint ??
+                          'No items. Add plants, zombies, or collectables.',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
                       ),
                     ),
+                  ),
                 ),
               )
             else
@@ -408,7 +421,6 @@ class _SeedRainPropertiesScreenState extends State<SeedRainPropertiesScreen> {
       ),
     );
   }
-
 }
 
 class _SeedRainRowCard extends StatelessWidget {
@@ -440,14 +452,18 @@ class _SeedRainRowCard extends StatelessWidget {
   String? _getIconPath(SeedRainItem item) {
     switch (item.seedRainType) {
       case 0:
-        final alias = RtidParser.parse(item.plantTypeName ?? '')?.alias ??
-            item.plantTypeName ?? '';
+        final alias =
+            RtidParser.parse(item.plantTypeName ?? '')?.alias ??
+            item.plantTypeName ??
+            '';
         final info = PlantRepository().getPlantInfoById(alias);
         if (info?.icon != null) return 'assets/images/plants/${info!.icon}';
         return null;
       case 1:
-        final alias = RtidParser.parse(item.zombieTypeName ?? '')?.alias ??
-            item.zombieTypeName ?? '';
+        final alias =
+            RtidParser.parse(item.zombieTypeName ?? '')?.alias ??
+            item.zombieTypeName ??
+            '';
         final typeName = ZombiePropertiesRepository.getTypeNameByAlias(alias);
         final info = ZombieRepository().getZombieById(typeName);
         if (info?.icon != null) return 'assets/images/zombies/${info!.icon}';
@@ -511,10 +527,7 @@ class _SeedRainRowCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Row(
                       children: [
-                        Text(
-                          displayType,
-                          style: theme.textTheme.bodySmall,
-                        ),
+                        Text(displayType, style: theme.textTheme.bodySmall),
                         const SizedBox(width: 12),
                         Text(
                           'Weight: ${item.weight}',
@@ -530,10 +543,7 @@ class _SeedRainRowCard extends StatelessWidget {
                   ],
                 ),
               ),
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: onDelete,
-              ),
+              IconButton(icon: const Icon(Icons.delete), onPressed: onDelete),
             ],
           ),
         ),

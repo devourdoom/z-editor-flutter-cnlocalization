@@ -27,7 +27,8 @@ class MusicSuffixSelectionScreen extends StatefulWidget {
       _MusicSuffixSelectionScreenState();
 }
 
-class _MusicSuffixSelectionScreenState extends State<MusicSuffixSelectionScreen> {
+class _MusicSuffixSelectionScreenState
+    extends State<MusicSuffixSelectionScreen> {
   String _searchQuery = '';
 
   static const double _iconLogicalSize = 96;
@@ -51,8 +52,10 @@ class _MusicSuffixSelectionScreenState extends State<MusicSuffixSelectionScreen>
 
     return Scaffold(
       appBar: AppBar(
-        leading:
-            IconButton(icon: const Icon(Icons.arrow_back), onPressed: widget.onBack),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: widget.onBack,
+        ),
         title: Text(l10n?.selectMusicSuffix ?? 'Select music suffix'),
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(64),
@@ -72,7 +75,11 @@ class _MusicSuffixSelectionScreenState extends State<MusicSuffixSelectionScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.search_off, size: 64, color: theme.colorScheme.outline),
+                  Icon(
+                    Icons.search_off,
+                    size: 64,
+                    color: theme.colorScheme.outline,
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     l10n?.noMusicSuffixFound ?? 'No music suffix found',
@@ -147,8 +154,9 @@ class _MusicSuffixTile extends StatelessWidget {
                   height: iconSize,
                   child: AssetImageWidget(
                     assetPath: assetPath,
-                    altCandidates:
-                        isUnknown ? [] : imageAltCandidates(assetPath),
+                    altCandidates: isUnknown
+                        ? []
+                        : imageAltCandidates(assetPath),
                     width: iconSize,
                     height: iconSize,
                     fit: BoxFit.cover,
@@ -158,8 +166,9 @@ class _MusicSuffixTile extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 displayName,
-                style: theme.textTheme.titleSmall
-                    ?.copyWith(fontWeight: FontWeight.bold),
+                style: theme.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,

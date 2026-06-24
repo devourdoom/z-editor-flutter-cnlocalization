@@ -48,4 +48,3 @@ class ConveyorBeltData extends PvzModel {
     'SpeedConditions': speedConditions.map((e) => e.toJson()).toList(),
   };
 }
-

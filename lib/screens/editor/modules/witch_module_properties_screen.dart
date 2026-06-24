@@ -66,8 +66,9 @@ class _WitchModulePropertiesScreenState
     } else {
       _data = WitchModulePropertiesData();
     }
-    _spawnIntervalCtrl =
-        TextEditingController(text: '${_data.witchSpawnInterval}');
+    _spawnIntervalCtrl = TextEditingController(
+      text: '${_data.witchSpawnInterval}',
+    );
   }
 
   void _sync() {
@@ -103,11 +104,13 @@ class _WitchModulePropertiesScreenState
         (o) => o.aliases?.contains(_defaultAlias) == true,
       );
       if (existing == null) {
-        objects.add(PvzObject(
-          aliases: [_defaultAlias],
-          objClass: _objClass,
-          objData: _data.toJson(),
-        ));
+        objects.add(
+          PvzObject(
+            aliases: [_defaultAlias],
+            objClass: _objClass,
+            objData: _data.toJson(),
+          ),
+        );
       } else {
         existing.objData = _data.toJson();
       }
@@ -168,12 +171,14 @@ class _WitchModulePropertiesScreenState
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.witchModuleHelpIntro ??
+                  body:
+                      l10n?.witchModuleHelpIntro ??
                       'Configures the pumpkin witch intro animation and subtitles.',
                 ),
                 HelpSectionData(
                   title: l10n?.witchModuleHelpParams ?? 'Parameters',
-                  body: l10n?.witchModuleHelpParamsBody ??
+                  body:
+                      l10n?.witchModuleHelpParamsBody ??
                       'By default uses LevelModules. Enable custom mode to edit locally.',
                 ),
               ],
@@ -199,7 +204,8 @@ class _WitchModulePropertiesScreenState
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            l10n?.customLocalParams ?? 'Custom local parameters',
+                            l10n?.customLocalParams ??
+                                'Custom local parameters',
                             style: theme.textTheme.titleMedium?.copyWith(
                               fontWeight: FontWeight.bold,
                               color: themeColor,
@@ -208,9 +214,9 @@ class _WitchModulePropertiesScreenState
                           Text(
                             isCustom
                                 ? (l10n?.currentModeLocal ??
-                                    'Current: local (@CurrentLevel)')
+                                      'Current: local (@CurrentLevel)')
                                 : (l10n?.currentModeSystem ??
-                                    'Current: system default (@LevelModules)'),
+                                      'Current: system default (@LevelModules)'),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
@@ -222,23 +228,18 @@ class _WitchModulePropertiesScreenState
                       data: theme.copyWith(
                         switchTheme: SwitchThemeData(
                           thumbColor: WidgetStateProperty.resolveWith(
-                            (states) =>
-                                states.contains(WidgetState.selected)
-                                    ? themeColor
-                                    : null,
+                            (states) => states.contains(WidgetState.selected)
+                                ? themeColor
+                                : null,
                           ),
                           trackColor: WidgetStateProperty.resolveWith(
-                            (states) =>
-                                states.contains(WidgetState.selected)
-                                    ? themeColor.withValues(alpha: 0.5)
-                                    : null,
+                            (states) => states.contains(WidgetState.selected)
+                                ? themeColor.withValues(alpha: 0.5)
+                                : null,
                           ),
                         ),
                       ),
-                      child: Switch(
-                        value: isCustom,
-                        onChanged: _onToggleMode,
-                      ),
+                      child: Switch(value: isCustom, onChanged: _onToggleMode),
                     ),
                   ],
                 ),
@@ -268,10 +269,11 @@ class _WitchModulePropertiesScreenState
                               controller: _spawnIntervalCtrl,
                               keyboardType:
                                   const TextInputType.numberWithOptions(
-                                decimal: true,
-                              ),
+                                    decimal: true,
+                                  ),
                               decoration: InputDecoration(
-                                labelText: l10n?.witchModuleSpawnInterval ??
+                                labelText:
+                                    l10n?.witchModuleSpawnInterval ??
                                     'Witch spawn interval (WitchSpawnInterval)',
                                 border: const OutlineInputBorder(),
                               ),

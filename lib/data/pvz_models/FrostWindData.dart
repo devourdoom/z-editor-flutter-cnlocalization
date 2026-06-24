@@ -15,4 +15,3 @@ class FrostWindData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'Direction': direction, 'Row': row};
 }
-

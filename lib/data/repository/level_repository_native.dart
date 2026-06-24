@@ -62,6 +62,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     final dir = Directory(dirPath);
     if (!await dir.exists()) return [];
 
+    final favoritePaths = await readFavoriteLevelPaths();
     final list = <FileItem>[];
     await for (final entity in dir.list()) {
       final stat = await entity.stat();
@@ -76,6 +77,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
             isDirectory: isDir,
             lastModified: stat.modified.millisecondsSinceEpoch,
             size: stat.size,
+            isFavorite: !isDir && favoritePaths.contains(entity.path),
           ),
         );
       }
@@ -83,6 +85,9 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
 
     list.sort((a, b) {
       if (a.isDirectory != b.isDirectory) return a.isDirectory ? -1 : 1;
+      if (!a.isDirectory && a.isFavorite != b.isFavorite) {
+        return a.isFavorite ? -1 : 1;
+      }
       return naturalCompare(a.name, b.name);
     });
     return list;
@@ -114,6 +119,11 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
       } else {
         await File(oldPath).rename(newPath);
       }
+      if (isDirectory) {
+        await moveFavoriteLevelPathPrefix(oldPath, newPath);
+      } else {
+        await moveFavoriteLevelPath(oldPath, newPath);
+      }
       if (!isDirectory) {
         final cacheDir = await getCacheDir();
         final oldCache = p.join(cacheDir, oldName);
@@ -137,8 +147,10 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     final targetPath = p.join(currentDirPath, fileName);
     if (isDirectory) {
       await Directory(targetPath).delete(recursive: true);
+      await removeFavoriteLevelPathPrefix(targetPath);
     } else {
       await File(targetPath).delete();
+      await removeFavoriteLevelPath(targetPath);
       final cacheDir = await getCacheDir();
       final cacheFile = File(p.join(cacheDir, fileName));
       if (await cacheFile.exists()) {
@@ -157,6 +169,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     if (await File(destPath).exists()) return false;
     try {
       await File(srcPath).copy(destPath);
+      await removeFavoriteLevelPath(destPath);
       return true;
     } catch (_) {
       return false;
@@ -180,6 +193,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
       if (await cacheFile.exists()) {
         await cacheFile.delete();
       }
+      await moveFavoriteLevelPath(srcPath, destPath);
       return true;
     } catch (_) {
       return false;
@@ -200,6 +214,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
         await File(destPath).delete();
       }
       await File(srcPath).rename(destPath);
+      await moveFavoriteLevelPath(srcPath, destPath, clearDestination: true);
       final cacheDir = await getCacheDir();
       final cacheFile = File(p.join(cacheDir, fileName));
       if (await cacheFile.exists()) {
@@ -220,10 +235,17 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
   ) async {
     if (srcDirPath == destDirPath) return null;
     final srcPath = p.join(srcDirPath, fileName);
+    final destPath = p.join(destDirPath, newFileName);
     try {
       final copied = await copyLevelToTarget(srcPath, destDirPath, newFileName);
       if (!copied) return null;
-      await deleteItem(srcDirPath, fileName, false);
+      await File(srcPath).delete();
+      final cacheDir = await getCacheDir();
+      final cacheFile = File(p.join(cacheDir, fileName));
+      if (await cacheFile.exists()) {
+        await cacheFile.delete();
+      }
+      await moveFavoriteLevelPath(srcPath, destPath);
       return newFileName;
     } catch (_) {
       return null;
@@ -336,6 +358,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
         final buf = SenBuffer.fromBytes(bytes);
         final compressed = PopCapZlib.compress(buf, false);
         await File(targetPath).writeAsBytes(compressed.toBytes(), flush: true);
+        await removeFavoriteLevelPath(targetPath);
         return target;
       } catch (_) {
         return null;
@@ -351,6 +374,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
         await File(
           targetPath,
         ).writeAsBytes(decompressed.toBytes(), flush: true);
+        await removeFavoriteLevelPath(targetPath);
         return target;
       } catch (_) {
         return null;
@@ -362,6 +386,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     if (level == null) return null;
     final outBytes = encodeLevelBytes(target, level);
     await File(targetPath).writeAsBytes(outBytes, flush: true);
+    await removeFavoriteLevelPath(targetPath);
     return target;
   }
 
@@ -376,6 +401,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     if (await File(destPath).exists()) return false;
     try {
       await File(destPath).writeAsString(assetContent);
+      await removeFavoriteLevelPath(destPath);
       return true;
     } catch (_) {
       return false;

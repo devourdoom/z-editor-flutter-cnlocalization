@@ -10,4 +10,3 @@ class StarChallengeZombieDistanceData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'TargetDistance': targetDistance};
 }
-

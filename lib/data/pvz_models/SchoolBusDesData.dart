@@ -32,10 +32,6 @@ class SchoolBusDesData extends PvzModel {
 
   @override
   Map<String, dynamic> toJson() {
-    return {
-      'Row': row,
-      'Type': type,
-      'Params': params.toJson(),
-    };
+    return {'Row': row, 'Type': type, 'Params': params.toJson()};
   }
 }

@@ -156,13 +156,7 @@ class _ArmrackModuleScreenState extends State<ArmrackModuleScreen> {
     _selectedY = row;
     final next = List<ArmrackOverrideItemData>.from(items)
       ..removeWhere((e) => e.mX == col && e.mY == row)
-      ..add(
-        ArmrackOverrideItemData(
-          mX: col,
-          mY: row,
-          type: _selectedType,
-        ),
-      );
+      ..add(ArmrackOverrideItemData(mX: col, mY: row, type: _selectedType));
     _writeSelectedItems(next);
   }
 
@@ -260,9 +254,8 @@ class _ArmrackModuleScreenState extends State<ArmrackModuleScreen> {
                   itemCount: _data.overrides.length,
                   selectedIndex: _selectedIndex,
                   onSelected: (idx) => setState(() => _selectedIndex = idx),
-                  onDeleteAt: (idx) => setState(
-                    () => _overrideToDelete = _data.overrides[idx],
-                  ),
+                  onDeleteAt: (idx) =>
+                      setState(() => _overrideToDelete = _data.overrides[idx]),
                   onAdd: _addOverride,
                   groupLabel: (idx) =>
                       '${l10n?.airDropShipGroupLabel ?? "Group"} ${idx + 1}',
@@ -398,10 +391,10 @@ class _ArmrackModuleScreenState extends State<ArmrackModuleScreen> {
                                         textAlign: TextAlign.center,
                                         maxLines: 3,
                                         overflow: TextOverflow.ellipsis,
-                                        style:
-                                            theme.textTheme.labelMedium?.copyWith(
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: theme.textTheme.labelMedium
+                                            ?.copyWith(
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                       ),
                                       const SizedBox(height: 2),
                                       Text(
@@ -409,12 +402,12 @@ class _ArmrackModuleScreenState extends State<ArmrackModuleScreen> {
                                         textAlign: TextAlign.center,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style:
-                                            theme.textTheme.labelSmall?.copyWith(
-                                          color: theme
-                                              .colorScheme
-                                              .onSurfaceVariant,
-                                        ),
+                                        style: theme.textTheme.labelSmall
+                                            ?.copyWith(
+                                              color: theme
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
                                       ),
                                     ],
                                   ),

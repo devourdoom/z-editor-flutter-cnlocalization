@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:c_editor/data/level_parser.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Magic mirror event editor. Ported from Z-Editor-master MagicMirrorEventEP.kt
@@ -71,14 +72,18 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
         Map<String, dynamic>.from(_moduleObj.objData as Map),
       );
       _data = MagicMirrorWaveActionData(
-        arrays: _data.arrays.map((a) => MagicMirrorArrayData(
-          mirror1GridX: _clampCol(a.mirror1GridX),
-          mirror1GridY: _clampRow(a.mirror1GridY),
-          mirror2GridX: _clampCol(a.mirror2GridX),
-          mirror2GridY: _clampRow(a.mirror2GridY),
-          typeIndex: a.typeIndex,
-          mirrorExistDuration: a.mirrorExistDuration,
-        )).toList(),
+        arrays: _data.arrays
+            .map(
+              (a) => MagicMirrorArrayData(
+                mirror1GridX: _clampCol(a.mirror1GridX),
+                mirror1GridY: _clampRow(a.mirror1GridY),
+                mirror2GridX: _clampCol(a.mirror2GridX),
+                mirror2GridY: _clampRow(a.mirror2GridY),
+                typeIndex: a.typeIndex,
+                mirrorExistDuration: a.mirrorExistDuration,
+              ),
+            )
+            .toList(),
       );
     } catch (_) {
       _data = MagicMirrorWaveActionData();
@@ -141,7 +146,8 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
 
   void _removeArray(int index) {
     if (_data.arrays.length <= 1) return;
-    final arrays = List<MagicMirrorArrayData>.from(_data.arrays)..removeAt(index);
+    final arrays = List<MagicMirrorArrayData>.from(_data.arrays)
+      ..removeAt(index);
     _data = MagicMirrorWaveActionData(arrays: arrays);
     if (_selectedIndex >= arrays.length) _selectedIndex = arrays.length - 1;
     _sync();
@@ -213,10 +219,11 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
                     }
                     final selected = index == _selectedIndex;
                     return FilterChip(
-                      label: Text(l10n?.groupN(index + 1) ?? 'Group ${index + 1}'),
+                      label: Text(
+                        l10n?.groupN(index + 1) ?? 'Group ${index + 1}',
+                      ),
                       selected: selected,
-                      onSelected: (_) =>
-                          setState(() => _selectedIndex = index),
+                      onSelected: (_) => setState(() => _selectedIndex = index),
                       deleteIcon: const Icon(Icons.close),
                       onDeleted: _data.arrays.length > 1
                           ? () => _removeArray(index)
@@ -234,14 +241,16 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          l10n?.groupConfigN(_selectedIndex + 1) ?? 'Group ${_selectedIndex + 1} config',
+                          l10n?.groupConfigN(_selectedIndex + 1) ??
+                              'Group ${_selectedIndex + 1} config',
                           style: theme.textTheme.titleMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 12),
                         DropdownButtonFormField<int?>(
-                          initialValue: [null, 1, 2, 3].contains(currentArray.typeIndex)
+                          initialValue:
+                              [null, 1, 2, 3].contains(currentArray.typeIndex)
                               ? currentArray.typeIndex
                               : null,
                           decoration: InputDecoration(
@@ -253,10 +262,12 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
                               value: null,
                               child: Text(l10n?.noStyle ?? 'No style'),
                             ),
-                            ...([1, 2, 3].map((i) => DropdownMenuItem<int?>(
-                                  value: i,
-                                  child: Text(l10n?.styleN(i) ?? 'Style $i'),
-                                ))),
+                            ...([1, 2, 3].map(
+                              (i) => DropdownMenuItem<int?>(
+                                value: i,
+                                child: Text(l10n?.styleN(i) ?? 'Style $i'),
+                              ),
+                            )),
                           ],
                           onChanged: (v) {
                             _updateArray(
@@ -275,10 +286,12 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
                         ),
                         const SizedBox(height: 12),
                         TextFormField(
-                          initialValue:
-                              currentArray.mirrorExistDuration.toString(),
+                          initialValue: currentArray.mirrorExistDuration
+                              .toString(),
                           decoration: InputDecoration(
-                            labelText: l10n?.existDurationSec ?? 'Exist duration (sec)',
+                            labelText:
+                                l10n?.existDurationSec ??
+                                'Exist duration (sec)',
                             border: const OutlineInputBorder(),
                           ),
                           keyboardType: TextInputType.number,
@@ -321,13 +334,16 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
                         Row(
                           children: [
                             if (_isOutOfLawn(
-                                currentArray.mirror1GridX,
-                                currentArray.mirror1GridY))
+                              currentArray.mirror1GridX,
+                              currentArray.mirror1GridY,
+                            ))
                               Padding(
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Icon(
                                   editorWarningIcon,
-                                  color: editorWarningBannerForeground(theme.brightness),
+                                  color: editorWarningBannerForeground(
+                                    theme.brightness,
+                                  ),
                                   size: 20,
                                 ),
                               ),
@@ -337,13 +353,16 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
                             ),
                             const Text('  |  '),
                             if (_isOutOfLawn(
-                                currentArray.mirror2GridX,
-                                currentArray.mirror2GridY))
+                              currentArray.mirror2GridX,
+                              currentArray.mirror2GridY,
+                            ))
                               Padding(
                                 padding: const EdgeInsets.only(right: 4),
                                 child: Icon(
                                   editorWarningIcon,
-                                  color: editorWarningBannerForeground(theme.brightness),
+                                  color: editorWarningBannerForeground(
+                                    theme.brightness,
+                                  ),
                                   size: 20,
                                 ),
                               ),
@@ -363,7 +382,9 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
                 Center(
                   child: Padding(
                     padding: const EdgeInsets.all(32),
-                    child: Text(l10n?.addMirrorGroup ?? 'Add a mirror group above'),
+                    child: Text(
+                      l10n?.addMirrorGroup ?? 'Add a mirror group above',
+                    ),
                   ),
                 ),
               const SizedBox(height: 32),
@@ -396,24 +417,27 @@ class _MagicMirrorEventScreenState extends State<MagicMirrorEventScreen> {
                     children: List.generate(_gridCols, (col) {
                       final isTarget = _isEditingMirror2
                           ? col == currentArray.mirror2GridX &&
-                              row == currentArray.mirror2GridY
+                                row == currentArray.mirror2GridY
                           : col == currentArray.mirror1GridX &&
-                              row == currentArray.mirror1GridY;
-                      final mirrorsInCell = _data.arrays.indexed
-                          .where((e) {
-                            final arr = e.$2;
-                            return (arr.mirror1GridX == col &&
-                                    arr.mirror1GridY == row) ||
-                                (arr.mirror2GridX == col &&
-                                    arr.mirror2GridY == row);
-                          })
-                          .map((e) => (e.$1, e.$2.typeIndex))
-                          .toList()
-                        ..sort((a, b) => a.$1 == _selectedIndex
-                            ? 1
-                            : b.$1 == _selectedIndex
-                                ? -1
-                                : a.$1.compareTo(b.$1));
+                                row == currentArray.mirror1GridY;
+                      final mirrorsInCell =
+                          _data.arrays.indexed
+                              .where((e) {
+                                final arr = e.$2;
+                                return (arr.mirror1GridX == col &&
+                                        arr.mirror1GridY == row) ||
+                                    (arr.mirror2GridX == col &&
+                                        arr.mirror2GridY == row);
+                              })
+                              .map((e) => (e.$1, e.$2.typeIndex))
+                              .toList()
+                            ..sort(
+                              (a, b) => a.$1 == _selectedIndex
+                                  ? 1
+                                  : b.$1 == _selectedIndex
+                                  ? -1
+                                  : a.$1.compareTo(b.$1),
+                            );
                       return Expanded(
                         child: GestureDetector(
                           onTap: () {

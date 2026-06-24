@@ -6,5 +6,3 @@ class VaseBreakerFlowModuleData extends PvzModel {
       VaseBreakerFlowModuleData();
   Map<String, dynamic> toJson() => {};
 }
-
-

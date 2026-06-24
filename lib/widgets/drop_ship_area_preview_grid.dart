@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/widgets/grid_override_preview_grid.dart';
+
 /// Read-only lawn grid highlighting a drop-ship rectangular area.
 class DropShipAreaPreviewGrid extends StatelessWidget {
   const DropShipAreaPreviewGrid({
@@ -68,5 +69,6 @@ class DropShipAreaPreviewGrid extends StatelessWidget {
           ),
         ),
       ),
-    );  }
+    );
+  }
 }

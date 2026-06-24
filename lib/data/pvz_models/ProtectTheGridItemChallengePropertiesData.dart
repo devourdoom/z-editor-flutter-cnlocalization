@@ -35,4 +35,3 @@ class ProtectTheGridItemChallengePropertiesData extends PvzModel {
     'GridItems': gridItems.map((e) => e.toJson()).toList(),
   };
 }
-

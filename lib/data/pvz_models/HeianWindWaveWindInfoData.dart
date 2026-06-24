@@ -36,4 +36,3 @@ class HeianWindWaveWindInfoData extends PvzModel {
     'WindInfos': windInfos.map((e) => e.toJson()).toList(),
   };
 }
-

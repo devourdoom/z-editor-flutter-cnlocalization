@@ -15,5 +15,3 @@ class BungeeWaveTargetData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'mX': mX, 'mY': mY};
 }
-
-

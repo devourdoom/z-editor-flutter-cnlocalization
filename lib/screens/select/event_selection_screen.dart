@@ -24,13 +24,15 @@ class EventSelectionScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
     final levelDef = LevelParser.parseLevel(levelFile).levelDef;
-    final events = EventRegistry.getAll().where(
-      (meta) => LevelParser.isWaveEventAvailable(
-        meta.defaultObjClass,
-        levelDef,
-        levelFile,
-      ),
-    ).toList();
+    final events = EventRegistry.getAll()
+        .where(
+          (meta) => LevelParser.isWaveEventAvailable(
+            meta.defaultObjClass,
+            levelDef,
+            levelFile,
+          ),
+        )
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -100,7 +102,11 @@ class EventSelectionScreen extends StatelessWidget {
     );
   }
 
-  String _getTitle(BuildContext context, EventMetadata meta, AppLocalizations? l10n) {
+  String _getTitle(
+    BuildContext context,
+    EventMetadata meta,
+    AppLocalizations? l10n,
+  ) {
     return resolveEventTitle(context, meta, l10n);
   }
 
@@ -114,73 +120,137 @@ class EventSelectionScreen extends StatelessWidget {
     return _resolveEventKeyStatic(meta.titleKey, 'eventTitle_', l10n);
   }
 
-  static String _resolveEventKeyStatic(String key, String prefix, AppLocalizations? l10n) {
+  static String _resolveEventKeyStatic(
+    String key,
+    String prefix,
+    AppLocalizations? l10n,
+  ) {
     if (l10n == null) return key.replaceAll(prefix, '');
     try {
       final name = key.replaceAll(prefix, '');
       final isTitle = prefix == 'eventTitle_';
       switch (name) {
         case 'SpawnZombiesFromGroundSpawnerProps':
-          return isTitle ? l10n.eventTitle_SpawnZombiesFromGroundSpawnerProps : l10n.eventDesc_SpawnZombiesFromGroundSpawnerProps;
+          return isTitle
+              ? l10n.eventTitle_SpawnZombiesFromGroundSpawnerProps
+              : l10n.eventDesc_SpawnZombiesFromGroundSpawnerProps;
         case 'SpawnZombiesJitteredWaveActionProps':
-          return isTitle ? l10n.eventTitle_SpawnZombiesJitteredWaveActionProps : l10n.eventDesc_SpawnZombiesJitteredWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_SpawnZombiesJitteredWaveActionProps
+              : l10n.eventDesc_SpawnZombiesJitteredWaveActionProps;
         case 'FrostWindWaveActionProps':
-          return isTitle ? l10n.eventTitle_FrostWindWaveActionProps : l10n.eventDesc_FrostWindWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_FrostWindWaveActionProps
+              : l10n.eventDesc_FrostWindWaveActionProps;
         case 'BeachStageEventZombieSpawnerProps':
-          return isTitle ? l10n.eventTitle_BeachStageEventZombieSpawnerProps : l10n.eventDesc_BeachStageEventZombieSpawnerProps;
+          return isTitle
+              ? l10n.eventTitle_BeachStageEventZombieSpawnerProps
+              : l10n.eventDesc_BeachStageEventZombieSpawnerProps;
         case 'TidalChangeWaveActionProps':
-          return isTitle ? l10n.eventTitle_TidalChangeWaveActionProps : l10n.eventDesc_TidalChangeWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_TidalChangeWaveActionProps
+              : l10n.eventDesc_TidalChangeWaveActionProps;
         case 'TideWaveWaveActionProps':
-          return isTitle ? l10n.eventTitle_TideWaveWaveActionProps : l10n.eventDesc_TideWaveWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_TideWaveWaveActionProps
+              : l10n.eventDesc_TideWaveWaveActionProps;
         case 'SpawnZombiesFishWaveActionProps':
-          return isTitle ? l10n.eventTitle_SpawnZombiesFishWaveActionProps : l10n.eventDesc_SpawnZombiesFishWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_SpawnZombiesFishWaveActionProps
+              : l10n.eventDesc_SpawnZombiesFishWaveActionProps;
         case 'ModifyConveyorWaveActionProps':
-          return isTitle ? l10n.eventTitle_ModifyConveyorWaveActionProps : l10n.eventDesc_ModifyConveyorWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_ModifyConveyorWaveActionProps
+              : l10n.eventDesc_ModifyConveyorWaveActionProps;
         case 'DinoWaveActionProps':
-          return isTitle ? l10n.eventTitle_DinoWaveActionProps : l10n.eventDesc_DinoWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_DinoWaveActionProps
+              : l10n.eventDesc_DinoWaveActionProps;
         case 'DinoTreadActionProps':
-          return isTitle ? l10n.eventTitle_DinoTreadActionProps : l10n.eventDesc_DinoTreadActionProps;
+          return isTitle
+              ? l10n.eventTitle_DinoTreadActionProps
+              : l10n.eventDesc_DinoTreadActionProps;
         case 'DinoRunActionProps':
-          return isTitle ? l10n.eventTitle_DinoRunActionProps : l10n.eventDesc_DinoRunActionProps;
+          return isTitle
+              ? l10n.eventTitle_DinoRunActionProps
+              : l10n.eventDesc_DinoRunActionProps;
         case 'SpawnModernPortalsWaveActionProps':
-          return isTitle ? l10n.eventTitle_SpawnModernPortalsWaveActionProps : l10n.eventDesc_SpawnModernPortalsWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_SpawnModernPortalsWaveActionProps
+              : l10n.eventDesc_SpawnModernPortalsWaveActionProps;
         case 'StormZombieSpawnerProps':
-          return isTitle ? l10n.eventTitle_StormZombieSpawnerProps : l10n.eventDesc_StormZombieSpawnerProps;
+          return isTitle
+              ? l10n.eventTitle_StormZombieSpawnerProps
+              : l10n.eventDesc_StormZombieSpawnerProps;
         case 'RaidingPartyZombieSpawnerProps':
-          return isTitle ? l10n.eventTitle_RaidingPartyZombieSpawnerProps : l10n.eventDesc_RaidingPartyZombieSpawnerProps;
+          return isTitle
+              ? l10n.eventTitle_RaidingPartyZombieSpawnerProps
+              : l10n.eventDesc_RaidingPartyZombieSpawnerProps;
         case 'ZombiePotionActionProps':
-          return isTitle ? l10n.eventTitle_ZombiePotionActionProps : l10n.eventDesc_ZombiePotionActionProps;
+          return isTitle
+              ? l10n.eventTitle_ZombiePotionActionProps
+              : l10n.eventDesc_ZombiePotionActionProps;
         case 'ZombieAtlantisShellActionProps':
-          return isTitle ? l10n.eventTitle_ZombieAtlantisShellActionProps : l10n.eventDesc_ZombieAtlantisShellActionProps;
+          return isTitle
+              ? l10n.eventTitle_ZombieAtlantisShellActionProps
+              : l10n.eventDesc_ZombieAtlantisShellActionProps;
         case 'PumpkinHouseActionProps':
-          return isTitle ? l10n.eventTitle_PumpkinHouseActionProps : l10n.eventDesc_PumpkinHouseActionProps;
+          return isTitle
+              ? l10n.eventTitle_PumpkinHouseActionProps
+              : l10n.eventDesc_PumpkinHouseActionProps;
         case 'SpawnGravestonesWaveActionProps':
-          return isTitle ? l10n.eventTitle_SpawnGravestonesWaveActionProps : l10n.eventDesc_SpawnGravestonesWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_SpawnGravestonesWaveActionProps
+              : l10n.eventDesc_SpawnGravestonesWaveActionProps;
         case 'SpawnZombiesFromGridItemSpawnerProps':
-          return isTitle ? l10n.eventTitle_SpawnZombiesFromGridItemSpawnerProps : l10n.eventDesc_SpawnZombiesFromGridItemSpawnerProps;
+          return isTitle
+              ? l10n.eventTitle_SpawnZombiesFromGridItemSpawnerProps
+              : l10n.eventDesc_SpawnZombiesFromGridItemSpawnerProps;
         case 'FairyTaleFogWaveActionProps':
-          return isTitle ? l10n.eventTitle_FairyTaleFogWaveActionProps : l10n.eventDesc_FairyTaleFogWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_FairyTaleFogWaveActionProps
+              : l10n.eventDesc_FairyTaleFogWaveActionProps;
         case 'FairyTaleWindWaveActionProps':
-          return isTitle ? l10n.eventTitle_FairyTaleWindWaveActionProps : l10n.eventDesc_FairyTaleWindWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_FairyTaleWindWaveActionProps
+              : l10n.eventDesc_FairyTaleWindWaveActionProps;
         case 'SpiderRainZombieSpawnerProps':
-          return isTitle ? l10n.eventTitle_SpiderRainZombieSpawnerProps : l10n.eventDesc_SpiderRainZombieSpawnerProps;
+          return isTitle
+              ? l10n.eventTitle_SpiderRainZombieSpawnerProps
+              : l10n.eventDesc_SpiderRainZombieSpawnerProps;
         case 'ParachuteRainZombieSpawnerProps':
-          return isTitle ? l10n.eventTitle_ParachuteRainZombieSpawnerProps : l10n.eventDesc_ParachuteRainZombieSpawnerProps;
+          return isTitle
+              ? l10n.eventTitle_ParachuteRainZombieSpawnerProps
+              : l10n.eventDesc_ParachuteRainZombieSpawnerProps;
         case 'BassRainZombieSpawnerProps':
-          return isTitle ? l10n.eventTitle_BassRainZombieSpawnerProps : l10n.eventDesc_BassRainZombieSpawnerProps;
+          return isTitle
+              ? l10n.eventTitle_BassRainZombieSpawnerProps
+              : l10n.eventDesc_BassRainZombieSpawnerProps;
         case 'BlackHoleWaveActionProps':
-          return isTitle ? l10n.eventTitle_BlackHoleWaveActionProps : l10n.eventDesc_BlackHoleWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_BlackHoleWaveActionProps
+              : l10n.eventDesc_BlackHoleWaveActionProps;
         case 'BarrelWaveActionProps':
-          return isTitle ? l10n.eventTitle_BarrelWaveActionProps : l10n.eventDesc_BarrelWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_BarrelWaveActionProps
+              : l10n.eventDesc_BarrelWaveActionProps;
         case 'SchoolBusWaveActionProps':
-          return isTitle ? l10n.eventTitle_SchoolBusWaveActionProps : l10n.eventDesc_SchoolBusWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_SchoolBusWaveActionProps
+              : l10n.eventDesc_SchoolBusWaveActionProps;
         case 'BungeeWaveActionProps':
-          return isTitle ? l10n.eventTitle_BungeeWaveActionProps : l10n.eventDesc_BungeeWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_BungeeWaveActionProps
+              : l10n.eventDesc_BungeeWaveActionProps;
         case 'ThunderWaveActionProps':
-          return isTitle ? l10n.eventTitle_ThunderWaveActionProps : l10n.eventDesc_ThunderWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_ThunderWaveActionProps
+              : l10n.eventDesc_ThunderWaveActionProps;
         case 'MagicMirrorWaveActionProps':
         case 'WaveActionMagicMirrorTeleportationArrayProps':
-          return isTitle ? l10n.eventTitle_MagicMirrorWaveActionProps : l10n.eventDesc_MagicMirrorWaveActionProps;
+          return isTitle
+              ? l10n.eventTitle_MagicMirrorWaveActionProps
+              : l10n.eventDesc_MagicMirrorWaveActionProps;
         default:
           return name;
       }
@@ -189,7 +259,11 @@ class EventSelectionScreen extends StatelessWidget {
     }
   }
 
-  String _getDescription(BuildContext context, EventMetadata meta, AppLocalizations? l10n) {
+  String _getDescription(
+    BuildContext context,
+    EventMetadata meta,
+    AppLocalizations? l10n,
+  ) {
     return _resolveEventKeyStatic(meta.descriptionKey, 'eventDesc_', l10n);
   }
 }

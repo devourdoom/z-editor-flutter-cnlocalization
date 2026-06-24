@@ -21,4 +21,3 @@ class StarChallengeBeatTheLevelData extends PvzModel {
     'DescriptiveName': descriptiveName,
   };
 }
-

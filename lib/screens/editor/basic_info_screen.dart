@@ -116,11 +116,45 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
     def.description = _descCtrl.text;
     def.levelNumber = int.tryParse(_levelNumCtrl.text) ?? 1;
     def.startingSun = int.tryParse(_sunCtrl.text) ?? 200;
+    _writeLevelDefinition();
+    widget.onChanged();
+  }
+
+  void _writeLevelDefinition() {
     final obj = widget.levelFile.objects
         .where((o) => o.objClass == 'LevelDefinition')
         .firstOrNull;
-    if (obj != null) obj.objData = def.toJson();
+    if (obj != null) obj.objData = widget.levelDef.toJson();
+  }
+
+  bool _resetMissingCustomStageReference() {
+    final def = widget.levelDef;
+    if (!CustomStageLevelUtils.isCustomStageRtid(def.stageModule)) {
+      return false;
+    }
+    final stageInfo = RtidParser.parse(def.stageModule);
+    if (stageInfo == null) return false;
+    final stageObj = CustomStageLevelUtils.findStageObject(
+      widget.levelFile,
+      stageInfo.alias,
+    );
+    if (stageObj != null) return false;
+
+    def.stageModule = CustomStageLevelUtils.defaultBuiltinStageRtid;
+    _writeLevelDefinition();
     widget.onChanged();
+    return true;
+  }
+
+  Future<void> _openStageSelection(LevelDefinitionData def) async {
+    final onStageTap = widget.onStageTap;
+    if (onStageTap == null) return;
+    await onStageTap(def, () {
+      if (mounted) setState(() {});
+    });
+    if (!mounted) return;
+    _resetMissingCustomStageReference();
+    setState(() {});
   }
 
   @override
@@ -145,7 +179,8 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
         );
       }
     }
-    final isPresetCustomStage = stageInfo != null &&
+    final isPresetCustomStage =
+        stageInfo != null &&
         CustomStagePresetRepository.isPresetCustomStageAlias(stageInfo.alias);
     final customSuffix =
         l10n?.customStageNameSuffix ??
@@ -231,11 +266,7 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
             const SizedBox(height: 12),
             Card(
               child: InkWell(
-                onTap: () {
-                  widget.onStageTap?.call(def, () {
-                    if (mounted) setState(() {});
-                  });
-                },
+                onTap: () => _openStageSelection(def),
                 borderRadius: BorderRadius.circular(12),
                 child: Padding(
                   padding: const EdgeInsets.all(12),

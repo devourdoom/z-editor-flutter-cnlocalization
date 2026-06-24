@@ -323,8 +323,7 @@ class _HeianWindModuleScreenState extends State<HeianWindModuleScreen> {
                                   initialValue: '${selectedWave.waveNumber}',
                                   decoration: InputDecoration(
                                     labelText:
-                                        l10n?.heianWindModuleWaves ??
-                                        'Wave',
+                                        l10n?.heianWindModuleWaves ?? 'Wave',
                                     hintText:
                                         l10n?.heianWindModuleWavesHint ??
                                         '0-based',
@@ -546,8 +545,11 @@ class _HeianWindModuleScreenState extends State<HeianWindModuleScreen> {
                         child: TextFormField(
                           initialValue: '${wind.distance}',
                           decoration: InputDecoration(
-                            labelText: l10n?.heianWindModuleDistance ?? 'Distance',
-                            hintText: l10n?.heianWindModuleDistanceHint ?? '50 = 1 cell',
+                            labelText:
+                                l10n?.heianWindModuleDistance ?? 'Distance',
+                            hintText:
+                                l10n?.heianWindModuleDistanceHint ??
+                                '50 = 1 cell',
                             border: const OutlineInputBorder(),
                             isDense: true,
                           ),
@@ -578,7 +580,8 @@ class _HeianWindModuleScreenState extends State<HeianWindModuleScreen> {
                             labelText:
                                 l10n?.heianWindModuleMoveTime ?? 'Move time',
                             hintText:
-                                l10n?.heianWindModuleMoveTimeHint ?? 'Unit: seconds',
+                                l10n?.heianWindModuleMoveTimeHint ??
+                                'Unit: seconds',
                             border: const OutlineInputBorder(),
                             isDense: true,
                           ),

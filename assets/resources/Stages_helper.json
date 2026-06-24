@@ -348,7 +348,7 @@
   "DelayLoad_Background_Volcano": {
     "IMAGE_BACKGROUNDS_VOLCANO": {
       "image": "Stage_LostVolcano.webp",
-      "nameKey": "stage_VacationDarkStage"
+      "nameKey": "customStagePreset_lostVolcano"
     }
   },
   "DelayLoad_Background_West_Compressed": {

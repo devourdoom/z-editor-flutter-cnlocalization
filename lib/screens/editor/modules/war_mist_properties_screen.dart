@@ -57,11 +57,11 @@ class _WarMistPropertiesScreenState extends State<WarMistPropertiesScreen> {
     } catch (_) {
       _data = WarMistPropertiesData();
     }
-    _initPosController =
-        TextEditingController(text: '${_data.initMistPosX}');
+    _initPosController = TextEditingController(text: '${_data.initMistPosX}');
     _normValController = TextEditingController(text: '${_data.normValX}');
-    _bloverController =
-        TextEditingController(text: '${_data.bloverEffectInterval}');
+    _bloverController = TextEditingController(
+      text: '${_data.bloverEffectInterval}',
+    );
   }
 
   void _sync() {
@@ -112,7 +112,9 @@ class _WarMistPropertiesScreenState extends State<WarMistPropertiesScreen> {
                       controller: _initPosController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: l10n?.initialMistPositionX ?? 'Initial mist position X',
+                        labelText:
+                            l10n?.initialMistPositionX ??
+                            'Initial mist position X',
                         border: const OutlineInputBorder(),
                       ),
                       onChanged: (v) {
@@ -144,7 +146,9 @@ class _WarMistPropertiesScreenState extends State<WarMistPropertiesScreen> {
                       controller: _bloverController,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: l10n?.bloverEffectInterval ?? 'Blover effect interval (seconds)',
+                        labelText:
+                            l10n?.bloverEffectInterval ??
+                            'Blover effect interval (seconds)',
                         border: const OutlineInputBorder(),
                       ),
                       onChanged: (v) {

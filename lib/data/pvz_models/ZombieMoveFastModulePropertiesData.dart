@@ -20,5 +20,3 @@ class ZombieMoveFastModulePropertiesData extends PvzModel {
     'SpeedUp': speedUp,
   };
 }
-
-

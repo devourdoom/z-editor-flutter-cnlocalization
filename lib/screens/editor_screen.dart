@@ -150,6 +150,13 @@ class EditorScreen extends StatefulWidget {
 }
 
 class _EditorScreenState extends State<EditorScreen> {
+  static const _floatingSuccessSnackBarMargin = EdgeInsets.fromLTRB(
+    16,
+    0,
+    16,
+    96,
+  );
+
   TabController? _tabController;
 
   EditorCubit get _ec => context.read<EditorCubit>();
@@ -484,6 +491,8 @@ class _EditorScreenState extends State<EditorScreen> {
       final snackColor = isDark ? pvzGreenDark : pvzGreenLight;
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: _floatingSuccessSnackBarMargin,
           backgroundColor: snackColor,
           content: Row(
             mainAxisSize: MainAxisSize.min,
@@ -564,8 +573,6 @@ class _EditorScreenState extends State<EditorScreen> {
       ),
     );
   }
-
-  static const _defaultBuiltinStageRtid = 'RTID(TutorialStage@LevelModules)';
 
   Future<void> _handleEditCustomStage(String alias) async {
     if (_ec.state.levelFile == null) return;
@@ -659,7 +666,7 @@ class _EditorScreenState extends State<EditorScreen> {
     _ec.state.parsedData?.objectMap.remove(alias);
 
     if (wasActive) {
-      levelDef.stageModule = _defaultBuiltinStageRtid;
+      levelDef.stageModule = CustomStageLevelUtils.defaultBuiltinStageRtid;
       for (final o in _ec.state.levelFile!.objects) {
         if (o.objClass == 'LevelDefinition') {
           o.objData = levelDef.toJson();
@@ -847,8 +854,14 @@ class _EditorScreenState extends State<EditorScreen> {
             await _handleEditCustomStage(alias);
             onStagePicked?.call();
           },
-          onDeleteCustomStage: (alias) =>
-              _handleDeleteCustomStage(levelDef: levelDef, alias: alias),
+          onDeleteCustomStage: (alias) async {
+            final deleted = await _handleDeleteCustomStage(
+              levelDef: levelDef,
+              alias: alias,
+            );
+            if (deleted) onStagePicked?.call();
+            return deleted;
+          },
           onSwitchFromCustomToBuiltin: (alias) async {
             final l10n = AppLocalizations.of(context);
             final confirmed = await showDialog<bool>(

@@ -9,7 +9,8 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/zombie_selection_screen.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Initial zombie entry. Ported from Z-Editor-master InitialZombieEntryEP.kt
@@ -93,21 +94,29 @@ class _InitialZombieEntryScreenState extends State<InitialZombieEntryScreen> {
           multiSelect: false,
           onZombieSelected: (id) {
             Navigator.pop(context);
-            final isElite = repo.getZombieById(id)?.tags.contains(ZombieTag.elite) ?? false;
+            final isElite =
+                repo.getZombieById(id)?.tags.contains(ZombieTag.elite) ?? false;
             if (isElite) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(AppLocalizations.of(context)?.cannotAddEliteZombies ?? 'Cannot add elite zombies')),
+                SnackBar(
+                  content: Text(
+                    AppLocalizations.of(context)?.cannotAddEliteZombies ??
+                        'Cannot add elite zombies',
+                  ),
+                ),
               );
               return;
             }
             final aliases = repo.buildZombieAliases(id);
             final newList = List<InitialZombieData>.from(_data.placements);
-            newList.add(InitialZombieData(
-              gridX: _selectedX,
-              gridY: _selectedY,
-              typeName: aliases,
-              condition: 'icecubed',
-            ));
+            newList.add(
+              InitialZombieData(
+                gridX: _selectedX,
+                gridY: _selectedY,
+                typeName: aliases,
+                condition: 'icecubed',
+              ),
+            );
             _data = InitialZombieEntryData(placements: newList);
             _sync();
           },
@@ -146,26 +155,31 @@ class _InitialZombieEntryScreenState extends State<InitialZombieEntryScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final placementsAtPosition = _data.placements
-        .where((p) =>
-            p.gridX == _selectedX &&
-            p.gridY == _selectedY &&
-            p.gridX >= 0 &&
-            p.gridY >= 0 &&
-            p.gridX < _gridCols &&
-            p.gridY < _gridRows)
+        .where(
+          (p) =>
+              p.gridX == _selectedX &&
+              p.gridY == _selectedY &&
+              p.gridX >= 0 &&
+              p.gridY >= 0 &&
+              p.gridX < _gridCols &&
+              p.gridY < _gridRows,
+        )
         .toList();
     final placementsOutsideLawn = _data.placements
-        .where((p) =>
-            p.gridX < 0 ||
-            p.gridY < 0 ||
-            p.gridX >= _gridCols ||
-            p.gridY >= _gridRows)
+        .where(
+          (p) =>
+              p.gridX < 0 ||
+              p.gridY < 0 ||
+              p.gridX >= _gridCols ||
+              p.gridY >= _gridRows,
+        )
         .toList();
 
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context)?.initialZombieLayout ?? 'Initial zombie layout',
+          AppLocalizations.of(context)?.initialZombieLayout ??
+              'Initial zombie layout',
           overflow: TextOverflow.ellipsis,
         ),
         leading: IconButton(
@@ -192,7 +206,10 @@ class _InitialZombieEntryScreenState extends State<InitialZombieEntryScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  AppLocalizations.of(context)?.selectedPosition ?? 'Selected position',
+                                  AppLocalizations.of(
+                                        context,
+                                      )?.selectedPosition ??
+                                      'Selected position',
                                   style: theme.textTheme.bodySmall?.copyWith(
                                     color: theme.colorScheme.onSurfaceVariant,
                                   ),
@@ -216,7 +233,8 @@ class _InitialZombieEntryScreenState extends State<InitialZombieEntryScreen> {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  AppLocalizations.of(context)?.zombieList ?? 'Zombie list (row-first)',
+                  AppLocalizations.of(context)?.zombieList ??
+                      'Zombie list (row-first)',
                   style: theme.textTheme.titleSmall?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: theme.colorScheme.onSurfaceVariant,
@@ -227,22 +245,22 @@ class _InitialZombieEntryScreenState extends State<InitialZombieEntryScreen> {
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    ...placementsAtPosition.map((p) => _InitialZombieCard(
-                      item: p,
-                      gridRows: _gridRows,
-                      gridCols: _gridCols,
-                      showCoordinates: false,
-                      onTap: () {
-                        setState(() {
-                          _selectedX = p.gridX;
-                          _selectedY = p.gridY;
-                          _editingPlacement = p;
-                        });
-                      },
-                    )),
-                    AddItemCard(
-                      onPressed: _handleAddZombie,
+                    ...placementsAtPosition.map(
+                      (p) => _InitialZombieCard(
+                        item: p,
+                        gridRows: _gridRows,
+                        gridCols: _gridCols,
+                        showCoordinates: false,
+                        onTap: () {
+                          setState(() {
+                            _selectedX = p.gridX;
+                            _selectedY = p.gridY;
+                            _editingPlacement = p;
+                          });
+                        },
+                      ),
                     ),
+                    AddItemCard(onPressed: _handleAddZombie),
                   ],
                 ),
                 if (placementsOutsideLawn.isNotEmpty) ...[
@@ -260,19 +278,21 @@ class _InitialZombieEntryScreenState extends State<InitialZombieEntryScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: placementsOutsideLawn
-                        .map((p) => _InitialZombieCard(
-                              item: p,
-                              gridRows: _gridRows,
-                              gridCols: _gridCols,
-                              showCoordinates: true,
-                              onTap: () {
-                                setState(() {
-                                  _selectedX = p.gridX;
-                                  _selectedY = p.gridY;
-                                  _editingPlacement = p;
-                                });
-                              },
-                            ))
+                        .map(
+                          (p) => _InitialZombieCard(
+                            item: p,
+                            gridRows: _gridRows,
+                            gridCols: _gridCols,
+                            showCoordinates: true,
+                            onTap: () {
+                              setState(() {
+                                _selectedX = p.gridX;
+                                _selectedY = p.gridY;
+                                _editingPlacement = p;
+                              });
+                            },
+                          ),
+                        )
                         .toList(),
                   ),
                 ],
@@ -343,7 +363,8 @@ class _InitialZombieEntryScreenState extends State<InitialZombieEntryScreen> {
                                           child: FittedBox(
                                             fit: BoxFit.contain,
                                             child: _ZombieIconSmall(
-                                                firstZombie.typeName),
+                                              firstZombie.typeName,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -352,18 +373,20 @@ class _InitialZombieEntryScreenState extends State<InitialZombieEntryScreen> {
                                           top: 3,
                                           right: 3,
                                           child: Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
+                                            padding: const EdgeInsets.symmetric(
                                               horizontal: 6,
                                               vertical: 3,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: theme.colorScheme
+                                              color: theme
+                                                  .colorScheme
                                                   .onSurfaceVariant,
                                               borderRadius:
                                                   const BorderRadius.only(
-                                                bottomLeft: Radius.circular(6),
-                                              ),
+                                                    bottomLeft: Radius.circular(
+                                                      6,
+                                                    ),
+                                                  ),
                                             ),
                                             child: Text(
                                               '+$count',
@@ -417,10 +440,9 @@ class _ZombieIconSmall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final typeId = ZombiePropertiesRepository.getTypeNameByAlias(typeName);
-    final info = ZombieRepository().getZombieById(typeId) ??
-        ZombieRepository().getZombieById(
-          typeId.replaceAll('_elite', ''),
-        );
+    final info =
+        ZombieRepository().getZombieById(typeId) ??
+        ZombieRepository().getZombieById(typeId.replaceAll('_elite', ''));
     final path = info?.icon != null
         ? 'assets/images/zombies/${info!.icon}'
         : 'assets/images/others/unknown.webp';
@@ -456,10 +478,9 @@ class _InitialZombieCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final typeId = ZombiePropertiesRepository.getTypeNameByAlias(item.typeName);
-    final info = ZombieRepository().getZombieById(typeId) ??
-        ZombieRepository().getZombieById(
-          typeId.replaceAll('_elite', ''),
-        );
+    final info =
+        ZombieRepository().getZombieById(typeId) ??
+        ZombieRepository().getZombieById(typeId.replaceAll('_elite', ''));
     final path = info?.icon != null
         ? 'assets/images/zombies/${info!.icon}'
         : 'assets/images/others/unknown.webp';
@@ -523,14 +544,18 @@ class _InitialZombieCard extends StatelessWidget {
                           children: [
                             Icon(
                               editorWarningIcon,
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                               size: 16,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               'R${item.gridY + 1}:C${item.gridX + 1}',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: editorWarningBannerForeground(theme.brightness),
+                                color: editorWarningBannerForeground(
+                                  theme.brightness,
+                                ),
                               ),
                             ),
                           ],
@@ -574,8 +599,9 @@ class _InitialZombieEditDialogState extends State<_InitialZombieEditDialog> {
   void initState() {
     super.initState();
     _condition = widget.placement.condition;
-    _isCustomInput = !_InitialZombieEntryScreenState._zombieConditions
-        .any((e) => e.$1 == _condition);
+    _isCustomInput = !_InitialZombieEntryScreenState._zombieConditions.any(
+      (e) => e.$1 == _condition,
+    );
     _conditionController = TextEditingController(text: _condition);
   }
 
@@ -587,25 +613,34 @@ class _InitialZombieEditDialogState extends State<_InitialZombieEditDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final typeId = ZombiePropertiesRepository.getTypeNameByAlias(widget.placement.typeName);
+    final typeId = ZombiePropertiesRepository.getTypeNameByAlias(
+      widget.placement.typeName,
+    );
     final nameKey = ZombieRepository().getName(typeId);
     final name = ResourceNames.lookup(context, nameKey);
     return AlertDialog(
-      title: Text(AppLocalizations.of(context)?.editPresetZombie(name) ?? 'Edit preset zombie: $name'),
+      title: Text(
+        AppLocalizations.of(context)?.editPresetZombie(name) ??
+            'Edit preset zombie: $name',
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SwitchListTile(
-              title: Text(AppLocalizations.of(context)?.manualInput ?? 'Manual input'),
+              title: Text(
+                AppLocalizations.of(context)?.manualInput ?? 'Manual input',
+              ),
               value: _isCustomInput,
               onChanged: (v) => setState(() => _isCustomInput = v),
             ),
             if (_isCustomInput) ...[
               TextField(
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)?.enterConditionValue ?? 'Enter condition value',
+                  labelText:
+                      AppLocalizations.of(context)?.enterConditionValue ??
+                      'Enter condition value',
                   border: const OutlineInputBorder(),
                 ),
                 controller: _conditionController,
@@ -613,26 +648,30 @@ class _InitialZombieEditDialogState extends State<_InitialZombieEditDialog> {
               ),
               const SizedBox(height: 8),
               Text(
-                AppLocalizations.of(context)?.customInputHint ?? 'Custom input must be accurate',
+                AppLocalizations.of(context)?.customInputHint ??
+                    'Custom input must be accurate',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
               ),
             ] else ...[
               DropdownButtonFormField<String>(
-                initialValue: _InitialZombieEntryScreenState._zombieConditions
-                        .any((e) => e.$1 == _condition)
+                initialValue:
+                    _InitialZombieEntryScreenState._zombieConditions.any(
+                      (e) => e.$1 == _condition,
+                    )
                     ? _condition
                     : _InitialZombieEntryScreenState._zombieConditions.first.$1,
                 decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)?.presetConditions ?? 'Preset conditions',
+                  labelText:
+                      AppLocalizations.of(context)?.presetConditions ??
+                      'Preset conditions',
                   border: const OutlineInputBorder(),
                 ),
                 items: _InitialZombieEntryScreenState._zombieConditions
-                    .map((e) => DropdownMenuItem(
-                          value: e.$1,
-                          child: Text(e.$2),
-                        ))
+                    .map(
+                      (e) => DropdownMenuItem(value: e.$1, child: Text(e.$2)),
+                    )
                     .toList(),
                 onChanged: (v) {
                   if (v != null) setState(() => _condition = v);
@@ -640,7 +679,8 @@ class _InitialZombieEditDialogState extends State<_InitialZombieEditDialog> {
               ),
               const SizedBox(height: 8),
               Text(
-                AppLocalizations.of(context)?.selectFromPresetHint ?? 'Select from preset condition list',
+                AppLocalizations.of(context)?.selectFromPresetHint ??
+                    'Select from preset condition list',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   color: Theme.of(context).colorScheme.onSurfaceVariant,
                 ),
@@ -659,18 +699,23 @@ class _InitialZombieEditDialogState extends State<_InitialZombieEditDialog> {
           ),
           child: Text(AppLocalizations.of(context)?.delete ?? 'Delete'),
         ),
-        TextButton(onPressed: widget.onCancel, child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel')),
+        TextButton(
+          onPressed: widget.onCancel,
+          child: Text(AppLocalizations.of(context)?.cancel ?? 'Cancel'),
+        ),
         FilledButton(
           onPressed: () {
             final cond = _isCustomInput
                 ? _conditionController.text
                 : _condition;
-            widget.onSave(InitialZombieData(
-              gridX: widget.placement.gridX,
-              gridY: widget.placement.gridY,
-              typeName: widget.placement.typeName,
-              condition: cond,
-            ));
+            widget.onSave(
+              InitialZombieData(
+                gridX: widget.placement.gridX,
+                gridY: widget.placement.gridY,
+                typeName: widget.placement.typeName,
+                condition: cond,
+              ),
+            );
           },
           child: Text(AppLocalizations.of(context)?.save ?? 'Save'),
         ),

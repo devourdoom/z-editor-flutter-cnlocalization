@@ -21,4 +21,3 @@ class FrostWindWaveActionPropsData extends PvzModel {
     'Winds': winds.map((e) => e.toJson()).toList(),
   };
 }
-

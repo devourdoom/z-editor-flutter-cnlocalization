@@ -97,9 +97,7 @@ class _ZombossMechActionSelectionScreenState
       if (group == null) continue;
       if (widget.retreatOnly && group.tag != 'retreat') continue;
       if (!widget.retreatOnly && group.tag == 'retreat') continue;
-      if (!widget.retreatOnly &&
-          _category != 'all' &&
-          group.tag != _category) {
+      if (!widget.retreatOnly && _category != 'all' && group.tag != _category) {
         continue;
       }
       items.add(
@@ -151,7 +149,8 @@ class _ZombossMechActionSelectionScreenState
       appBar: AppBar(
         title: Text(
           widget.retreatOnly
-              ? (l10n?.zombossMechSelectRetreatAction ?? 'Select retreat action')
+              ? (l10n?.zombossMechSelectRetreatAction ??
+                    'Select retreat action')
               : (l10n?.zombossMechSelectAction ?? 'Select action'),
         ),
       ),
@@ -162,8 +161,10 @@ class _ZombossMechActionSelectionScreenState
               if (!widget.retreatOnly)
                 SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
                   child: Row(
                     children: [
                       for (final cat in _categories)
@@ -221,11 +222,11 @@ class _ZombossMechActionSelectionScreenState
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               CustomZombossMechActionEditorScreen(
-                                            catalog: widget.catalog,
-                                            levelFile: widget.levelFile,
-                                            existingRtid: item.rtid,
-                                            retreatOnly: widget.retreatOnly,
-                                          ),
+                                                catalog: widget.catalog,
+                                                levelFile: widget.levelFile,
+                                                existingRtid: item.rtid,
+                                                retreatOnly: widget.retreatOnly,
+                                              ),
                                         ),
                                       );
                                       if (!context.mounted) return;
@@ -264,11 +265,11 @@ class _ActionListItem {
     required this.catalog,
     required ZombossMechCatalogAction action,
     required this.rtid,
-  })  : isCustom = false,
-        catalogAction = action,
-        alias = action.alias,
-        objclass = action.objclass,
-        tag = action.tag;
+  }) : isCustom = false,
+       catalogAction = action,
+       alias = action.alias,
+       objclass = action.objclass,
+       tag = action.tag;
 
   _ActionListItem.custom({
     required this.catalog,
@@ -276,8 +277,8 @@ class _ActionListItem {
     required this.objclass,
     required this.tag,
     required this.rtid,
-  })  : isCustom = true,
-        catalogAction = null;
+  }) : isCustom = true,
+       catalogAction = null;
 
   final ZombossMechCatalogEntry catalog;
   final ZombossMechCatalogAction? catalogAction;
@@ -296,11 +297,7 @@ class _ActionListItem {
         fallback: alias,
       );
     }
-    return ZombossMechL10n.implementationLabel(
-      context,
-      catalog.id,
-      alias,
-    );
+    return ZombossMechL10n.implementationLabel(context, catalog.id, alias);
   }
 
   String secondaryLabel(BuildContext context) {

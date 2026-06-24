@@ -153,7 +153,9 @@ class _ToolCard extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(child: _ToolIcon(iconPath: iconPath, theme: theme)),
+              Expanded(
+                child: _ToolIcon(iconPath: iconPath, theme: theme),
+              ),
               const SizedBox(height: 8),
               Text(
                 name,

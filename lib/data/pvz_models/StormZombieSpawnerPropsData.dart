@@ -49,4 +49,3 @@ class StormZombieSpawnerPropsData extends PvzModel {
     'Zombies': zombies.map((e) => e.toJson()).toList(),
   };
 }
-

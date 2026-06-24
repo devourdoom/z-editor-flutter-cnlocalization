@@ -35,8 +35,10 @@ class ZombieFishWaveEventScreen extends StatefulWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(String) onSelected) onRequestZombieSelection;
-  final void Function(void Function(String) onSelected)? onRequestPlantSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestZombieSelection;
+  final void Function(void Function(String) onSelected)?
+  onRequestPlantSelection;
   final void Function(String rtid)? onEditCustomZombie;
   final String? Function(String baseType)? onInjectCustomZombie;
   final void Function(String rtid)? onEditCustomFish;
@@ -52,7 +54,8 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
   late SpawnZombiesFishWaveActionPropsData _data;
   double _batchLevel = 1;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _maxRow => _isDeepSeaLawn ? 6 : 5;
 
   @override
@@ -153,10 +156,10 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
         mounted) {
       final choice =
           await CustomZombieLevelUtils.maybePromptDeleteOrphanBeforeRemove(
-        context: context,
-        levelFile: widget.levelFile,
-        alias: info!.alias,
-      );
+            context: context,
+            levelFile: widget.levelFile,
+            alias: info!.alias,
+          );
       if (!mounted || choice == null) return;
       eraseOrphan = choice;
     }
@@ -213,7 +216,10 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: widget.onBack),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: widget.onBack,
+        ),
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -241,11 +247,15 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                 ),
                 HelpSectionData(
                   title: l10n?.batchLevel ?? 'Batch level',
-                  body: l10n?.eventHelpBatchLevel ?? 'Set level for all non-elite zombies in this wave.',
+                  body:
+                      l10n?.eventHelpBatchLevel ??
+                      'Set level for all non-elite zombies in this wave.',
                 ),
                 HelpSectionData(
                   title: l10n?.dropConfigPlantFood ?? 'Drop config',
-                  body: l10n?.eventHelpDropConfig ?? 'Plant food or plant cards carried by zombies.',
+                  body:
+                      l10n?.eventHelpDropConfig ??
+                      'Plant food or plant cards carried by zombies.',
                 ),
               ],
             ),
@@ -324,8 +334,10 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                         icon: Icon(hasFishes ? Icons.edit : Icons.add),
                         label: Text(
                           hasFishes
-                              ? (l10n?.editFishProperties ?? 'Edit fish properties')
-                              : (l10n?.addFishProperties ?? 'Add fish properties'),
+                              ? (l10n?.editFishProperties ??
+                                    'Edit fish properties')
+                              : (l10n?.addFishProperties ??
+                                    'Add fish properties'),
                         ),
                       ),
                     ],
@@ -445,7 +457,9 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                     final ok = await showDialog<bool>(
                       context: context,
                       builder: (ctx) => AlertDialog(
-                        title: Text(l10n?.applyBatchLevel ?? 'Apply batch level?'),
+                        title: Text(
+                          l10n?.applyBatchLevel ?? 'Apply batch level?',
+                        ),
                         content: Text(
                           l10n?.applyBatchLevelContent(_batchLevel.round()) ??
                               'Set all zombies in this wave to level ${_batchLevel.round()} (elite unchanged).',
@@ -482,7 +496,10 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
   }
 
   Widget _buildDropConfigCard(
-      BuildContext context, ThemeData theme, AppLocalizations? l10n) {
+    BuildContext context,
+    ThemeData theme,
+    AppLocalizations? l10n,
+  ) {
     final count = _data.additionalPlantFood ?? 0;
     final plants = List<String>.from(_data.spawnPlantName ?? []);
     final isDroppingPlants = plants.length == count && plants.isNotEmpty;
@@ -500,7 +517,8 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                 Text(
                   isDroppingPlants
                       ? (l10n?.dropConfigPlants ?? 'Drop config (Plants)')
-                      : (l10n?.dropConfigPlantFood ?? 'Drop config (Plant Food)'),
+                      : (l10n?.dropConfigPlantFood ??
+                            'Drop config (Plant Food)'),
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -512,8 +530,9 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
               children: [
                 IconButton(
                   icon: const Icon(Icons.remove),
-                  onPressed:
-                      count > 0 ? () => _updateAdditionalPlantFood(count - 1) : null,
+                  onPressed: count > 0
+                      ? () => _updateAdditionalPlantFood(count - 1)
+                      : null,
                 ),
                 Text('$count'),
                 IconButton(
@@ -524,9 +543,10 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                 Expanded(
                   child: Text(
                     isDroppingPlants
-                        ? (l10n?.zombiesCarryingPlants ?? 'Zombies carrying plants')
+                        ? (l10n?.zombiesCarryingPlants ??
+                              'Zombies carrying plants')
                         : (l10n?.zombiesCarryingPlantFood ??
-                            'Zombies carrying plant food'),
+                              'Zombies carrying plant food'),
                     style: theme.textTheme.bodySmall,
                   ),
                 ),
@@ -633,7 +653,8 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                   );
                 }),
                 PvzAddButton(
-                  onPressed: () => _addZombie(row: rowValue == 0 ? null : rowValue),
+                  onPressed: () =>
+                      _addZombie(row: rowValue == 0 ? null : rowValue),
                   useSecondaryColor: rowValue == 0,
                   size: 56,
                 ),
@@ -674,7 +695,9 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                             borderRadius: BorderRadius.circular(8),
                             child: AssetImageWidget(
                               assetPath: info!.iconAssetPath!,
-                              altCandidates: imageAltCandidates(info.iconAssetPath!),
+                              altCandidates: imageAltCandidates(
+                                info.iconAssetPath!,
+                              ),
                               width: 36,
                               height: 36,
                               fit: BoxFit.cover,
@@ -699,7 +722,9 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                                 const SizedBox(width: 8),
                                 Container(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 6, vertical: 2),
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
                                   decoration: BoxDecoration(
                                     color: pvzOrangeLight,
                                     borderRadius: BorderRadius.circular(4),
@@ -727,19 +752,26 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                         border: OutlineInputBorder(),
                       ),
                       items: [
-                        DropdownMenuItem(value: 0, child: Text(l10n?.random ?? 'Random')),
-                        ...List.generate(_maxRow, (i) => i + 1)
-                            .map((v) => DropdownMenuItem(value: v, child: Text('$v'))),
+                        DropdownMenuItem(
+                          value: 0,
+                          child: Text(l10n?.random ?? 'Random'),
+                        ),
+                        ...List.generate(_maxRow, (i) => i + 1).map(
+                          (v) => DropdownMenuItem(value: v, child: Text('$v')),
+                        ),
                       ],
                       onChanged: (v) {
                         if (v == null) return;
                         setModalState(() => rowValue = v);
-                        _updateZombie(index, ZombieSpawnData(
-                          type: zombie.type,
-                          row: v == 0 ? null : v,
-                          level: levelValue,
-                          direction: fromLeft ? 'left' : null,
-                        ));
+                        _updateZombie(
+                          index,
+                          ZombieSpawnData(
+                            type: zombie.type,
+                            row: v == 0 ? null : v,
+                            level: levelValue,
+                            direction: fromLeft ? 'left' : null,
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(height: 12),
@@ -748,12 +780,15 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                       value: fromLeft,
                       onChanged: (v) {
                         setModalState(() => fromLeft = v);
-                        _updateZombie(index, ZombieSpawnData(
-                          type: zombie.type,
-                          row: rowValue == 0 ? null : rowValue,
-                          level: levelValue,
-                          direction: v ? 'left' : null,
-                        ));
+                        _updateZombie(
+                          index,
+                          ZombieSpawnData(
+                            type: zombie.type,
+                            row: rowValue == 0 ? null : rowValue,
+                            level: levelValue,
+                            direction: v ? 'left' : null,
+                          ),
+                        );
                       },
                     ),
                     const SizedBox(height: 12),
@@ -786,7 +821,9 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                         Expanded(
                           child: FilledButton.icon(
                             style: FilledButton.styleFrom(
-                              backgroundColor: Theme.of(context).colorScheme.error,
+                              backgroundColor: Theme.of(
+                                context,
+                              ).colorScheme.error,
                             ),
                             onPressed: () {
                               CustomZombieLevelUtils.handleDeleteFromBottomSheet(
@@ -794,8 +831,10 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                                 parentContext: context,
                                 levelFile: widget.levelFile,
                                 zombieTypeRtid: zombie.type,
-                                onRemove: (eraseOrphan) =>
-                                    _removeZombie(index, eraseOrphanProperties: eraseOrphan),
+                                onRemove: (eraseOrphan) => _removeZombie(
+                                  index,
+                                  eraseOrphanProperties: eraseOrphan,
+                                ),
                               );
                             },
                             icon: const Icon(Icons.delete),

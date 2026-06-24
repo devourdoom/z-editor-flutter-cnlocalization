@@ -11,7 +11,8 @@ abstract final class PvZ2Crypto {
     const raw = 'com_popcap_pvz2_magento_product_2013_05_05';
     final md5Hash = md5.convert(utf8.encode(raw));
     // encode the hex string as UTF8 bytes (matches C# BinaryHelper.GetBytes with EncodingType.UTF8)
-    final hexStr = md5Hash.toString(); // e.g. "65bd1b2305f46eb2806b935aab7630bb"
+    final hexStr = md5Hash
+        .toString(); // e.g. "65bd1b2305f46eb2806b935aab7630bb"
     return Uint8List.fromList(utf8.encode(hexStr));
   }
 
@@ -33,8 +34,6 @@ class RijndaelC {
 
   RijndaelC(this.keyBytes, this.ivBytes);
 
-  factory RijndaelC.defaultValue() => RijndaelC(
-    PvZ2Crypto.keyBytes,
-    PvZ2Crypto.ivBytes,
-  );
+  factory RijndaelC.defaultValue() =>
+      RijndaelC(PvZ2Crypto.keyBytes, PvZ2Crypto.ivBytes);
 }

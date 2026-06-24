@@ -31,5 +31,3 @@ class BronzePropertiesData extends PvzModel {
     'shakeOffset': shakeOffset,
   };
 }
-
-

@@ -17,4 +17,3 @@ class StarChallengeKillZombiesInTimeData extends PvzModel {
     'Time': time,
   };
 }
-

@@ -34,5 +34,3 @@ class PVZ1CopycatsModulePropertiesData extends PvzModel {
     'ZombieWhiteList': List<String>.from(zombieWhiteList),
   };
 }
-
-

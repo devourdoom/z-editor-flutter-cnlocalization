@@ -8,7 +8,6 @@ import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/widgets/asset_image.dart';
 
-
 /// Conveyor belt properties. Ported from Z-Editor-master ConveyorSeedBankPropertiesEP.kt
 class ConveyorSeedBankPropertiesScreen extends StatefulWidget {
   const ConveyorSeedBankPropertiesScreen({
@@ -28,6 +27,7 @@ class ConveyorSeedBankPropertiesScreen extends StatefulWidget {
   final VoidCallback onBack;
   final void Function(void Function(String) onSelected) onRequestPlantSelection;
   final void Function(void Function(String) onSelected) onRequestToolSelection;
+
   /// Injects a level module by [objClass] (e.g. [PowerTileProperties]).
   final void Function(String objClass)? onAddModule;
 
@@ -84,9 +84,7 @@ class _ConveyorSeedBankPropertiesScreenState
   ConveyorBeltData _createDefaultConveyorData() {
     return ConveyorBeltData(
       initialPlantList: [],
-      speedConditions: [
-        SpeedConditionData(maxPacketsSpeed: 0, speed: 100),
-      ],
+      speedConditions: [SpeedConditionData(maxPacketsSpeed: 0, speed: 100)],
       dropDelayConditions: [
         DropDelayConditionData(maxPacketsDelay: 0, delay: 3),
         DropDelayConditionData(maxPacketsDelay: 2, delay: 6),
@@ -105,8 +103,7 @@ class _ConveyorSeedBankPropertiesScreenState
   void _addPlant() {
     widget.onRequestPlantSelection((id) {
       setState(() {
-        _data.initialPlantList
-            .add(InitialPlantListData(plantType: id));
+        _data.initialPlantList.add(InitialPlantListData(plantType: id));
         _listKey++;
         _sync();
       });
@@ -182,8 +179,9 @@ class _ConveyorSeedBankPropertiesScreenState
       builder: (ctx) => _PlantDetailDialog(
         l10n: l10n,
         data: item,
-        hasCustomLevelModule: widget.levelFile.objects
-            .any((o) => o.objClass == 'CustomLevelModuleProperties'),
+        hasCustomLevelModule: widget.levelFile.objects.any(
+          (o) => o.objClass == 'CustomLevelModuleProperties',
+        ),
         onDismiss: () => Navigator.pop(ctx),
         onConfirm: () {
           _listKey++;
@@ -229,19 +227,23 @@ class _ConveyorSeedBankPropertiesScreenState
               ),
               const SizedBox(height: 20),
               _ConveyorConditionEditor(
-                title: l10n?.dropDelayConditions ?? 'Drop delay (DropDelayConditions)',
+                title:
+                    l10n?.dropDelayConditions ??
+                    'Drop delay (DropDelayConditions)',
                 subtitle: l10n?.unitSeconds ?? 'Unit: seconds',
                 items: _data.dropDelayConditions,
                 extractMaxPackets: (e) => e.maxPacketsDelay,
                 onValueChange: _sync,
                 onAdd: () {
-                  var next = (_data.dropDelayConditions
-                              .map((e) => e.maxPacketsDelay)
-                              .fold<int>(0, (a, b) => a > b ? a : b)) +
-                          2;
+                  var next =
+                      (_data.dropDelayConditions
+                          .map((e) => e.maxPacketsDelay)
+                          .fold<int>(0, (a, b) => a > b ? a : b)) +
+                      2;
                   if (next >= 9) next = 9;
-                  _data.dropDelayConditions
-                      .add(DropDelayConditionData(delay: 6, maxPacketsDelay: next));
+                  _data.dropDelayConditions.add(
+                    DropDelayConditionData(delay: 6, maxPacketsDelay: next),
+                  );
                   _sync();
                 },
                 onRemove: (i) {
@@ -252,8 +254,7 @@ class _ConveyorSeedBankPropertiesScreenState
                   children: [
                     Expanded(
                       child: _NumberField(
-                        label:
-                            '${l10n?.threshold ?? 'Threshold'} (MaxPackets)',
+                        label: '${l10n?.threshold ?? 'Threshold'} (MaxPackets)',
                         value: item.maxPacketsDelay,
                         onChanged: (v) {
                           item.maxPacketsDelay = v;
@@ -278,18 +279,22 @@ class _ConveyorSeedBankPropertiesScreenState
               const SizedBox(height: 20),
               _ConveyorConditionEditor(
                 title: l10n?.speedConditions ?? 'Speed (SpeedConditions)',
-                subtitle: l10n?.speedConditionsSubtitle ?? 'Standard value 100, higher = faster',
+                subtitle:
+                    l10n?.speedConditionsSubtitle ??
+                    'Standard value 100, higher = faster',
                 items: _data.speedConditions,
                 extractMaxPackets: (e) => e.maxPacketsSpeed,
                 onValueChange: _sync,
                 onAdd: () {
-                  var next = (_data.speedConditions
-                              .map((e) => e.maxPacketsSpeed)
-                              .fold<int>(0, (a, b) => a > b ? a : b)) +
-                          2;
+                  var next =
+                      (_data.speedConditions
+                          .map((e) => e.maxPacketsSpeed)
+                          .fold<int>(0, (a, b) => a > b ? a : b)) +
+                      2;
                   if (next >= 9) next = 9;
-                  _data.speedConditions
-                      .add(SpeedConditionData(speed: 100, maxPacketsSpeed: next));
+                  _data.speedConditions.add(
+                    SpeedConditionData(speed: 100, maxPacketsSpeed: next),
+                  );
                   _sync();
                 },
                 onRemove: (i) {
@@ -300,8 +305,7 @@ class _ConveyorSeedBankPropertiesScreenState
                   children: [
                     Expanded(
                       child: _NumberField(
-                        label:
-                            '${l10n?.threshold ?? 'Threshold'} (MaxPackets)',
+                        label: '${l10n?.threshold ?? 'Threshold'} (MaxPackets)',
                         value: item.maxPacketsSpeed,
                         onChanged: (v) {
                           item.maxPacketsSpeed = v;
@@ -341,13 +345,25 @@ class _ConveyorSeedBankPropertiesScreenState
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(l10n?.conveyorBeltHelpIntro ?? 'Conveyor mode randomly generates cards by weight. Configure plant pool and refresh delay.'),
+              Text(
+                l10n?.conveyorBeltHelpIntro ??
+                    'Conveyor mode randomly generates cards by weight. Configure plant pool and refresh delay.',
+              ),
               const SizedBox(height: 8),
-              Text(l10n?.conveyorBeltHelpPool ?? 'Plant pool & weight: Probability = weight / total weight. Use thresholds to adjust dynamically.'),
+              Text(
+                l10n?.conveyorBeltHelpPool ??
+                    'Plant pool & weight: Probability = weight / total weight. Use thresholds to adjust dynamically.',
+              ),
               const SizedBox(height: 8),
-              Text(l10n?.conveyorBeltHelpDropDelay ?? 'Drop delay: Controls card spawn interval. More plants = slower.'),
+              Text(
+                l10n?.conveyorBeltHelpDropDelay ??
+                    'Drop delay: Controls card spawn interval. More plants = slower.',
+              ),
               const SizedBox(height: 8),
-              Text(l10n?.conveyorBeltHelpSpeed ?? 'Speed: Physical belt speed. Standard = 100.'),
+              Text(
+                l10n?.conveyorBeltHelpSpeed ??
+                    'Speed: Physical belt speed. Standard = 100.',
+              ),
             ],
           ),
         ),
@@ -428,7 +444,8 @@ class _ConveyorPlantListEditor extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8),
                 child: Text(
-                  l10n?.noCardsYetAddPlants ?? 'No cards yet. Add plants or tools.',
+                  l10n?.noCardsYetAddPlants ??
+                      'No cards yet. Add plants or tools.',
                   style: theme.textTheme.bodySmall?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,
                   ),
@@ -474,9 +491,14 @@ class _PlantRow extends StatelessWidget {
     final plantInfo = PlantRepository().getPlantInfoById(plant.plantType);
     final displayName = isTool
         ? ToolRepository.localizedName(context, plant.plantType)
-        : ResourceNames.lookup(context, PlantRepository().getName(plant.plantType));
+        : ResourceNames.lookup(
+            context,
+            PlantRepository().getName(plant.plantType),
+          );
     final iconPath = isTool
-        ? (toolInfo.icon != null ? 'assets/images/tools/${toolInfo.icon}' : null)
+        ? (toolInfo.icon != null
+              ? 'assets/images/tools/${toolInfo.icon}'
+              : null)
         : plantInfo?.iconAssetPath;
 
     return Padding(
@@ -493,37 +515,39 @@ class _PlantRow extends StatelessWidget {
               children: [
                 iconPath != null
                     ? (isTool
-                        ? ClipRRect(
-                            borderRadius: BorderRadius.circular(8),
-                            child: SizedBox(
-                              width: 48,
-                              height: 58,
-                              child: AssetImageWidget(
-                                assetPath: iconPath,
+                          ? ClipRRect(
+                              borderRadius: BorderRadius.circular(8),
+                              child: SizedBox(
                                 width: 48,
                                 height: 58,
-                                fit: BoxFit.contain,
+                                child: AssetImageWidget(
+                                  assetPath: iconPath,
+                                  width: 48,
+                                  height: 58,
+                                  fit: BoxFit.contain,
+                                ),
                               ),
-                            ),
-                          )
-                        : ClipRRect(
-                            borderRadius: BorderRadius.circular(10),
-                            child: SizedBox(
-                              width: 52,
-                              height: 52,
-                              child: AssetImageWidget(
-                                assetPath: iconPath,
+                            )
+                          : ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: SizedBox(
                                 width: 52,
                                 height: 52,
-                                fit: BoxFit.cover,
+                                child: AssetImageWidget(
+                                  assetPath: iconPath,
+                                  width: 52,
+                                  height: 52,
+                                  fit: BoxFit.cover,
+                                ),
                               ),
-                            ),
-                          ))
+                            ))
                     : SizedBox(
                         width: isTool ? 48 : 52,
                         height: isTool ? 58 : 52,
                         child: Container(
-                          color: theme.colorScheme.outline.withValues(alpha: 0.3),
+                          color: theme.colorScheme.outline.withValues(
+                            alpha: 0.3,
+                          ),
                           alignment: Alignment.center,
                           child: Text(
                             displayName.isNotEmpty
@@ -559,7 +583,8 @@ class _PlantRow extends StatelessWidget {
                             const SizedBox(width: 8),
                             Text(
                               plant.iLevel != null
-                                  ? (l10n?.levelFormat(plant.iLevel!) ?? 'Level: ${plant.iLevel}')
+                                  ? (l10n?.levelFormat(plant.iLevel!) ??
+                                        'Level: ${plant.iLevel}')
                                   : (l10n?.levelAccount ?? 'Level: account'),
                               style: theme.textTheme.bodySmall?.copyWith(
                                 color: theme.colorScheme.onSurfaceVariant,
@@ -681,8 +706,7 @@ class _PlantDetailDialogState extends State<_PlantDetailDialog> {
                     child: _NumberField(
                       label: l10n?.plantLevelLabel ?? 'Plant level',
                       value: _level,
-                      onChanged: (v) =>
-                          setState(() => _level = v.clamp(0, 5)),
+                      onChanged: (v) => setState(() => _level = v.clamp(0, 5)),
                     ),
                   ),
                 ],
@@ -691,20 +715,22 @@ class _PlantDetailDialogState extends State<_PlantDetailDialog> {
               Text(
                 '0 = follow account level',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 8),
               Opacity(
                 opacity: widget.hasCustomLevelModule ? 0.5 : 1.0,
                 child: Tooltip(
-                  message: l10n?.conveyorPlantWearCostumeTooltip ??
+                  message:
+                      l10n?.conveyorPlantWearCostumeTooltip ??
                       'When enabled, the seed packet may show a plant costume. '
                           'Not available in Creative Courtyard levels.',
                   child: SwitchListTile(
                     contentPadding: EdgeInsets.zero,
                     title: Text(
-                      l10n?.conveyorPlantWearCostume ?? 'Wear costume (iAvatar)',
+                      l10n?.conveyorPlantWearCostume ??
+                          'Wear costume (iAvatar)',
                     ),
                     value: _iAvatar,
                     onChanged: widget.hasCustomLevelModule
@@ -717,9 +743,9 @@ class _PlantDetailDialogState extends State<_PlantDetailDialog> {
             const Divider(height: 24),
             Text(
               l10n?.maxLimits ?? 'Max limits',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Row(
@@ -744,9 +770,9 @@ class _PlantDetailDialogState extends State<_PlantDetailDialog> {
             const SizedBox(height: 16),
             Text(
               l10n?.minLimits ?? 'Min limits',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
             Row(
@@ -776,10 +802,7 @@ class _PlantDetailDialogState extends State<_PlantDetailDialog> {
           onPressed: widget.onDismiss,
           child: Text(l10n?.cancel ?? 'Cancel'),
         ),
-        FilledButton(
-          onPressed: _save,
-          child: Text(l10n?.ok ?? 'OK'),
-        ),
+        FilledButton(onPressed: _save, child: Text(l10n?.ok ?? 'OK')),
       ],
     );
   }
@@ -839,10 +862,7 @@ class _ConveyorConditionEditor<T> extends StatelessWidget {
                     ],
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: onAdd,
-                ),
+                IconButton(icon: const Icon(Icons.add), onPressed: onAdd),
               ],
             ),
             const SizedBox(height: 8),

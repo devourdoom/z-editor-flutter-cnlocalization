@@ -31,4 +31,3 @@ class ManholePipelineModuleData extends PvzModel {
     'PipelineList': pipelineList.map((e) => e.toJson()).toList(),
   };
 }
-

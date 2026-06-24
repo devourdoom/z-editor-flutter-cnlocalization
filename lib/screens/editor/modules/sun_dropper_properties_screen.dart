@@ -30,7 +30,8 @@ class SunDropperPropertiesScreen extends StatefulWidget {
       _SunDropperPropertiesScreenState();
 }
 
-class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen> {
+class _SunDropperPropertiesScreenState
+    extends State<SunDropperPropertiesScreen> {
   static const _defaultAlias = 'DefaultSunDropper';
   static const _objClass = 'SunDropperProperties';
 
@@ -69,10 +70,16 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
     } else {
       _data = SunDropperPropertiesData();
     }
-    _initialDelayCtrl = TextEditingController(text: '${_data.initialSunDropDelay}');
-    _countdownBaseCtrl = TextEditingController(text: '${_data.sunCountdownBase}');
+    _initialDelayCtrl = TextEditingController(
+      text: '${_data.initialSunDropDelay}',
+    );
+    _countdownBaseCtrl = TextEditingController(
+      text: '${_data.sunCountdownBase}',
+    );
     _countdownMaxCtrl = TextEditingController(text: '${_data.sunCountdownMax}');
-    _countdownRangeCtrl = TextEditingController(text: '${_data.sunCountdownRange}');
+    _countdownRangeCtrl = TextEditingController(
+      text: '${_data.sunCountdownRange}',
+    );
     _increasePerSunCtrl = TextEditingController(
       text: '${_data.sunCountdownIncreasePerSun}',
     );
@@ -112,11 +119,13 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
         (o) => o.aliases?.contains(_defaultAlias) == true,
       );
       if (existing == null) {
-        objects.add(PvzObject(
-          aliases: [_defaultAlias],
-          objClass: _objClass,
-          objData: _data.toJson(),
-        ));
+        objects.add(
+          PvzObject(
+            aliases: [_defaultAlias],
+            objClass: _objClass,
+            objData: _data.toJson(),
+          ),
+        );
       } else {
         existing.objData = _data.toJson();
       }
@@ -169,9 +178,7 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
           icon: const Icon(Icons.arrow_back),
           onPressed: widget.onBack,
         ),
-        title: Text(
-          l10n?.sunDropperConfigTitle ?? 'Sun drop config',
-        ),
+        title: Text(l10n?.sunDropperConfigTitle ?? 'Sun drop config'),
         backgroundColor: themeColor,
         foregroundColor: theme.colorScheme.onPrimary,
         actions: [
@@ -184,12 +191,14 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.sunDropperHelpIntro ??
+                  body:
+                      l10n?.sunDropperHelpIntro ??
                       'This module configures falling sun parameters. Consider not adding it for night levels.',
                 ),
                 HelpSectionData(
                   title: l10n?.sunDropperHelpParams ?? 'Parameter config',
-                  body: l10n?.sunDropperHelpParamsBody ??
+                  body:
+                      l10n?.sunDropperHelpParamsBody ??
                       'By default the module uses game definitions. You can enable custom mode to edit parameters locally.',
                 ),
               ],
@@ -224,8 +233,10 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
                           ),
                           Text(
                             isCustom
-                                ? (l10n?.currentModeLocal ?? 'Current: local (@CurrentLevel)')
-                                : (l10n?.currentModeSystem ?? 'Current: system default (@LevelModules)'),
+                                ? (l10n?.currentModeLocal ??
+                                      'Current: local (@CurrentLevel)')
+                                : (l10n?.currentModeSystem ??
+                                      'Current: system default (@LevelModules)'),
                             style: theme.textTheme.bodySmall?.copyWith(
                               color: theme.colorScheme.onSurfaceVariant,
                             ),
@@ -236,20 +247,19 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
                     Theme(
                       data: theme.copyWith(
                         switchTheme: SwitchThemeData(
-                          thumbColor: WidgetStateProperty.resolveWith((states) =>
-                              states.contains(WidgetState.selected)
-                                  ? themeColor
-                                  : null),
-                          trackColor: WidgetStateProperty.resolveWith((states) =>
-                              states.contains(WidgetState.selected)
-                                  ? themeColor.withValues(alpha: 0.5)
-                                  : null),
+                          thumbColor: WidgetStateProperty.resolveWith(
+                            (states) => states.contains(WidgetState.selected)
+                                ? themeColor
+                                : null,
+                          ),
+                          trackColor: WidgetStateProperty.resolveWith(
+                            (states) => states.contains(WidgetState.selected)
+                                ? themeColor.withValues(alpha: 0.5)
+                                : null,
+                          ),
                         ),
                       ),
-                      child: Switch(
-                        value: isCustom,
-                        onChanged: _onToggleMode,
-                      ),
+                      child: Switch(value: isCustom, onChanged: _onToggleMode),
                     ),
                   ],
                 ),
@@ -290,7 +300,9 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
                             const SizedBox(height: 12),
                             _buildNumberField(
                               controller: _countdownBaseCtrl,
-                              label: l10n?.initialDropInterval ?? 'Initial drop interval',
+                              label:
+                                  l10n?.initialDropInterval ??
+                                  'Initial drop interval',
                               onChanged: (v) {
                                 final n = double.tryParse(v);
                                 if (n != null) {
@@ -302,7 +314,8 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
                             const SizedBox(height: 12),
                             _buildNumberField(
                               controller: _countdownMaxCtrl,
-                              label: l10n?.maxDropInterval ?? 'Max drop interval',
+                              label:
+                                  l10n?.maxDropInterval ?? 'Max drop interval',
                               onChanged: (v) {
                                 final n = double.tryParse(v);
                                 if (n != null) {
@@ -314,7 +327,9 @@ class _SunDropperPropertiesScreenState extends State<SunDropperPropertiesScreen>
                             const SizedBox(height: 12),
                             _buildNumberField(
                               controller: _countdownRangeCtrl,
-                              label: l10n?.intervalFloatRange ?? 'Interval float range',
+                              label:
+                                  l10n?.intervalFloatRange ??
+                                  'Interval float range',
                               onChanged: (v) {
                                 final n = double.tryParse(v);
                                 if (n != null) {

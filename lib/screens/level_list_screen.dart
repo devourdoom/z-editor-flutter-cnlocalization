@@ -28,6 +28,10 @@ class LevelListScreen extends StatefulWidget {
 }
 
 class _LevelListScreenState extends State<LevelListScreen> {
+  static const _successToastMaxWidth = 360.0;
+  static const _successToastHorizontalMargin = 24.0;
+  static const _successToastDuration = Duration(seconds: 2);
+
   List<FileItem> _fileItems = [];
   bool _isLoading = false;
   List<({String name, String path})> _pathStack = [];
@@ -46,9 +50,83 @@ class _LevelListScreenState extends State<LevelListScreen> {
   String _newLevelNameInput = '';
   bool _showUiScaleDialog = false;
   final ScrollController _listScrollController = ScrollController();
+  OverlayEntry? _successToastEntry;
   bool _listScrollAtTop = true;
 
   bool get _canGoBack => _pathStack.length > 1;
+
+  void _showFloatingSuccessSnackBar(String message, {Color? backgroundColor}) {
+    if (!mounted) return;
+    final overlay = Overlay.maybeOf(context);
+    if (overlay == null) return;
+
+    final theme = Theme.of(context);
+    final media = MediaQuery.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final bgColor =
+        backgroundColor ??
+        (isDark ? const Color(0xFF2E7D32) : const Color(0xFF4CAF50));
+    final maxWidth = media.size.width - (_successToastHorizontalMargin * 2);
+    final toastWidth = maxWidth < _successToastMaxWidth
+        ? maxWidth
+        : _successToastMaxWidth;
+
+    _successToastEntry?.remove();
+    late final OverlayEntry entry;
+    entry = OverlayEntry(
+      builder: (context) => Positioned.fill(
+        child: IgnorePointer(
+          child: SafeArea(
+            child: Center(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: toastWidth),
+                child: Material(
+                  color: bgColor,
+                  elevation: 6,
+                  borderRadius: BorderRadius.circular(6),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 20,
+                      vertical: 14,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.check_circle,
+                          color: Colors.white,
+                          size: 20,
+                        ),
+                        const SizedBox(width: 10),
+                        Flexible(
+                          child: Text(
+                            message,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    _successToastEntry = entry;
+    overlay.insert(entry);
+    Future.delayed(_successToastDuration, () {
+      if (_successToastEntry != entry) return;
+      entry.remove();
+      _successToastEntry = null;
+    });
+  }
 
   /// Extension to use when the user omits one (matches [LevelRepository] level files).
   String _levelExtensionFromFileName(String fileName) {
@@ -82,6 +160,8 @@ class _LevelListScreenState extends State<LevelListScreen> {
 
   @override
   void dispose() {
+    _successToastEntry?.remove();
+    _successToastEntry = null;
     _listScrollController.removeListener(_onListScroll);
     _listScrollController.dispose();
     super.dispose();
@@ -256,30 +336,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
       final theme = Theme.of(context);
       final isDark = theme.brightness == Brightness.dark;
       if (ok) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: isDark
-                ? const Color(0xFF2E7D32)
-                : const Color(0xFF4CAF50),
-            content: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(Icons.check_circle, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.renameSuccess,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        _showFloatingSuccessSnackBar(l10n.renameSuccess);
         setState(() => _itemToRename = null);
         _loadCurrentDirectory();
       } else {
@@ -330,30 +387,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
       final theme = Theme.of(context);
       final isDark = theme.brightness == Brightness.dark;
       if (ok) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: isDark
-                ? const Color(0xFF2E7D32)
-                : const Color(0xFF4CAF50),
-            content: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.copySuccess,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        _showFloatingSuccessSnackBar(l10n.copySuccess);
         setState(() => _itemToCopy = null);
         _loadCurrentDirectory();
       } else {
@@ -401,30 +435,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
       final theme = Theme.of(context);
       final isDark = theme.brightness == Brightness.dark;
       if (ok) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: isDark
-                ? const Color(0xFF2E7D32)
-                : const Color(0xFF4CAF50),
-            content: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.folderCreated,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        _showFloatingSuccessSnackBar(l10n.folderCreated);
         setState(() {
           _showNewFolderDialog = false;
           _newFolderNameInput = '';
@@ -650,30 +661,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
       final theme = Theme.of(context);
       final isDark = theme.brightness == Brightness.dark;
       if (ok) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            backgroundColor: isDark
-                ? const Color(0xFF2E7D32)
-                : const Color(0xFF4CAF50),
-            content: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.check_circle, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    l10n.levelCreated,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
+        _showFloatingSuccessSnackBar(l10n.levelCreated);
         setState(() {
           _newLevelNameInput = '';
         });
@@ -822,291 +810,306 @@ class _LevelListScreenState extends State<LevelListScreen> {
         children: [
           Column(
             children: [
-          if (_rootFolderPath == null)
-            Expanded(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(l10n.initSetup, style: theme.textTheme.titleLarge),
-                      const SizedBox(height: 8),
-                      Text(
-                        kIsWeb
-                            ? 'Open a level file (.json) to get started.'
-                            : l10n.selectFolderPrompt,
-                        textAlign: TextAlign.center,
+              if (_rootFolderPath == null)
+                Expanded(
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(24),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            l10n.initSetup,
+                            style: theme.textTheme.titleLarge,
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            kIsWeb
+                                ? 'Open a level file (.json) to get started.'
+                                : l10n.selectFolderPrompt,
+                            textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(height: 16),
+                          FilledButton.icon(
+                            onPressed: _pickFolder,
+                            icon: Icon(
+                              kIsWeb ? Icons.file_open : Icons.folder_open,
+                            ),
+                            label: Text(
+                              kIsWeb ? 'Open file' : l10n.selectFolderButton,
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 16),
-                      FilledButton.icon(
-                        onPressed: _pickFolder,
-                        icon: Icon(
-                          kIsWeb ? Icons.file_open : Icons.folder_open,
-                        ),
-                        label: Text(
-                          kIsWeb ? 'Open file' : l10n.selectFolderButton,
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
+                )
+              else ...[
+                _BreadcrumbBar(
+                  pathStack: _pathStack,
+                  onBreadcrumbClick: _breadcrumbTap,
                 ),
-              ),
-            )
-          else ...[
-            _BreadcrumbBar(
-              pathStack: _pathStack,
-              onBreadcrumbClick: _breadcrumbTap,
-            ),
-            if (_canGoBack)
-              Card(
-                margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                elevation: 2,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: InkWell(
-                  onTap: _goToParentDirectory,
-                  borderRadius: BorderRadius.circular(12),
-                  child: Padding(
+                if (_canGoBack)
+                  Card(
+                    margin: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: InkWell(
+                      onTap: _goToParentDirectory,
+                      borderRadius: BorderRadius.circular(12),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 12,
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              width: 48,
+                              height: 48,
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.arrow_back,
+                                size: 30,
+                                color: Color(0xFFFFC107),
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: Text(
+                                l10n.returnUp,
+                                style: Theme.of(context).textTheme.titleMedium
+                                    ?.copyWith(fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                if (_itemToMove != null)
+                  Container(
+                    width: double.infinity,
                     padding: const EdgeInsets.symmetric(
                       horizontal: 16,
                       vertical: 12,
                     ),
+                    color: theme.colorScheme.secondaryContainer,
                     child: Row(
                       children: [
-                        Container(
-                          width: 48,
-                          height: 48,
-                          alignment: Alignment.center,
-                          child: const Icon(
-                            Icons.arrow_back,
-                            size: 30,
-                            color: Color(0xFFFFC107),
-                          ),
+                        Icon(
+                          Icons.drive_file_move,
+                          color: theme.colorScheme.onSecondaryContainer,
+                          size: 24,
                         ),
-                        const SizedBox(width: 16),
+                        const SizedBox(width: 12),
                         Expanded(
-                          child: Text(
-                            l10n.returnUp,
-                            style: Theme.of(context).textTheme.titleMedium
-                                ?.copyWith(fontWeight: FontWeight.bold),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                l10n.moving(_itemToMove!.name),
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: theme.colorScheme.onSecondaryContainer,
+                                ),
+                              ),
+                              Text(
+                                l10n.movePrompt,
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  color: theme.colorScheme.onSecondaryContainer
+                                      .withAlpha(204),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
-              ),
-            if (_itemToMove != null)
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                color: theme.colorScheme.secondaryContainer,
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.drive_file_move,
-                      color: theme.colorScheme.onSecondaryContainer,
-                      size: 24,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            l10n.moving(_itemToMove!.name),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 14,
-                              color: theme.colorScheme.onSecondaryContainer,
-                            ),
+                Expanded(
+                  child: _isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : _fileItems.isEmpty
+                      ? Center(
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.folder_open,
+                                size: 64,
+                                color:
+                                    theme.colorScheme.surfaceContainerHighest,
+                              ),
+                              const SizedBox(height: 16),
+                              Text(
+                                l10n.emptyFolder,
+                                style: TextStyle(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
                           ),
-                          Text(
-                            l10n.movePrompt,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: theme.colorScheme.onSecondaryContainer
-                                  .withAlpha(204),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _fileItems.isEmpty
-                  ? Center(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(
-                            Icons.folder_open,
-                            size: 64,
-                            color: theme.colorScheme.surfaceContainerHighest,
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            l10n.emptyFolder,
-                            style: TextStyle(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : ListView.builder(
-                      controller: _listScrollController,
-                      padding: const EdgeInsets.all(16),
-                      itemCount: _fileItems.length + 1,
-                      itemBuilder: (context, index) {
-                        final itemIndex = index;
-                        if (itemIndex >= _fileItems.length) {
-                          return const SizedBox(height: 80);
-                        }
-                        final item = _fileItems[itemIndex];
-                        final isMovingMode = _itemToMove != null;
-                        final isSelfMoving =
-                            isMovingMode && _itemToMove == item;
-                        final actionsDisabled = isMovingMode;
-                        return Opacity(
-                          opacity:
-                              (isMovingMode && !item.isDirectory) ||
-                                  isSelfMoving
-                              ? 0.5
-                              : 1,
-                          child: _FileItemRow(
-                            item: item,
-                            l10n: l10n,
-                            onTap: () async {
-                              if (isMovingMode) {
-                                if (item.isDirectory) _navigateToFolder(item);
-                              } else {
-                                if (item.isDirectory) {
-                                  _navigateToFolder(item);
-                                } else {
-                                  final lowerName = item.name.toLowerCase();
-                                  if (lowerName.endsWith('.hujson') ||
-                                      lowerName.endsWith('.rton')) {
-                                    final convertedPath =
-                                        await _showConversionRequiredDialog(
-                                          item,
-                                        );
-                                    if (!mounted || convertedPath == null) {
-                                      return;
-                                    }
-                                    final convertedName = p.basename(
-                                      convertedPath,
-                                    );
-                                    final ok =
-                                        await LevelRepository.prepareInternalCache(
-                                          convertedPath,
-                                          convertedName,
-                                        );
-                                    if (mounted && ok) {
-                                      widget.onLevelClick(
-                                        convertedName,
-                                        convertedPath,
-                                      );
-                                    }
+                        )
+                      : ListView.builder(
+                          controller: _listScrollController,
+                          padding: const EdgeInsets.all(16),
+                          itemCount: _fileItems.length + 1,
+                          itemBuilder: (context, index) {
+                            final itemIndex = index;
+                            if (itemIndex >= _fileItems.length) {
+                              return const SizedBox(height: 80);
+                            }
+                            final item = _fileItems[itemIndex];
+                            final isMovingMode = _itemToMove != null;
+                            final isSelfMoving =
+                                isMovingMode && _itemToMove == item;
+                            final actionsDisabled = isMovingMode;
+                            return Opacity(
+                              opacity:
+                                  (isMovingMode && !item.isDirectory) ||
+                                      isSelfMoving
+                                  ? 0.5
+                                  : 1,
+                              child: _FileItemRow(
+                                item: item,
+                                l10n: l10n,
+                                onTap: () async {
+                                  if (isMovingMode) {
+                                    if (item.isDirectory)
+                                      _navigateToFolder(item);
                                   } else {
-                                    final ok =
-                                        await LevelRepository.prepareInternalCache(
-                                          item.path,
-                                          item.name,
+                                    if (item.isDirectory) {
+                                      _navigateToFolder(item);
+                                    } else {
+                                      final lowerName = item.name.toLowerCase();
+                                      if (lowerName.endsWith('.hujson') ||
+                                          lowerName.endsWith('.rton')) {
+                                        final convertedPath =
+                                            await _showConversionRequiredDialog(
+                                              item,
+                                            );
+                                        if (!mounted || convertedPath == null) {
+                                          return;
+                                        }
+                                        final convertedName = p.basename(
+                                          convertedPath,
                                         );
-                                    if (mounted && ok) {
-                                      widget.onLevelClick(item.name, item.path);
-                                    }
-                                  }
-                                }
-                              }
-                            },
-                            onRename: actionsDisabled
-                                ? () {}
-                                : () {
-                                    setState(() {
-                                      _renameInput = item.isDirectory
-                                          ? item.name
-                                          : LevelRepository.baseNameWithoutLevelExtension(
+                                        final ok =
+                                            await LevelRepository.prepareInternalCache(
+                                              convertedPath,
+                                              convertedName,
+                                            );
+                                        if (mounted && ok) {
+                                          widget.onLevelClick(
+                                            convertedName,
+                                            convertedPath,
+                                          );
+                                        }
+                                      } else {
+                                        final ok =
+                                            await LevelRepository.prepareInternalCache(
+                                              item.path,
                                               item.name,
                                             );
-                                      _itemToRename = item;
-                                    });
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback(
-                                          (_) => _showRenameDialog(),
-                                        );
-                                  },
-                            onDelete: actionsDisabled
-                                ? () {}
-                                : () {
-                                    setState(() => _itemToDelete = item);
-                                    WidgetsBinding.instance
-                                        .addPostFrameCallback(
-                                          (_) => _showDeleteDialog(),
-                                        );
-                                  },
-                            onDownload: kIsWeb && !item.isDirectory
-                                ? () => LevelRepository.downloadLevel(item.name)
-                                : null,
-                            onCopy: actionsDisabled
-                                ? () {}
-                                : () async {
-                                    if (!item.isDirectory &&
-                                        _pathStack.isNotEmpty) {
-                                      final baseName =
-                                          LevelRepository.baseNameWithoutLevelExtension(
+                                        if (mounted && ok) {
+                                          widget.onLevelClick(
                                             item.name,
+                                            item.path,
                                           );
-                                      final nextName =
-                                          await LevelRepository.getNextAvailableCopyName(
-                                            _pathStack.last.path,
-                                            baseName,
-                                          );
-                                      if (mounted) {
+                                        }
+                                      }
+                                    }
+                                  }
+                                },
+                                onRename: actionsDisabled
+                                    ? () {}
+                                    : () {
                                         setState(() {
-                                          _copyInput = nextName;
-                                          _itemToCopy = item;
+                                          _renameInput = item.isDirectory
+                                              ? item.name
+                                              : LevelRepository.baseNameWithoutLevelExtension(
+                                                  item.name,
+                                                );
+                                          _itemToRename = item;
                                         });
                                         WidgetsBinding.instance
                                             .addPostFrameCallback(
-                                              (_) => _showCopyDialog(),
+                                              (_) => _showRenameDialog(),
                                             );
-                                      }
-                                    }
-                                  },
-                            onMove: actionsDisabled
-                                ? () {}
-                                : () {
-                                    if (!item.isDirectory &&
-                                        _pathStack.isNotEmpty) {
-                                      setState(() {
-                                        _itemToMove = item;
-                                        _moveSourcePath = _pathStack.last.path;
-                                      });
-                                    }
-                                  },
-                            onConvert: actionsDisabled || item.isDirectory
-                                ? null
-                                : () => _showConvertMenuFor(item),
-                            showMove: !item.isDirectory && !kIsWeb,
-                          ),
-                        );
-                      },
-                    ),
-            ),
-          ],
-        ],
+                                      },
+                                onDelete: actionsDisabled
+                                    ? () {}
+                                    : () {
+                                        setState(() => _itemToDelete = item);
+                                        WidgetsBinding.instance
+                                            .addPostFrameCallback(
+                                              (_) => _showDeleteDialog(),
+                                            );
+                                      },
+                                onDownload: kIsWeb && !item.isDirectory
+                                    ? () => LevelRepository.downloadLevel(
+                                        item.name,
+                                      )
+                                    : null,
+                                onCopy: actionsDisabled
+                                    ? () {}
+                                    : () async {
+                                        if (!item.isDirectory &&
+                                            _pathStack.isNotEmpty) {
+                                          final baseName =
+                                              LevelRepository.baseNameWithoutLevelExtension(
+                                                item.name,
+                                              );
+                                          final nextName =
+                                              await LevelRepository.getNextAvailableCopyName(
+                                                _pathStack.last.path,
+                                                baseName,
+                                              );
+                                          if (mounted) {
+                                            setState(() {
+                                              _copyInput = nextName;
+                                              _itemToCopy = item;
+                                            });
+                                            WidgetsBinding.instance
+                                                .addPostFrameCallback(
+                                                  (_) => _showCopyDialog(),
+                                                );
+                                          }
+                                        }
+                                      },
+                                onMove: actionsDisabled
+                                    ? () {}
+                                    : () {
+                                        if (!item.isDirectory &&
+                                            _pathStack.isNotEmpty) {
+                                          setState(() {
+                                            _itemToMove = item;
+                                            _moveSourcePath =
+                                                _pathStack.last.path;
+                                          });
+                                        }
+                                      },
+                                onConvert: actionsDisabled || item.isDirectory
+                                    ? null
+                                    : () => _showConvertMenuFor(item),
+                                onToggleFavorite:
+                                    actionsDisabled || item.isDirectory
+                                    ? null
+                                    : () => _toggleFavorite(item),
+                                showMove: !item.isDirectory && !kIsWeb,
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
+            ],
           ),
           if (_rootFolderPath != null && _itemToMove == null)
             Positioned(
@@ -1421,9 +1424,11 @@ class _LevelListScreenState extends State<LevelListScreen> {
     }
     final isGreen =
         type == 'success' || type == 'renamed' || type == 'overwritten';
-    final textColor = isGreen
-        ? Colors.white
-        : (isDark ? Colors.white : const Color(0xFF5D4E00));
+    if (isGreen) {
+      _showFloatingSuccessSnackBar(text, backgroundColor: bgColor);
+      return;
+    }
+    final textColor = isDark ? Colors.white : const Color(0xFF5D4E00);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         backgroundColor: bgColor,
@@ -1435,10 +1440,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
             Expanded(
               child: Text(
                 text,
-                style: TextStyle(
-                  color: textColor,
-                  fontWeight: isGreen ? FontWeight.bold : null,
-                ),
+                style: TextStyle(color: textColor),
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -1789,34 +1791,27 @@ class _LevelListScreenState extends State<LevelListScreen> {
       target.isDirectory,
     );
     if (mounted) {
-      final theme = Theme.of(context);
-      final isDark = theme.brightness == Brightness.dark;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          backgroundColor: isDark
-              ? const Color(0xFF2E7D32)
-              : const Color(0xFF4CAF50),
-          content: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(Icons.check_circle, color: Colors.white, size: 20),
-              const SizedBox(width: 8),
-              Expanded(
-                child: Text(
-                  l10n.deleted,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
+      _showFloatingSuccessSnackBar(l10n.deleted);
       _loadCurrentDirectory();
     }
+  }
+
+  Future<void> _toggleFavorite(FileItem item) async {
+    if (item.isDirectory) return;
+    final l10n = AppLocalizations.of(context)!;
+    final next = !item.isFavorite;
+    await LevelRepository.setFavoriteLevelPath(item.path, next);
+    if (!mounted) return;
+    _showFloatingSuccessSnackBar(
+      next ? l10n.addedToFavorites : l10n.removedFromFavorites,
+    );
+    await _loadCurrentDirectory();
+    if (!mounted) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      _resetListScrollToTop();
+      setState(() {});
+    });
   }
 
   void _showCopyDialog() {
@@ -1994,6 +1989,7 @@ class _FileItemRow extends StatelessWidget {
     required this.showMove,
     this.onDownload,
     this.onConvert,
+    this.onToggleFavorite,
   });
 
   final FileItem item;
@@ -2006,6 +2002,7 @@ class _FileItemRow extends StatelessWidget {
   final bool showMove;
   final VoidCallback? onDownload;
   final VoidCallback? onConvert;
+  final VoidCallback? onToggleFavorite;
 
   static const _iconBtnStyle = ButtonStyle(
     padding: WidgetStatePropertyAll(EdgeInsets.all(6)),
@@ -2030,7 +2027,25 @@ class _FileItemRow extends StatelessWidget {
     );
   }
 
-  Widget _buildLevelFileMenu(ThemeData theme) {
+  String _favoriteActionLabel(BuildContext context) {
+    final languageCode = Localizations.localeOf(context).languageCode;
+    if (item.isFavorite) {
+      return switch (languageCode) {
+        'zh' => '\u53d6\u6d88\u6536\u85cf',
+        'ru' =>
+          '\u0423\u0431\u0440\u0430\u0442\u044c \u0438\u0437 '
+              '\u0438\u0437\u0431\u0440\u0430\u043d\u043d\u043e\u0433\u043e',
+        _ => 'Unfavorite',
+      };
+    }
+    return switch (languageCode) {
+      'zh' => '\u6536\u85cf',
+      'ru' => '\u0412 \u0438\u0437\u0431\u0440\u0430\u043d\u043d\u043e\u0435',
+      _ => 'Favorite',
+    };
+  }
+
+  Widget _buildLevelFileMenu(BuildContext context, ThemeData theme) {
     return PopupMenuButton<String>(
       icon: Icon(
         Icons.more_vert,
@@ -2039,27 +2054,27 @@ class _FileItemRow extends StatelessWidget {
       ),
       padding: const EdgeInsets.all(6),
       itemBuilder: (_) => [
+        if (onToggleFavorite != null)
+          PopupMenuItem(
+            value: 'favorite',
+            child: _popupMenuTile(
+              icon: item.isFavorite ? Icons.favorite : Icons.favorite_border,
+              label: _favoriteActionLabel(context),
+              iconColor: item.isFavorite ? theme.colorScheme.error : null,
+            ),
+          ),
         PopupMenuItem(
           value: 'rename',
-          child: _popupMenuTile(
-            icon: Icons.edit,
-            label: l10n.rename,
-          ),
+          child: _popupMenuTile(icon: Icons.edit, label: l10n.rename),
         ),
         PopupMenuItem(
           value: 'copy',
-          child: _popupMenuTile(
-            icon: Icons.copy,
-            label: l10n.copy,
-          ),
+          child: _popupMenuTile(icon: Icons.copy, label: l10n.copy),
         ),
         if (onDownload != null)
           PopupMenuItem(
             value: 'download',
-            child: _popupMenuTile(
-              icon: Icons.download,
-              label: l10n.download,
-            ),
+            child: _popupMenuTile(icon: Icons.download, label: l10n.download),
           ),
         if (onConvert != null)
           PopupMenuItem(
@@ -2089,6 +2104,8 @@ class _FileItemRow extends StatelessWidget {
       ],
       onSelected: (v) {
         switch (v) {
+          case 'favorite':
+            onToggleFavorite?.call();
           case 'rename':
             onRename();
           case 'copy':
@@ -2106,6 +2123,19 @@ class _FileItemRow extends StatelessWidget {
     );
   }
 
+  Widget _buildLevelFileActions(BuildContext context, ThemeData theme) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        if (item.isFavorite) ...[
+          const Icon(Icons.favorite, color: Colors.red, size: 20),
+          const SizedBox(width: 4),
+        ],
+        _buildLevelFileMenu(context, theme),
+      ],
+    );
+  }
+
   Widget _buildFolderMenu(ThemeData theme) {
     return PopupMenuButton<String>(
       icon: Icon(
@@ -2117,10 +2147,7 @@ class _FileItemRow extends StatelessWidget {
       itemBuilder: (_) => [
         PopupMenuItem(
           value: 'rename',
-          child: _popupMenuTile(
-            icon: Icons.edit,
-            label: l10n.rename,
-          ),
+          child: _popupMenuTile(icon: Icons.edit, label: l10n.rename),
         ),
         PopupMenuItem(
           value: 'delete',
@@ -2172,10 +2199,6 @@ class _FileItemRow extends StatelessWidget {
         ? item.name
         : LevelRepository.baseNameWithoutLevelExtension(item.name);
 
-    final actionsRow = item.isDirectory
-        ? _buildFolderActions(theme)
-        : _buildLevelFileMenu(theme);
-
     return Card(
       margin: const EdgeInsets.only(bottom: 12),
       elevation: 2,
@@ -2195,13 +2218,10 @@ class _FileItemRow extends StatelessWidget {
                 ? (compact
                       ? _buildFolderMenu(theme)
                       : _buildFolderActions(theme))
-                : _buildLevelFileMenu(theme);
+                : _buildLevelFileActions(context, theme);
 
             return Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: hPad,
-                vertical: 12,
-              ),
+              padding: EdgeInsets.symmetric(horizontal: hPad, vertical: 12),
               child: Row(
                 children: [
                   SizedBox(
@@ -2251,10 +2271,7 @@ class _FileItemRow extends StatelessWidget {
                       fit: FlexFit.loose,
                       child: Align(
                         alignment: Alignment.centerRight,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: actions,
-                        ),
+                        child: FittedBox(fit: BoxFit.scaleDown, child: actions),
                       ),
                     ),
                 ],

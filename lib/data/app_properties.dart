@@ -17,8 +17,7 @@ class AppProperties {
     final raw =
         json.decode(await loadJsonString(assetPath)) as Map<String, dynamic>;
     _cached = AppProperties(
-      supportedGameVersion:
-          raw['supported_game_version'] as String? ?? '0.0.0',
+      supportedGameVersion: raw['supported_game_version'] as String? ?? '0.0.0',
     );
     return _cached!;
   }

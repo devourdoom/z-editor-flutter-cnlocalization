@@ -16,5 +16,4 @@ class GravestonePoolItem extends PvzModel {
   Map<String, dynamic> toJson() => {'Count': count, 'Type': type};
 }
 
-
 /// Barrel types: barrelempty, barrelmoster (zombie), barrelexplosive

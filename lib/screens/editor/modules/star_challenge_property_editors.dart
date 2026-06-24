@@ -50,15 +50,12 @@ Widget _starChallengeEntityCard({
           Expanded(
             child: Text(
               title,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
-          IconButton(
-            icon: const Icon(Icons.edit, size: 20),
-            onPressed: onEdit,
-          ),
+          IconButton(icon: const Icon(Icons.edit, size: 20), onPressed: onEdit),
           if (onRemove != null)
             IconButton(
               icon: const Icon(Icons.close, size: 20),
@@ -314,9 +311,9 @@ class _ApplyZombieConditionsChallengeEditorState
             _objClass,
             'ConditionToInflict',
           ),
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         if (conditions.isEmpty)
@@ -332,7 +329,10 @@ class _ApplyZombieConditionsChallengeEditorState
               child: ListTile(
                 dense: true,
                 title: Text(ChallengeResourceL10n.condition(context, id)),
-                subtitle: Text(id, style: Theme.of(context).textTheme.bodySmall),
+                subtitle: Text(
+                  id,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
                 trailing: IconButton(
                   icon: const Icon(Icons.close, size: 20),
                   onPressed: () => _removeConditionAt(e.key),
@@ -428,7 +428,11 @@ class _PlantDefeatZombieChallengeEditorState
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         StarChallengeDescriptionField(
-          label: ChallengeResourceL10n.property(context, _objClass, 'Description'),
+          label: ChallengeResourceL10n.property(
+            context,
+            _objClass,
+            'Description',
+          ),
           value: _data['Description'] as String? ?? '',
           onChanged: (v) {
             setState(() {
@@ -455,9 +459,9 @@ class _PlantDefeatZombieChallengeEditorState
         const SizedBox(height: 12),
         Text(
           ChallengeResourceL10n.property(context, _objClass, 'PlantTypeName'),
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         _starChallengeEntityCard(
@@ -513,10 +517,10 @@ class _DefeatZombiesOfTypeChallengeEditorState
     _data = Map<String, dynamic>.from(widget.object.objData as Map);
     _data.putIfAbsent('Description', () => '');
     _data.putIfAbsent('NumZombiesToKill', () => 30);
-    _data.putIfAbsent('TypesToKill', () => <String, dynamic>{
-          'List': <String>[],
-          'ListType': 'whitelist',
-        });
+    _data.putIfAbsent(
+      'TypesToKill',
+      () => <String, dynamic>{'List': <String>[], 'ListType': 'whitelist'},
+    );
   }
 
   Map<String, dynamic> get _typesToKill {
@@ -528,8 +532,7 @@ class _DefeatZombiesOfTypeChallengeEditorState
   List<String> get _zombieList =>
       (_typesToKill['List'] as List?)?.cast<String>().toList() ?? [];
 
-  String get _listType =>
-      _typesToKill['ListType'] as String? ?? 'whitelist';
+  String get _listType => _typesToKill['ListType'] as String? ?? 'whitelist';
 
   void _save() {
     widget.object.objData = _data;
@@ -540,7 +543,8 @@ class _DefeatZombiesOfTypeChallengeEditorState
     _data['TypesToKill'] = {'List': list, 'ListType': listType};
   }
 
-  String _zombieLabel(String typeName) => _localizedZombieName(context, typeName);
+  String _zombieLabel(String typeName) =>
+      _localizedZombieName(context, typeName);
 
   void _addZombies() {
     Navigator.push<void>(
@@ -582,7 +586,11 @@ class _DefeatZombiesOfTypeChallengeEditorState
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         StarChallengeDescriptionField(
-          label: ChallengeResourceL10n.property(context, _objClass, 'Description'),
+          label: ChallengeResourceL10n.property(
+            context,
+            _objClass,
+            'Description',
+          ),
           value: _data['Description'] as String? ?? '',
           onChanged: (v) {
             setState(() {
@@ -611,7 +619,11 @@ class _DefeatZombiesOfTypeChallengeEditorState
           key: ValueKey(listType),
           initialValue: listType == 'blacklist' ? 'blacklist' : 'whitelist',
           decoration: InputDecoration(
-            labelText: ChallengeResourceL10n.property(context, _objClass, 'ListType'),
+            labelText: ChallengeResourceL10n.property(
+              context,
+              _objClass,
+              'ListType',
+            ),
             border: const OutlineInputBorder(),
           ),
           items: ['whitelist', 'blacklist']
@@ -637,16 +649,17 @@ class _DefeatZombiesOfTypeChallengeEditorState
           children: [
             Expanded(
               child: Text(
-                ChallengeResourceL10n.property(context, _objClass, 'TypesToKill'),
-                style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.bold,
-                    ),
+                ChallengeResourceL10n.property(
+                  context,
+                  _objClass,
+                  'TypesToKill',
+                ),
+                style: Theme.of(
+                  context,
+                ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
               ),
             ),
-            IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: _addZombies,
-            ),
+            IconButton(icon: const Icon(Icons.add), onPressed: _addZombies),
           ],
         ),
         if (zombies.isEmpty)
@@ -682,8 +695,8 @@ class _DefeatZombiesOfTypeChallengeEditorState
                       child: Text(
                         name,
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     IconButton(
@@ -766,8 +779,9 @@ class _DestroyGridItemsChallengeEditorState
   @override
   Widget build(BuildContext context) {
     final gridType = _data['GridItemType'] as String? ?? 'gravestone';
-    final displayType =
-        gridType == 'gravestone' ? 'gravestone_egypt' : gridType;
+    final displayType = gridType == 'gravestone'
+        ? 'gravestone_egypt'
+        : gridType;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -820,9 +834,9 @@ class _DestroyGridItemsChallengeEditorState
           ),
           title: Text(
             _gridLabel(displayType),
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  fontWeight: FontWeight.bold,
-                ),
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
             ChallengeResourceL10n.property(context, _objClass, 'GridItemType'),
@@ -881,9 +895,9 @@ class _StarChallengeDisablePlantEditorState
       children: [
         Text(
           ChallengeResourceL10n.property(context, _objClass, 'Profession'),
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.bold,
-              ),
+          style: Theme.of(
+            context,
+          ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
         ...StarChallengeProfessions.ids.map((id) {
@@ -907,7 +921,10 @@ class _StarChallengeDisablePlantEditorState
               ),
               title: Text(ChallengeResourceL10n.profession(context, id)),
               trailing: isSelected
-                  ? Icon(Icons.check_circle, color: Theme.of(context).colorScheme.primary)
+                  ? Icon(
+                      Icons.check_circle,
+                      color: Theme.of(context).colorScheme.primary,
+                    )
                   : null,
               onTap: () {
                 setState(() {
@@ -962,7 +979,9 @@ class _StarChallengeCountFieldEditorState
   @override
   Widget build(BuildContext context) {
     final value = _data[widget.field];
-    final intVal = value is int ? value : int.tryParse('$value') ?? widget.defaultValue;
+    final intVal = value is int
+        ? value
+        : int.tryParse('$value') ?? widget.defaultValue;
     return StarChallengeLabeledIntField(
       label: ChallengeResourceL10n.property(
         context,

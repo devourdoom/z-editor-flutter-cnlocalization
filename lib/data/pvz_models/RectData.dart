@@ -24,4 +24,3 @@ class RectData extends PvzModel {
     'mHeight': mHeight,
   };
 }
-

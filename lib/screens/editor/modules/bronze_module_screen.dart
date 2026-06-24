@@ -303,9 +303,10 @@ class _BronzeModuleScreenState extends State<BronzeModuleScreen> {
                           context: context,
                           child: Container(
                             constraints: BoxConstraints(
-                              maxWidth: EditorItemCardLayout.gridPreviewMaxWidth(
-                                context,
-                              ),
+                              maxWidth:
+                                  EditorItemCardLayout.gridPreviewMaxWidth(
+                                    context,
+                                  ),
                             ),
                             child: AspectRatio(
                               aspectRatio: _gridCols / _gridRows,
@@ -824,14 +825,18 @@ class _BronzeStatueCardState extends State<_BronzeStatueCard> {
                           children: [
                             Icon(
                               editorWarningIcon,
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                               size: 16,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               'R${widget.item.mY + 1}:C${widget.item.mX + 1}',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: editorWarningBannerForeground(theme.brightness),
+                                color: editorWarningBannerForeground(
+                                  theme.brightness,
+                                ),
                               ),
                             ),
                           ],

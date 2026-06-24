@@ -54,10 +54,12 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
     _wm = WaveManagerData.fromJson(
       Map<String, dynamic>.from(_wmObj.objData as Map),
     );
-    _flagIntervalController =
-        TextEditingController(text: '${_wm.flagWaveInterval}');
+    _flagIntervalController = TextEditingController(
+      text: '${_wm.flagWaveInterval}',
+    );
     final firstVal = widget.hasConveyor
-        ? (_wm.zombieCountDownFirstWaveConveyorSecs ?? _defaultFirstWaveConveyor)
+        ? (_wm.zombieCountDownFirstWaveConveyorSecs ??
+              _defaultFirstWaveConveyor)
         : (_wm.zombieCountDownFirstWaveSecs ?? _defaultFirstWave);
     final hugeVal = _wm.zombieCountDownHugeWaveDelay ?? _defaultHugeDelay;
     _firstWaveController = TextEditingController(text: '$firstVal');
@@ -84,22 +86,25 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
   }
 
   void _updateTimeSettings() {
-    final first = int.tryParse(_firstWaveController.text) ??
+    final first =
+        int.tryParse(_firstWaveController.text) ??
         (widget.hasConveyor ? _defaultFirstWaveConveyor : _defaultFirstWave);
-    final huge =
-        int.tryParse(_hugeWaveController.text) ?? _defaultHugeDelay;
+    final huge = int.tryParse(_hugeWaveController.text) ?? _defaultHugeDelay;
     if (widget.hasConveyor) {
       _wm.zombieCountDownFirstWaveSecs = null;
       _wm.zombieCountDownFirstWaveConveyorSecs =
           first == _defaultFirstWaveConveyor ? null : first;
-      _wm.zombieCountDownHugeWaveDelay =
-          huge == _defaultHugeDelay ? null : huge;
+      _wm.zombieCountDownHugeWaveDelay = huge == _defaultHugeDelay
+          ? null
+          : huge;
     } else {
-      _wm.zombieCountDownFirstWaveSecs =
-          first == _defaultFirstWave ? null : first;
+      _wm.zombieCountDownFirstWaveSecs = first == _defaultFirstWave
+          ? null
+          : first;
       _wm.zombieCountDownFirstWaveConveyorSecs = null;
-      _wm.zombieCountDownHugeWaveDelay =
-          huge == _defaultHugeDelay ? null : huge;
+      _wm.zombieCountDownHugeWaveDelay = huge == _defaultHugeDelay
+          ? null
+          : huge;
     }
     _save();
   }
@@ -148,22 +153,26 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
               sections: [
                 HelpSectionData(
                   title: l10n?.waveManagerHelpOverviewTitle ?? 'Overview',
-                  body: l10n?.waveManagerHelpOverviewBody ??
+                  body:
+                      l10n?.waveManagerHelpOverviewBody ??
                       'Global parameters for wave events and health thresholds.',
                 ),
                 HelpSectionData(
                   title: l10n?.waveManagerHelpFlagTitle ?? 'Flag interval',
-                  body: l10n?.waveManagerHelpFlagBody ??
+                  body:
+                      l10n?.waveManagerHelpFlagBody ??
                       'Every N waves is a flag wave; the final wave is always flag.',
                 ),
                 HelpSectionData(
                   title: l10n?.waveManagerHelpTimeTitle ?? 'Time control',
-                  body: l10n?.waveManagerHelpTimeBody ??
+                  body:
+                      l10n?.waveManagerHelpTimeBody ??
                       'First wave delay changes when a conveyor is present.',
                 ),
                 HelpSectionData(
                   title: l10n?.waveManagerHelpMusicTitle ?? 'Music type',
-                  body: l10n?.waveManagerHelpMusicBody ??
+                  body:
+                      l10n?.waveManagerHelpMusicBody ??
                       'Modern world only; provides fixed background jam type.',
                 ),
               ],
@@ -200,10 +209,12 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
                 Expanded(
                   child: TextField(
                     controller: _maxHealthController,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     decoration: InputDecoration(
-                      labelText: l10n?.waveManagerMaxHealthThreshold ??
+                      labelText:
+                          l10n?.waveManagerMaxHealthThreshold ??
                           'Max health threshold',
                       border: const OutlineInputBorder(),
                     ),
@@ -220,10 +231,12 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
                 Expanded(
                   child: TextField(
                     controller: _minHealthController,
-                    keyboardType:
-                        const TextInputType.numberWithOptions(decimal: true),
+                    keyboardType: const TextInputType.numberWithOptions(
+                      decimal: true,
+                    ),
                     decoration: InputDecoration(
-                      labelText: l10n?.waveManagerMinHealthThreshold ??
+                      labelText:
+                          l10n?.waveManagerMinHealthThreshold ??
                           'Min health threshold',
                       border: const OutlineInputBorder(),
                     ),
@@ -266,9 +279,9 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
                     decoration: InputDecoration(
                       labelText: widget.hasConveyor
                           ? (l10n?.waveManagerFirstWaveDelayConveyor ??
-                              'First wave delay (conveyor)')
+                                'First wave delay (conveyor)')
                           : (l10n?.waveManagerFirstWaveDelayNormal ??
-                              'First wave delay (normal)'),
+                                'First wave delay (normal)'),
                       border: const OutlineInputBorder(),
                     ),
                     onChanged: (_) => _updateTimeSettings(),
@@ -280,8 +293,8 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
                     controller: _hugeWaveController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
-                      labelText: l10n?.waveManagerFlagWaveDelay ??
-                          'Flag wave delay',
+                      labelText:
+                          l10n?.waveManagerFlagWaveDelay ?? 'Flag wave delay',
                       border: const OutlineInputBorder(),
                     ),
                     onChanged: (_) => _updateTimeSettings(),
@@ -293,9 +306,9 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
             Text(
               widget.hasConveyor
                   ? (l10n?.waveManagerConveyorDetected ??
-                      'Conveyor module detected; conveyor delay applied.')
+                        'Conveyor module detected; conveyor delay applied.')
                   : (l10n?.waveManagerConveyorNotDetected ??
-                      'No conveyor module; normal delay applied.'),
+                        'No conveyor module; normal delay applied.'),
               style: theme.textTheme.bodySmall?.copyWith(
                 color: theme.colorScheme.onSurfaceVariant,
               ),
@@ -313,8 +326,10 @@ class _WaveManagerSettingsScreenState extends State<WaveManagerSettingsScreen> {
             const SizedBox(height: 12),
             Card(
               child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     Expanded(

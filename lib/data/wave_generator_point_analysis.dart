@@ -17,7 +17,8 @@ class WaveGeneratorPointAnalysis {
         ? data.waves[waveIndex - 1]
         : null;
 
-    var basePoints = wave?.wavePointStart ??
+    var basePoints =
+        wave?.wavePointStart ??
         data.waveSpendingPoints +
             (waveIndex - 1) * data.waveSpendingPointIncrement;
     if (basePoints > 60000) basePoints = 60000;

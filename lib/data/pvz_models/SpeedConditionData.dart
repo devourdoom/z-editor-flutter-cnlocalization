@@ -18,4 +18,3 @@ class SpeedConditionData extends PvzModel {
     'MaxPackets': maxPacketsSpeed,
   };
 }
-

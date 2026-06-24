@@ -15,4 +15,3 @@ class BlackHoleEventData extends PvzModel {
     'ColNumPlantIsDragged': colNumPlantIsDragged,
   };
 }
-

@@ -71,5 +71,3 @@ class WaveManagerData extends PvzModel {
     'Waves': waves,
   };
 }
-
-

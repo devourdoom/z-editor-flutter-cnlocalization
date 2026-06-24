@@ -40,34 +40,34 @@ Future<void> showChallengeEditorDialog(
     builder: (ctx) => Theme(
       data: dialogTheme,
       child: AlertDialog(
-      title: Text(title),
-      content: SizedBox(
-        width: double.maxFinite,
-        child: SingleChildScrollView(
-          child: ChallengeEditorContent(
-            object: object,
-            onChanged: onChanged,
-            l10n: l10n,
-            levelFile: levelFile,
+        title: Text(title),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: SingleChildScrollView(
+            child: ChallengeEditorContent(
+              object: object,
+              onChanged: onChanged,
+              l10n: l10n,
+              levelFile: levelFile,
+            ),
           ),
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            style: TextButton.styleFrom(foregroundColor: accent),
+            child: Text(l10n?.cancel ?? 'Cancel'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(ctx),
+            style: FilledButton.styleFrom(
+              backgroundColor: accent,
+              foregroundColor: onAccent,
+            ),
+            child: Text(l10n?.save ?? 'Save'),
+          ),
+        ],
       ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(ctx),
-          style: TextButton.styleFrom(foregroundColor: accent),
-          child: Text(l10n?.cancel ?? 'Cancel'),
-        ),
-        FilledButton(
-          onPressed: () => Navigator.pop(ctx),
-          style: FilledButton.styleFrom(
-            backgroundColor: accent,
-            foregroundColor: onAccent,
-          ),
-          child: Text(l10n?.save ?? 'Save'),
-        ),
-      ],
-    ),
     ),
   );
 }
@@ -118,11 +118,18 @@ class ChallengeEditorContent extends StatelessWidget {
     final l10n = this.l10n ?? AppLocalizations.of(context);
     switch (object.objClass) {
       case 'StarChallengeBeatTheLevelProps':
-        return _BeatTheLevelEditor(l10n: l10n, object: object, onChanged: onChanged);
+        return _BeatTheLevelEditor(
+          l10n: l10n,
+          object: object,
+          onChanged: onChanged,
+        );
       case 'StarChallengeSaveMowersProps':
       case 'StarChallengePlantFoodNonuseProps':
         return Center(
-          child: Text(l10n?.challengeNoConfig ?? "This challenge doesn't support configuration."),
+          child: Text(
+            l10n?.challengeNoConfig ??
+                "This challenge doesn't support configuration.",
+          ),
         );
       case 'StarChallengePlantsSurviveProps':
         return _SimpleCountEditor(
@@ -161,7 +168,11 @@ class ChallengeEditorContent extends StatelessWidget {
           onChanged: onChanged,
         );
       case 'StarChallengeKillZombiesInTimeProps':
-        return _KillZombiesInTimeEditor(l10n: l10n, object: object, onChanged: onChanged);
+        return _KillZombiesInTimeEditor(
+          l10n: l10n,
+          object: object,
+          onChanged: onChanged,
+        );
       case 'StarChallengeZombieSpeedProps':
         return _SimpleDoubleEditor(
           object: object,
@@ -305,17 +316,37 @@ class ChallengeEditorContent extends StatelessWidget {
           defaultValue: 5,
         );
       case 'ProtectThePlantChallengeProperties':
-        return _ProtectThePlantEditor(l10n: l10n, object: object, onChanged: onChanged);
+        return _ProtectThePlantEditor(
+          l10n: l10n,
+          object: object,
+          onChanged: onChanged,
+        );
       case 'ProtectTheGridItemChallengeProperties':
-        return _ProtectTheGridItemEditor(l10n: l10n, object: object, onChanged: onChanged);
+        return _ProtectTheGridItemEditor(
+          l10n: l10n,
+          object: object,
+          onChanged: onChanged,
+        );
       case 'SunBombChallengeProperties':
         return _SunBombEditor(l10n: l10n, object: object, onChanged: onChanged);
       case 'ZombiePotionModuleProperties':
-        return _ZombiePotionModuleEditor(l10n: l10n, object: object, onChanged: onChanged);
+        return _ZombiePotionModuleEditor(
+          l10n: l10n,
+          object: object,
+          onChanged: onChanged,
+        );
       case 'PennyClassroomModuleProperties':
-        return _PennyClassroomEditor(l10n: l10n, object: object, onChanged: onChanged);
+        return _PennyClassroomEditor(
+          l10n: l10n,
+          object: object,
+          onChanged: onChanged,
+        );
       case 'ManholePipelineModuleProperties':
-        return _ManholePipelineEditor(l10n: l10n, object: object, onChanged: onChanged);
+        return _ManholePipelineEditor(
+          l10n: l10n,
+          object: object,
+          onChanged: onChanged,
+        );
       default:
         return Text(l10n?.unknownChallengeType ?? 'Unknown challenge type');
     }
@@ -365,7 +396,11 @@ class _ChallengeEditorScreenState extends State<ChallengeEditorScreen> {
 }
 
 class _BeatTheLevelEditor extends StatefulWidget {
-  const _BeatTheLevelEditor({required this.l10n, required this.object, required this.onChanged});
+  const _BeatTheLevelEditor({
+    required this.l10n,
+    required this.object,
+    required this.onChanged,
+  });
   final AppLocalizations? l10n;
   final PvzObject object;
   final VoidCallback onChanged;
@@ -509,7 +544,11 @@ class _SimpleDoubleEditor extends StatelessWidget {
 }
 
 class _KillZombiesInTimeEditor extends StatelessWidget {
-  const _KillZombiesInTimeEditor({required this.l10n, required this.object, required this.onChanged});
+  const _KillZombiesInTimeEditor({
+    required this.l10n,
+    required this.object,
+    required this.onChanged,
+  });
   final AppLocalizations? l10n;
   final PvzObject object;
   final VoidCallback onChanged;
@@ -550,7 +589,11 @@ class _KillZombiesInTimeEditor extends StatelessWidget {
 }
 
 class _ProtectThePlantEditor extends StatefulWidget {
-  const _ProtectThePlantEditor({required this.l10n, required this.object, required this.onChanged});
+  const _ProtectThePlantEditor({
+    required this.l10n,
+    required this.object,
+    required this.onChanged,
+  });
   final AppLocalizations? l10n;
   final PvzObject object;
   final VoidCallback onChanged;
@@ -597,7 +640,8 @@ class _ProtectThePlantEditorState extends State<_ProtectThePlantEditor> {
         TextFormField(
           initialValue: _data.mustProtectCount.toString(),
           decoration: InputDecoration(
-            labelText: l10n?.mustProtectCountAll ?? 'Must Protect Count (0 = All)',
+            labelText:
+                l10n?.mustProtectCountAll ?? 'Must Protect Count (0 = All)',
             border: const OutlineInputBorder(),
           ),
           keyboardType: TextInputType.number,
@@ -607,7 +651,10 @@ class _ProtectThePlantEditorState extends State<_ProtectThePlantEditor> {
           },
         ),
         const SizedBox(height: 16),
-        Text(l10n?.protectedPlants ?? 'Protected Plants', style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          l10n?.protectedPlants ?? 'Protected Plants',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -690,13 +737,18 @@ class _ProtectThePlantEditorState extends State<_ProtectThePlantEditor> {
 }
 
 class _ProtectTheGridItemEditor extends StatefulWidget {
-  const _ProtectTheGridItemEditor({required this.l10n, required this.object, required this.onChanged});
+  const _ProtectTheGridItemEditor({
+    required this.l10n,
+    required this.object,
+    required this.onChanged,
+  });
   final AppLocalizations? l10n;
   final PvzObject object;
   final VoidCallback onChanged;
 
   @override
-  State<_ProtectTheGridItemEditor> createState() => _ProtectTheGridItemEditorState();
+  State<_ProtectTheGridItemEditor> createState() =>
+      _ProtectTheGridItemEditorState();
 }
 
 class _ProtectTheGridItemEditorState extends State<_ProtectTheGridItemEditor> {
@@ -749,7 +801,9 @@ class _ProtectTheGridItemEditorState extends State<_ProtectTheGridItemEditor> {
         TextFormField(
           initialValue: _data.mustProtectCount.toString(),
           decoration: InputDecoration(
-            labelText: l10n?.mustProtectCount(_data.mustProtectCount) ?? 'Must Protect Count',
+            labelText:
+                l10n?.mustProtectCount(_data.mustProtectCount) ??
+                'Must Protect Count',
             border: const OutlineInputBorder(),
           ),
           keyboardType: TextInputType.number,
@@ -759,7 +813,10 @@ class _ProtectTheGridItemEditorState extends State<_ProtectTheGridItemEditor> {
           },
         ),
         const SizedBox(height: 16),
-        Text(l10n?.protectedGridItems ?? 'Protected Grid Items', style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          l10n?.protectedGridItems ?? 'Protected Grid Items',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         ListView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
@@ -842,7 +899,11 @@ class _ProtectTheGridItemEditorState extends State<_ProtectTheGridItemEditor> {
 }
 
 class _SunBombEditor extends StatefulWidget {
-  const _SunBombEditor({required this.l10n, required this.object, required this.onChanged});
+  const _SunBombEditor({
+    required this.l10n,
+    required this.object,
+    required this.onChanged,
+  });
   final AppLocalizations? l10n;
   final PvzObject object;
   final VoidCallback onChanged;
@@ -929,7 +990,11 @@ class _SunBombEditorState extends State<_SunBombEditor> {
 }
 
 class _ZombiePotionModuleEditor extends StatefulWidget {
-  const _ZombiePotionModuleEditor({required this.l10n, required this.object, required this.onChanged});
+  const _ZombiePotionModuleEditor({
+    required this.l10n,
+    required this.object,
+    required this.onChanged,
+  });
   final AppLocalizations? l10n;
   final PvzObject object;
   final VoidCallback onChanged;
@@ -987,7 +1052,10 @@ class _ZombiePotionModuleEditorState extends State<_ZombiePotionModuleEditor> {
           },
         ),
         const SizedBox(height: 8),
-        Text(l10n?.spawnTimer ?? 'Spawn Timer (Min/Max seconds)', style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          l10n?.spawnTimer ?? 'Spawn Timer (Min/Max seconds)',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         Row(
           children: [
             Expanded(
@@ -1022,14 +1090,24 @@ class _ZombiePotionModuleEditorState extends State<_ZombiePotionModuleEditor> {
           ],
         ),
         const SizedBox(height: 16),
-        Text(l10n?.potionTypesConfigured(_data.potionTypes.length) ?? 'Potion types: ${_data.potionTypes.length} configured', style: TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+        Text(
+          l10n?.potionTypesConfigured(_data.potionTypes.length) ??
+              'Potion types: ${_data.potionTypes.length} configured',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
       ],
     );
   }
 }
 
 class _PennyClassroomEditor extends StatefulWidget {
-  const _PennyClassroomEditor({required this.l10n, required this.object, required this.onChanged});
+  const _PennyClassroomEditor({
+    required this.l10n,
+    required this.object,
+    required this.onChanged,
+  });
   final AppLocalizations? l10n;
   final PvzObject object;
   final VoidCallback onChanged;
@@ -1056,7 +1134,8 @@ class _PennyClassroomEditorState extends State<_PennyClassroomEditor> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          l10n?.plantLevelsCount(_data.plantMap.length) ?? 'Plant levels: ${_data.plantMap.length}',
+          l10n?.plantLevelsCount(_data.plantMap.length) ??
+              'Plant levels: ${_data.plantMap.length}',
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         const SizedBox(height: 8),
@@ -1080,7 +1159,11 @@ class _PennyClassroomEditorState extends State<_PennyClassroomEditor> {
 }
 
 class _ManholePipelineEditor extends StatefulWidget {
-  const _ManholePipelineEditor({required this.l10n, required this.object, required this.onChanged});
+  const _ManholePipelineEditor({
+    required this.l10n,
+    required this.object,
+    required this.onChanged,
+  });
   final AppLocalizations? l10n;
   final PvzObject object;
   final VoidCallback onChanged;
@@ -1137,7 +1220,11 @@ class _ManholePipelineEditorState extends State<_ManholePipelineEditor> {
           },
         ),
         const SizedBox(height: 8),
-        Text(l10n?.pipelinesCount(_data.pipelineList.length) ?? 'Pipelines: ${_data.pipelineList.length}', style: const TextStyle(fontWeight: FontWeight.bold)),
+        Text(
+          l10n?.pipelinesCount(_data.pipelineList.length) ??
+              'Pipelines: ${_data.pipelineList.length}',
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ],
     );
   }

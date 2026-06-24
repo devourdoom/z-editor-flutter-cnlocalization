@@ -21,4 +21,3 @@ class InitialPlantEntryData extends PvzModel {
     'Plants': plants.map((e) => e.toJson()).toList(),
   };
 }
-

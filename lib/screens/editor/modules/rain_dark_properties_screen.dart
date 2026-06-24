@@ -25,11 +25,7 @@ class RainDarkPropertiesScreen extends StatefulWidget {
 }
 
 class _RainDarkPropertiesScreenState extends State<RainDarkPropertiesScreen> {
-  static const _aliases = [
-    'DefaultSnow',
-    'LightningRain',
-    'DefaultRainDark',
-  ];
+  static const _aliases = ['DefaultSnow', 'LightningRain', 'DefaultRainDark'];
 
   String _activeAlias() {
     final targetAliases = _aliases.toSet();
@@ -52,7 +48,10 @@ class _RainDarkPropertiesScreenState extends State<RainDarkPropertiesScreen> {
       index = widget.levelDef.modules.indexOf(widget.currentRtid);
     }
     if (index != -1) {
-      widget.levelDef.modules[index] = RtidParser.build(newAlias, 'LevelModules');
+      widget.levelDef.modules[index] = RtidParser.build(
+        newAlias,
+        'LevelModules',
+      );
       widget.onChanged();
       setState(() {});
     }
@@ -67,25 +66,31 @@ class _RainDarkPropertiesScreenState extends State<RainDarkPropertiesScreen> {
     final options = [
       _WeatherOption(
         alias: 'DefaultSnow',
-        label: l10n?.weatherOption_DefaultSnow_label ??
+        label:
+            l10n?.weatherOption_DefaultSnow_label ??
             'Frostbite Caves (DefaultSnow)',
-        description: l10n?.weatherOption_DefaultSnow_desc ??
+        description:
+            l10n?.weatherOption_DefaultSnow_desc ??
             'Snowing effect from Frostbite Caves',
         icon: Icons.ac_unit,
       ),
       _WeatherOption(
         alias: 'LightningRain',
-        label: l10n?.weatherOption_LightningRain_label ??
+        label:
+            l10n?.weatherOption_LightningRain_label ??
             'Thunderstorm (LightningRain)',
-        description: l10n?.weatherOption_LightningRain_desc ??
+        description:
+            l10n?.weatherOption_LightningRain_desc ??
             'Rain and lightning from Dark Ages Day 8',
         icon: Icons.thunderstorm,
       ),
       _WeatherOption(
         alias: 'DefaultRainDark',
-        label: l10n?.weatherOption_DefaultRainDark_label ??
+        label:
+            l10n?.weatherOption_DefaultRainDark_label ??
             'Dark Ages (DefaultRainDark)',
-        description: l10n?.weatherOption_DefaultRainDark_desc ??
+        description:
+            l10n?.weatherOption_DefaultRainDark_desc ??
             'Rain effect from Dark Ages',
         icon: Icons.dark_mode,
       ),
@@ -147,9 +152,7 @@ class _RainDarkPropertiesScreenState extends State<RainDarkPropertiesScreen> {
                     padding: const EdgeInsets.all(16),
                     child: Row(
                       children: [
-                        Radio<String>(
-                          value: opt.alias,
-                        ),
+                        Radio<String>(value: opt.alias),
                         const SizedBox(width: 8),
                         Icon(
                           opt.icon,

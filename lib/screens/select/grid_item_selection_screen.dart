@@ -135,14 +135,15 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
                         builder: (context, constraints) {
                           final crossAxisCount =
                               SelectionGridLayout.crossAxisCount(
-                            constraints.maxWidth,
-                          );
+                                constraints.maxWidth,
+                              );
                           final cellWidth = SelectionGridLayout.cellWidth(
                             constraints.maxWidth,
                             crossAxisCount,
                           );
-                          final iconSize =
-                              SelectionGridLayout.iconSize(cellWidth);
+                          final iconSize = SelectionGridLayout.iconSize(
+                            cellWidth,
+                          );
 
                           return GridView.builder(
                             padding: const EdgeInsets.all(
@@ -151,8 +152,10 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
                             gridDelegate:
                                 SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: crossAxisCount,
-                                  childAspectRatio: SelectionGridLayout
-                                      .childAspectRatio(constraints.maxWidth),
+                                  childAspectRatio:
+                                      SelectionGridLayout.childAspectRatio(
+                                        constraints.maxWidth,
+                                      ),
                                   crossAxisSpacing: SelectionGridLayout.spacing,
                                   mainAxisSpacing: SelectionGridLayout.spacing,
                                 ),

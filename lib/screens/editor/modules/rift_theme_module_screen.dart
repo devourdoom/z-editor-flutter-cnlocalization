@@ -6,7 +6,8 @@ import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/rift_theme_selection_screen.dart';
-import 'package:c_editor/theme/app_theme.dart' show pvzPurpleDark, pvzPurpleLight;
+import 'package:c_editor/theme/app_theme.dart'
+    show pvzPurpleDark, pvzPurpleLight;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Custom rift theme list module (`RiftThemeDemoModuleProperties`).
@@ -186,7 +187,9 @@ class _RiftThemeModuleScreenState extends State<RiftThemeModuleScreen> {
                             children: [
                               Icon(
                                 editorWarningIcon,
-                                color: editorWarningBannerForeground(theme.brightness),
+                                color: editorWarningBannerForeground(
+                                  theme.brightness,
+                                ),
                                 size: 20,
                               ),
                               IconButton(
@@ -206,12 +209,12 @@ class _RiftThemeModuleScreenState extends State<RiftThemeModuleScreen> {
               },
             ),
       floatingActionButton: FloatingActionButton(
-              onPressed: () => _openThemeSelection(l10n),
-              backgroundColor: accentColor,
-              foregroundColor: Colors.white,
-              tooltip: l10n?.riftThemeSelectThemes ?? 'Select themes',
-              child: const Icon(Icons.edit),
-            ),
+        onPressed: () => _openThemeSelection(l10n),
+        backgroundColor: accentColor,
+        foregroundColor: Colors.white,
+        tooltip: l10n?.riftThemeSelectThemes ?? 'Select themes',
+        child: const Icon(Icons.edit),
+      ),
     );
   }
 }

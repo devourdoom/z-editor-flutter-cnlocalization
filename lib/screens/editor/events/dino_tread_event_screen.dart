@@ -29,7 +29,8 @@ class _DinoTreadEventScreenState extends State<DinoTreadEventScreen> {
   late DinoTreadActionPropsData _data;
   late TextEditingController _waveStartMessageCtrl;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _maxRowIndex => _isDeepSeaLawn ? 5 : 4;
   int get _maxColIndex => _isDeepSeaLawn ? 9 : 8;
 
@@ -67,7 +68,9 @@ class _DinoTreadEventScreenState extends State<DinoTreadEventScreen> {
       _moduleObj = PvzObject(
         aliases: [alias],
         objClass: 'DinoTreadActionProps',
-        objData: DinoTreadActionPropsData(waveStartMessage: defaultMsg).toJson(),
+        objData: DinoTreadActionPropsData(
+          waveStartMessage: defaultMsg,
+        ).toJson(),
       );
       widget.levelFile.objects.add(_moduleObj);
     }
@@ -188,7 +191,9 @@ class _DinoTreadEventScreenState extends State<DinoTreadEventScreen> {
                       ),
                       const SizedBox(height: 12),
                       _buildIntField(
-                        label: l10n?.dinoTreadColMinLabel ?? 'Column min [GridXMin]',
+                        label:
+                            l10n?.dinoTreadColMinLabel ??
+                            'Column min [GridXMin]',
                         value: _data.gridXMin,
                         max: _maxColIndex,
                         onChanged: (v) {
@@ -204,7 +209,9 @@ class _DinoTreadEventScreenState extends State<DinoTreadEventScreen> {
                       ),
                       const SizedBox(height: 12),
                       _buildIntField(
-                        label: l10n?.dinoTreadColMaxLabel ?? 'Column max [GridXMax]',
+                        label:
+                            l10n?.dinoTreadColMaxLabel ??
+                            'Column max [GridXMax]',
                         value: _data.gridXMax,
                         max: _maxColIndex,
                         onChanged: (v) {
@@ -222,7 +229,9 @@ class _DinoTreadEventScreenState extends State<DinoTreadEventScreen> {
                       TextFormField(
                         initialValue: _data.timeInterval.toString(),
                         decoration: InputDecoration(
-                          labelText: l10n?.dinoTreadTimeIntervalLabel ?? 'Time interval [TimeInterval]',
+                          labelText:
+                              l10n?.dinoTreadTimeIntervalLabel ??
+                              'Time interval [TimeInterval]',
                           border: const OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.number,
@@ -252,7 +261,8 @@ class _DinoTreadEventScreenState extends State<DinoTreadEventScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n?.waveStartMessageLabel ?? 'Red subtitle [WaveStartMessage]',
+                        l10n?.waveStartMessageLabel ??
+                            'Red subtitle [WaveStartMessage]',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -261,7 +271,9 @@ class _DinoTreadEventScreenState extends State<DinoTreadEventScreen> {
                       TextField(
                         controller: _waveStartMessageCtrl,
                         decoration: InputDecoration(
-                          hintText: l10n?.optionalWarningText ?? 'Optional warning text before spawn',
+                          hintText:
+                              l10n?.optionalWarningText ??
+                              'Optional warning text before spawn',
                           border: const OutlineInputBorder(),
                         ),
                         onChanged: (v) {

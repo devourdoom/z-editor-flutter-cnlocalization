@@ -85,10 +85,8 @@ class GridOverridePlacementGrid extends StatelessWidget {
                             child: imagePath != null
                                 ? LayoutBuilder(
                                     builder: (context, constraints) {
-                                      final w =
-                                          constraints.maxWidth * scale;
-                                      final h =
-                                          constraints.maxHeight * scale;
+                                      final w = constraints.maxWidth * scale;
+                                      final h = constraints.maxHeight * scale;
                                       return Align(
                                         alignment: Alignment.bottomCenter,
                                         child: SizedBox(

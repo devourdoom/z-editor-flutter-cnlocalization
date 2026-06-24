@@ -21,4 +21,3 @@ class ZombiePotionActionPropsData extends PvzModel {
     'Potions': potions.map((e) => e.toJson()).toList(),
   };
 }
-

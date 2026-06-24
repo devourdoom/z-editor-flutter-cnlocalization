@@ -21,4 +21,3 @@ class StormZombieData extends PvzModel {
     return m;
   }
 }
-

@@ -22,5 +22,3 @@ class BombPropertiesData extends PvzModel {
     'FuseLengths': fuseLengths,
   };
 }
-
-

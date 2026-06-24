@@ -7,7 +7,8 @@ import '../rtid_parser.dart';
 /// Loads ResilienceConfig.json and provides presets for ZombieResilience.
 class ResilienceConfigRepository {
   ResilienceConfigRepository._();
-  static final ResilienceConfigRepository instance = ResilienceConfigRepository._();
+  static final ResilienceConfigRepository instance =
+      ResilienceConfigRepository._();
 
   final List<ResilienceConfigEntry> _entries = [];
   bool _isInitialized = false;
@@ -20,8 +21,8 @@ class ResilienceConfigRepository {
       );
       final Map<String, dynamic> root =
           jsonDecode(jsonStr) as Map<String, dynamic>;
-      final objects =
-          (root['objects'] as List<dynamic>? ?? []).cast<Map<String, dynamic>>();
+      final objects = (root['objects'] as List<dynamic>? ?? [])
+          .cast<Map<String, dynamic>>();
 
       for (final raw in objects) {
         try {
@@ -35,11 +36,13 @@ class ResilienceConfigRepository {
           final data = ZombieResilienceData.fromJson(
             Map<String, dynamic>.from(obj.objData as Map),
           );
-          instance._entries.add(ResilienceConfigEntry(
-            alias: alias,
-            rtid: RtidParser.build(alias, 'ResilienceConfig'),
-            data: data,
-          ));
+          instance._entries.add(
+            ResilienceConfigEntry(
+              alias: alias,
+              rtid: RtidParser.build(alias, 'ResilienceConfig'),
+              data: data,
+            ),
+          );
         } catch (_) {}
       }
       instance._entries.sort((a, b) => a.alias.compareTo(b.alias));
@@ -82,11 +85,7 @@ class ResilienceConfigRepository {
       final data = ZombieResilienceData.fromJson(
         Map<String, dynamic>.from(obj.objData as Map),
       );
-      return ResilienceConfigEntry(
-        alias: info.alias,
-        rtid: rtid,
-        data: data,
-      );
+      return ResilienceConfigEntry(alias: info.alias, rtid: rtid, data: data);
     }
     return null;
   }

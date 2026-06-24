@@ -292,7 +292,9 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
               spacing: 8,
               runSpacing: 8,
               children: customFishes.map((info) {
-                final icon = info.isUnused ? editorWarningIcon : Icons.check_circle;
+                final icon = info.isUnused
+                    ? editorWarningIcon
+                    : Icons.check_circle;
                 final iconColor = info.isUnused
                     ? editorWarningBannerForeground(
                         Theme.of(context).brightness,
@@ -448,10 +450,10 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
         onOpenModuleSettings: widget.onOpenModule == null
             ? null
             : () => openModuleWithHint(
-                  widget.onOpenModule,
-                  widget.levelFile,
-                  'RenaiModuleProperties',
-                ),
+                widget.onOpenModule,
+                widget.levelFile,
+                'RenaiModuleProperties',
+              ),
       );
     });
   }
@@ -660,26 +662,26 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
                 onTap: actionButtons[i].onTap,
                 borderRadius: BorderRadius.circular(6),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Flexible(
                         child: Text(
                           actionButtons[i].label,
-                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: color,
-                          ),
+                          style: Theme.of(context).textTheme.titleSmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.bold,
+                                color: color,
+                              ),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
                       const SizedBox(width: 4),
-                      Icon(
-                        Icons.info_outline,
-                        size: 18,
-                        color: color,
-                      ),
+                      Icon(Icons.info_outline, size: 18, color: color),
                     ],
                   ),
                 ),
@@ -780,9 +782,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
 
   String? _getCustomFishBaseType(String alias) {
     final typeObj = widget.levelFile.objects.firstWhereOrNull(
-      (o) =>
-          o.objClass == 'CreatureType' &&
-          o.aliases?.contains(alias) == true,
+      (o) => o.objClass == 'CreatureType' && o.aliases?.contains(alias) == true,
     );
     if (typeObj?.objData is Map<String, dynamic>) {
       final typeName =
@@ -1000,7 +1000,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
     final baseType = _getCustomFishBaseType(info.alias);
     final fishInfo = baseType != null
         ? (FishTypeRepository().getFishByAlias(baseType) ??
-            FishTypeRepository().getFishByTypeName(baseType))
+              FishTypeRepository().getFishByTypeName(baseType))
         : null;
     final iconPath = fishInfo?.iconAssetPath;
     showModalBottomSheet<void>(
@@ -1040,8 +1040,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
               ),
               const SizedBox(height: 8),
               Text(
-                l10n?.customFishAppearanceLocation ??
-                    'Appearance location:',
+                l10n?.customFishAppearanceLocation ?? 'Appearance location:',
                 style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
                   color: Theme.of(ctx).colorScheme.onSurfaceVariant,
                 ),
@@ -1050,12 +1049,10 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
               Text(
                 info.waveIndices.isEmpty
                     ? (l10n?.customFishNotUsed ??
-                        'This custom fish is not used by any wave.')
+                          'This custom fish is not used by any wave.')
                     : info.waveIndices
-                        .map(
-                          (n) => l10n?.customFishWaveItem(n) ?? 'Wave $n',
-                        )
-                        .join(', '),
+                          .map((n) => l10n?.customFishWaveItem(n) ?? 'Wave $n')
+                          .join(', '),
                 style: Theme.of(ctx).textTheme.bodyMedium,
               ),
               const SizedBox(height: 12),
@@ -1074,7 +1071,9 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
                         : Colors.black87,
                   ),
                   icon: const Icon(Icons.edit),
-                  label: Text(l10n?.editCustomFishProperties ?? 'Edit properties'),
+                  label: Text(
+                    l10n?.editCustomFishProperties ?? 'Edit properties',
+                  ),
                 ),
               if (widget.onEditCustomFish != null) const SizedBox(height: 8),
               FilledButton.icon(
@@ -1127,8 +1126,9 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
       final data = typeObj.objData;
       if (data is Map<String, dynamic>) {
         final propsRtid = data['Properties'] as String?;
-        final propsInfo =
-            propsRtid != null ? RtidParser.parse(propsRtid) : null;
+        final propsInfo = propsRtid != null
+            ? RtidParser.parse(propsRtid)
+            : null;
         if (propsInfo?.source == 'CurrentLevel') {
           widget.levelFile.objects.removeWhere(
             (o) => o.aliases?.contains(propsInfo!.alias) == true,
@@ -2157,8 +2157,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
         .toList();
     final customZombies = _collectCustomZombies();
     final customFishes = _collectCustomFishes();
-    final isDeepSeaLawn =
-        LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+    final isDeepSeaLawn = LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
 
     return ListView(
       padding: const EdgeInsets.only(bottom: 80),
@@ -2195,8 +2194,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
             if (points != 0) {
               actionButtons.add((
                 label: l10n?.wavePointsShort(points) ?? '$points pts.',
-                onTap: () =>
-                    _showExpectationDialog(context, waveIndex, points),
+                onTap: () => _showExpectationDialog(context, waveIndex, points),
               ));
             }
             if (_waveHasRenaiActivity(waveIndex)) {
@@ -2333,8 +2331,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
   bool _waveHasDropShipActivity(int waveIndex) {
     final dropShip = _getDropShipModuleData();
     if (dropShip == null) return false;
-    return dropShip.appearWaves
-        .any((w) => w.wave + 1 == waveIndex);
+    return dropShip.appearWaves.any((w) => w.wave + 1 == waveIndex);
   }
 
   HeianWindModulePropertiesData? _getHeianWindModuleData() {
@@ -2354,8 +2351,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
   bool _waveHasHeianWindActivity(int waveIndex) {
     final heianWind = _getHeianWindModuleData();
     if (heianWind == null) return false;
-    return heianWind.waveWindInfos
-        .any((w) => w.waveNumber + 1 == waveIndex);
+    return heianWind.waveWindInfos.any((w) => w.waveNumber + 1 == waveIndex);
   }
 
   void _showHeianWindInfoDialog(BuildContext context, int waveIndex) {
@@ -2372,11 +2368,11 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
       onOpenModuleSettings: widget.onOpenModule == null
           ? null
           : () => openModuleWithHint(
-                widget.onOpenModule,
-                widget.levelFile,
-                'HeianWindModuleProperties',
-                hint: ModuleOpenHint(heianWindWaveNumber: waveIndex - 1),
-              ),
+              widget.onOpenModule,
+              widget.levelFile,
+              'HeianWindModuleProperties',
+              hint: ModuleOpenHint(heianWindWaveNumber: waveIndex - 1),
+            ),
     );
   }
 
@@ -2395,11 +2391,11 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
       onOpenModuleSettings: widget.onOpenModule == null
           ? null
           : () => openModuleWithHint(
-                widget.onOpenModule,
-                widget.levelFile,
-                'DropShipProperties',
-                hint: ModuleOpenHint(dropShipWave: waves.first.wave),
-              ),
+              widget.onOpenModule,
+              widget.levelFile,
+              'DropShipProperties',
+              hint: ModuleOpenHint(dropShipWave: waves.first.wave),
+            ),
     );
   }
 
@@ -2462,16 +2458,17 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(8),
                                 child: ColoredBox(
-                                  color: Theme.of(ctx)
-                                      .colorScheme
-                                      .surfaceContainerHighest,
+                                  color: Theme.of(
+                                    ctx,
+                                  ).colorScheme.surfaceContainerHighest,
                                   child: SizedBox(
                                     width: iconSize,
                                     height: iconSize,
                                     child: AssetImageWidget(
                                       assetPath: iconPath,
-                                      altCandidates:
-                                          imageAltCandidates(iconPath),
+                                      altCandidates: imageAltCandidates(
+                                        iconPath,
+                                      ),
                                       width: iconSize,
                                       height: iconSize,
                                       fit: BoxFit.contain,
@@ -2489,9 +2486,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
                                           ? displayName
                                           : typeName,
                                       overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(ctx)
-                                          .textTheme
-                                          .bodyMedium
+                                      style: Theme.of(ctx).textTheme.bodyMedium
                                           ?.copyWith(
                                             fontWeight: FontWeight.w500,
                                           ),
@@ -2499,13 +2494,11 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
                                     Text(
                                       typeName,
                                       overflow: TextOverflow.ellipsis,
-                                      style: Theme.of(ctx)
-                                          .textTheme
-                                          .bodySmall
+                                      style: Theme.of(ctx).textTheme.bodySmall
                                           ?.copyWith(
-                                            color: Theme.of(ctx)
-                                                .colorScheme
-                                                .onSurfaceVariant,
+                                            color: Theme.of(
+                                              ctx,
+                                            ).colorScheme.onSurfaceVariant,
                                           ),
                                     ),
                                   ],
@@ -2528,9 +2521,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
           actions: [
             if (widget.onOpenModule != null)
               FilledButton(
-                style: FilledButton.styleFrom(
-                  backgroundColor: Colors.green,
-                ),
+                style: FilledButton.styleFrom(backgroundColor: Colors.green),
                 onPressed: () {
                   final rtid = _getModuleRtid('WaveManagerModuleProperties');
                   if (rtid != null) {

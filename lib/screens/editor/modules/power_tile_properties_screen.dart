@@ -43,10 +43,16 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
     ('beta', 'Beta (Red)', Color(0xFFFF493A), 'tool_powertile_beta.png'),
     ('gamma', 'Gamma (Cyan)', Color(0xFF3CFFFF), 'tool_powertile_gamma.png'),
     ('delta', 'Delta (Yellow)', Color(0xFFFFE837), 'tool_powertile_delta.png'),
-    ('epsilon', 'Epsilon (Purple)', Color(0xFFAB47BC), 'tool_powertile_epsilon.png'),
+    (
+      'epsilon',
+      'Epsilon (Purple)',
+      Color(0xFFAB47BC),
+      'tool_powertile_epsilon.png',
+    ),
   ];
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
 
   int get _gridCols => _isDeepSeaLawn ? 10 : 9;
   int get _gridRows => _isDeepSeaLawn ? 6 : 5;
@@ -65,8 +71,9 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
 
   String _toolPath(String fileName) => 'assets/images/tools/$fileName';
 
-  LinkedTileData? _tileAt(int mx, int my) => _data.linkedTiles
-      .firstWhereOrNull((t) => t.location.mx == mx && t.location.my == my);
+  LinkedTileData? _tileAt(int mx, int my) => _data.linkedTiles.firstWhereOrNull(
+    (t) => t.location.mx == mx && t.location.my == my,
+  );
 
   @override
   void initState() {
@@ -95,9 +102,7 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
     } catch (_) {
       _data = PowerTilePropertiesData();
     }
-    _data = PowerTilePropertiesData(
-      linkedTiles: List.from(_data.linkedTiles),
-    );
+    _data = PowerTilePropertiesData(linkedTiles: List.from(_data.linkedTiles));
   }
 
   void _sync() {
@@ -149,7 +154,8 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
   void _updateDelay(LinkedTileData tile, double delay) {
     final d = delay.clamp(0.0, 5.0);
     final newList = _data.linkedTiles.map((t) {
-      if (t.location.mx == tile.location.mx && t.location.my == tile.location.my) {
+      if (t.location.mx == tile.location.mx &&
+          t.location.my == tile.location.my) {
         return LinkedTileData(
           group: t.group,
           propagationDelay: d,
@@ -186,7 +192,8 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final accent = theme.colorScheme.primary;
-    final sortedTiles = [..._data.linkedTiles]..sort((a, b) {
+    final sortedTiles = [..._data.linkedTiles]
+      ..sort((a, b) {
         final ry = a.location.my.compareTo(b.location.my);
         if (ry != 0) return ry;
         return a.location.mx.compareTo(b.location.mx);
@@ -300,8 +307,7 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
                       constraints: BoxConstraints(maxWidth: maxGridW),
                       child: AspectRatio(
                         // Cells match tool art 130×155 (portrait); was square cells before.
-                        aspectRatio:
-                            (_gridCols / _gridRows) * (130 / 155),
+                        aspectRatio: (_gridCols / _gridRows) * (130 / 155),
                         child: Container(
                           decoration: BoxDecoration(
                             color: theme.brightness == Brightness.dark
@@ -322,18 +328,21 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
                                     );
                                     return Expanded(
                                       child: GestureDetector(
-                                        onTap: () => _handlePrimaryTap(col, row),
+                                        onTap: () =>
+                                            _handlePrimaryTap(col, row),
                                         onLongPress: _useLongPressQuickEditHint
-                                            ? () =>
-                                                _openCellEditorDialog(col, row)
+                                            ? () => _openCellEditorDialog(
+                                                col,
+                                                row,
+                                              )
                                             : null,
                                         onSecondaryTap:
                                             !_useLongPressQuickEditHint
-                                                ? () => _openCellEditorDialog(
-                                                      col,
-                                                      row,
-                                                    )
-                                                : null,
+                                            ? () => _openCellEditorDialog(
+                                                col,
+                                                row,
+                                              )
+                                            : null,
                                         child: Container(
                                           margin: const EdgeInsets.all(0.5),
                                           decoration: BoxDecoration(
@@ -343,35 +352,38 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
                                                   : theme.dividerColor,
                                               width: 0.5,
                                             ),
-                                            borderRadius:
-                                                BorderRadius.circular(4),
+                                            borderRadius: BorderRadius.circular(
+                                              4,
+                                            ),
                                           ),
                                           clipBehavior: Clip.antiAlias,
                                           child: tile != null
                                               ? Opacity(
                                                   opacity:
-                                                      tile.group == _selectedGroup
-                                                          ? 1.0
-                                                          : 0.25,
+                                                      tile.group ==
+                                                          _selectedGroup
+                                                      ? 1.0
+                                                      : 0.25,
                                                   child: LayoutBuilder(
                                                     builder: (context, c) {
-                                                      final dpr = MediaQuery
-                                                          .devicePixelRatioOf(
-                                                        context,
-                                                      );
-                                                      final cw = (c.maxWidth *
-                                                              dpr)
-                                                          .round()
-                                                          .clamp(32, 512);
-                                                      final ch = (c.maxHeight *
-                                                              dpr)
-                                                          .round()
-                                                          .clamp(32, 512);
+                                                      final dpr =
+                                                          MediaQuery.devicePixelRatioOf(
+                                                            context,
+                                                          );
+                                                      final cw =
+                                                          (c.maxWidth * dpr)
+                                                              .round()
+                                                              .clamp(32, 512);
+                                                      final ch =
+                                                          (c.maxHeight * dpr)
+                                                              .round()
+                                                              .clamp(32, 512);
                                                       // Use [contain] so wide cells do not crop square art into a thin strip.
                                                       return ClipRRect(
                                                         borderRadius:
-                                                            BorderRadius
-                                                                .circular(3),
+                                                            BorderRadius.circular(
+                                                              3,
+                                                            ),
                                                         child: AssetImageWidget(
                                                           assetPath: _toolPath(
                                                             groupInfo.$4,
@@ -381,10 +393,10 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
                                                           fit: BoxFit.contain,
                                                           altCandidates:
                                                               imageAltCandidates(
-                                                            _toolPath(
-                                                              groupInfo.$4,
-                                                            ),
-                                                          ),
+                                                                _toolPath(
+                                                                  groupInfo.$4,
+                                                                ),
+                                                              ),
                                                           cacheWidth: cw,
                                                           cacheHeight: ch,
                                                         ),
@@ -424,8 +436,10 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
               return Card(
                 margin: const EdgeInsets.only(bottom: 8),
                 child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 10,
+                  ),
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
@@ -462,7 +476,8 @@ class _PowerTilePropertiesScreenState extends State<PowerTilePropertiesScreen> {
                             '${tile.location.mx}_${tile.location.my}_${tile.group}',
                           ),
                           initialDelay: tile.propagationDelay,
-                          label: l10n?.powerTilePropagationDelayLabel ??
+                          label:
+                              l10n?.powerTilePropagationDelayLabel ??
                               'Propagation delay (s)',
                           tooltip: l10n?.powerTilePropagationDelayTooltip ?? '',
                           accentColor: accent,
@@ -511,8 +526,7 @@ class _PropagationDelayField extends StatefulWidget {
   final bool compact;
 
   @override
-  State<_PropagationDelayField> createState() =>
-      _PropagationDelayFieldState();
+  State<_PropagationDelayField> createState() => _PropagationDelayFieldState();
 }
 
 class _PropagationDelayFieldState extends State<_PropagationDelayField> {
@@ -570,9 +584,7 @@ class _PropagationDelayFieldState extends State<_PropagationDelayField> {
       child: TextField(
         controller: _controller,
         focusNode: _focus,
-        style: widget.compact
-            ? Theme.of(context).textTheme.bodyMedium
-            : null,
+        style: widget.compact ? Theme.of(context).textTheme.bodyMedium : null,
         textAlign: widget.compact ? TextAlign.center : TextAlign.start,
         keyboardType: const TextInputType.numberWithOptions(decimal: true),
         decoration: decoration,
@@ -665,10 +677,8 @@ class _CellEditDialogState extends State<_CellEditDialog> {
                   child: Text(l10n?.powerTileDialogNone ?? 'None'),
                 ),
                 ...widget.groups.map(
-                  (g) => DropdownMenuItem<String?>(
-                    value: g.$1,
-                    child: Text(g.$2),
-                  ),
+                  (g) =>
+                      DropdownMenuItem<String?>(value: g.$1, child: Text(g.$2)),
                 ),
               ],
               onChanged: (v) => setState(() => _group = v),
@@ -685,7 +695,8 @@ class _CellEditDialogState extends State<_CellEditDialog> {
                   ),
                   decoration: editorInputDecoration(
                     context,
-                    labelText: l10n?.powerTileDialogPropagationDelay ??
+                    labelText:
+                        l10n?.powerTileDialogPropagationDelay ??
                         'Propagation delay (seconds)',
                     focusColor: accent,
                     isFocused: _delayFocus.hasFocus,

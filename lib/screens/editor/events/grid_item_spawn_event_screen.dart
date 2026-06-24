@@ -6,11 +6,13 @@ import 'package:c_editor/data/level_parser.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/data/repository/zombie_properties_repository.dart';
-import 'package:c_editor/data/repository/zombie_repository.dart' show ZombieRepository, ZombieTag;
+import 'package:c_editor/data/repository/zombie_repository.dart'
+    show ZombieRepository, ZombieTag;
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/theme/app_theme.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/custom_zombie_properties_actions.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
@@ -33,8 +35,10 @@ class GridItemSpawnEventScreen extends StatefulWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(String) onSelected) onRequestGridItemSelection;
-  final void Function(void Function(String) onSelected) onRequestZombieSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestGridItemSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestZombieSelection;
   final void Function(String rtid)? onEditCustomZombie;
   final String? Function(String alias)? onInjectCustomZombie;
 
@@ -47,7 +51,8 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
   late PvzObject _moduleObj;
   late SpawnZombiesFromGridItemData _data;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _maxRow => _isDeepSeaLawn ? 6 : 5;
 
   @override
@@ -148,7 +153,10 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
     widget.onRequestZombieSelection((id) {
       final aliases = ZombieRepository().buildZombieAliases(id);
       final rtid = RtidParser.build(aliases, 'ZombieTypes');
-      final isElite = ZombieRepository().getZombieById(id)?.tags
+      final isElite =
+          ZombieRepository()
+              .getZombieById(id)
+              ?.tags
               .contains(ZombieTag.elite) ??
           false;
       _data = SpawnZombiesFromGridItemData(
@@ -157,11 +165,7 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
         gridTypes: _data.gridTypes,
         zombies: [
           ..._data.zombies,
-          ZombieSpawnData(
-            type: rtid,
-            level: isElite ? null : 1,
-            row: null,
-          ),
+          ZombieSpawnData(type: rtid, level: isElite ? null : 1, row: null),
         ],
       );
       _sync();
@@ -177,10 +181,10 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
         mounted) {
       final choice =
           await CustomZombieLevelUtils.maybePromptDeleteOrphanBeforeRemove(
-        context: context,
-        levelFile: widget.levelFile,
-        alias: info!.alias,
-      );
+            context: context,
+            levelFile: widget.levelFile,
+            alias: info!.alias,
+          );
       if (!mounted || choice == null) return;
       eraseOrphan = choice;
     }
@@ -277,9 +281,7 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                             Flexible(
                               child: Text(
                                 ResourceNames.lookup(context, displayName),
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .titleMedium
+                                style: Theme.of(context).textTheme.titleMedium
                                     ?.copyWith(fontWeight: FontWeight.bold),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -288,7 +290,9 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                               const SizedBox(width: 8),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 6, vertical: 2),
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
                                 decoration: BoxDecoration(
                                   color: pvzOrangeLight,
                                   borderRadius: BorderRadius.circular(4),
@@ -319,7 +323,10 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                             border: const OutlineInputBorder(),
                           ),
                           items: [
-                            DropdownMenuItem(value: 0, child: Text(l10n?.random ?? 'Random')),
+                            DropdownMenuItem(
+                              value: 0,
+                              child: Text(l10n?.random ?? 'Random'),
+                            ),
                             ...List.generate(_maxRow, (i) => i + 1).map(
                               (v) => DropdownMenuItem(
                                 value: v,
@@ -348,10 +355,12 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                             Navigator.pop(ctx);
                             Future.microtask(() {
                               widget.onRequestZombieSelection((id) {
-                                final aliases =
-                                    ZombieRepository().buildZombieAliases(id);
-                                final rtid =
-                                    RtidParser.build(aliases, 'ZombieTypes');
+                                final aliases = ZombieRepository()
+                                    .buildZombieAliases(id);
+                                final rtid = RtidParser.build(
+                                  aliases,
+                                  'ZombieTypes',
+                                );
                                 _replaceZombieType(index, rtid);
                               });
                             });
@@ -365,7 +374,8 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                   const SizedBox(height: 12),
                   if (isElite)
                     Text(
-                      l10n?.eliteZombiesUseDefaultLevel ?? 'Elite zombies use default level.',
+                      l10n?.eliteZombiesUseDefaultLevel ??
+                          'Elite zombies use default level.',
                       style: Theme.of(context).textTheme.bodySmall,
                     )
                   else ...[
@@ -388,7 +398,10 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(l10n?.levelFormat(levelValue) ?? 'Level: $levelValue'),
+                          Text(
+                            l10n?.levelFormat(levelValue) ??
+                                'Level: $levelValue',
+                          ),
                           Slider(
                             value: levelValue.toDouble(),
                             min: 1,
@@ -420,7 +433,9 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                             final copy = ZombieSpawnData(
                               type: zombie.type,
                               row: rowValue == 0 ? null : rowValue,
-                              level: isElite ? null : (levelValue == 0 ? null : levelValue),
+                              level: isElite
+                                  ? null
+                                  : (levelValue == 0 ? null : levelValue),
                             );
                             _data = SpawnZombiesFromGridItemData(
                               waveStartMessage: _data.waveStartMessage,
@@ -439,8 +454,9 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                       Expanded(
                         child: FilledButton.icon(
                           style: FilledButton.styleFrom(
-                            backgroundColor:
-                                Theme.of(context).colorScheme.error,
+                            backgroundColor: Theme.of(
+                              context,
+                            ).colorScheme.error,
                           ),
                           onPressed: () {
                             CustomZombieLevelUtils.handleDeleteFromBottomSheet(
@@ -448,8 +464,10 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                               parentContext: context,
                               levelFile: widget.levelFile,
                               zombieTypeRtid: zombie.type,
-                              onRemove: (eraseOrphan) =>
-                                  _removeZombie(index, eraseOrphanProperties: eraseOrphan),
+                              onRemove: (eraseOrphan) => _removeZombie(
+                                index,
+                                eraseOrphanProperties: eraseOrphan,
+                              ),
                             );
                           },
                           icon: const Icon(Icons.delete),
@@ -561,7 +579,8 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                       TextFormField(
                         initialValue: _data.waveStartMessage ?? '',
                         decoration: InputDecoration(
-                          labelText: l10n?.waveStartMessage ?? 'Wave start message',
+                          labelText:
+                              l10n?.waveStartMessage ?? 'Wave start message',
                           border: OutlineInputBorder(),
                         ),
                         onChanged: (v) {
@@ -578,7 +597,9 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                       TextFormField(
                         initialValue: _data.zombieSpawnWaitTime.toString(),
                         decoration: InputDecoration(
-                          labelText: l10n?.zombieSpawnWaitSec ?? 'Zombie spawn wait (seconds)',
+                          labelText:
+                              l10n?.zombieSpawnWaitSec ??
+                              'Zombie spawn wait (seconds)',
                           border: OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.number,
@@ -635,7 +656,10 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                       fit: BoxFit.contain,
                     ),
                     title: Text(() {
-                      final d = ResourceNames.lookup(context, 'griditem_$gridAlias');
+                      final d = ResourceNames.lookup(
+                        context,
+                        'griditem_$gridAlias',
+                      );
                       return d != 'griditem_$gridAlias' ? d : gridAlias;
                     }()),
                     subtitle: Text(gridAlias, style: theme.textTheme.bodySmall),
@@ -652,7 +676,8 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    l10n?.zombiesCount(_data.zombies.length) ?? 'Zombies: ${_data.zombies.length}',
+                    l10n?.zombiesCount(_data.zombies.length) ??
+                        'Zombies: ${_data.zombies.length}',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -673,16 +698,15 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                     final isElite = _isElite(z);
                     return ZombieIconCard(
                       iconPath: iconPath,
-                      levelDisplay: isElite ? 'E' : (z.level == null ? '0' : '${z.level}'),
+                      levelDisplay: isElite
+                          ? 'E'
+                          : (z.level == null ? '0' : '${z.level}'),
                       isElite: isElite,
                       isCustom: _isCustomZombie(z),
                       onTap: () => _showZombieEditSheet(idx),
                     );
                   }),
-                  PvzAddButton(
-                    onPressed: _addZombie,
-                    size: 56,
-                  ),
+                  PvzAddButton(onPressed: _addZombie, size: 56),
                 ],
               ),
               const SizedBox(height: 32),

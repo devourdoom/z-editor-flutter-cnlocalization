@@ -16,9 +16,7 @@ abstract final class LevelRtidUtils {
   static dynamic replaceInValue(dynamic value, String oldRtid, String newRtid) {
     if (value == oldRtid) return newRtid;
     if (value is List) {
-      return [
-        for (final item in value) replaceInValue(item, oldRtid, newRtid),
-      ];
+      return [for (final item in value) replaceInValue(item, oldRtid, newRtid)];
     }
     if (value is Map) {
       return {

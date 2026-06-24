@@ -7,10 +7,7 @@ import 'package:c_editor/theme/app_theme.dart';
 
 /// A level-local custom zombie variant sharing the same base [TypeName].
 class CustomZombieVariation {
-  const CustomZombieVariation({
-    required this.alias,
-    required this.rtid,
-  });
+  const CustomZombieVariation({required this.alias, required this.rtid});
 
   final String alias;
   final String rtid;
@@ -94,11 +91,7 @@ abstract final class CustomZombieLevelUtils {
     return countZombieUses(levelFile, alias);
   }
 
-  static int _countZombieUseInValue(
-    dynamic value,
-    String rtid,
-    String alias,
-  ) {
+  static int _countZombieUseInValue(dynamic value, String rtid, String alias) {
     if (value == rtid) return 1;
     if (value is List) {
       var sum = 0;

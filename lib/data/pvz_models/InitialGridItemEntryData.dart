@@ -23,4 +23,3 @@ class InitialGridItemEntryData extends PvzModel {
     'InitialGridItemPlacements': placements.map((e) => e.toJson()).toList(),
   };
 }
-

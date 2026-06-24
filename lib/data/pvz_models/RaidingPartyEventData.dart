@@ -25,4 +25,3 @@ class RaidingPartyEventData extends PvzModel {
     'TimeBetweenGroups': timeBetweenGroups,
   };
 }
-

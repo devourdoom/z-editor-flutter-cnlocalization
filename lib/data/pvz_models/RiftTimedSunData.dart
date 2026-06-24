@@ -24,5 +24,3 @@ class RiftTimedSunData extends PvzModel {
     'SunDropValues': sunDropValues,
   };
 }
-
-

@@ -12,4 +12,3 @@ class Point2D extends PvzModel {
 
   Map<String, dynamic> toJson() => {'x': x, 'y': y};
 }
-

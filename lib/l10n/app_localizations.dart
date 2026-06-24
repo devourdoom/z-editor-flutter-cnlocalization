@@ -163,7 +163,7 @@ abstract class AppLocalizations {
   /// No description provided for @plantTagChinese.
   ///
   /// In en, this message translates to:
-  /// **'Chinese'**
+  /// **'China Only'**
   String get plantTagChinese;
 
   /// No description provided for @aboutSoftware.
@@ -267,6 +267,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Download'**
   String get download;
+
+  /// No description provided for @favorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Favorite'**
+  String get favorite;
+
+  /// No description provided for @unfavorite.
+  ///
+  /// In en, this message translates to:
+  /// **'Unfavorite'**
+  String get unfavorite;
 
   /// No description provided for @move.
   ///
@@ -1384,6 +1396,12 @@ abstract class AppLocalizations {
   /// **'Physical'**
   String get plantTagPhysical;
 
+  /// No description provided for @plantTagWorldTutorial.
+  ///
+  /// In en, this message translates to:
+  /// **'Tutorial'**
+  String get plantTagWorldTutorial;
+
   /// No description provided for @plantTagWorldEgypt.
   ///
   /// In en, this message translates to:
@@ -1483,7 +1501,7 @@ abstract class AppLocalizations {
   /// No description provided for @plantTagWorldAtlantis.
   ///
   /// In en, this message translates to:
-  /// **'Atlantis'**
+  /// **'Underwater World'**
   String get plantTagWorldAtlantis;
 
   /// No description provided for @plantTagWorldFairytale.
@@ -1495,7 +1513,7 @@ abstract class AppLocalizations {
   /// No description provided for @plantTagWorldZcorp.
   ///
   /// In en, this message translates to:
-  /// **'ZCorp'**
+  /// **'ZCorp Takeover'**
   String get plantTagWorldZcorp;
 
   /// No description provided for @plantTagWorldMausoleum.
@@ -7141,7 +7159,7 @@ abstract class AppLocalizations {
   /// No description provided for @addType.
   ///
   /// In en, this message translates to:
-  /// **'Add type'**
+  /// **'Add'**
   String get addType;
 
   /// No description provided for @plantFunExperimental.
@@ -12355,7 +12373,7 @@ abstract class AppLocalizations {
   /// No description provided for @customStageSectionMusicAndOther.
   ///
   /// In en, this message translates to:
-  /// **'Lawn appearance, Music & Other'**
+  /// **'Basic Elements'**
   String get customStageSectionMusicAndOther;
 
   /// No description provided for @customStageSectionAdvanced.
@@ -12367,7 +12385,7 @@ abstract class AppLocalizations {
   /// No description provided for @customStageAlias.
   ///
   /// In en, this message translates to:
-  /// **'Stage alias'**
+  /// **'Stage alias (English only)'**
   String get customStageAlias;
 
   /// No description provided for @customStageNoResourceGroups.
@@ -12633,162 +12651,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preset custom lawns'**
   String get customStagePresetSectionTitle;
-
-  /// No description provided for @customStagePreset_bigWaveNight.
-  ///
-  /// In en, this message translates to:
-  /// **'Big Wave Night'**
-  String get customStagePreset_bigWaveNight;
-
-  /// No description provided for @customStagePreset_mixtapeSummerNight.
-  ///
-  /// In en, this message translates to:
-  /// **'Mixtape Summer Night'**
-  String get customStagePreset_mixtapeSummerNight;
-
-  /// No description provided for @customStagePreset_oneSidedAtlantis.
-  ///
-  /// In en, this message translates to:
-  /// **'One-Sided Atlantis'**
-  String get customStagePreset_oneSidedAtlantis;
-
-  /// No description provided for @customStagePreset_futureLawn.
-  ///
-  /// In en, this message translates to:
-  /// **'Future Lawn'**
-  String get customStagePreset_futureLawn;
-
-  /// No description provided for @customStagePreset_roofNight.
-  ///
-  /// In en, this message translates to:
-  /// **'Roof Night'**
-  String get customStagePreset_roofNight;
-
-  /// No description provided for @customStagePreset_snowModern.
-  ///
-  /// In en, this message translates to:
-  /// **'Snow Modern'**
-  String get customStagePreset_snowModern;
-
-  /// No description provided for @customStagePreset_poolDaylight.
-  ///
-  /// In en, this message translates to:
-  /// **'Pool Daylight'**
-  String get customStagePreset_poolDaylight;
-
-  /// No description provided for @customStagePreset_renai.
-  ///
-  /// In en, this message translates to:
-  /// **'Renai'**
-  String get customStagePreset_renai;
-
-  /// No description provided for @customStagePreset_steam.
-  ///
-  /// In en, this message translates to:
-  /// **'Steam'**
-  String get customStagePreset_steam;
-
-  /// No description provided for @customStagePreset_lostVolcano.
-  ///
-  /// In en, this message translates to:
-  /// **'Lost Volcano'**
-  String get customStagePreset_lostVolcano;
-
-  /// No description provided for @customStagePreset_summerDaylight.
-  ///
-  /// In en, this message translates to:
-  /// **'Summer Daylight'**
-  String get customStagePreset_summerDaylight;
-
-  /// No description provided for @customStagePreset_newYearNight.
-  ///
-  /// In en, this message translates to:
-  /// **'New Year Night'**
-  String get customStagePreset_newYearNight;
-
-  /// No description provided for @customStagePreset_autumnLate.
-  ///
-  /// In en, this message translates to:
-  /// **'Autumn Late'**
-  String get customStagePreset_autumnLate;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS25Week6Boss.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 25 Week 6 Boss level'**
-  String get customStagePresetSource_memoryLaneS25Week6Boss;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS26HardLevel1.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 26 Hard Mode Level 1'**
-  String get customStagePresetSource_memoryLaneS26HardLevel1;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS28Week3Original5_8.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 28 Week 3, original Levels 5-8'**
-  String get customStagePresetSource_memoryLaneS28Week3Original5_8;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS28Level5.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 28 Level 5'**
-  String get customStagePresetSource_memoryLaneS28Level5;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS27Level61.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 27 Level 61'**
-  String get customStagePresetSource_memoryLaneS27Level61;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS29Level57.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 29 Level 57'**
-  String get customStagePresetSource_memoryLaneS29Level57;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS31Level20.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 31 Level 20'**
-  String get customStagePresetSource_memoryLaneS31Level20;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS30Level31.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 30 Level 31'**
-  String get customStagePresetSource_memoryLaneS30Level31;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS31Level9.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 31 Level 9'**
-  String get customStagePresetSource_memoryLaneS31Level9;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS30Boss6.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 30 Boss level 6'**
-  String get customStagePresetSource_memoryLaneS30Boss6;
-
-  /// No description provided for @customStagePresetSource_minigameGame33.
-  ///
-  /// In en, this message translates to:
-  /// **'From Minigame level 33'**
-  String get customStagePresetSource_minigameGame33;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS30Hard1.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 30 Hard Mode Level 1'**
-  String get customStagePresetSource_memoryLaneS30Hard1;
-
-  /// No description provided for @customStagePresetSource_memoryLaneS28Level13.
-  ///
-  /// In en, this message translates to:
-  /// **'From Memory Lane Season 28 Level 13'**
-  String get customStagePresetSource_memoryLaneS28Level13;
 
   /// No description provided for @editCustomStage.
   ///

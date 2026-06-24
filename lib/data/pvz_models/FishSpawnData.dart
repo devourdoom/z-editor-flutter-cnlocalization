@@ -24,4 +24,3 @@ class FishSpawnData extends PvzModel {
     'Position': position.toJson(),
   };
 }
-

@@ -30,5 +30,3 @@ class HeianWindInfoData extends PvzModel {
     'MoveTime': moveTime,
   };
 }
-
-

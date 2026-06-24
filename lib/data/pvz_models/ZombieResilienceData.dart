@@ -17,8 +17,8 @@ class ZombieResilienceData extends PvzModel {
     this.resilienceExtraDamageThreshold = 60,
     List<String>? animLabels,
   }) : animLabels = List<String>.from(
-          animLabels ?? kDefaultZombieResilienceAnimLabels,
-        );
+         animLabels ?? kDefaultZombieResilienceAnimLabels,
+       );
 
   int amount;
   int weakType;
@@ -67,4 +67,3 @@ class ZombieResilienceData extends PvzModel {
     'AnimLabels': List<String>.from(animLabels),
   };
 }
-

@@ -78,7 +78,9 @@ void main() {
 
   bool hasJsonFactories(String cls, List<String> bodyLines) {
     final body = bodyLines.join('\n');
-    if (!body.contains(RegExp(r'Map\s*<\s*String\s*,\s*dynamic\s*>\s*toJson\s*\('))) {
+    if (!body.contains(
+      RegExp(r'Map\s*<\s*String\s*,\s*dynamic\s*>\s*toJson\s*\('),
+    )) {
       return false;
     }
     return body.contains(RegExp(r'factory\s+$cls\s*\.\s*fromJson\b'));
@@ -147,8 +149,9 @@ void main() {
 
   for (var ci = 0; ci < classStarts.length; ci++) {
     final start = classStarts[ci];
-    final end =
-        ci + 1 < classStarts.length ? classStarts[ci + 1] - 1 : lines.length - 1;
+    final end = ci + 1 < classStarts.length
+        ? classStarts[ci + 1] - 1
+        : lines.length - 1;
     final rawBody = lines.sublist(start, end + 1);
     final sourceCls = classNames[ci];
     final outName = publicName(sourceCls);

@@ -50,4 +50,3 @@ class ParachuteRainEventData extends PvzModel {
     'WaveStartMessage': waveStartMessage,
   };
 }
-

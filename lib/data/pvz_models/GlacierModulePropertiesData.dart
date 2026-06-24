@@ -32,12 +32,16 @@ class GlacierModulePropertiesData extends PvzModel {
     required PvzLevelFile levelFile,
     required Set<String> moduleObjClasses,
   }) {
-    final hasGlacier = moduleObjClasses.contains('GlacierModuleProperties') ||
+    final hasGlacier =
+        moduleObjClasses.contains('GlacierModuleProperties') ||
         levelFile.objects.any((o) => o.objClass == 'GlacierModuleProperties');
     if (!hasGlacier) return false;
 
-    final hasBattle = moduleObjClasses.contains('ZombossBattleModuleProperties') ||
-        levelFile.objects.any((o) => o.objClass == 'ZombossBattleModuleProperties');
+    final hasBattle =
+        moduleObjClasses.contains('ZombossBattleModuleProperties') ||
+        levelFile.objects.any(
+          (o) => o.objClass == 'ZombossBattleModuleProperties',
+        );
     if (!hasBattle) return true;
 
     final battle = levelFile.objects.firstWhereOrNull(

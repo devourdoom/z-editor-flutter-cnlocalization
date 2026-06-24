@@ -153,10 +153,7 @@ class ChallengeRepository {
       initialDataFactory: () => {
         'Description': '',
         'NumZombiesToKill': 30,
-        'TypesToKill': {
-          'List': <String>[],
-          'ListType': 'whitelist',
-        },
+        'TypesToKill': {'List': <String>[], 'ListType': 'whitelist'},
       },
     ),
     ChallengeTypeInfo(
@@ -275,18 +272,16 @@ class ChallengeRepository {
 
   static List<ChallengeTypeInfo> search(String query, BuildContext context) {
     if (query.trim().isEmpty) return allChallenges;
-    return allChallenges
-        .where((c) {
-          return matchesSelectionSearch(query, [
-            c.localizedTitle(context),
-            c.localizedDescription(context),
-            c.objClass,
-            c.defaultAlias,
-            'starChallenge_${c.objClass}_title',
-            'starChallenge_${c.objClass}_desc',
-          ]);
-        })
-        .toList();
+    return allChallenges.where((c) {
+      return matchesSelectionSearch(query, [
+        c.localizedTitle(context),
+        c.localizedDescription(context),
+        c.objClass,
+        c.defaultAlias,
+        'starChallenge_${c.objClass}_title',
+        'starChallenge_${c.objClass}_desc',
+      ]);
+    }).toList();
   }
 
   static String localizedTitle(BuildContext context, String objClass) {

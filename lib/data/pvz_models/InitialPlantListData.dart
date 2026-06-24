@@ -59,5 +59,3 @@ class InitialPlantListData extends PvzModel {
     return m;
   }
 }
-
-

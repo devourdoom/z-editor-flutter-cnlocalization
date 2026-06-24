@@ -25,4 +25,3 @@ class DinoWaveActionPropsData extends PvzModel {
     'DinoWaveDuration': dinoWaveDuration,
   };
 }
-

@@ -206,68 +206,69 @@ class _CustomStagePropertiesScreenState
         builder: (ctx) => StageResourceGroupImportScreen(
           mode: mode,
           existingGroups: existing,
-          onImport: ({
-            required groups,
-            sourceStageAlias,
-            applySourceLawnAppearance = false,
-          }) {
-            if (targetUnloadList) {
-              final toUnload =
-                  mode == StageResourceGroupImportMode.fromStage &&
-                      sourceStageAlias != null
-                  ? CustomStageLevelUtils.sourceUnloadGroupsForImport(
-                      sourceStageAlias: sourceStageAlias,
-                      importedGroups: groups,
-                    )
-                  : groups;
-              _setGroupsToUnload([..._groupsToUnload, ...toUnload]);
-            } else {
-              final appearanceSnapshot =
-                  CustomStageLevelUtils.snapshotLawnAppearance(_objdata);
-              CustomStageLevelUtils.setStringList(
-                _objdata,
-                'ResourceGroupNames',
-                [..._resourceGroups, ...groups],
-              );
-              if (mode == StageResourceGroupImportMode.fromStage &&
-                  sourceStageAlias != null) {
-                final impl = StageCatalogRepository.catalogImplementation(
-                  sourceStageAlias,
-                );
-                if (impl != null) {
-                  CustomStageLevelUtils.syncUnloadGroupsFromSourceStage(
-                    objdata: _objdata,
-                    sourceStageAlias: sourceStageAlias,
-                    importedGroups: groups,
+          onImport:
+              ({
+                required groups,
+                sourceStageAlias,
+                applySourceLawnAppearance = false,
+              }) {
+                if (targetUnloadList) {
+                  final toUnload =
+                      mode == StageResourceGroupImportMode.fromStage &&
+                          sourceStageAlias != null
+                      ? CustomStageLevelUtils.sourceUnloadGroupsForImport(
+                          sourceStageAlias: sourceStageAlias,
+                          importedGroups: groups,
+                        )
+                      : groups;
+                  _setGroupsToUnload([..._groupsToUnload, ...toUnload]);
+                } else {
+                  final appearanceSnapshot =
+                      CustomStageLevelUtils.snapshotLawnAppearance(_objdata);
+                  CustomStageLevelUtils.setStringList(
+                    _objdata,
+                    'ResourceGroupNames',
+                    [..._resourceGroups, ...groups],
                   );
-                  if (applySourceLawnAppearance) {
-                    CustomStageLevelUtils.applyLawnAppearanceFromSource(
-                      _objdata,
-                      Map<String, dynamic>.from(impl.objdata),
+                  if (mode == StageResourceGroupImportMode.fromStage &&
+                      sourceStageAlias != null) {
+                    final impl = StageCatalogRepository.catalogImplementation(
+                      sourceStageAlias,
                     );
+                    if (impl != null) {
+                      CustomStageLevelUtils.syncUnloadGroupsFromSourceStage(
+                        objdata: _objdata,
+                        sourceStageAlias: sourceStageAlias,
+                        importedGroups: groups,
+                      );
+                      if (applySourceLawnAppearance) {
+                        CustomStageLevelUtils.applyLawnAppearanceFromSource(
+                          _objdata,
+                          Map<String, dynamic>.from(impl.objdata),
+                        );
+                      } else {
+                        CustomStageLevelUtils.restoreLawnAppearance(
+                          _objdata,
+                          appearanceSnapshot,
+                        );
+                      }
+                    } else {
+                      CustomStageLevelUtils.restoreLawnAppearance(
+                        _objdata,
+                        appearanceSnapshot,
+                      );
+                    }
                   } else {
                     CustomStageLevelUtils.restoreLawnAppearance(
                       _objdata,
                       appearanceSnapshot,
                     );
                   }
-                } else {
-                  CustomStageLevelUtils.restoreLawnAppearance(
-                    _objdata,
-                    appearanceSnapshot,
-                  );
+                  _sync();
                 }
-              } else {
-                CustomStageLevelUtils.restoreLawnAppearance(
-                  _objdata,
-                  appearanceSnapshot,
-                );
-              }
-              _sync();
-            }
-            imported = true;
-            Navigator.pop(ctx);
-          },
+                imported = true;
+                Navigator.pop(ctx);
+              },
           onBack: () => Navigator.pop(ctx),
         ),
       ),
@@ -681,10 +682,11 @@ class _CustomStagePropertiesScreenState
               _pickerTile(
                 label: l10n?.customStageLawnAppearance ?? 'Lawn appearance',
                 value: backgroundName,
-                iconFileName: CustomStageLevelUtils.displayLawnAppearanceIconFileName(
-                  objclass: _objclass,
-                  objdata: _objdata,
-                ),
+                iconFileName:
+                    CustomStageLevelUtils.displayLawnAppearanceIconFileName(
+                      objclass: _objclass,
+                      objdata: _objdata,
+                    ),
                 onTap: _pickBackground,
               ),
               const SizedBox(height: 8),
@@ -888,7 +890,9 @@ class _CustomStagePropertiesScreenState
                       ),
                     ),
                 ],
-                if (CustomStageLevelUtils.supportsSkyCityAirship(_objclass)) ...[
+                if (CustomStageLevelUtils.supportsSkyCityAirship(
+                  _objclass,
+                )) ...[
                   const SizedBox(height: 8),
                   Card(
                     child: SwitchListTile(
@@ -925,7 +929,8 @@ class _CustomStagePropertiesScreenState
                             enabled: enabled,
                           );
                           for (final key
-                              in CustomStageLevelUtils.skycityCannonFieldNames) {
+                              in CustomStageLevelUtils
+                                  .skycityCannonFieldNames) {
                             _skycityCtrls.putIfAbsent(
                               key,
                               () => TextEditingController(),

@@ -27,7 +27,7 @@ class SchoolBusEventScreen extends StatefulWidget {
   final VoidCallback onChanged;
   final VoidCallback onBack;
   final void Function(void Function(String) onSelected)
-      onRequestZombieSelection;
+  onRequestZombieSelection;
 
   @override
   State<SchoolBusEventScreen> createState() => _SchoolBusEventScreenState();
@@ -123,10 +123,10 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
     if (alias != null && mounted) {
       final choice =
           await CustomZombieLevelUtils.maybePromptDeleteOrphanBeforeRemove(
-        context: context,
-        levelFile: widget.levelFile,
-        alias: alias,
-      );
+            context: context,
+            levelFile: widget.levelFile,
+            alias: alias,
+          );
       if (!mounted || choice == null) return;
       eraseOrphan = choice;
     }
@@ -191,7 +191,8 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
             icon: const Icon(Icons.help_outline),
             onPressed: () => showEditorHelpDialog(
               context,
-              title: l10n?.eventTitle_SchoolBusWaveActionProps ??
+              title:
+                  l10n?.eventTitle_SchoolBusWaveActionProps ??
                   'Ice cream truck spawn',
               sections: [
                 HelpSectionData(
@@ -232,10 +233,8 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                         initialValue: des.row.clamp(1, _maxRow),
                         items: List.generate(_maxRow, (i) => i + 1)
                             .map(
-                              (r) => DropdownMenuItem(
-                                value: r,
-                                child: Text('$r'),
-                              ),
+                              (r) =>
+                                  DropdownMenuItem(value: r, child: Text('$r')),
                             )
                             .toList(),
                         onChanged: (v) {
@@ -261,9 +260,7 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                         items: [
                           DropdownMenuItem(
                             value: schoolBusNormalType,
-                            child: Text(
-                              l10n?.schoolBusTypeNormal ?? 'Normal',
-                            ),
+                            child: Text(l10n?.schoolBusTypeNormal ?? 'Normal'),
                           ),
                           DropdownMenuItem(
                             value: schoolBusSpecialType,
@@ -294,7 +291,8 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                         key: ValueKey('hp_${params.schoolBusHitPoints}'),
                         initialValue: params.schoolBusHitPoints.toString(),
                         decoration: InputDecoration(
-                          labelText: l10n?.schoolBusHitPoints ??
+                          labelText:
+                              l10n?.schoolBusHitPoints ??
                               'Truck health (SchoolBusHitPoints)',
                           border: const OutlineInputBorder(),
                           isDense: true,
@@ -318,7 +316,8 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                         key: ValueKey('sp_${params.schoolBusSpeed}'),
                         initialValue: params.schoolBusSpeed.toString(),
                         decoration: InputDecoration(
-                          labelText: l10n?.schoolBusSpeed ??
+                          labelText:
+                              l10n?.schoolBusSpeed ??
                               'Truck speed (SchoolBusSpeed)',
                           border: const OutlineInputBorder(),
                           isDense: true,
@@ -341,8 +340,7 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                       ),
                       const SizedBox(height: 12),
                       Text(
-                        l10n?.schoolBusZombies ??
-                            'Contained zombies (Zombies)',
+                        l10n?.schoolBusZombies ?? 'Contained zombies (Zombies)',
                         style: theme.textTheme.titleSmall?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -381,8 +379,8 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                                       name.isNotEmpty ? name : z.typeName,
                                       style: theme.textTheme.bodyMedium
                                           ?.copyWith(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                     if (z.typeName.isNotEmpty)
@@ -390,9 +388,10 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                                         z.typeName,
                                         style: theme.textTheme.bodySmall
                                             ?.copyWith(
-                                          color: theme
-                                              .colorScheme.onSurfaceVariant,
-                                        ),
+                                              color: theme
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                   ],
@@ -401,19 +400,22 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                               SizedBox(
                                 width: 200,
                                 child: DropdownButtonFormField<int>(
-                                  initialValue:
-                                      z.level.clamp(_levelMin, _levelMax),
-                                  items: List.generate(
-                                    _levelMax - _levelMin + 1,
-                                    (i) => _levelMin + i,
-                                  )
-                                      .map(
-                                        (lv) => DropdownMenuItem(
-                                          value: lv,
-                                          child: Text('$lv'),
-                                        ),
-                                      )
-                                      .toList(),
+                                  initialValue: z.level.clamp(
+                                    _levelMin,
+                                    _levelMax,
+                                  ),
+                                  items:
+                                      List.generate(
+                                            _levelMax - _levelMin + 1,
+                                            (i) => _levelMin + i,
+                                          )
+                                          .map(
+                                            (lv) => DropdownMenuItem(
+                                              value: lv,
+                                              child: Text('$lv'),
+                                            ),
+                                          )
+                                          .toList(),
                                   onChanged: (v) {
                                     if (v != null) {
                                       _updateZombie(
@@ -426,8 +428,8 @@ class _SchoolBusEventScreenState extends State<SchoolBusEventScreen> {
                                     }
                                   },
                                   decoration: InputDecoration(
-                                    labelText: l10n?.schoolBusZombieLevel ??
-                                        'Level',
+                                    labelText:
+                                        l10n?.schoolBusZombieLevel ?? 'Level',
                                     border: const OutlineInputBorder(),
                                     isDense: true,
                                   ),

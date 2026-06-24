@@ -21,10 +21,8 @@ export 'package:c_editor/bloc/editor/editor_tab_type.dart';
 part 'editor_state.dart';
 
 class EditorCubit extends Cubit<EditorState> {
-  EditorCubit({
-    required this.fileName,
-    required this.filePath,
-  }) : super(const EditorState());
+  EditorCubit({required this.fileName, required this.filePath})
+    : super(const EditorState());
 
   final String fileName;
   final String filePath;
@@ -73,12 +71,7 @@ class EditorCubit extends Cubit<EditorState> {
       );
     } else {
       if (isClosed) return;
-      emit(
-        const EditorState(
-          isLoading: false,
-          hasChanges: false,
-        ),
-      );
+      emit(const EditorState(isLoading: false, hasChanges: false));
     }
   }
 
@@ -129,12 +122,7 @@ class EditorCubit extends Cubit<EditorState> {
     final lf = state.levelFile;
     if (lf == null) return;
     final parsed = LevelParser.parseLevel(lf);
-    emit(
-      state.copyWith(
-        hasChanges: true,
-        parsedData: parsed,
-      ),
-    );
+    emit(state.copyWith(hasChanges: true, parsedData: parsed));
   }
 
   Future<void> save() async {

@@ -5,6 +5,7 @@ import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/zombie_selection_screen.dart';
 import 'package:c_editor/widgets/asset_image.dart';
+
 const _kUnknownZombieIcon = 'assets/images/others/unknown.webp';
 
 /// Displays and edits zombie type ids for spawn actions (`List<zombieType>`).
@@ -65,10 +66,7 @@ class ZombossMechZombieTypeListEditor extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: Text(
-                    fieldLabel,
-                    style: theme.textTheme.titleSmall,
-                  ),
+                  child: Text(fieldLabel, style: theme.textTheme.titleSmall),
                 ),
                 if (editable && isList)
                   IconButton(
@@ -97,40 +95,41 @@ class ZombossMechZombieTypeListEditor extends StatelessWidget {
             return Padding(
               padding: EdgeInsets.only(bottom: dense ? 4 : 6),
               child: _ZombieTypeRow(
-              zombieId: id,
-              dense: dense,
-              editable: editable,
-              onTap: editable
-                  ? () async {
-                      await Navigator.push<void>(
-                        context,
-                        MaterialPageRoute(
-                          builder: (ctx) => ZombieSelectionScreen(
-                            onZombieSelected: (picked) {
-                              Navigator.pop(ctx);
-                              if (isList) {
-                                final next = List<String>.from(zombieIds);
-                                next[index] = picked;
-                                onChanged(next);
-                              } else {
-                                onChanged([picked]);
-                              }
-                            },
-                            onBack: () => Navigator.pop(ctx),
+                zombieId: id,
+                dense: dense,
+                editable: editable,
+                onTap: editable
+                    ? () async {
+                        await Navigator.push<void>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => ZombieSelectionScreen(
+                              onZombieSelected: (picked) {
+                                Navigator.pop(ctx);
+                                if (isList) {
+                                  final next = List<String>.from(zombieIds);
+                                  next[index] = picked;
+                                  onChanged(next);
+                                } else {
+                                  onChanged([picked]);
+                                }
+                              },
+                              onBack: () => Navigator.pop(ctx),
+                            ),
                           ),
-                        ),
-                      );
-                    }
-                  : null,
-              onRemove: editable && isList
-                  ? () {
-                      final next = List<String>.from(zombieIds)..removeAt(index);
-                      onChanged(next);
-                    }
-                  : editable && !isList
-                      ? () => onChanged([])
-                      : null,
-            ),
+                        );
+                      }
+                    : null,
+                onRemove: editable && isList
+                    ? () {
+                        final next = List<String>.from(zombieIds)
+                          ..removeAt(index);
+                        onChanged(next);
+                      }
+                    : editable && !isList
+                    ? () => onChanged([])
+                    : null,
+              ),
             );
           }),
         if (editable && !isList && zombieIds.isEmpty)
@@ -166,8 +165,9 @@ class _ZombieTypeRow extends StatelessWidget {
     final info = repo.getZombieById(zombieId);
     final nameKey = repo.getName(zombieId);
     final localized = ResourceNames.lookup(context, nameKey);
-    final displayName =
-        localized != nameKey && localized.isNotEmpty ? localized : zombieId;
+    final displayName = localized != nameKey && localized.isNotEmpty
+        ? localized
+        : zombieId;
     final iconPath = info?.iconAssetPath ?? _kUnknownZombieIcon;
 
     return Material(
@@ -242,10 +242,8 @@ class ZombossMechActionZombieLists extends StatelessWidget {
   });
 
   final ZombossResolvedAction resolved;
-  final void Function(
-    ZombossZombieListBinding binding,
-    List<String> ids,
-  ) onZombieListChanged;
+  final void Function(ZombossZombieListBinding binding, List<String> ids)
+  onZombieListChanged;
   final bool dense;
 
   @override

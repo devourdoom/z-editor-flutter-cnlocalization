@@ -36,4 +36,3 @@ class RailcartPropertiesData extends PvzModel {
     'Rails': rails.map((e) => e.toJson()).toList(),
   };
 }
-

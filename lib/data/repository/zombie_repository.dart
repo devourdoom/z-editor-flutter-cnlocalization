@@ -48,10 +48,10 @@ enum ZombieTag {
   strong,
   gargantuar,
   elite,
-  custom,
   evildave,
-  international,
+  custom,
   chinese,
+  international,
 }
 
 extension ZombieTagExtension on ZombieTag {
@@ -247,12 +247,14 @@ class ZombieRepository {
                 .toList() ??
             [];
 
-        _allZombies.add(ZombieInfo(
-          id: id,
-          name: name,
-          icon: icon,
-          tags: tags.isEmpty ? [ZombieTag.all] : tags,
-        ));
+        _allZombies.add(
+          ZombieInfo(
+            id: id,
+            name: name,
+            icon: icon,
+            tags: tags.isEmpty ? [ZombieTag.all] : tags,
+          ),
+        );
       }
 
       _isLoaded = true;
@@ -301,14 +303,17 @@ class ZombieRepository {
 
   bool isFavorite(String id) => _favoriteIds.contains(id);
 
-  List<ZombieInfo> search(String query, ZombieTag? tag, ZombieCategory category) {
+  List<ZombieInfo> search(
+    String query,
+    ZombieTag? tag,
+    ZombieCategory category,
+  ) {
     if (!_isLoaded) return [];
-    final baseList =
-        category == ZombieCategory.collection
-            ? _allZombies.where((z) => _favoriteIds.contains(z.id)).toList()
-            : (tag != null && tag != ZombieTag.all
-                ? _allZombies.where((z) => z.tags.contains(tag)).toList()
-                : _allZombies);
+    final baseList = category == ZombieCategory.collection
+        ? _allZombies.where((z) => _favoriteIds.contains(z.id)).toList()
+        : (tag != null && tag != ZombieTag.all
+              ? _allZombies.where((z) => z.tags.contains(tag)).toList()
+              : _allZombies);
 
     if (query.trim().isEmpty) return baseList;
     final lower = query.toLowerCase();

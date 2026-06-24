@@ -21,5 +21,3 @@ class RailData extends PvzModel {
     'RowEnd': rowEnd,
   };
 }
-
-

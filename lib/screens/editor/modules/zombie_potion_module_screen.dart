@@ -65,7 +65,9 @@ class _ZombiePotionModuleScreenState extends State<ZombiePotionModuleScreen> {
     _initialCtrl = TextEditingController(text: '${_data.initialPotionCount}');
     _maxCtrl = TextEditingController(text: '${_data.maxPotionCount}');
     _minCtrl = TextEditingController(text: '${_data.potionSpawnTimer.min}');
-    _maxTimerCtrl = TextEditingController(text: '${_data.potionSpawnTimer.max}');
+    _maxTimerCtrl = TextEditingController(
+      text: '${_data.potionSpawnTimer.max}',
+    );
   }
 
   void _sync() {
@@ -78,9 +80,9 @@ class _ZombiePotionModuleScreenState extends State<ZombiePotionModuleScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-                builder: (_) => GridItemSelectionScreen(
-                    filterMode: GridItemFilterMode.all,
-                    onGridItemSelected: (id) {
+        builder: (_) => GridItemSelectionScreen(
+          filterMode: GridItemFilterMode.all,
+          onGridItemSelected: (id) {
             Navigator.pop(context);
             final list = List<String>.from(_data.potionTypes);
             if (!list.contains(id)) {
@@ -283,12 +285,12 @@ class _ZombiePotionModuleScreenState extends State<ZombiePotionModuleScreen> {
                     ),
                     const SizedBox(height: 8),
                     if (_data.potionTypes.isEmpty)
-                      Text(
-                        'No potion types',
-                        style: theme.textTheme.bodySmall,
-                      ),
+                      Text('No potion types', style: theme.textTheme.bodySmall),
                     ..._data.potionTypes.map((id) {
-                      final displayName = ResourceNames.lookup(context, 'griditem_$id');
+                      final displayName = ResourceNames.lookup(
+                        context,
+                        'griditem_$id',
+                      );
                       final name = displayName != 'griditem_$id'
                           ? displayName
                           : id;
@@ -328,7 +330,10 @@ class _ZombiePotionModuleScreenState extends State<ZombiePotionModuleScreen> {
     return TextField(
       controller: controller,
       keyboardType: TextInputType.number,
-      decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+      ),
       onChanged: onChanged,
     );
   }

@@ -6,6 +6,7 @@ import 'package:c_editor/data/rtid_parser.dart';
 
 abstract final class CustomStageLevelUtils {
   static const currentLevel = 'CurrentLevel';
+  static const defaultBuiltinStageRtid = 'RTID(TutorialStage@LevelModules)';
 
   static const ambientAudioOptions = [
     'Amb_Tutorial_Garden_BG_LP',
@@ -113,7 +114,10 @@ abstract final class CustomStageLevelUtils {
     required String objclass,
     required Map<String, dynamic> objdata,
   }) {
-    final display = _resolveLawnAppearanceDisplay(objclass: objclass, objdata: objdata);
+    final display = _resolveLawnAppearanceDisplay(
+      objclass: objclass,
+      objdata: objdata,
+    );
     if (display != null && display.nameKey.isNotEmpty) {
       return display.nameKey;
     }
@@ -129,11 +133,13 @@ abstract final class CustomStageLevelUtils {
     required String objclass,
     required Map<String, dynamic> objdata,
   }) {
-    if (supportsBeachMinigame(objdata) &&
-        isBeachMinigameEnabled(objdata)) {
+    if (supportsBeachMinigame(objdata) && isBeachMinigameEnabled(objdata)) {
       return 'Stage_BeachSnake.webp';
     }
-    final display = _resolveLawnAppearanceDisplay(objclass: objclass, objdata: objdata);
+    final display = _resolveLawnAppearanceDisplay(
+      objclass: objclass,
+      objdata: objdata,
+    );
     if (display != null && display.image.isNotEmpty) {
       return display.image;
     }
@@ -299,14 +305,10 @@ abstract final class CustomStageLevelUtils {
       importedGroups: importedGroups,
     );
     if (toAlsoUnload.isEmpty) return;
-    setStringList(
-      objdata,
-      'GroupsToUnloadForAds',
-      [
-        ...stringList(objdata['GroupsToUnloadForAds']),
-        ...toAlsoUnload,
-      ],
-    );
+    setStringList(objdata, 'GroupsToUnloadForAds', [
+      ...stringList(objdata['GroupsToUnloadForAds']),
+      ...toAlsoUnload,
+    ]);
   }
 
   static List<String> sourceUnloadGroupsForImport({
@@ -319,9 +321,7 @@ abstract final class CustomStageLevelUtils {
       impl.objdata['GroupsToUnloadForAds'],
     ).toSet();
     if (sourceUnload.isEmpty) return const [];
-    return uniqueStrings(
-      importedGroups.where(sourceUnload.contains),
-    );
+    return uniqueStrings(importedGroups.where(sourceUnload.contains));
   }
 
   static void applyAmbientEnabled(

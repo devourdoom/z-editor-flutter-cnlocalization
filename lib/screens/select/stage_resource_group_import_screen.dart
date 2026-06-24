@@ -27,7 +27,8 @@ class StageResourceGroupImportScreen extends StatefulWidget {
     required List<String> groups,
     String? sourceStageAlias,
     bool applySourceLawnAppearance,
-  }) onImport;
+  })
+  onImport;
   final VoidCallback onBack;
 
   @override
@@ -56,16 +57,15 @@ class _StageResourceGroupImportScreenState
   }
 
   List<String> _groupsToAddForStage(String alias) {
-    return _allGroupsForStage(alias)
-        .where((g) => !widget.existingGroups.contains(g))
-        .toList()
-      ..sort();
+    return _allGroupsForStage(
+      alias,
+    ).where((g) => !widget.existingGroups.contains(g)).toList()..sort();
   }
 
   int _skippedGroupCountForStage(String alias) {
-    return _allGroupsForStage(alias)
-        .where(widget.existingGroups.contains)
-        .length;
+    return _allGroupsForStage(
+      alias,
+    ).where(widget.existingGroups.contains).length;
   }
 
   List<String> _filteredGlobalGroups() {
@@ -103,9 +103,9 @@ class _StageResourceGroupImportScreenState
   }
 
   String _groupLabel(String group) => ResourceNames.lookup(
-        context,
-        StageCatalogRepository.resourceGroupKey(group),
-      );
+    context,
+    StageCatalogRepository.resourceGroupKey(group),
+  );
 
   String _stageNameKey(String alias) => 'stage_$alias';
 
@@ -214,7 +214,9 @@ class _StageResourceGroupImportScreenState
                     ),
                     value: applyLawnAppearance,
                     onChanged: (value) {
-                      setDialogState(() => applyLawnAppearance = value ?? false);
+                      setDialogState(
+                        () => applyLawnAppearance = value ?? false,
+                      );
                     },
                   ),
                 ],

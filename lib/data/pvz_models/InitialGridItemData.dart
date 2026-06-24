@@ -21,5 +21,3 @@ class InitialGridItemData extends PvzModel {
     'TypeName': typeName,
   };
 }
-
-

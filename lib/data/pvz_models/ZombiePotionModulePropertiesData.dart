@@ -34,4 +34,3 @@ class ZombiePotionModulePropertiesData extends PvzModel {
     'PotionTypes': potionTypes,
   };
 }
-

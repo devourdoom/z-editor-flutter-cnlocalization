@@ -20,10 +20,12 @@ class StartingPlantfoodModuleScreen extends StatefulWidget {
   final VoidCallback onBack;
 
   @override
-  State<StartingPlantfoodModuleScreen> createState() => _StartingPlantfoodModuleScreenState();
+  State<StartingPlantfoodModuleScreen> createState() =>
+      _StartingPlantfoodModuleScreenState();
 }
 
-class _StartingPlantfoodModuleScreenState extends State<StartingPlantfoodModuleScreen> {
+class _StartingPlantfoodModuleScreenState
+    extends State<StartingPlantfoodModuleScreen> {
   late PvzObject _moduleObj;
   late LevelMutatorStartingPlantfoodPropsData _data;
   late TextEditingController _pfController;
@@ -52,7 +54,9 @@ class _StartingPlantfoodModuleScreenState extends State<StartingPlantfoodModuleS
     } catch (_) {
       _data = LevelMutatorStartingPlantfoodPropsData();
     }
-    _pfController = TextEditingController(text: '${_data.startingPlantfoodOverride}');
+    _pfController = TextEditingController(
+      text: '${_data.startingPlantfoodOverride}',
+    );
   }
 
   void _save() {
@@ -74,7 +78,9 @@ class _StartingPlantfoodModuleScreenState extends State<StartingPlantfoodModuleS
     final accentColor = isDark ? pvzCyanDark : pvzCyanLight;
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n?.overrideStartingPlantfood ?? 'Override Starting Plantfood'),
+        title: Text(
+          l10n?.overrideStartingPlantfood ?? 'Override Starting Plantfood',
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           tooltip: l10n?.back ?? 'Back',
@@ -89,12 +95,15 @@ class _StartingPlantfoodModuleScreenState extends State<StartingPlantfoodModuleS
             onPressed: () {
               showEditorHelpDialog(
                 context,
-                title: l10n?.startingPlantfoodHelpTitle ?? 'Starting Plantfood Module',
+                title:
+                    l10n?.startingPlantfoodHelpTitle ??
+                    'Starting Plantfood Module',
                 themeColor: accentColor,
                 sections: [
                   HelpSectionData(
                     title: l10n?.overview ?? 'Overview',
-                    body: l10n?.startingPlantfoodHelpOverview ??
+                    body:
+                        l10n?.startingPlantfoodHelpOverview ??
                         'This module was originally used to control different difficulty levels in Panchase. Use it to override the initial plant food carried at level start.',
                   ),
                 ],
@@ -108,17 +117,23 @@ class _StartingPlantfoodModuleScreenState extends State<StartingPlantfoodModuleS
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n?.startingPlantfoodOverride ?? 'Starting Plantfood Override', style: const TextStyle(fontSize: 16)),
+            Text(
+              l10n?.startingPlantfoodOverride ?? 'Starting Plantfood Override',
+              style: const TextStyle(fontSize: 16),
+            ),
             const SizedBox(height: 8),
             TextField(
               controller: _pfController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                 border: const OutlineInputBorder(),
-                hintText: l10n?.enterStartingPlantfoodHint ?? 'Enter starting plantfood (0+)',
+                hintText:
+                    l10n?.enterStartingPlantfoodHint ??
+                    'Enter starting plantfood (0+)',
               ),
               onChanged: (value) {
-                final parsed = int.tryParse(value) ?? _data.startingPlantfoodOverride;
+                final parsed =
+                    int.tryParse(value) ?? _data.startingPlantfoodOverride;
                 setState(() {
                   _data.startingPlantfoodOverride = parsed.clamp(0, 999);
                   _save();

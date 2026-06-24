@@ -7,7 +7,8 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Barrel wave event editor. Rows are 1-based (1–5 standard, 1–6 Deep Sea).
@@ -26,7 +27,8 @@ class BarrelWaveEventScreen extends StatefulWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(String) onSelected) onRequestZombieSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestZombieSelection;
 
   @override
   State<BarrelWaveEventScreen> createState() => _BarrelWaveEventScreenState();
@@ -36,7 +38,8 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
   late PvzObject _moduleObj;
   late BarrelWaveEventData _data;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _maxRow => _isDeepSeaLawn ? 6 : 5;
 
   static const _barrelTypeEmpty = 'barrelempty';
@@ -94,15 +97,15 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
   }
 
   void _addBarrel() {
-    final row = _data.barrels.isEmpty ? 1 : (_data.barrels.last.row.clamp(1, _maxRow));
+    final row = _data.barrels.isEmpty
+        ? 1
+        : (_data.barrels.last.row.clamp(1, _maxRow));
     final entry = BarrelEntryData(
       row: row,
       type: _barrelTypeEmpty,
       params: BarrelParamsData(barrelHitPoints: 1100, barrelSpeed: 0.1),
     );
-    _data = BarrelWaveEventData(
-      barrels: [..._data.barrels, entry],
-    );
+    _data = BarrelWaveEventData(barrels: [..._data.barrels, entry]);
     _sync();
   }
 
@@ -115,7 +118,8 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
         title: Text(l10n?.barrelWaveDeleteTitle ?? 'Delete barrel'),
         content: Text(
           isLast
-              ? (l10n?.barrelWaveDeleteLastHint ?? 'This is the last barrel. The event will have no barrels. Continue?')
+              ? (l10n?.barrelWaveDeleteLastHint ??
+                    'This is the last barrel. The event will have no barrels. Continue?')
               : (l10n?.barrelWaveDeleteConfirm ?? 'Delete this barrel?'),
         ),
         actions: [
@@ -149,15 +153,18 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
       final params = entry.params ?? BarrelParamsData();
       final zombies = List<BarrelZombieData>.from(params.zombies)
         ..add(BarrelZombieData(typeName: id, level: 1));
-      _updateBarrel(barrelIndex, BarrelEntryData(
-        row: entry.row,
-        type: entry.type,
-        params: BarrelParamsData(
-          barrelHitPoints: params.barrelHitPoints,
-          barrelSpeed: params.barrelSpeed,
-          zombies: zombies,
+      _updateBarrel(
+        barrelIndex,
+        BarrelEntryData(
+          row: entry.row,
+          type: entry.type,
+          params: BarrelParamsData(
+            barrelHitPoints: params.barrelHitPoints,
+            barrelSpeed: params.barrelSpeed,
+            zombies: zombies,
+          ),
         ),
-      ));
+      );
     });
   }
 
@@ -173,10 +180,10 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
     if (alias != null && mounted) {
       final choice =
           await CustomZombieLevelUtils.maybePromptDeleteOrphanBeforeRemove(
-        context: context,
-        levelFile: widget.levelFile,
-        alias: alias,
-      );
+            context: context,
+            levelFile: widget.levelFile,
+            alias: alias,
+          );
       if (!mounted || choice == null) return;
       eraseOrphan = choice;
     }
@@ -200,20 +207,27 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
     }
   }
 
-  void _updateBarrelZombie(int barrelIndex, int zombieIndex, BarrelZombieData z) {
+  void _updateBarrelZombie(
+    int barrelIndex,
+    int zombieIndex,
+    BarrelZombieData z,
+  ) {
     final entry = _data.barrels[barrelIndex];
     final params = entry.params!;
     final zombies = List<BarrelZombieData>.from(params.zombies);
     zombies[zombieIndex] = z;
-    _updateBarrel(barrelIndex, BarrelEntryData(
-      row: entry.row,
-      type: entry.type,
-      params: BarrelParamsData(
-        barrelHitPoints: params.barrelHitPoints,
-        barrelSpeed: params.barrelSpeed,
-        zombies: zombies,
+    _updateBarrel(
+      barrelIndex,
+      BarrelEntryData(
+        row: entry.row,
+        type: entry.type,
+        params: BarrelParamsData(
+          barrelHitPoints: params.barrelHitPoints,
+          barrelSpeed: params.barrelSpeed,
+          zombies: zombies,
+        ),
       ),
-    ));
+    );
   }
 
   @override
@@ -271,7 +285,8 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Text(
-                l10n?.barrelWaveRowsHint ?? 'Rows are 1-based (1–$_maxRow). Deep Sea supports 6 rows.',
+                l10n?.barrelWaveRowsHint ??
+                    'Rows are 1-based (1–$_maxRow). Deep Sea supports 6 rows.',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -340,15 +355,20 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
                   child: DropdownButtonFormField<int>(
                     initialValue: entry.row.clamp(1, _maxRow),
                     items: List.generate(_maxRow, (i) => i + 1)
-                        .map((r) => DropdownMenuItem(value: r, child: Text('$r')))
+                        .map(
+                          (r) => DropdownMenuItem(value: r, child: Text('$r')),
+                        )
                         .toList(),
                     onChanged: (v) {
                       if (v != null) {
-                        _updateBarrel(index, BarrelEntryData(
-                          row: v,
-                          type: entry.type,
-                          params: entry.params,
-                        ));
+                        _updateBarrel(
+                          index,
+                          BarrelEntryData(
+                            row: v,
+                            type: entry.type,
+                            params: entry.params,
+                          ),
+                        );
                       }
                     },
                     decoration: const InputDecoration(
@@ -383,7 +403,9 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
                       ),
                       DropdownMenuItem(
                         value: _barrelTypeExplosive,
-                        child: Text(_barrelTypeLabel(_barrelTypeExplosive, l10n)),
+                        child: Text(
+                          _barrelTypeLabel(_barrelTypeExplosive, l10n),
+                        ),
                       ),
                     ],
                     onChanged: (v) {
@@ -399,11 +421,14 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
                               ? List<BarrelZombieData>.from(oldParams.zombies)
                               : [],
                         );
-                        _updateBarrel(index, BarrelEntryData(
-                          row: entry.row,
-                          type: v,
-                          params: params,
-                        ));
+                        _updateBarrel(
+                          index,
+                          BarrelEntryData(
+                            row: entry.row,
+                            type: v,
+                            params: params,
+                          ),
+                        );
                       }
                     },
                     decoration: const InputDecoration(
@@ -430,7 +455,9 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
                 final z = e.value;
                 final nameKey = ZombieRepository().getName(z.typeName);
                 final name = ResourceNames.lookup(context, nameKey);
-                final iconPath = ZombieRepository().getZombieById(z.typeName)?.iconAssetPath;
+                final iconPath = ZombieRepository()
+                    .getZombieById(z.typeName)
+                    ?.iconAssetPath;
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: Row(
@@ -454,7 +481,8 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
                           key: ValueKey('zombie_lv_${index}_$zi'),
                           initialValue: z.level.toString(),
                           decoration: InputDecoration(
-                            labelText: l10n?.barrelWaveZombieLevel ?? 'Zombie level',
+                            labelText:
+                                l10n?.barrelWaveZombieLevel ?? 'Zombie level',
                             border: const OutlineInputBorder(),
                             isDense: true,
                           ),
@@ -465,7 +493,10 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
                               _updateBarrelZombie(
                                 index,
                                 zi,
-                                BarrelZombieData(typeName: z.typeName, level: lv),
+                                BarrelZombieData(
+                                  typeName: z.typeName,
+                                  level: lv,
+                                ),
                               );
                             }
                           },
@@ -546,7 +577,9 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
                   border: OutlineInputBorder(),
                   isDense: true,
                 ),
-                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
                 onChanged: (v) {
                   final sp = double.tryParse(v);
                   if (sp != null && sp >= 0) {
@@ -570,7 +603,8 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
               ),
               Expanded(
                 child: TextFormField(
-                  initialValue: (params.barrelBlowDamageAmount ?? 3000).toString(),
+                  initialValue: (params.barrelBlowDamageAmount ?? 3000)
+                      .toString(),
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     isDense: true,
@@ -579,7 +613,11 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
                   onChanged: (v) {
                     final dmg = int.tryParse(v);
                     if (dmg != null && dmg >= 0) {
-                      _updateBarrelParams(index, entry, barrelBlowDamageAmount: dmg);
+                      _updateBarrelParams(
+                        index,
+                        entry,
+                        barrelBlowDamageAmount: dmg,
+                      );
                     }
                   },
                 ),
@@ -599,15 +637,19 @@ class _BarrelWaveEventScreenState extends State<BarrelWaveEventScreen> {
     int? barrelBlowDamageAmount,
   }) {
     final params = entry.params ?? BarrelParamsData();
-    _updateBarrel(index, BarrelEntryData(
-      row: entry.row,
-      type: entry.type,
-      params: BarrelParamsData(
-        barrelHitPoints: barrelHitPoints ?? params.barrelHitPoints,
-        barrelSpeed: barrelSpeed ?? params.barrelSpeed,
-        barrelBlowDamageAmount: barrelBlowDamageAmount ?? params.barrelBlowDamageAmount,
-        zombies: params.zombies,
+    _updateBarrel(
+      index,
+      BarrelEntryData(
+        row: entry.row,
+        type: entry.type,
+        params: BarrelParamsData(
+          barrelHitPoints: barrelHitPoints ?? params.barrelHitPoints,
+          barrelSpeed: barrelSpeed ?? params.barrelSpeed,
+          barrelBlowDamageAmount:
+              barrelBlowDamageAmount ?? params.barrelBlowDamageAmount,
+          zombies: params.zombies,
+        ),
       ),
-    ));
+    );
   }
 }

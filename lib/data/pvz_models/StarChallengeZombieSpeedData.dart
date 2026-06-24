@@ -10,4 +10,3 @@ class StarChallengeZombieSpeedData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'SpeedModifier': speedModifier};
 }
-

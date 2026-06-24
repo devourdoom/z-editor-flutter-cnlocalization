@@ -5,7 +5,9 @@ class RiftThemeDemoModulePropertiesData extends PvzModel {
 
   List<String> demoRiftThemeName;
 
-  factory RiftThemeDemoModulePropertiesData.fromJson(Map<String, dynamic> json) {
+  factory RiftThemeDemoModulePropertiesData.fromJson(
+    Map<String, dynamic> json,
+  ) {
     final raw = json['DemoRiftThemeName'] as List<dynamic>? ?? [];
     return RiftThemeDemoModulePropertiesData(
       demoRiftThemeName: raw.map((e) => e.toString()).toList(),
@@ -13,7 +15,5 @@ class RiftThemeDemoModulePropertiesData extends PvzModel {
   }
 
   @override
-  Map<String, dynamic> toJson() => {
-        'DemoRiftThemeName': demoRiftThemeName,
-      };
+  Map<String, dynamic> toJson() => {'DemoRiftThemeName': demoRiftThemeName};
 }

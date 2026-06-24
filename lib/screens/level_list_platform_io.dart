@@ -35,16 +35,14 @@ Future<void> showStoragePermissionDialog(BuildContext context) async {
 }
 
 class _StoragePermissionDialog extends StatefulWidget {
-  const _StoragePermissionDialog({
-    required this.l10n,
-    required this.onDeny,
-  });
+  const _StoragePermissionDialog({required this.l10n, required this.onDeny});
 
   final AppLocalizations? l10n;
   final VoidCallback onDeny;
 
   @override
-  State<_StoragePermissionDialog> createState() => _StoragePermissionDialogState();
+  State<_StoragePermissionDialog> createState() =>
+      _StoragePermissionDialogState();
 }
 
 class _StoragePermissionDialogState extends State<_StoragePermissionDialog>
@@ -74,7 +72,9 @@ class _StoragePermissionDialogState extends State<_StoragePermissionDialog>
       Navigator.of(context).pop();
       return;
     }
-    if (manageStatus.isRestricted && await Permission.storage.isGranted && mounted) {
+    if (manageStatus.isRestricted &&
+        await Permission.storage.isGranted &&
+        mounted) {
       Navigator.of(context).pop();
     }
   }
@@ -83,7 +83,9 @@ class _StoragePermissionDialogState extends State<_StoragePermissionDialog>
   Widget build(BuildContext context) {
     final l10n = widget.l10n;
     return AlertDialog(
-      title: Text(l10n?.storagePermissionDialogTitle ?? 'Storage Permission Required'),
+      title: Text(
+        l10n?.storagePermissionDialogTitle ?? 'Storage Permission Required',
+      ),
       content: Text(
         l10n?.storagePermissionDialogMessage ??
             'This app requires external storage access to open and save level files. Please grant "All files access" permission in Settings.',

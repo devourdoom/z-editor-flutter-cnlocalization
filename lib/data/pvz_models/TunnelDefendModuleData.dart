@@ -31,9 +31,8 @@ class TunnelDefendModuleData extends PvzModel {
   }
 
   Map<String, dynamic> toJson() => {
-        'Roads': roads.map((e) => e.toJson()).toList(),
-        'BrickMapIndex': brickMapIndex,
-        'TunnelSequenceInterval': tunnelSequenceInterval,
-      };
+    'Roads': roads.map((e) => e.toJson()).toList(),
+    'BrickMapIndex': brickMapIndex,
+    'TunnelSequenceInterval': tunnelSequenceInterval,
+  };
 }
-

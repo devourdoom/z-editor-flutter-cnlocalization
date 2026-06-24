@@ -20,15 +20,21 @@ class LevelParser {
   static ParsedLevelData parseLevel(PvzLevelFile levelFile) {
     final objectMap = <String, PvzObject>{};
     for (final obj in levelFile.objects) {
-      final alias = obj.aliases?.isNotEmpty == true ? obj.aliases!.first : 'unknown';
+      final alias = obj.aliases?.isNotEmpty == true
+          ? obj.aliases!.first
+          : 'unknown';
       objectMap[alias] = obj;
     }
 
     LevelDefinitionData? levelDef;
-    final levelDefList = levelFile.objects.where((o) => o.objClass == 'LevelDefinition').toList();
+    final levelDefList = levelFile.objects
+        .where((o) => o.objClass == 'LevelDefinition')
+        .toList();
     final levelDefObj = levelDefList.isEmpty ? null : levelDefList.first;
     if (levelDefObj != null && levelDefObj.objData is Map<String, dynamic>) {
-      levelDef = LevelDefinitionData.fromJson(levelDefObj.objData as Map<String, dynamic>);
+      levelDef = LevelDefinitionData.fromJson(
+        levelDefObj.objData as Map<String, dynamic>,
+      );
     }
 
     WaveManagerData? waveManager;
@@ -87,7 +93,8 @@ class LevelParser {
     final info = RtidParser.parse(levelDef.stageModule);
     if (info == null) return null;
 
-    if (info.source == CustomStageLevelUtils.currentLevel && levelFile != null) {
+    if (info.source == CustomStageLevelUtils.currentLevel &&
+        levelFile != null) {
       final obj = levelFile.objects.firstWhereOrNull(
         (o) => o.aliases?.contains(info.alias) == true,
       );
@@ -147,7 +154,8 @@ class LevelParser {
     PvzLevelFile levelFile,
   ) {
     final objclass = resolveStagePropertiesObjclass(levelDef, levelFile);
-    if (objclass == null || !CustomStageLevelUtils.supportsSubmarine(objclass)) {
+    if (objclass == null ||
+        !CustomStageLevelUtils.supportsSubmarine(objclass)) {
       return false;
     }
     final objdata = resolveStageObjdata(levelDef, levelFile);
@@ -215,7 +223,9 @@ class LevelParser {
     return isDeepSeaLawn(levelDef, levelFile) ? (6, 10) : (5, 9);
   }
 
-  static (int rows, int cols) getGridDimensionsFromFile(PvzLevelFile levelFile) {
+  static (int rows, int cols) getGridDimensionsFromFile(
+    PvzLevelFile levelFile,
+  ) {
     final parsed = parseLevel(levelFile);
     return getGridDimensions(parsed.levelDef, levelFile);
   }

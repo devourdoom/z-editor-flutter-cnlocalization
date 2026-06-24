@@ -7,4 +7,3 @@ class StarChallengePlantFoodNonuseData extends PvzModel {
   ) => StarChallengePlantFoodNonuseData();
   Map<String, dynamic> toJson() => {};
 }
-

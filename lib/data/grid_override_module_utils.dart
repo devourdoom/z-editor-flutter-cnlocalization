@@ -109,9 +109,7 @@ bool levelHasKongfuGridOverrideModules(PvzLevelFile levelFile) {
 }
 
 String? moduleRtidForClass(PvzLevelFile levelFile, String objClass) {
-  final obj = levelFile.objects.firstWhereOrNull(
-    (o) => o.objClass == objClass,
-  );
+  final obj = levelFile.objects.firstWhereOrNull((o) => o.objClass == objClass);
   final alias = obj?.aliases?.firstOrNull;
   if (alias == null) return null;
   return RtidParser.build(alias, 'CurrentLevel');

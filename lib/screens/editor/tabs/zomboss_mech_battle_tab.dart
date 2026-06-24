@@ -198,7 +198,8 @@ class _ZombossMechBattleTabState extends State<ZombossMechBattleTab> {
     if (base == null || base.variations.isEmpty) return;
 
     final catalog = ZombossMechRepository.getCatalog(baseId);
-    final keepCustom = catalog != null &&
+    final keepCustom =
+        catalog != null &&
         ZombossMechRepository.isCustomVariation(
           _battleData.zombossMechType,
           catalog,
@@ -214,17 +215,19 @@ class _ZombossMechBattleTabState extends State<ZombossMechBattleTab> {
       return base.variations.first;
     }
 
-    _sync(extra: () {
-      _selectedBaseId = baseId;
-      final variation = pickVariation();
-      if (catalog != null &&
-          catalog.hasCustomInstance &&
-          variation == catalog.editableInstance) {
-        _applyCustomVariation(persist: false);
-      } else {
-        _applyVariation(variation, persist: false);
-      }
-    });
+    _sync(
+      extra: () {
+        _selectedBaseId = baseId;
+        final variation = pickVariation();
+        if (catalog != null &&
+            catalog.hasCustomInstance &&
+            variation == catalog.editableInstance) {
+          _applyCustomVariation(persist: false);
+        } else {
+          _applyVariation(variation, persist: false);
+        }
+      },
+    );
   }
 
   void _onVariationChanged(String? value) {
@@ -241,9 +244,8 @@ class _ZombossMechBattleTabState extends State<ZombossMechBattleTab> {
     final baseId = await Navigator.push<String>(
       context,
       MaterialPageRoute(
-        builder: (context) => ZombossMechBaseSelectionScreen(
-          selectedBaseId: _selectedBaseId,
-        ),
+        builder: (context) =>
+            ZombossMechBaseSelectionScreen(selectedBaseId: _selectedBaseId),
       ),
     );
     if (baseId != null && mounted) {
@@ -333,7 +335,11 @@ class _ZombossMechBattleTabState extends State<ZombossMechBattleTab> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.error_outline, size: 48, color: theme.colorScheme.error),
+              Icon(
+                Icons.error_outline,
+                size: 48,
+                color: theme.colorScheme.error,
+              ),
               const SizedBox(height: 16),
               Text(
                 l10n?.noZombossMechFound ?? 'No ZombossMech found',
@@ -382,7 +388,10 @@ class _ZombossMechBattleTabState extends State<ZombossMechBattleTab> {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  Icon(editorErrorIcon, color: theme.colorScheme.onErrorContainer),
+                  Icon(
+                    editorErrorIcon,
+                    color: theme.colorScheme.onErrorContainer,
+                  ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(

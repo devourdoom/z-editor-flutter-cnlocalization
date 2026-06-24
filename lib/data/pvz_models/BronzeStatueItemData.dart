@@ -1,10 +1,6 @@
 import 'package:c_editor/data/pvz_models/PvzModel.dart';
 
-enum BronzeStatueKind {
-  strength,
-  mage,
-  agile,
-}
+enum BronzeStatueKind { strength, mage, agile }
 
 class BronzeStatueItemData extends PvzModel {
   BronzeStatueItemData({

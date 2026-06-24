@@ -36,7 +36,7 @@ class StageSelectionScreen extends StatefulWidget {
   final VoidCallback onBack;
   final VoidCallback? onCreateCustomStage;
   final Future<String?> Function(CustomStagePreset preset)?
-      onCreateCustomStageFromPreset;
+  onCreateCustomStageFromPreset;
   final void Function(String alias)? onOpenCustomStageEditor;
   final Future<bool> Function(String alias)? onDeleteCustomStage;
   final Future<bool> Function(String customAlias)? onSwitchFromCustomToBuiltin;
@@ -424,7 +424,16 @@ class _StageSelectionScreenState extends State<StageSelectionScreen> {
                               final deleted = await widget.onDeleteCustomStage!(
                                 alias,
                               );
-                              if (deleted && mounted) setState(() {});
+                              if (deleted && mounted) {
+                                setState(() {
+                                  if (_isCustomCurrent &&
+                                      alias == _currentAlias) {
+                                    _currentStageRtidOverride =
+                                        CustomStageLevelUtils
+                                            .defaultBuiltinStageRtid;
+                                  }
+                                });
+                              }
                             },
                           ),
                       ],
@@ -445,24 +454,22 @@ class _StageSelectionScreenState extends State<StageSelectionScreen> {
             ),
           ),
           const SizedBox(height: 8),
-          ...displayPresets.map(
-            (preset) {
-              final isSelectedPreset = selectedPreset?.alias == preset.alias;
-              final isDisabled =
-                  presetsLocked || widget.onCreateCustomStageFromPreset == null;
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 8),
-                child: _PresetCustomStageCard(
-                  preset: preset,
-                  displayName: ResourceNames.lookup(context, preset.nameKey),
-                  source: ResourceNames.lookup(context, preset.sourceKey),
-                  selected: isSelectedPreset,
-                  disabled: isDisabled,
-                  onTap: () => _copyPreset(preset),
-                ),
-              );
-            },
-          ),
+          ...displayPresets.map((preset) {
+            final isSelectedPreset = selectedPreset?.alias == preset.alias;
+            final isDisabled =
+                presetsLocked || widget.onCreateCustomStageFromPreset == null;
+            return Padding(
+              padding: const EdgeInsets.only(bottom: 8),
+              child: _PresetCustomStageCard(
+                preset: preset,
+                displayName: ResourceNames.lookup(context, preset.nameKey),
+                source: ResourceNames.lookup(context, preset.sourceKey),
+                selected: isSelectedPreset,
+                disabled: isDisabled,
+                onTap: () => _copyPreset(preset),
+              ),
+            );
+          }),
         ],
       ],
     );
@@ -605,9 +612,7 @@ class _PresetCustomStageCard extends StatelessWidget {
                   tooltip: selected
                       ? displayName
                       : l10n?.createCustomStage ?? 'Create custom lawn',
-                  icon: Icon(
-                    selected ? Icons.check : Icons.add_circle_outline,
-                  ),
+                  icon: Icon(selected ? Icons.check : Icons.add_circle_outline),
                   onPressed: effectiveOnTap,
                 ),
               ],

@@ -7,9 +7,11 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
-import 'package:c_editor/theme/app_theme.dart' show pvzLightOrangeDark, pvzLightOrangeLight;
+import 'package:c_editor/theme/app_theme.dart'
+    show pvzLightOrangeDark, pvzLightOrangeLight;
 
 /// Bungee drop event: set zombie type, level, and lawn cell for one bungee drop.
 /// Ported from Z-Editor-master BungeeWaveActionEP.kt
@@ -27,7 +29,8 @@ class BungeeWaveEventScreen extends StatefulWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(String) onSelected) onRequestZombieSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestZombieSelection;
 
   @override
   State<BungeeWaveEventScreen> createState() => _BungeeWaveEventScreenState();
@@ -155,12 +158,14 @@ class _BungeeWaveEventScreenState extends State<BungeeWaveEventScreen> {
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.bungeeWaveEventHelpOverview ??
+                  body:
+                      l10n?.bungeeWaveEventHelpOverview ??
                       'Set the zombie type and lawn cell for a single bungee drop. One event drops one zombie.',
                 ),
                 HelpSectionData(
                   title: l10n?.bungeeWaveEventHelpGrid ?? 'Grid',
-                  body: l10n?.bungeeWaveEventHelpGridBody ??
+                  body:
+                      l10n?.bungeeWaveEventHelpGridBody ??
                       'Tap a cell in the grid to set where the bungee zombie will land.',
                 ),
               ],
@@ -187,7 +192,8 @@ class _BungeeWaveEventScreenState extends State<BungeeWaveEventScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                l10n?.bungeeWaveCurrentTarget ?? 'Current target',
+                                l10n?.bungeeWaveCurrentTarget ??
+                                    'Current target',
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.onSurfaceVariant,
                                 ),
@@ -238,7 +244,9 @@ class _BungeeWaveEventScreenState extends State<BungeeWaveEventScreen> {
                         controller: _levelController,
                         decoration: editorInputDecoration(
                           context,
-                          labelText: l10n?.bungeeWaveZombieLevel ?? 'Zombie level (Level)',
+                          labelText:
+                              l10n?.bungeeWaveZombieLevel ??
+                              'Zombie level (Level)',
                           focusColor: appBarColor,
                           isFocused: _levelFocusNode.hasFocus,
                         ),
@@ -262,7 +270,8 @@ class _BungeeWaveEventScreenState extends State<BungeeWaveEventScreen> {
               const SizedBox(height: 16),
               EditorWarningBanner(
                 margin: EdgeInsets.zero,
-                message: l10n?.bungeeWaveRoofWarning ??
+                message:
+                    l10n?.bungeeWaveRoofWarning ??
                     'On roof maps, bungee drops intercepted by umbrellas may trigger instant brain-eating. Use with care.',
               ),
               const SizedBox(height: 32),
@@ -342,11 +351,12 @@ class _BungeeWaveEventScreenState extends State<BungeeWaveEventScreen> {
     Color appBarColor,
     AppLocalizations? l10n,
   ) {
-    final typeId = ZombiePropertiesRepository.getTypeNameByAlias(_data.zombieName);
-    final info = ZombieRepository().getZombieById(typeId) ??
-        ZombieRepository().getZombieById(
-          typeId.replaceAll('_elite', ''),
-        );
+    final typeId = ZombiePropertiesRepository.getTypeNameByAlias(
+      _data.zombieName,
+    );
+    final info =
+        ZombieRepository().getZombieById(typeId) ??
+        ZombieRepository().getZombieById(typeId.replaceAll('_elite', ''));
     final path = info?.icon != null
         ? 'assets/images/zombies/${info!.icon}'
         : 'assets/images/others/unknown.webp';
@@ -417,10 +427,9 @@ class _ZombieIconSmall extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final typeId = ZombiePropertiesRepository.getTypeNameByAlias(typeName);
-    final info = ZombieRepository().getZombieById(typeId) ??
-        ZombieRepository().getZombieById(
-          typeId.replaceAll('_elite', ''),
-        );
+    final info =
+        ZombieRepository().getZombieById(typeId) ??
+        ZombieRepository().getZombieById(typeId.replaceAll('_elite', ''));
     final path = info?.icon != null
         ? 'assets/images/zombies/${info!.icon}'
         : 'assets/images/others/unknown.webp';

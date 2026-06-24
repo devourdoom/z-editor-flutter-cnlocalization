@@ -33,7 +33,11 @@ RegExp? buildJsonViewerSearchPattern(
   if (query.isEmpty) return null;
   try {
     if (options.regex) {
-      return RegExp(query, caseSensitive: options.caseSensitive, multiLine: true);
+      return RegExp(
+        query,
+        caseSensitive: options.caseSensitive,
+        multiLine: true,
+      );
     }
     var pattern = RegExp.escape(query);
     if (options.wholeWords) {
@@ -123,7 +127,8 @@ List<InlineSpan> buildHighlightedTextSpans({
     localRanges.add((
       start: overlapStart - segmentStartInLine,
       end: overlapEnd - segmentStartInLine,
-      active: activeMatch != null &&
+      active:
+          activeMatch != null &&
           activeMatch.start == m.start &&
           activeMatch.end == m.end,
     ));
@@ -139,10 +144,7 @@ List<InlineSpan> buildHighlightedTextSpans({
   for (final range in localRanges) {
     if (range.start > cursor) {
       spans.add(
-        TextSpan(
-          text: text.substring(cursor, range.start),
-          style: baseStyle,
-        ),
+        TextSpan(text: text.substring(cursor, range.start), style: baseStyle),
       );
     }
     spans.add(

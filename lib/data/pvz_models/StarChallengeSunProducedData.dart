@@ -10,4 +10,3 @@ class StarChallengeSunProducedData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'TargetSun': targetSun};
 }
-

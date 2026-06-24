@@ -23,4 +23,3 @@ class AtlantisShellTileData extends PvzModel {
     'Type': type,
   };
 }
-

@@ -30,4 +30,3 @@ class BungeeWaveActionData extends PvzModel {
     'Level': level,
   };
 }
-

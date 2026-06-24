@@ -30,5 +30,3 @@ class SunBombChallengeData extends PvzModel {
     'ZombieDamage': zombieDamage,
   };
 }
-
-

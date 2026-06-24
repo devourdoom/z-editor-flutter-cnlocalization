@@ -24,4 +24,3 @@ class FogRangeData extends PvzModel {
     'mHeight': mHeight,
   };
 }
-

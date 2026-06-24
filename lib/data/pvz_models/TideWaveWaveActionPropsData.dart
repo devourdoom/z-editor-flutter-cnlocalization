@@ -44,5 +44,3 @@ class TideWaveWaveActionPropsData extends PvzModel {
     'ZombieMovingSpeed': zombieMovingSpeed,
   };
 }
-
-

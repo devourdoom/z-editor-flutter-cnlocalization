@@ -12,8 +12,7 @@ class EscapeOverride {
   static void pop(bool Function() handler) => _stack.remove(handler);
 
   /// The topmost registered handler, or null if none.
-  static bool Function()? get tryHandle =>
-      _stack.isEmpty ? null : _stack.last;
+  static bool Function()? get tryHandle => _stack.isEmpty ? null : _stack.last;
 }
 
 /// Wraps modal bottom sheet content so Escape closes only the modal, not the

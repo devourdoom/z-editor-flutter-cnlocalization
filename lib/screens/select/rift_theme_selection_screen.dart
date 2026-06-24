@@ -83,7 +83,8 @@ class _RiftThemeSelectionScreenState extends State<RiftThemeSelectionScreen> {
           onPressed: widget.onBack,
         ),
         title: AppBarSearchField(
-          hintText: l10n?.selectedCountTapToSearch(_selectedIds.length) ??
+          hintText:
+              l10n?.selectedCountTapToSearch(_selectedIds.length) ??
               'Selected ${_selectedIds.length}, tap to search',
           query: _searchQuery,
           borderRadius: 24,
@@ -92,7 +93,8 @@ class _RiftThemeSelectionScreenState extends State<RiftThemeSelectionScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => widget.onThemesConfirmed(List<String>.from(_selectedIds)),
+        onPressed: () =>
+            widget.onThemesConfirmed(List<String>.from(_selectedIds)),
         backgroundColor: widget.accentColor,
         foregroundColor: Colors.white,
         tooltip: l10n?.confirm ?? 'Confirm',
@@ -150,7 +152,9 @@ class _RiftThemeSelectionScreenState extends State<RiftThemeSelectionScreen> {
                               color: widget.accentColor.withValues(alpha: 0.15),
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                color: widget.accentColor.withValues(alpha: 0.35),
+                                color: widget.accentColor.withValues(
+                                  alpha: 0.35,
+                                ),
                               ),
                             ),
                             child: Icon(

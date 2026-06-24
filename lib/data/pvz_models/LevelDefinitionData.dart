@@ -70,5 +70,3 @@ class LevelDefinitionData extends PvzModel {
     'Modules': modules,
   };
 }
-
-

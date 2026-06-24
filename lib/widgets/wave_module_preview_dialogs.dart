@@ -151,12 +151,12 @@ Future<void> showRenaiWavePreviewDialog(
   final nightStarts = renaiNightStartsOnWave(renai, waveIndex);
   final nightSpawnStatues = renaiNightSpawnStatuesForWave(renai, waveIndex);
   final revivingStatues = renaiRevivingStatuesForWave(renai, waveIndex);
-  final isEmpty = !renai.nightEnabled &&
+  final isEmpty =
+      !renai.nightEnabled &&
       renai.statueInfos.isEmpty &&
       renai.statueNightInfos.isEmpty;
-  final hasWaveEvents = nightStarts ||
-      nightSpawnStatues.isNotEmpty ||
-      revivingStatues.isNotEmpty;
+  final hasWaveEvents =
+      nightStarts || nightSpawnStatues.isNotEmpty || revivingStatues.isNotEmpty;
 
   return showDialog<void>(
     context: context,
@@ -193,9 +193,9 @@ Future<void> showRenaiWavePreviewDialog(
           children.add(
             Text(
               l10n?.renaiModulePreviewNightStatues ?? 'Night statues:',
-              style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                ctx,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
           );
           children.add(const SizedBox(height: 8));
@@ -213,9 +213,9 @@ Future<void> showRenaiWavePreviewDialog(
           children.add(
             Text(
               l10n?.renaiModulePreviewRevivingStatues ?? 'Reviving statues:',
-              style: Theme.of(ctx).textTheme.titleSmall?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+              style: Theme.of(
+                ctx,
+              ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             ),
           );
           children.add(const SizedBox(height: 8));
@@ -241,15 +241,15 @@ Future<void> showRenaiWavePreviewDialog(
                   style: Theme.of(ctx).textTheme.bodySmall,
                 )
               : children.isEmpty
-                  ? Text(
-                      l10n?.noDynamicZombies ?? 'No events',
-                      style: Theme.of(ctx).textTheme.bodySmall,
-                    )
-                  : Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: children,
-                    ),
+              ? Text(
+                  l10n?.noDynamicZombies ?? 'No events',
+                  style: Theme.of(ctx).textTheme.bodySmall,
+                )
+              : Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: children,
+                ),
         ),
         actions: [
           if (onOpenModuleSettings != null)

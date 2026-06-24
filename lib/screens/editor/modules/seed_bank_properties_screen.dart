@@ -9,7 +9,8 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/theme/app_theme.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/preset_resource_list_tile.dart';
 
 /// Seed bank properties. Ported from Z-Editor-master SeedBankPropertiesEP.kt
@@ -34,9 +35,10 @@ class SeedBankPropertiesScreen extends StatefulWidget {
     List<String>? initialSelectedIds,
     bool blockRealmExclusiveInChooser,
     bool allowDuplicateSelection,
-  }) onRequestPlantSelection;
+  })
+  onRequestPlantSelection;
   final void Function(void Function(List<String>) onSelected)
-      onRequestZombieSelection;
+  onRequestZombieSelection;
 
   @override
   State<SeedBankPropertiesScreen> createState() =>
@@ -114,8 +116,9 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
   }
 
   void _removeGridItemsFromPreset() {
-    _data.presetPlantList
-        .removeWhere((id) => kSeedBankGridItemIds.contains(id));
+    _data.presetPlantList.removeWhere(
+      (id) => kSeedBankGridItemIds.contains(id),
+    );
   }
 
   void _addGridItemToPreset(String id) {
@@ -174,8 +177,7 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
     widget.onRequestZombieSelection((ids) {
       setState(() {
         for (final id in ids) {
-          _data.presetPlantList
-              .add(ZombieRepository().buildZombieAliases(id));
+          _data.presetPlantList.add(ZombieRepository().buildZombieAliases(id));
         }
         _sync();
       });
@@ -220,8 +222,7 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final isZombieMode = _data.zombieMode == true;
-    final isReversedZombie =
-        _data.seedPacketType == 'UIIZombieSeedPacket';
+    final isReversedZombie = _data.seedPacketType == 'UIIZombieSeedPacket';
 
     final izombieColor = theme.brightness == Brightness.dark
         ? pvzPurpleDark
@@ -233,7 +234,11 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
           icon: const Icon(Icons.arrow_back),
           onPressed: widget.onBack,
         ),
-        title: Text(isZombieMode ? (l10n?.seedBankIZombie ?? 'Seed bank (I, Zombie)') : (l10n?.moduleTitle_SeedBankProperties ?? 'Seed bank')),
+        title: Text(
+          isZombieMode
+              ? (l10n?.seedBankIZombie ?? 'Seed bank (I, Zombie)')
+              : (l10n?.moduleTitle_SeedBankProperties ?? 'Seed bank'),
+        ),
         backgroundColor: isZombieMode ? izombieColor : null,
         foregroundColor: isZombieMode ? theme.colorScheme.surface : null,
         iconTheme: isZombieMode
@@ -258,7 +263,9 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
               if (isZombieMode)
                 _ResourceListEditor(
                   title: l10n?.availableZombies ?? 'Available zombies',
-                  description: l10n?.availableZombiesDescription ?? 'Zombies available for I, Zombie mode',
+                  description:
+                      l10n?.availableZombiesDescription ??
+                      'Zombies available for I, Zombie mode',
                   items: _data.presetPlantList,
                   accentColor: izombieColor,
                   isZombie: true,
@@ -268,8 +275,11 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
                 )
               else ...[
                 _ResourceListEditor(
-                  title: l10n?.presetPlants ?? 'Preset plants (PresetPlantList)',
-                  description: l10n?.plantsAvailableAtStart ?? 'Plants available at start',
+                  title:
+                      l10n?.presetPlants ?? 'Preset plants (PresetPlantList)',
+                  description:
+                      l10n?.plantsAvailableAtStart ??
+                      'Plants available at start',
                   items: _data.presetPlantList,
                   accentColor: theme.colorScheme.secondary,
                   isZombie: false,
@@ -280,7 +290,9 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
                 const SizedBox(height: 16),
                 _ResourceListEditor(
                   title: l10n?.whiteList ?? 'White list (WhiteList)',
-                  description: l10n?.whiteListDescription ?? 'Only these plants allowed (empty = no limit)',
+                  description:
+                      l10n?.whiteListDescription ??
+                      'Only these plants allowed (empty = no limit)',
                   items: _data.plantWhiteList,
                   accentColor: theme.colorScheme.primary,
                   isZombie: false,
@@ -290,7 +302,9 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
                 const SizedBox(height: 16),
                 _ResourceListEditor(
                   title: l10n?.blackList ?? 'Black list (BlackList)',
-                  description: l10n?.blackListDescription ?? 'These plants are forbidden',
+                  description:
+                      l10n?.blackListDescription ??
+                      'These plants are forbidden',
                   items: _data.plantBlackList,
                   accentColor: theme.colorScheme.error,
                   isZombie: false,
@@ -306,14 +320,12 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
                     padding: const EdgeInsets.all(16),
                     child: Row(
                       children: [
-                        Icon(
-                          Icons.info_outline,
-                          color: izombieColor,
-                        ),
+                        Icon(Icons.info_outline, color: izombieColor),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            l10n?.izombieCardSlotsHint ?? 'Only some zombies have IZ card slots. Check Other category in zombie selection.',
+                            l10n?.izombieCardSlotsHint ??
+                                'Only some zombies have IZ card slots. Check Other category in zombie selection.',
                             style: theme.textTheme.bodySmall,
                           ),
                         ),
@@ -326,7 +338,10 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
               const SizedBox(height: 16),
               if (isZombieMode)
                 _buildReversedZombieSwitch(
-                    context, isReversedZombie, izombieColor),
+                  context,
+                  isReversedZombie,
+                  izombieColor,
+                ),
               const SizedBox(height: 32),
             ],
           ),
@@ -335,7 +350,11 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
     );
   }
 
-  Widget _buildBasicRulesCard(BuildContext context, bool isZombieMode, AppLocalizations? l10n) {
+  Widget _buildBasicRulesCard(
+    BuildContext context,
+    bool isZombieMode,
+    AppLocalizations? l10n,
+  ) {
     final theme = Theme.of(context);
     final izombieColor = theme.brightness == Brightness.dark
         ? pvzPurpleDark
@@ -376,9 +395,10 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
               spacing: 8,
               children: [
                 FilterChip(
-                  label: Text(AppLocalizations.of(context)?.chooser ?? 'Chooser'),
-                  selected:
-                      _data.selectionMethod == 'chooser' && !isZombieMode,
+                  label: Text(
+                    AppLocalizations.of(context)?.chooser ?? 'Chooser',
+                  ),
+                  selected: _data.selectionMethod == 'chooser' && !isZombieMode,
                   onSelected: isZombieMode
                       ? null
                       : (v) {
@@ -391,8 +411,7 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
                 ),
                 FilterChip(
                   label: Text(AppLocalizations.of(context)?.preset ?? 'Preset'),
-                  selected:
-                      _data.selectionMethod == 'preset' || isZombieMode,
+                  selected: _data.selectionMethod == 'preset' || isZombieMode,
                   onSelected: isZombieMode
                       ? null
                       : (v) {
@@ -421,7 +440,8 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
                     child: TextFormField(
                       initialValue: '${_data.globalLevel ?? 0}',
                       decoration: InputDecoration(
-                        labelText: l10n?.seedBankPlantLevelLabel ??
+                        labelText:
+                            l10n?.seedBankPlantLevelLabel ??
                             'Plant level (0-5)',
                         border: const OutlineInputBorder(),
                       ),
@@ -429,8 +449,7 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
                       onChanged: (s) {
                         final v = int.tryParse(s) ?? 0;
                         final clamped = v.clamp(0, 5);
-                        _data.globalLevel =
-                            clamped == 0 ? null : clamped;
+                        _data.globalLevel = clamped == 0 ? null : clamped;
                         _sync();
                       },
                     ),
@@ -440,8 +459,8 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
                     child: TextFormField(
                       initialValue: '${_data.overrideSeedSlotsCount ?? 0}',
                       decoration: InputDecoration(
-                        labelText: l10n?.seedBankSlotCountLabel ??
-                            'Slot count (0-9)',
+                        labelText:
+                            l10n?.seedBankSlotCountLabel ?? 'Slot count (0-9)',
                         border: const OutlineInputBorder(),
                       ),
                       keyboardType: TextInputType.number,
@@ -505,10 +524,7 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
               children: [
                 for (var i = 0; i < kSeedBankGridItemIds.length; i++) ...[
                   if (i > 0)
-                    Divider(
-                      height: 1,
-                      color: Theme.of(context).dividerColor,
-                    ),
+                    Divider(height: 1, color: Theme.of(context).dividerColor),
                   _SeedBankGridItemRow(
                     typeName: kSeedBankGridItemIds[i],
                     count: _data.presetPlantList
@@ -531,7 +547,10 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
   }
 
   Widget _buildZombieModeSwitch(
-      BuildContext context, bool isZombieMode, Color izombieColor) {
+    BuildContext context,
+    bool isZombieMode,
+    Color izombieColor,
+  ) {
     return Card(
       child: Theme(
         data: Theme.of(context).copyWith(
@@ -554,31 +573,35 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           subtitle: Text(
-            AppLocalizations.of(context)?.izombieModeSubtitle ?? 'Enable to place zombies. Locks selection method.',
+            AppLocalizations.of(context)?.izombieModeSubtitle ??
+                'Enable to place zombies. Locks selection method.',
           ),
           value: isZombieMode,
           onChanged: (v) {
-          setState(() {
-            if (_data.zombieMode != v) {
-              _clearSeedBankLists();
-            }
-            _data.zombieMode = v;
-            if (v) {
-              _data.selectionMethod = 'preset';
-              _data.seedPacketType = null;
-            } else {
-              _data.seedPacketType = null;
-            }
-            _sync();
-          });
-        },
+            setState(() {
+              if (_data.zombieMode != v) {
+                _clearSeedBankLists();
+              }
+              _data.zombieMode = v;
+              if (v) {
+                _data.selectionMethod = 'preset';
+                _data.seedPacketType = null;
+              } else {
+                _data.seedPacketType = null;
+              }
+              _sync();
+            });
+          },
         ),
       ),
     );
   }
 
   Widget _buildReversedZombieSwitch(
-      BuildContext context, bool isReversedZombie, Color izombieColor) {
+    BuildContext context,
+    bool isReversedZombie,
+    Color izombieColor,
+  ) {
     return Card(
       child: Theme(
         data: Theme.of(context).copyWith(
@@ -596,21 +619,22 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
           ),
         ),
         child: SwitchListTile(
-        title: Text(
-          AppLocalizations.of(context)?.reverseZombieFactionTitle ?? 'Reverse zombie faction',
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        subtitle: Text(
-          AppLocalizations.of(context)?.reverseZombieFactionSubtitle ?? 'Enable to make zombies plant faction. For ZvZ.',
-        ),
-        value: isReversedZombie,
-        onChanged: (v) {
-          setState(() {
-            _data.seedPacketType =
-                v ? 'UIIZombieSeedPacket' : null;
-            _sync();
-          });
-        },
+          title: Text(
+            AppLocalizations.of(context)?.reverseZombieFactionTitle ??
+                'Reverse zombie faction',
+            style: const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(
+            AppLocalizations.of(context)?.reverseZombieFactionSubtitle ??
+                'Enable to make zombies plant faction. For ZvZ.',
+          ),
+          value: isReversedZombie,
+          onChanged: (v) {
+            setState(() {
+              _data.seedPacketType = v ? 'UIIZombieSeedPacket' : null;
+              _sync();
+            });
+          },
         ),
       ),
     );
@@ -627,13 +651,25 @@ class _SeedBankPropertiesScreenState extends State<SeedBankPropertiesScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(l10n?.seedBankLetsPlayersChoose ?? 'Seed bank lets players choose plants. In courtyard mode you can set global level and all plants.'),
+              Text(
+                l10n?.seedBankLetsPlayersChoose ??
+                    'Seed bank lets players choose plants. In courtyard mode you can set global level and all plants.',
+              ),
               const SizedBox(height: 8),
-              Text(l10n?.whiteListBlackListHint ?? 'White list: empty = no limit. Black list overrides white list.'),
+              Text(
+                l10n?.whiteListBlackListHint ??
+                    'White list: empty = no limit. Black list overrides white list.',
+              ),
               const SizedBox(height: 8),
-              Text(l10n?.iZombieModePresetHint ?? 'I, Zombie mode: preset zombies for player. Selection locked to preset.'),
+              Text(
+                l10n?.iZombieModePresetHint ??
+                    'I, Zombie mode: preset zombies for player. Selection locked to preset.',
+              ),
               const SizedBox(height: 8),
-              Text(l10n?.invalidIdsHint ?? 'Invalid IDs leave empty slots. Zombie IDs in plant mode and vice versa. Put zombie slots first.'),
+              Text(
+                l10n?.invalidIdsHint ??
+                    'Invalid IDs leave empty slots. Zombie IDs in plant mode and vice versa. Put zombie slots first.',
+              ),
             ],
           ),
         ),
@@ -701,7 +737,9 @@ class _SeedBankGridItemRow extends StatelessWidget {
                 ),
                 if (count > 0)
                   Text(
-                    AppLocalizations.of(context)?.seedBankGridItemCount(count) ??
+                    AppLocalizations.of(
+                          context,
+                        )?.seedBankGridItemCount(count) ??
                         'In preset list: $count',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
@@ -721,7 +759,11 @@ class _SeedBankGridItemRow extends StatelessWidget {
   }
 }
 
-String _entryDisplayName(BuildContext context, String id, {required bool isZombie}) {
+String _entryDisplayName(
+  BuildContext context,
+  String id, {
+  required bool isZombie,
+}) {
   if (kSeedBankGridItemIds.contains(id)) {
     final key = 'griditem_$id';
     final localized = ResourceNames.lookup(context, key);
@@ -763,7 +805,11 @@ String _zombieDisplayName(BuildContext context, String id) {
     final withoutPrefix = key.substring(7);
     return withoutPrefix
         .split('_')
-        .map((s) => s.isNotEmpty ? '${s[0].toUpperCase()}${s.substring(1).toLowerCase()}' : '')
+        .map(
+          (s) => s.isNotEmpty
+              ? '${s[0].toUpperCase()}${s.substring(1).toLowerCase()}'
+              : '',
+        )
         .join(' ');
   }
   return translated;
@@ -815,9 +861,7 @@ class _ResourceListEditor extends StatelessWidget {
       decoration: BoxDecoration(
         color: accentColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: accentColor.withValues(alpha: 0.3),
-        ),
+        border: Border.all(color: accentColor.withValues(alpha: 0.3)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -838,11 +882,7 @@ class _ResourceListEditor extends StatelessWidget {
           ),
           const SizedBox(width: 8),
           Flexible(
-            child: Text(
-              name,
-              overflow: TextOverflow.ellipsis,
-              maxLines: 1,
-            ),
+            child: Text(name, overflow: TextOverflow.ellipsis, maxLines: 1),
           ),
           IconButton(
             icon: const Icon(Icons.close, size: 18),
@@ -864,9 +904,9 @@ class _ResourceListEditor extends StatelessWidget {
     final l10n = AppLocalizations.of(context);
     final reorderHint = _useImmediateDrag(context)
         ? (l10n?.presetPlantListReorderHintDesktop ??
-            'Drag the ⋮⋮ handle to reorder.')
+              'Drag the ⋮⋮ handle to reorder.')
         : (l10n?.presetPlantListReorderHint ??
-            'Long press the ⋮⋮ handle and drag to reorder.');
+              'Long press the ⋮⋮ handle and drag to reorder.');
 
     return Card(
       child: Padding(
@@ -956,11 +996,7 @@ class _ResourceListEditor extends StatelessWidget {
                 runSpacing: 8,
                 children: List.generate(items.length, (i) {
                   final id = items[i];
-                  return _buildChip(
-                    context,
-                    index: i,
-                    id: id,
-                  );
+                  return _buildChip(context, index: i, id: id);
                 }),
               ),
           ],
@@ -969,4 +1005,3 @@ class _ResourceListEditor extends StatelessWidget {
     );
   }
 }
-

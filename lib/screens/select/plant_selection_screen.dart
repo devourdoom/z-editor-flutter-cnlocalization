@@ -166,7 +166,9 @@ class _PlantSelectionScreenState extends State<PlantSelectionScreen> {
     return null;
   }
 
-  Future<void> _showRealmExclusiveChooserBlockedDialog(BuildContext context) async {
+  Future<void> _showRealmExclusiveChooserBlockedDialog(
+    BuildContext context,
+  ) async {
     final l10n = AppLocalizations.of(context);
     await showDialog<void>(
       context: context,
@@ -297,10 +299,9 @@ class _PlantSelectionScreenState extends State<PlantSelectionScreen> {
         : mergeUniqueSelectionResults(
             repositoryPlants,
             _categoryFilteredPlants(repo).where(
-              (plant) => matchesSelectionSearch(
-                _searchQuery,
-                [ResourceNames.lookup(context, plant.name)],
-              ),
+              (plant) => matchesSelectionSearch(_searchQuery, [
+                ResourceNames.lookup(context, plant.name),
+              ]),
             ),
             (plant) => plant.id,
           );
@@ -352,105 +353,57 @@ class _PlantSelectionScreenState extends State<PlantSelectionScreen> {
               child: ScrollableWithMouseDrag(
                 child: SingleChildScrollView(
                   child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-                      child: SelectionSearchField(
-                        hintText: widget.isMultiSelect
-                            ? (l10n?.selectedCountTapToSearch(
-                                  widget.allowDuplicateSelection
-                                      ? _selectedIdsWithDuplicates.length
-                                      : _selectedIds.length,
-                                ) ??
-                                'Selected ${widget.allowDuplicateSelection ? _selectedIdsWithDuplicates.length : _selectedIds.length}, tap to search')
-                            : (l10n?.searchPlant ?? 'Search plant'),
-                        query: _searchQuery,
-                        fillColor: theme.colorScheme.surface,
-                        onChanged: (v) => setState(() => _searchQuery = v),
-                        onClear: () => setState(() => _searchQuery = ''),
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                        child: SelectionSearchField(
+                          hintText: widget.isMultiSelect
+                              ? (l10n?.selectedCountTapToSearch(
+                                      widget.allowDuplicateSelection
+                                          ? _selectedIdsWithDuplicates.length
+                                          : _selectedIds.length,
+                                    ) ??
+                                    'Selected ${widget.allowDuplicateSelection ? _selectedIdsWithDuplicates.length : _selectedIds.length}, tap to search')
+                              : (l10n?.searchPlant ?? 'Search plant'),
+                          query: _searchQuery,
+                          fillColor: theme.colorScheme.surface,
+                          onChanged: (v) => setState(() => _searchQuery = v),
+                          onClear: () => setState(() => _searchQuery = ''),
+                        ),
                       ),
-                    ),
-                    DefaultTabController(
-                      key: ValueKey(_selectedCategory),
-                      length: PlantCategory.values.length,
-                      initialIndex: PlantCategory.values.indexOf(
-                        _selectedCategory,
-                      ),
-                      child: TabBar(
-                        isScrollable: true,
-                        indicatorColor: tabColors.indicator,
-                        labelColor: tabColors.label,
-                        unselectedLabelColor: tabColors.unselectedLabel,
-                        onTap: (index) =>
-                            _setCategory(PlantCategory.values[index]),
-                        tabs: PlantCategory.values.map((category) {
-                          final isSelected = _selectedCategory == category;
-                          return Tab(
-                            child: Row(
-                              children: [
-                                if (category == PlantCategory.collection) ...[
-                                  Icon(
-                                    Icons.star,
-                                    size: 16,
-                                    color: isSelected
-                                        ? tabColors.label
-                                        : tabColors.unselectedLabel,
-                                  ),
-                                  const SizedBox(width: 4),
-                                ],
-                                Text(
-                                  category.getLabel(context),
-                                  style: TextStyle(
-                                    fontWeight: isSelected
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    if (_selectedCategory != PlantCategory.collection)
                       DefaultTabController(
-                        key: ValueKey('${_selectedCategory.name}_tags'),
-                        length: visibleTags.length,
-                        initialIndex: safeTagIndex,
+                        key: ValueKey(_selectedCategory),
+                        length: PlantCategory.values.length,
+                        initialIndex: PlantCategory.values.indexOf(
+                          _selectedCategory,
+                        ),
                         child: TabBar(
                           isScrollable: true,
                           indicatorColor: tabColors.indicator,
                           labelColor: tabColors.label,
                           unselectedLabelColor: tabColors.unselectedLabel,
-                          onTap: (index) => setState(
-                            () => _selectedTag = visibleTags[index],
-                          ),
-                          tabs: visibleTags.map((tag) {
-                            final isSelected = _selectedTag == tag;
-                            final iconName = tag.iconName;
+                          onTap: (index) =>
+                              _setCategory(PlantCategory.values[index]),
+                          tabs: PlantCategory.values.map((category) {
+                            final isSelected = _selectedCategory == category;
                             return Tab(
                               child: Row(
                                 children: [
-                                  if (iconName != null) ...[
-                                    AssetImageWidget(
-                                      assetPath:
-                                          'assets/images/tags/$iconName',
-                                      width: 18,
-                                      height: 18,
-                                      altCandidates: imageAltCandidates(
-                                        'assets/images/tags/$iconName',
-                                      ),
-                                      cacheWidth: 36,
-                                      cacheHeight: 36,
+                                  if (category == PlantCategory.collection) ...[
+                                    Icon(
+                                      Icons.star,
+                                      size: 16,
+                                      color: isSelected
+                                          ? tabColors.label
+                                          : tabColors.unselectedLabel,
                                     ),
-                                    const SizedBox(width: 6),
+                                    const SizedBox(width: 4),
                                   ],
                                   Text(
-                                    tag.getLabel(context),
+                                    category.getLabel(context),
                                     style: TextStyle(
-                                      fontSize: 13,
                                       fontWeight: isSelected
                                           ? FontWeight.bold
                                           : FontWeight.normal,
@@ -462,9 +415,57 @@ class _PlantSelectionScreenState extends State<PlantSelectionScreen> {
                           }).toList(),
                         ),
                       ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
+                      if (_selectedCategory != PlantCategory.collection)
+                        DefaultTabController(
+                          key: ValueKey('${_selectedCategory.name}_tags'),
+                          length: visibleTags.length,
+                          initialIndex: safeTagIndex,
+                          child: TabBar(
+                            isScrollable: true,
+                            indicatorColor: tabColors.indicator,
+                            labelColor: tabColors.label,
+                            unselectedLabelColor: tabColors.unselectedLabel,
+                            onTap: (index) => setState(
+                              () => _selectedTag = visibleTags[index],
+                            ),
+                            tabs: visibleTags.map((tag) {
+                              final isSelected = _selectedTag == tag;
+                              final iconName = tag.iconName;
+                              return Tab(
+                                child: Row(
+                                  children: [
+                                    if (iconName != null) ...[
+                                      AssetImageWidget(
+                                        assetPath:
+                                            'assets/images/tags/$iconName',
+                                        width: 18,
+                                        height: 18,
+                                        altCandidates: imageAltCandidates(
+                                          'assets/images/tags/$iconName',
+                                        ),
+                                        cacheWidth: 36,
+                                        cacheHeight: 36,
+                                      ),
+                                      const SizedBox(width: 6),
+                                    ],
+                                    Text(
+                                      tag.getLabel(context),
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: isSelected
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -473,72 +474,72 @@ class _PlantSelectionScreenState extends State<PlantSelectionScreen> {
             child: !_isLoaded
                 ? const Center(child: CircularProgressIndicator())
                 : plants.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.search,
-                              size: 64,
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              _selectedCategory == PlantCategory.collection
-                                  ? (l10n?.noFavoritesLongPress ??
-                                        'No favorites. Long-press to favorite.')
-                                  : (l10n?.noPlantFound ?? 'No plant found'),
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search,
+                          size: 64,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
-                      )
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(12),
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                        const SizedBox(height: 16),
+                        Text(
+                          _selectedCategory == PlantCategory.collection
+                              ? (l10n?.noFavoritesLongPress ??
+                                    'No favorites. Long-press to favorite.')
+                              : (l10n?.noPlantFound ?? 'No plant found'),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : GridView.builder(
+                    padding: const EdgeInsets.all(12),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 72,
                           mainAxisSpacing: 12,
                           crossAxisSpacing: 8,
                           childAspectRatio: 0.65,
                         ),
-                        itemCount: plants.length,
-                        itemBuilder: (_, i) {
-                          final plant = plants[i];
-                          final selectionCount = widget.allowDuplicateSelection
-                              ? _selectedIdsWithDuplicates
-                                  .where((id) => id == plant.id)
-                                  .length
-                              : (_selectedIds.contains(plant.id) ? 1 : 0);
-                          final isSelected = selectionCount > 0;
-                          final isFavorite = repo.isFavorite(plant.id);
-                          final isEnabled = _isPlantEnabled(
-                            plant,
-                            levelModuleObjClasses,
-                          );
-                          final isHat = _isMagicHatPlant(plant);
-                          return _PlantGridItem(
-                            plant: plant,
-                            isSelected: isSelected,
-                            isFavorite: isFavorite,
-                            isEnabled: isEnabled,
-                            onTap: () => _onPlantTap(
-                              context,
-                              plant,
-                              isEnabled,
-                              levelModuleObjClasses,
-                            ),
-                            onSecondaryTap: isHat
-                                ? () => _openMagicHatPreview(context, plant.id)
-                                : null,
-                            onLongPress: isHat
-                                ? () => _openMagicHatPreview(context, plant.id)
-                                : () => _toggleFavorite(context, plant.id),
-                          );
-                        },
-                      ),
+                    itemCount: plants.length,
+                    itemBuilder: (_, i) {
+                      final plant = plants[i];
+                      final selectionCount = widget.allowDuplicateSelection
+                          ? _selectedIdsWithDuplicates
+                                .where((id) => id == plant.id)
+                                .length
+                          : (_selectedIds.contains(plant.id) ? 1 : 0);
+                      final isSelected = selectionCount > 0;
+                      final isFavorite = repo.isFavorite(plant.id);
+                      final isEnabled = _isPlantEnabled(
+                        plant,
+                        levelModuleObjClasses,
+                      );
+                      final isHat = _isMagicHatPlant(plant);
+                      return _PlantGridItem(
+                        plant: plant,
+                        isSelected: isSelected,
+                        isFavorite: isFavorite,
+                        isEnabled: isEnabled,
+                        onTap: () => _onPlantTap(
+                          context,
+                          plant,
+                          isEnabled,
+                          levelModuleObjClasses,
+                        ),
+                        onSecondaryTap: isHat
+                            ? () => _openMagicHatPreview(context, plant.id)
+                            : null,
+                        onLongPress: isHat
+                            ? () => _openMagicHatPreview(context, plant.id)
+                            : () => _toggleFavorite(context, plant.id),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
@@ -585,101 +586,98 @@ class _PlantGridItem extends StatelessWidget {
         onLongPress: onLongPress,
         borderRadius: BorderRadius.circular(8),
         child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: borderColor, width: isSelected ? 2 : 0),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Stack(
-                  children: [
-                    ClipOval(
-                      child: SizedBox(
-                        width: 44,
-                        height: 44,
-                        child: hasIcon
-                            ? AssetImageWidget(
-                                assetPath: iconPath,
-                                altCandidates: imageAltCandidates(iconPath),
-                                width: 44,
-                                height: 44,
-                                fit: BoxFit.cover,
-                                cacheWidth: 88,
-                                cacheHeight: 88,
-                                errorWidget: Image.asset(
-                                  _kUnknownIconPath,
-                                  width: 44,
-                                  height: 44,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : Image.asset(
+          decoration: BoxDecoration(
+            border: Border.all(color: borderColor, width: isSelected ? 2 : 0),
+            borderRadius: BorderRadius.circular(8),
+          ),
+          padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Stack(
+                children: [
+                  ClipOval(
+                    child: SizedBox(
+                      width: 44,
+                      height: 44,
+                      child: hasIcon
+                          ? AssetImageWidget(
+                              assetPath: iconPath,
+                              altCandidates: imageAltCandidates(iconPath),
+                              width: 44,
+                              height: 44,
+                              fit: BoxFit.cover,
+                              cacheWidth: 88,
+                              cacheHeight: 88,
+                              errorWidget: Image.asset(
                                 _kUnknownIconPath,
                                 width: 44,
                                 height: 44,
                                 fit: BoxFit.cover,
                               ),
-                      ),
-                    ),
-                    if (isFavorite)
-                      Positioned(
-                        right: -2,
-                        top: -2,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.surface,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: const Color(0xFFFFC107),
-                              width: 0.5,
+                            )
+                          : Image.asset(
+                              _kUnknownIconPath,
+                              width: 44,
+                              height: 44,
+                              fit: BoxFit.cover,
                             ),
-                          ),
-                          padding: const EdgeInsets.all(2),
-                          child: const Icon(
-                            Icons.star,
-                            size: 12,
-                            color: Color(0xFFFFC107),
+                    ),
+                  ),
+                  if (isFavorite)
+                    Positioned(
+                      right: -2,
+                      top: -2,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: theme.colorScheme.surface,
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: const Color(0xFFFFC107),
+                            width: 0.5,
                           ),
                         ),
+                        padding: const EdgeInsets.all(2),
+                        child: const Icon(
+                          Icons.star,
+                          size: 12,
+                          color: Color(0xFFFFC107),
+                        ),
                       ),
-                  ],
+                    ),
+                ],
+              ),
+              const SizedBox(height: 4),
+              Text(
+                ResourceNames.lookup(context, plant.name),
+                style: theme.textTheme.bodySmall?.copyWith(
+                  fontWeight: FontWeight.w500,
+                  fontSize: 9,
                 ),
-                const SizedBox(height: 4),
-                Text(
-                  ResourceNames.lookup(context, plant.name),
-                  style: theme.textTheme.bodySmall?.copyWith(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 9,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              Text(
+                plant.id,
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                  fontSize: 8,
                 ),
-                Text(
-                  plant.id,
-                  style: theme.textTheme.labelSmall?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    fontSize: 8,
-                  ),
-                  textAlign: TextAlign.center,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
           ),
         ),
+      ),
     );
     return Opacity(
       opacity: isEnabled ? 1.0 : 0.5,
       child: onSecondaryTap == null
           ? ink
-          : GestureDetector(
-              onSecondaryTap: onSecondaryTap,
-              child: ink,
-            ),
+          : GestureDetector(onSecondaryTap: onSecondaryTap, child: ink),
     );
   }
 }

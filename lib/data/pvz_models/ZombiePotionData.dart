@@ -23,4 +23,3 @@ class ZombiePotionData extends PvzModel {
     'Type': type,
   };
 }
-

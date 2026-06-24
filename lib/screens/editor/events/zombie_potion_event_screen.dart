@@ -21,10 +21,12 @@ class ZombiePotionEventScreen extends StatefulWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(String) onSelected) onRequestGridItemSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestGridItemSelection;
 
   @override
-  State<ZombiePotionEventScreen> createState() => _ZombiePotionEventScreenState();
+  State<ZombiePotionEventScreen> createState() =>
+      _ZombiePotionEventScreenState();
 }
 
 class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
@@ -84,9 +86,7 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
         location: LocationData(x: _selectedX, y: _selectedY),
         type: typeName,
       );
-      _data = ZombiePotionActionPropsData(
-        potions: [..._data.potions, newItem],
-      );
+      _data = ZombiePotionActionPropsData(potions: [..._data.potions, newItem]);
       _sync();
     });
   }
@@ -104,20 +104,24 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
     final l10n = AppLocalizations.of(context);
     final alias = LevelParser.extractAlias(widget.rtid);
     final itemsAtPosition = _data.potions
-        .where((p) =>
-            p.location.x == _selectedX &&
-            p.location.y == _selectedY &&
-            p.location.x >= 0 &&
-            p.location.y >= 0 &&
-            p.location.x < _gridCols &&
-            p.location.y < _gridRows)
+        .where(
+          (p) =>
+              p.location.x == _selectedX &&
+              p.location.y == _selectedY &&
+              p.location.x >= 0 &&
+              p.location.y >= 0 &&
+              p.location.x < _gridCols &&
+              p.location.y < _gridRows,
+        )
         .toList();
     final itemsOutsideLawn = _data.potions
-        .where((p) =>
-            p.location.x < 0 ||
-            p.location.y < 0 ||
-            p.location.x >= _gridCols ||
-            p.location.y >= _gridRows)
+        .where(
+          (p) =>
+              p.location.x < 0 ||
+              p.location.y < 0 ||
+              p.location.x >= _gridCols ||
+              p.location.y >= _gridRows,
+        )
         .toList();
 
     return Scaffold(
@@ -179,7 +183,8 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    l10n?.selectedPosition ?? 'Selected position',
+                                    l10n?.selectedPosition ??
+                                        'Selected position',
                                     style: theme.textTheme.bodySmall?.copyWith(
                                       color: theme.colorScheme.onSurfaceVariant,
                                     ),
@@ -214,18 +219,17 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
                     spacing: 8,
                     runSpacing: 8,
                     children: [
-                      ...itemsAtPosition.map((item) => _PotionItemCard(
-                            item: item,
-                            gridRows: _gridRows,
-                            gridCols: _gridCols,
-                            showCoordinates: false,
-                            onDelete: () => setState(() => _itemToDelete = item),
-                            deleteTooltip: l10n?.delete ?? 'Delete',
-                          )),
-                      AddItemCard(
-                        onPressed: _addPotion,
-                        minHeight: 130,
+                      ...itemsAtPosition.map(
+                        (item) => _PotionItemCard(
+                          item: item,
+                          gridRows: _gridRows,
+                          gridCols: _gridCols,
+                          showCoordinates: false,
+                          onDelete: () => setState(() => _itemToDelete = item),
+                          deleteTooltip: l10n?.delete ?? 'Delete',
+                        ),
                       ),
+                      AddItemCard(onPressed: _addPotion, minHeight: 130),
                     ],
                   ),
                   if (itemsOutsideLawn.isNotEmpty) ...[
@@ -242,14 +246,17 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
                       spacing: 8,
                       runSpacing: 8,
                       children: itemsOutsideLawn
-                          .map((item) => _PotionItemCard(
-                                item: item,
-                                gridRows: _gridRows,
-                                gridCols: _gridCols,
-                                showCoordinates: true,
-                                onDelete: () => setState(() => _itemToDelete = item),
-                                deleteTooltip: l10n?.delete ?? 'Delete',
-                              ))
+                          .map(
+                            (item) => _PotionItemCard(
+                              item: item,
+                              gridRows: _gridRows,
+                              gridCols: _gridCols,
+                              showCoordinates: true,
+                              onDelete: () =>
+                                  setState(() => _itemToDelete = item),
+                              deleteTooltip: l10n?.delete ?? 'Delete',
+                            ),
+                          )
                           .toList(),
                     ),
                   ],
@@ -289,8 +296,9 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
                     children: List.generate(_gridCols, (col) {
                       final isSelected = row == _selectedY && col == _selectedX;
                       final cellItems = _data.potions
-                          .where((p) =>
-                              p.location.x == col && p.location.y == row)
+                          .where(
+                            (p) => p.location.x == col && p.location.y == row,
+                          )
                           .toList();
                       final firstItem = cellItems.firstOrNull;
                       final count = cellItems.length;
@@ -338,18 +346,20 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
                                           top: 3,
                                           right: 3,
                                           child: Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
-                                                  horizontal: 6,
-                                                  vertical: 3,
-                                                ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 6,
+                                              vertical: 3,
+                                            ),
                                             decoration: BoxDecoration(
-                                              color: theme.colorScheme
+                                              color: theme
+                                                  .colorScheme
                                                   .onSurfaceVariant,
                                               borderRadius:
                                                   const BorderRadius.only(
-                                                bottomLeft: Radius.circular(6),
-                                              ),
+                                                    bottomLeft: Radius.circular(
+                                                      6,
+                                                    ),
+                                                  ),
                                             ),
                                             child: Text(
                                               '+${count - 1}',
@@ -382,11 +392,15 @@ class _ZombiePotionEventScreenState extends State<ZombiePotionEventScreen> {
     final l10n = AppLocalizations.of(context);
     final item = _itemToDelete!;
     final displayName = ResourceNames.lookup(context, 'griditem_${item.type}');
-    final name = displayName != 'griditem_${item.type}' ? displayName : item.type;
+    final name = displayName != 'griditem_${item.type}'
+        ? displayName
+        : item.type;
     return AlertDialog(
       title: Text(l10n?.removeItem ?? 'Remove item'),
       content: Text(
-        l10n?.removeItemConfirm('R${item.location.y + 1}:C${item.location.x + 1} $name') ??
+        l10n?.removeItemConfirm(
+              'R${item.location.y + 1}:C${item.location.x + 1} $name',
+            ) ??
             'Remove R${item.location.y + 1}:C${item.location.x + 1} $name?',
       ),
       actions: [
@@ -430,7 +444,9 @@ class _PotionItemCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final displayName = ResourceNames.lookup(context, 'griditem_${item.type}');
-    final name = displayName != 'griditem_${item.type}' ? displayName : item.type;
+    final name = displayName != 'griditem_${item.type}'
+        ? displayName
+        : item.type;
 
     return Card(
       clipBehavior: Clip.antiAlias,
@@ -470,14 +486,18 @@ class _PotionItemCard extends StatelessWidget {
                         children: [
                           Icon(
                             editorWarningIcon,
-                            color: editorWarningBannerForeground(theme.brightness),
+                            color: editorWarningBannerForeground(
+                              theme.brightness,
+                            ),
                             size: 16,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             'R${item.location.y + 1}:C${item.location.x + 1}',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                             ),
                           ),
                         ],

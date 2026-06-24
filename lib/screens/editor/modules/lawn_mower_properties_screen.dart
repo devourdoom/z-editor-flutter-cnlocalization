@@ -65,8 +65,11 @@ class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
   void _selectOption(String newAlias) {
     final def = widget.levelFile.objects
         .where((o) => o.objClass == 'LevelDefinition')
-        .map((o) => LevelDefinitionData.fromJson(
-            Map<String, dynamic>.from(o.objData as Map)))
+        .map(
+          (o) => LevelDefinitionData.fromJson(
+            Map<String, dynamic>.from(o.objData as Map),
+          ),
+        )
         .firstOrNull;
     if (def == null) return;
 
@@ -80,8 +83,9 @@ class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
     if (index == -1) return;
 
     def.modules[index] = RtidParser.build(newAlias, 'LevelModules');
-    final defObj = widget.levelFile.objects
-        .firstWhereOrNull((o) => o.objClass == 'LevelDefinition');
+    final defObj = widget.levelFile.objects.firstWhereOrNull(
+      (o) => o.objClass == 'LevelDefinition',
+    );
     if (defObj != null) {
       defObj.objData = def.toJson();
     }
@@ -92,8 +96,11 @@ class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
   String get _activeAlias {
     final def = widget.levelFile.objects
         .where((o) => o.objClass == 'LevelDefinition')
-        .map((o) => LevelDefinitionData.fromJson(
-            Map<String, dynamic>.from(o.objData as Map)))
+        .map(
+          (o) => LevelDefinitionData.fromJson(
+            Map<String, dynamic>.from(o.objData as Map),
+          ),
+        )
         .firstOrNull;
     if (def == null) return RtidParser.parse(widget.rtid)?.alias ?? 'LawnMower';
 
@@ -123,9 +130,7 @@ class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
         ),
         backgroundColor: accentColor,
         foregroundColor: Colors.white,
-        title: Text(
-          l10n?.lawnMowerTitle ?? 'Lawn mower style',
-        ),
+        title: Text(l10n?.lawnMowerTitle ?? 'Lawn mower style'),
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline),
@@ -138,12 +143,14 @@ class _LawnMowerPropertiesScreenState extends State<LawnMowerPropertiesScreen> {
                 sections: [
                   HelpSectionData(
                     title: l10n?.overview ?? 'Overview',
-                    body: l10n?.lawnMowerHelpOverview ??
+                    body:
+                        l10n?.lawnMowerHelpOverview ??
                         'Controls lawn mower appearance. Lawn mowers are ineffective in Yard module.',
                   ),
                   HelpSectionData(
                     title: l10n?.lawnMowerNotes ?? 'Notes',
-                    body: l10n?.lawnMowerHelpNotes ??
+                    body:
+                        l10n?.lawnMowerHelpNotes ??
                         'Lawn mower module typically references LevelModules directly.',
                   ),
                 ],

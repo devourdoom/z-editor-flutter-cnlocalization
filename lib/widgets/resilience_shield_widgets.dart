@@ -57,6 +57,7 @@ class ResilienceWeakTypeLabelRow extends StatelessWidget {
     required this.weakType,
     required this.label,
     this.iconSize = 20,
+
     /// Use in horizontally scrolling chips where width is unbounded.
     this.compact = false,
     this.valueBold = false,

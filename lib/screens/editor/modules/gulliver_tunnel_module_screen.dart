@@ -29,11 +29,10 @@ class GulliverTunnelModuleScreen extends StatefulWidget {
       _GulliverTunnelModuleScreenState();
 }
 
-class _GulliverTunnelModuleScreenState extends State<GulliverTunnelModuleScreen> {
-  static const _orientationLeft =
-      'GULLIVERTUNNEL_ORIENTATION_BIG_ON_LEFT';
-  static const _orientationRight =
-      'GULLIVERTUNNEL_ORIENTATION_BIG_ON_RIGHT';
+class _GulliverTunnelModuleScreenState
+    extends State<GulliverTunnelModuleScreen> {
+  static const _orientationLeft = 'GULLIVERTUNNEL_ORIENTATION_BIG_ON_LEFT';
+  static const _orientationRight = 'GULLIVERTUNNEL_ORIENTATION_BIG_ON_RIGHT';
 
   static const _orientations = [_orientationLeft, _orientationRight];
   static const _assetWidth = 128.0;
@@ -153,8 +152,7 @@ class _GulliverTunnelModuleScreenState extends State<GulliverTunnelModuleScreen>
 
   String _orientationLabel(AppLocalizations? l10n, String orientation) {
     if (orientation == _orientationLeft) {
-      return l10n?.gulliverTunnelOrientationBigOnLeft ??
-          'Big opening on left';
+      return l10n?.gulliverTunnelOrientationBigOnLeft ?? 'Big opening on left';
     }
     return l10n?.gulliverTunnelOrientationBigOnRight ?? 'Big opening on right';
   }
@@ -200,14 +198,16 @@ class _GulliverTunnelModuleScreenState extends State<GulliverTunnelModuleScreen>
     _sync();
   }
 
-  List<GulliverTunnelPlacementData> get _placementsOutsideLawn =>
-      _data.tunnelPlacements.where(
+  List<GulliverTunnelPlacementData> get _placementsOutsideLawn => _data
+      .tunnelPlacements
+      .where(
         (p) =>
             p.gridX < 0 ||
             p.gridX >= _gridCols ||
             p.gridY < 0 ||
             p.gridY >= _gridRows,
-      ).toList();
+      )
+      .toList();
 
   bool get _isDefaultLawnSize => _gridRows == 5 && _gridCols == 9;
 
@@ -295,12 +295,14 @@ class _GulliverTunnelModuleScreenState extends State<GulliverTunnelModuleScreen>
                 sections: [
                   HelpSectionData(
                     title: l10n?.overview ?? 'Overview',
-                    body: l10n?.gulliverTunnelHelpOverview ??
+                    body:
+                        l10n?.gulliverTunnelHelpOverview ??
                         'Place pre-set Gulliver tunnels on the lawn.',
                   ),
                   HelpSectionData(
                     title: l10n?.gulliverTunnelHelpUsage ?? 'Usage',
-                    body: l10n?.gulliverTunnelHelpUsageBody ??
+                    body:
+                        l10n?.gulliverTunnelHelpUsageBody ??
                         'Select an orientation, then tap the grid to place. Tap again to remove.',
                   ),
                 ],
@@ -449,7 +451,9 @@ class _GulliverTunnelModuleScreenState extends State<GulliverTunnelModuleScreen>
                           child: GestureDetector(
                             onTap: () {
                               HapticFeedback.selectionClick();
-                              setState(() => _selectedOrientation = orientation);
+                              setState(
+                                () => _selectedOrientation = orientation,
+                              );
                             },
                             child: Container(
                               width: _selectionButtonWidth,

@@ -27,18 +27,19 @@ class InitialKongfuGridItemsCard extends StatelessWidget {
       context,
       levelFile: levelFile,
       items: items,
-      title: l10n?.waveGeneratorPreviewInitialArmrack ??
+      title:
+          l10n?.waveGeneratorPreviewInitialArmrack ??
           'Preview initial weapon stands placement',
       onOpenModuleSettings: onOpenModule == null
           ? null
           : () => openModuleWithHint(
-                onOpenModule,
-                levelFile,
-                'ArmrackProperties',
-                hint: const ModuleOpenHint(
-                  gridOverrideModuleWave: gridOverrideInitialWave,
-                ),
+              onOpenModule,
+              levelFile,
+              'ArmrackProperties',
+              hint: const ModuleOpenHint(
+                gridOverrideModuleWave: gridOverrideInitialWave,
               ),
+            ),
     );
   }
 
@@ -50,18 +51,19 @@ class InitialKongfuGridItemsCard extends StatelessWidget {
       context,
       levelFile: levelFile,
       items: items,
-      title: l10n?.waveGeneratorPreviewInitialEnergyGrid ??
+      title:
+          l10n?.waveGeneratorPreviewInitialEnergyGrid ??
           'Preview initial Taiji tiles placement',
       onOpenModuleSettings: onOpenModule == null
           ? null
           : () => openModuleWithHint(
-                onOpenModule,
-                levelFile,
-                'EnergyGridProperties',
-                hint: const ModuleOpenHint(
-                  gridOverrideModuleWave: gridOverrideInitialWave,
-                ),
+              onOpenModule,
+              levelFile,
+              'EnergyGridProperties',
+              hint: const ModuleOpenHint(
+                gridOverrideModuleWave: gridOverrideInitialWave,
               ),
+            ),
     );
   }
 
@@ -73,10 +75,12 @@ class InitialKongfuGridItemsCard extends StatelessWidget {
 
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
-    final showArmrack =
-        hasInitialArmrackItems(readArmrackModuleData(levelFile));
-    final showEnergyGrid =
-        hasInitialEnergyGridItems(readEnergyGridModuleData(levelFile));
+    final showArmrack = hasInitialArmrackItems(
+      readArmrackModuleData(levelFile),
+    );
+    final showEnergyGrid = hasInitialEnergyGridItems(
+      readEnergyGridModuleData(levelFile),
+    );
     final itemBg = theme.colorScheme.surfaceContainerHighest;
     final onCard = theme.colorScheme.onSurface;
 

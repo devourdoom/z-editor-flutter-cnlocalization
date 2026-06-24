@@ -37,8 +37,7 @@ class CustomZombossMechPropertiesScreen extends StatefulWidget {
 
 class _CustomZombossMechPropertiesScreenState
     extends State<CustomZombossMechPropertiesScreen> {
-  static const _kDefaultRetreatRtid =
-      'RTID(ZombossRetreatJump@ZombieActions)';
+  static const _kDefaultRetreatRtid = 'RTID(ZombossRetreatJump@ZombieActions)';
 
   PvzObject? _propsObj;
   late Map<String, dynamic> _propsData;
@@ -123,10 +122,10 @@ class _CustomZombossMechPropertiesScreenState
   dynamic _deepClone(dynamic value) {
     return switch (value) {
       Map() => Map<String, dynamic>.fromEntries(
-          value.entries.map(
-            (e) => MapEntry(e.key.toString(), _deepClone(e.value)),
-          ),
+        value.entries.map(
+          (e) => MapEntry(e.key.toString(), _deepClone(e.value)),
         ),
+      ),
       List() => value.map(_deepClone).toList(),
       _ => value,
     };
@@ -217,12 +216,9 @@ class _CustomZombossMechPropertiesScreenState
     final next = List<Map<String, dynamic>>.from(_stages);
     final last = next.isNotEmpty ? next.last : null;
     next.add({
-      'Actions': <String>[
-        if (last != null) ..._stageActions(last),
-      ],
+      'Actions': <String>[if (last != null) ..._stageActions(last)],
       'HitPoints': _readInt(last?['HitPoints'], 10000),
-      if (_supportsRetreat)
-        'RetreatAction': _retreatRtid(last ?? {}),
+      if (_supportsRetreat) 'RetreatAction': _retreatRtid(last ?? {}),
     });
     _propsData['Stages'] = next;
     _sync();
@@ -268,7 +264,10 @@ class _CustomZombossMechPropertiesScreenState
     if (mounted) _sync();
   }
 
-  Future<void> _confirmRemoveStageAction(int stageIndex, int actionIndex) async {
+  Future<void> _confirmRemoveStageAction(
+    int stageIndex,
+    int actionIndex,
+  ) async {
     final actions = _stageActions(_stages[stageIndex]);
     if (actionIndex < 0 || actionIndex >= actions.length) return;
     final rtid = actions[actionIndex];
@@ -334,7 +333,8 @@ class _CustomZombossMechPropertiesScreenState
             onPressed: widget.onBack,
           ),
           title: Text(
-            l10n?.customZombossMechProperties ?? 'Custom ZombossMech properties',
+            l10n?.customZombossMechProperties ??
+                'Custom ZombossMech properties',
           ),
           actions: [
             IconButton(
@@ -343,17 +343,20 @@ class _CustomZombossMechPropertiesScreenState
               onPressed: () {
                 showEditorHelpDialog(
                   context,
-                  title: l10n?.customZombossMechProperties ??
+                  title:
+                      l10n?.customZombossMechProperties ??
                       'Custom ZombossMech properties',
                   sections: [
                     HelpSectionData(
                       title: l10n?.overview ?? 'Overview',
-                      body: l10n?.customZombossMechEditHint ??
+                      body:
+                          l10n?.customZombossMechEditHint ??
                           'Edit level-local property sheet for the memo (custom) mech variation.',
                     ),
                     HelpSectionData(
                       title: l10n?.customZombossMechStages ?? 'Battle phases',
-                      body: l10n?.zombossMechPhasesHelp ??
+                      body:
+                          l10n?.zombossMechPhasesHelp ??
                           'Each phase has hit points, an ordered action list, and optionally a retreat action.',
                     ),
                   ],
@@ -465,15 +468,14 @@ class _CustomZombossMechPropertiesScreenState
                 onAddAction: () => _pickAction(stageIndex: i, retreat: false),
                 onPickRetreat: () => _pickAction(stageIndex: i, retreat: true),
                 onEditCustomAction: _editCustomAction,
-                phaseLabel: l10n?.zombossMechPhaseNumber(i + 1) ??
-                    'Phase ${i + 1}',
+                phaseLabel:
+                    l10n?.zombossMechPhaseNumber(i + 1) ?? 'Phase ${i + 1}',
                 hitPointsLabel: l10n?.zombossMechHitPoints ?? 'Hit points',
                 actionsLabel: l10n?.zombossMechActions ?? 'Actions',
                 retreatLabel:
                     l10n?.zombossMechRetreatAction ?? 'Retreat action',
                 deleteTooltip: l10n?.zombossMechDeletePhase ?? 'Delete phase',
-                addActionTooltip:
-                    l10n?.zombossMechAddAction ?? 'Add action',
+                addActionTooltip: l10n?.zombossMechAddAction ?? 'Add action',
               ),
           ],
         ),
@@ -614,8 +616,10 @@ class _StageCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.fromLTRB(12, 10, 4, 10),
               decoration: BoxDecoration(
-                color: zombossMechActionTagColor('spawn', context)
-                    .withValues(alpha: 0.08),
+                color: zombossMechActionTagColor(
+                  'spawn',
+                  context,
+                ).withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Column(
@@ -635,7 +639,10 @@ class _StageCard extends StatelessWidget {
                         tooltip: addActionTooltip,
                         onPressed: onAddAction,
                         visualDensity: VisualDensity.compact,
-                        icon: Icon(Icons.add_circle_outline, color: accentColor),
+                        icon: Icon(
+                          Icons.add_circle_outline,
+                          color: accentColor,
+                        ),
                       ),
                     ],
                   ),
@@ -670,8 +677,9 @@ class _StageCard extends StatelessWidget {
                       },
                       itemBuilder: (context, actionIndex) {
                         final rtid = selectedActions[actionIndex];
-                        final isCustom =
-                            ZombossMechActionUtils.isCustomRtid(rtid);
+                        final isCustom = ZombossMechActionUtils.isCustomRtid(
+                          rtid,
+                        );
                         final resolved = ZombossMechActionUtils.resolveAction(
                           rtid: rtid,
                           catalog: catalog,
@@ -702,8 +710,10 @@ class _StageCard extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
                 decoration: BoxDecoration(
-                  color: zombossMechActionTagColor('retreat', context)
-                      .withValues(alpha: 0.08),
+                  color: zombossMechActionTagColor(
+                    'retreat',
+                    context,
+                  ).withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(10),
                 ),
                 child: Column(
@@ -721,7 +731,8 @@ class _StageCard extends StatelessWidget {
                       catalog: catalog,
                       levelFile: levelFile,
                       rtid: retreatRtid,
-                      tag: ZombossMechActionUtils.resolveAction(
+                      tag:
+                          ZombossMechActionUtils.resolveAction(
                             rtid: retreatRtid,
                             catalog: catalog,
                             levelFile: levelFile,
@@ -775,10 +786,11 @@ class _HitPointsFieldState extends State<_HitPointsField> {
   void initState() {
     super.initState();
     _controller = TextEditingController(text: '${widget.value}');
-    _focusNode = FocusNode()..addListener(() {
-      final f = _focusNode.hasFocus;
-      if (_focused != f) setState(() => _focused = f);
-    });
+    _focusNode = FocusNode()
+      ..addListener(() {
+        final f = _focusNode.hasFocus;
+        if (_focused != f) setState(() => _focused = f);
+      });
   }
 
   @override
@@ -801,10 +813,7 @@ class _HitPointsFieldState extends State<_HitPointsField> {
     return TextFormField(
       controller: _controller,
       focusNode: _focusNode,
-      decoration: editorInputDecoration(
-        context,
-        labelText: widget.label,
-      ),
+      decoration: editorInputDecoration(context, labelText: widget.label),
       keyboardType: TextInputType.number,
       onChanged: (v) {
         final parsed = int.tryParse(v);

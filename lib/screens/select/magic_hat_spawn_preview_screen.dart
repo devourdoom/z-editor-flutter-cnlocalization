@@ -96,7 +96,8 @@ class MagicHatSpawnPreviewScreen extends StatefulWidget {
       _MagicHatSpawnPreviewScreenState();
 }
 
-class _MagicHatSpawnPreviewScreenState extends State<MagicHatSpawnPreviewScreen> {
+class _MagicHatSpawnPreviewScreenState
+    extends State<MagicHatSpawnPreviewScreen> {
   bool _loaded = false;
 
   @override
@@ -160,7 +161,8 @@ class _MagicHatSpawnPreviewScreenState extends State<MagicHatSpawnPreviewScreen>
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Text(
-                  l10n?.magicHatSpawnPreviewEmpty ?? 'No plants match this list.',
+                  l10n?.magicHatSpawnPreviewEmpty ??
+                      'No plants match this list.',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: theme.colorScheme.onSurfaceVariant,

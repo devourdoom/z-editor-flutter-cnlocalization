@@ -32,4 +32,3 @@ class BarrelEntryData extends PvzModel {
     return m;
   }
 }
-

@@ -35,6 +35,9 @@ class LevelRepository {
   static Future<List<FileItem>> getDirectoryContents(String dirPath) =>
       _impl.getDirectoryContents(dirPath);
 
+  static Future<void> setFavoriteLevelPath(String path, bool isFavorite) =>
+      _impl.setFavoriteLevelPath(path, isFavorite);
+
   static Future<bool> createDirectory(String parentPath, String name) =>
       _impl.createDirectory(parentPath, name);
 

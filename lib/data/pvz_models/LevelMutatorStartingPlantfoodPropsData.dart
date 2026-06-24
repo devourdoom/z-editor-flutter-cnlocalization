@@ -37,5 +37,3 @@ class LevelMutatorStartingPlantfoodPropsData extends PvzModel {
     'IconText': iconText,
   };
 }
-
-

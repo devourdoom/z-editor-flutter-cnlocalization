@@ -20,4 +20,3 @@ class BarrelWaveEventData extends PvzModel {
     'Barrels': barrels.map((e) => e.toJson()).toList(),
   };
 }
-

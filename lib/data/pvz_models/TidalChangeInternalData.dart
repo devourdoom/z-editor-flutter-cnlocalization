@@ -21,4 +21,3 @@ class TidalChangeInternalData extends PvzModel {
     'ChangeType': changeType,
   };
 }
-

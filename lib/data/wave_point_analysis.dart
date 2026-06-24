@@ -1,7 +1,7 @@
 import 'pvz_models.dart';
 import 'rtid_parser.dart';
 import 'repository/zombie_properties_repository.dart';
- 
+
 class WavePointAnalysis {
   static Map<String, double> calculate(
     List<InputEntry> entries,
@@ -12,11 +12,14 @@ class WavePointAnalysis {
     }
     final valid = entries.where((e) => e.weight > 0 && e.cost >= 0).toList();
     if (valid.isEmpty) return {};
- 
+
     final safePoints = totalPoints.clamp(0, 20000);
     final n = valid.length;
-    final exp = List.generate(n, (_) => List<double>.filled(safePoints + 1, 0.0));
- 
+    final exp = List.generate(
+      n,
+      (_) => List<double>.filled(safePoints + 1, 0.0),
+    );
+
     for (var p = 1; p <= safePoints; p++) {
       var weightSum = 0.0;
       final affordable = List<bool>.filled(n, false);
@@ -45,7 +48,7 @@ class WavePointAnalysis {
         exp[j][p] = sum;
       }
     }
- 
+
     final result = <String, double>{};
     for (var i = 0; i < n; i++) {
       result[valid[i].id] = exp[i][safePoints];
@@ -55,20 +58,29 @@ class WavePointAnalysis {
     }
     return result;
   }
- 
-  static Map<String, double> calculateExpectation(int points, ParsedLevelData parsed) {
+
+  static Map<String, double> calculateExpectation(
+    int points,
+    ParsedLevelData parsed,
+  ) {
     if (points <= 0) return {};
-    final waveModule = parsed.waveModule is WaveManagerModuleData ? parsed.waveModule as WaveManagerModuleData : null;
+    final waveModule = parsed.waveModule is WaveManagerModuleData
+        ? parsed.waveModule as WaveManagerModuleData
+        : null;
     if (waveModule == null || waveModule.dynamicZombies.isEmpty) return {};
     final dynamicGroup = waveModule.dynamicZombies[0];
     final pool = dynamicGroup.zombiePool;
     if (pool.isEmpty) return {};
- 
+
     final inputs = pool.map((rtid) {
       final alias = RtidParser.parse(rtid)?.alias ?? rtid;
       final typeName = ZombiePropertiesRepository.getTypeNameByAlias(alias);
       final stats = ZombiePropertiesRepository.getStats(typeName);
-      return InputEntry(id: typeName, cost: stats.cost, weight: stats.weight.toDouble());
+      return InputEntry(
+        id: typeName,
+        cost: stats.cost,
+        weight: stats.weight.toDouble(),
+      );
     }).toList();
 
     return calculate(inputs, points);

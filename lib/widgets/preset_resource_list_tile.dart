@@ -61,11 +61,15 @@ class PresetResourceListRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
-    final handleColor = theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.85);
+    final handleColor = theme.colorScheme.onSurfaceVariant.withValues(
+      alpha: 0.85,
+    );
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.55,
+        ),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(
           color: theme.colorScheme.outlineVariant.withValues(alpha: 0.45),
@@ -82,7 +86,10 @@ class PresetResourceListRow extends StatelessWidget {
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 8,
+                  vertical: 12,
+                ),
                 child: Text(
                   label,
                   style: theme.textTheme.titleSmall?.copyWith(
@@ -141,11 +148,7 @@ class PresetResourceListRow extends StatelessWidget {
       child: Center(
         child: ReorderableDragStartListener(
           index: reorderIndex!,
-          child: Icon(
-            Icons.drag_indicator,
-            color: handleColor,
-            size: 28,
-          ),
+          child: Icon(Icons.drag_indicator, color: handleColor, size: 28),
         ),
       ),
     );

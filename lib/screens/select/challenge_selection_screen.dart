@@ -44,7 +44,8 @@ class _ChallengeSelectionScreenState extends State<ChallengeSelectionScreen> {
         ),
         title: SelectionSearchField(
           hintText:
-              l10n?.searchChallengeNameOrCode ?? 'Search challenge name or code',
+              l10n?.searchChallengeNameOrCode ??
+              'Search challenge name or code',
           query: _searchQuery,
           fillColor: theme.colorScheme.surface,
           onChanged: (v) => setState(() => _searchQuery = v),
@@ -71,7 +72,9 @@ class _ChallengeSelectionScreenState extends State<ChallengeSelectionScreen> {
                       decoration: BoxDecoration(
                         color: themeColor.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: themeColor.withValues(alpha: 0.5)),
+                        border: Border.all(
+                          color: themeColor.withValues(alpha: 0.5),
+                        ),
                       ),
                       child: Icon(challenge.icon, size: 32, color: themeColor),
                     ),
@@ -82,19 +85,25 @@ class _ChallengeSelectionScreenState extends State<ChallengeSelectionScreen> {
                         children: [
                           Text(
                             challenge.localizedTitle(context),
-                            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+                            style: theme.textTheme.titleMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             challenge.localizedDescription(context),
-                            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
                           const SizedBox(height: 4),
                           Text(
                             challenge.objClass,
-                            style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                            ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -111,4 +120,3 @@ class _ChallengeSelectionScreenState extends State<ChallengeSelectionScreen> {
     );
   }
 }
-

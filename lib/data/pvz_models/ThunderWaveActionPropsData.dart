@@ -23,4 +23,3 @@ class ThunderWaveActionPropsData extends PvzModel {
     'KillRate': killRate,
   };
 }
-

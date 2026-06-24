@@ -24,4 +24,3 @@ class SeedRainPropertiesData extends PvzModel {
     'SeedRains': seedRains.map((e) => e.toJson()).toList(),
   };
 }
-

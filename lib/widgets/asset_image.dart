@@ -37,6 +37,7 @@ class AssetImageWidget extends StatefulWidget {
   final double? height;
   final BoxFit fit;
   final Widget? errorWidget;
+
   /// Alternative asset paths to try if [assetPath] is not found.
   /// Useful for multi-extension fallback (e.g., .gif, .png, .jpg).
   final List<String>? altCandidates;
@@ -95,7 +96,7 @@ class _AssetImageWidgetState extends State<AssetImageWidget> {
       try {
         await rootBundle.load(path);
         if (!mounted || currentId != _requestId) return;
-        
+
         _pathCache[cacheKey] = path;
         setState(() {
           _resolvedPath = path;
@@ -106,9 +107,9 @@ class _AssetImageWidgetState extends State<AssetImageWidget> {
         // try next
       }
     }
-    
+
     if (!mounted || currentId != _requestId) return;
-    
+
     _pathCache[cacheKey] = null;
     setState(() {
       _resolving = false;
@@ -120,7 +121,8 @@ class _AssetImageWidgetState extends State<AssetImageWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final placeholder = widget.errorWidget ??
+    final placeholder =
+        widget.errorWidget ??
         Image.asset(
           _unknownIconPath,
           width: widget.width,

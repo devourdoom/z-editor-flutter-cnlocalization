@@ -75,12 +75,7 @@ class _MechanismPlankPropertiesScreenState
 
   Map<String, dynamic> _defaultData() {
     return {
-      'MechanismGearsRect': {
-        'mHeight': 5,
-        'mWidth': 4,
-        'mX': 0,
-        'mY': 0,
-      },
+      'MechanismGearsRect': {'mHeight': 5, 'mWidth': 4, 'mX': 0, 'mY': 0},
       'MechanismPlankRows': ['0', '4'],
     };
   }
@@ -110,8 +105,9 @@ class _MechanismPlankPropertiesScreenState
       _data = _defaultData();
     }
 
-    _data['MechanismGearsRect'] =
-        Map<String, dynamic>.from(_data['MechanismGearsRect'] as Map? ?? {});
+    _data['MechanismGearsRect'] = Map<String, dynamic>.from(
+      _data['MechanismGearsRect'] as Map? ?? {},
+    );
     _data['MechanismPlankRows'] =
         ((_data['MechanismPlankRows'] as List?) ?? ['0', '4'])
             .map((e) => e.toString())
@@ -139,10 +135,7 @@ class _MechanismPlankPropertiesScreenState
     _moduleObj.objData = _data;
   }
 
-  void _setValues({
-    required int mX,
-    required int mWidth,
-  }) {
+  void _setValues({required int mX, required int mWidth}) {
     final newMX = mX.clamp(0, _maxMX).toInt();
     final newWidth = mWidth
         .clamp(1, (_gridCols - newMX).clamp(1, _gridCols))
@@ -164,23 +157,15 @@ class _MechanismPlankPropertiesScreenState
   }
 
   void _setMX(int value) {
-    _setValues(
-      mX: value,
-      mWidth: _mWidth,
-    );
+    _setValues(mX: value, mWidth: _mWidth);
   }
 
   void _setMWidth(int value) {
-    _setValues(
-      mX: _mX,
-      mWidth: value,
-    );
+    _setValues(mX: _mX, mWidth: value);
   }
 
-  Set<int> get _cartLocalRows => _plankRows
-      .map((e) => int.tryParse(e))
-      .whereType<int>()
-      .toSet();
+  Set<int> get _cartLocalRows =>
+      _plankRows.map((e) => int.tryParse(e)).whereType<int>().toSet();
 
   bool _isInsideMechanismRect(int col, int row) {
     final localCol = col - _mX;
@@ -242,7 +227,9 @@ class _MechanismPlankPropertiesScreenState
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final isDark = theme.brightness == Brightness.dark;
-    final gridColor = isDark ? const Color(0xFF503C34) : const Color(0xFFD7CCC8);
+    final gridColor = isDark
+        ? const Color(0xFF503C34)
+        : const Color(0xFFD7CCC8);
     final borderColor = isDark ? Colors.grey.shade700 : Colors.grey.shade400;
 
     return Scaffold(
@@ -263,7 +250,8 @@ class _MechanismPlankPropertiesScreenState
           children: [
             if (_hasOutOfAreaWarning())
               _MechanismPlankWarningBanner(
-                message: l10n?.mechanismPlankOutOfAreaWarning ??
+                message:
+                    l10n?.mechanismPlankOutOfAreaWarning ??
                     'The current rail range may extend outside the playable area.',
               ),
             if (_hasOutOfAreaWarning()) const SizedBox(height: 16),
@@ -293,7 +281,8 @@ class _MechanismPlankPropertiesScreenState
             ),
             const SizedBox(height: 16),
             _MechanismPlankInfoBanner(
-              message: l10n?.mechanismPlankEditNotice ??
+              message:
+                  l10n?.mechanismPlankEditNotice ??
                   'Only mX and mWidth are editable. Other parameters are preserved because changing them may cause in-game layout bugs.',
             ),
             const SizedBox(height: 16),
@@ -352,7 +341,8 @@ class _MechanismPlankPropertiesScreenState
                                           child: Transform.scale(
                                             scale: 0.9,
                                             child: AssetImageWidget(
-                                              assetPath: _cartAssetPathForColumn(c),
+                                              assetPath:
+                                                  _cartAssetPathForColumn(c),
                                               altCandidates: imageAltCandidates(
                                                 _cartAssetPathForColumn(c),
                                               ),
@@ -404,10 +394,7 @@ class _StepperField extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-          child: Text(
-            '$label: $value',
-            style: theme.textTheme.bodyLarge,
-          ),
+          child: Text('$label: $value', style: theme.textTheme.bodyLarge),
         ),
         IconButton(
           onPressed: canDecrease ? () => onChanged(value - 1) : null,
@@ -421,7 +408,6 @@ class _StepperField extends StatelessWidget {
     );
   }
 }
-
 
 class _MechanismPlankInfoBanner extends StatelessWidget {
   const _MechanismPlankInfoBanner({required this.message});

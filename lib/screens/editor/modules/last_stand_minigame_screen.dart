@@ -19,7 +19,8 @@ class LastStandMinigameScreen extends StatefulWidget {
   final VoidCallback onBack;
 
   @override
-  State<LastStandMinigameScreen> createState() => _LastStandMinigameScreenState();
+  State<LastStandMinigameScreen> createState() =>
+      _LastStandMinigameScreenState();
 }
 
 class _LastStandMinigameScreenState extends State<LastStandMinigameScreen> {
@@ -53,8 +54,9 @@ class _LastStandMinigameScreenState extends State<LastStandMinigameScreen> {
       _data = LastStandMinigamePropertiesData();
     }
     _sunController = TextEditingController(text: '${_data.startingSun}');
-    _plantfoodController =
-        TextEditingController(text: '${_data.startingPlantfood}');
+    _plantfoodController = TextEditingController(
+      text: '${_data.startingPlantfood}',
+    );
   }
 
   void _save() {
@@ -75,7 +77,10 @@ class _LastStandMinigameScreenState extends State<LastStandMinigameScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.lastStandSettings ?? 'Last stand settings'),
+        title: Text(
+          AppLocalizations.of(context)?.lastStandSettings ??
+              'Last stand settings',
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: widget.onBack,

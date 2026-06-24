@@ -31,8 +31,9 @@ class SettingsCubit extends Cubit<SettingsState> {
     } else {
       final brightness =
           WidgetsBinding.instance.platformDispatcher.platformBrightness;
-      themeMode =
-          brightness == Brightness.dark ? ThemeMode.dark : ThemeMode.light;
+      themeMode = brightness == Brightness.dark
+          ? ThemeMode.dark
+          : ThemeMode.light;
       prefs.setString(
         'theme_mode',
         themeMode == ThemeMode.dark ? 'dark' : 'light',
@@ -56,10 +57,7 @@ class SettingsCubit extends Cubit<SettingsState> {
         ? ThemeMode.light
         : ThemeMode.dark;
     emit(state.copyWith(themeMode: next));
-    _prefs.setString(
-      'theme_mode',
-      next == ThemeMode.dark ? 'dark' : 'light',
-    );
+    _prefs.setString('theme_mode', next == ThemeMode.dark ? 'dark' : 'light');
   }
 
   void setUiScale(double scale) {

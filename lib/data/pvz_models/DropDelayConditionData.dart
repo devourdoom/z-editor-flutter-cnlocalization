@@ -18,4 +18,3 @@ class DropDelayConditionData extends PvzModel {
     'MaxPackets': maxPacketsDelay,
   };
 }
-

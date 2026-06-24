@@ -10,7 +10,11 @@ abstract class ChallengeResourceL10n {
     return localized != key ? localized : fallback;
   }
 
-  static String title(BuildContext context, String objClass, {String? fallback}) =>
+  static String title(
+    BuildContext context,
+    String objClass, {
+    String? fallback,
+  }) =>
       _lookup(context, 'starChallenge_${objClass}_title', fallback ?? objClass);
 
   static String description(BuildContext context, String objClass) =>
@@ -39,7 +43,11 @@ abstract class ChallengeResourceL10n {
     return listType(context, value);
   }
 
-  static String field(BuildContext context, String fieldName, [String? fallback]) {
+  static String field(
+    BuildContext context,
+    String fieldName, [
+    String? fallback,
+  ]) {
     final key = 'starChallengeField_$fieldName';
     final localized = ResourceNames.lookup(context, key);
     return localized != key ? localized : (fallback ?? fieldName);

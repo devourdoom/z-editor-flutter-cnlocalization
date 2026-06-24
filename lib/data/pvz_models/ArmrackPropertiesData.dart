@@ -14,9 +14,8 @@ class ArmrackPropertiesData extends PvzModel {
       overrides:
           list
               ?.map(
-                (e) => ArmrackOverrideWaveData.fromJson(
-                  e as Map<String, dynamic>,
-                ),
+                (e) =>
+                    ArmrackOverrideWaveData.fromJson(e as Map<String, dynamic>),
               )
               .toList() ??
           [],

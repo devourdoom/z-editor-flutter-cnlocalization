@@ -42,4 +42,3 @@ class DropShipAppearWaveData extends PvzModel {
     'ColRange': colRange.toJson(),
   };
 }
-

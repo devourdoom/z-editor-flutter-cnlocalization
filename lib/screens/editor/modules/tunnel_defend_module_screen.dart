@@ -5,7 +5,8 @@ import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/theme/app_theme.dart' show pvzBrownDark, pvzBrownLight;
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Tunnel defend (mausoleum) module. Ported from TunnelDefendModuleEP.kt
@@ -103,8 +104,10 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
     }
     _gridState = List.generate(_gridCols, (_) => List.filled(_gridRows, null));
     for (final road in _data.roads) {
-      if (road.gridX >= 0 && road.gridX < _gridCols &&
-          road.gridY >= 0 && road.gridY < _gridRows) {
+      if (road.gridX >= 0 &&
+          road.gridX < _gridCols &&
+          road.gridY >= 0 &&
+          road.gridY < _gridRows) {
         _gridState[road.gridX][road.gridY] = road.img;
       }
     }
@@ -131,8 +134,10 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
       }
     }
     for (final road in _data.roads) {
-      if (road.gridX < 0 || road.gridX >= _gridCols ||
-          road.gridY < 0 || road.gridY >= _gridRows) {
+      if (road.gridX < 0 ||
+          road.gridX >= _gridCols ||
+          road.gridY < 0 ||
+          road.gridY >= _gridRows) {
         roads.add(road);
       }
     }
@@ -197,9 +202,15 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
     _sync();
   }
 
-  List<TunnelRoadData> get _roadsOutsideLawn => _data.roads.where((r) =>
-      r.gridX < 0 || r.gridX >= _gridCols ||
-      r.gridY < 0 || r.gridY >= _gridRows).toList();
+  List<TunnelRoadData> get _roadsOutsideLawn => _data.roads
+      .where(
+        (r) =>
+            r.gridX < 0 ||
+            r.gridX >= _gridCols ||
+            r.gridY < 0 ||
+            r.gridY >= _gridRows,
+      )
+      .toList();
 
   bool get _isDefaultLawnSize => _gridRows == 5 && _gridCols == 9;
 
@@ -232,7 +243,10 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
               backgroundColor: Colors.amber.shade700,
               foregroundColor: Colors.black87,
             ),
-            child: Text(l10n?.tunnelDefendDeleteOutside ?? 'Delete path elements outside lawn'),
+            child: Text(
+              l10n?.tunnelDefendDeleteOutside ??
+                  'Delete path elements outside lawn',
+            ),
           ),
         ],
       ),
@@ -241,9 +255,15 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
   }
 
   void _deleteRoadsOutsideLawn() {
-    final inside = _data.roads.where((r) =>
-        r.gridX >= 0 && r.gridX < _gridCols &&
-        r.gridY >= 0 && r.gridY < _gridRows).toList();
+    final inside = _data.roads
+        .where(
+          (r) =>
+              r.gridX >= 0 &&
+              r.gridX < _gridCols &&
+              r.gridY >= 0 &&
+              r.gridY < _gridRows,
+        )
+        .toList();
     _data = TunnelDefendModuleData(
       roads: inside,
       brickMapIndex: _data.brickMapIndex,
@@ -272,9 +292,7 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
         ),
         backgroundColor: accentColor,
         foregroundColor: Colors.white,
-        title: Text(
-          l10n?.tunnelDefendTitle ?? 'Tunnel defend',
-        ),
+        title: Text(l10n?.tunnelDefendTitle ?? 'Tunnel defend'),
         actions: [
           IconButton(
             icon: Icon(Icons.help_outline, color: gridBg),
@@ -286,20 +304,23 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
                 themeColor: accentColor,
                 sections: [
                   HelpSectionData(
-                    
                     title: l10n?.overview ?? 'Overview',
-                    body: l10n?.tunnelDefendHelpOverview ??
+                    body:
+                        l10n?.tunnelDefendHelpOverview ??
                         'Add mausoleum tunnel paths. Some zombies and plants interact with tunnels.',
                   ),
                   HelpSectionData(
                     title: l10n?.tunnelDefendHelpUsage ?? 'Usage',
-                    body: l10n?.tunnelDefendHelpUsageBody ??
+                    body:
+                        l10n?.tunnelDefendHelpUsageBody ??
                         'Select a tunnel piece below, then tap the grid to place. Tap the same piece again to remove. Tap a different piece to replace.',
                   ),
                   HelpSectionData(
-                    title: l10n?.tunnelDefendHelpSequenceInterval ??
+                    title:
+                        l10n?.tunnelDefendHelpSequenceInterval ??
                         'Sequence interval',
-                    body: l10n?.tunnelDefendHelpSequenceIntervalBody ??
+                    body:
+                        l10n?.tunnelDefendHelpSequenceIntervalBody ??
                         'Delay between tunnel sequence steps. Lower values make pathways appear faster.',
                   ),
                 ],
@@ -326,15 +347,11 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
                   items: [
                     DropdownMenuItem(
                       value: 1,
-                      child: Text(
-                        l10n?.tunnelDefendTileStylePart1 ?? 'part 1',
-                      ),
+                      child: Text(l10n?.tunnelDefendTileStylePart1 ?? 'part 1'),
                     ),
                     DropdownMenuItem(
                       value: 2,
-                      child: Text(
-                        l10n?.tunnelDefendTileStylePart2 ?? 'part 2',
-                      ),
+                      child: Text(l10n?.tunnelDefendTileStylePart2 ?? 'part 2'),
                     ),
                   ],
                   onChanged: (v) {
@@ -351,9 +368,12 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
             const SizedBox(height: 12),
             TextField(
               controller: _sequenceIntervalCtrl,
-              keyboardType: const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: const TextInputType.numberWithOptions(
+                decimal: true,
+              ),
               decoration: InputDecoration(
-                labelText: l10n?.tunnelDefendSequenceInterval ??
+                labelText:
+                    l10n?.tunnelDefendSequenceInterval ??
                     'Tunnel sequence interval (TunnelSequenceInterval, seconds)',
                 filled: true,
                 border: const OutlineInputBorder(),
@@ -394,7 +414,9 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
                                     child: Container(
                                       decoration: BoxDecoration(
                                         border: Border.all(
-                                          color: gridBorder.withValues(alpha: 0.5),
+                                          color: gridBorder.withValues(
+                                            alpha: 0.5,
+                                          ),
                                           width: 0.5,
                                         ),
                                       ),
@@ -403,9 +425,9 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
                                           ? AssetImageWidget(
                                               assetPath:
                                                   'assets/images/tunnels/$imgName.webp',
-                                              altCandidates:
-                                                  imageAltCandidates(
-                                                      'assets/images/tunnels/$imgName.webp'),
+                                              altCandidates: imageAltCandidates(
+                                                'assets/images/tunnels/$imgName.webp',
+                                              ),
                                               fit: BoxFit.contain,
                                             )
                                           : null,
@@ -443,9 +465,7 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
                         foregroundColor: theme.colorScheme.onError,
                       ),
                       icon: const Icon(Icons.delete_outline, size: 18),
-                      label: Text(
-                        l10n?.tunnelDefendClearAll ?? 'Clear all',
-                      ),
+                      label: Text(l10n?.tunnelDefendClearAll ?? 'Clear all'),
                     ),
                   ],
                 ),
@@ -472,12 +492,17 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
                                 ),
                                 children: [
                                   TextSpan(
-                                    text: l10n?.tunnelDefendPathOutsideLawn ??
+                                    text:
+                                        l10n?.tunnelDefendPathOutsideLawn ??
                                         'Path elements outside of the lawn: ',
                                   ),
                                   TextSpan(
-                                    text: _roadsOutsideLawn.map((r) =>
-                                        '${_roadDisplayName(r.img)} (R${r.gridY + 1}:C${r.gridX + 1})').join(', '),
+                                    text: _roadsOutsideLawn
+                                        .map(
+                                          (r) =>
+                                              '${_roadDisplayName(r.img)} (R${r.gridY + 1}:C${r.gridX + 1})',
+                                        )
+                                        .join(', '),
                                   ),
                                 ],
                               ),
@@ -512,8 +537,7 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n?.tunnelDefendSelectComponent ??
-                          'Select component',
+                      l10n?.tunnelDefendSelectComponent ?? 'Select component',
                       style: theme.textTheme.titleMedium?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: accentColor,
@@ -524,84 +548,97 @@ class _TunnelDefendModuleScreenState extends State<TunnelDefendModuleScreen> {
                       builder: (context, constraints) {
                         final cellWidth = 88.0;
                         const spacing = 12.0;
-                        final cols = (constraints.maxWidth / (cellWidth + spacing))
-                            .floor()
-                            .clamp(1, 999);
+                        final cols =
+                            (constraints.maxWidth / (cellWidth + spacing))
+                                .floor()
+                                .clamp(1, 999);
                         final rows = (_availableAssets.length / cols).ceil();
                         final heightNeeded = rows * _assetHeight;
-                        final height = (heightNeeded < 420 ? heightNeeded : 420.0).toDouble();
+                        final height =
+                            (heightNeeded < 420 ? heightNeeded : 420.0)
+                                .toDouble();
                         return SizedBox(
                           height: height,
                           child: GridView.builder(
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                          maxCrossAxisExtent: 88,
-                          childAspectRatio: 0.75,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemCount: _availableAssets.length,
-                        itemBuilder: (context, i) {
-                          final asset = _availableAssets[i];
-                          final isSelected = _selectedImg == asset;
-                          return GestureDetector(
-                            onTap: () {
-                              HapticFeedback.selectionClick();
-                              setState(() => _selectedImg = asset);
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: isSelected
-                                    ? accentColor.withValues(alpha: 0.15)
-                                    : Colors.transparent,
-                                borderRadius: BorderRadius.circular(8),
-                                border: Border.all(
-                                  color: isSelected ? accentColor : Colors.transparent,
-                                  width: 2,
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 88,
+                                  childAspectRatio: 0.75,
+                                  crossAxisSpacing: 12,
+                                  mainAxisSpacing: 12,
                                 ),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: 12, horizontal: 4),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Expanded(
-                                    flex: 3,
-                                    child: AssetImageWidget(
-                                      assetPath:
-                                          'assets/images/tunnels/$asset.webp',
-                                      altCandidates: imageAltCandidates(
-                                          'assets/images/tunnels/$asset.webp'),
-                                      fit: BoxFit.contain,
+                            itemCount: _availableAssets.length,
+                            itemBuilder: (context, i) {
+                              final asset = _availableAssets[i];
+                              final isSelected = _selectedImg == asset;
+                              return GestureDetector(
+                                onTap: () {
+                                  HapticFeedback.selectionClick();
+                                  setState(() => _selectedImg = asset);
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? accentColor.withValues(alpha: 0.15)
+                                        : Colors.transparent,
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? accentColor
+                                          : Colors.transparent,
+                                      width: 2,
                                     ),
                                   ),
-                                  const SizedBox(height: 4),
-                                  Flexible(
-                                    flex: 1,
-                                    child: FittedBox(
-                                      fit: BoxFit.scaleDown,
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        asset.replaceAll(
-                                            'IMAGE_UI_MAUSOLEUM_TUNNEL_', ''),
-                                        style: theme.textTheme.labelMedium?.copyWith(
-                                          color: isSelected
-                                              ? accentColor
-                                              : theme.colorScheme.onSurface,
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 12,
+                                    horizontal: 4,
+                                  ),
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Expanded(
+                                        flex: 3,
+                                        child: AssetImageWidget(
+                                          assetPath:
+                                              'assets/images/tunnels/$asset.webp',
+                                          altCandidates: imageAltCandidates(
+                                            'assets/images/tunnels/$asset.webp',
+                                          ),
+                                          fit: BoxFit.contain,
                                         ),
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        textAlign: TextAlign.center,
                                       ),
-                                    ),
+                                      const SizedBox(height: 4),
+                                      Flexible(
+                                        flex: 1,
+                                        child: FittedBox(
+                                          fit: BoxFit.scaleDown,
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            asset.replaceAll(
+                                              'IMAGE_UI_MAUSOLEUM_TUNNEL_',
+                                              '',
+                                            ),
+                                            style: theme.textTheme.labelMedium
+                                                ?.copyWith(
+                                                  color: isSelected
+                                                      ? accentColor
+                                                      : theme
+                                                            .colorScheme
+                                                            .onSurface,
+                                                ),
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
+                                ),
+                              );
+                            },
+                          ),
+                        );
                       },
                     ),
                   ],

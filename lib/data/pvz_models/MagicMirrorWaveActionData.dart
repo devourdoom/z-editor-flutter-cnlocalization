@@ -23,4 +23,3 @@ class MagicMirrorWaveActionData extends PvzModel {
     'MagicMirrorTeleportationArrays': arrays.map((e) => e.toJson()).toList(),
   };
 }
-

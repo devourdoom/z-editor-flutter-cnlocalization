@@ -14,7 +14,9 @@ class ResourceNames {
     if (_loaded) return;
     for (final locale in ['en', 'zh', 'ru']) {
       try {
-        final jsonStr = await rootBundle.loadString('assets/l10n/resource_$locale.json');
+        final jsonStr = await rootBundle.loadString(
+          'assets/l10n/resource_$locale.json',
+        );
         _cache[locale] = Map<String, String>.from(
           jsonDecode(jsonStr) as Map<dynamic, dynamic>,
         );

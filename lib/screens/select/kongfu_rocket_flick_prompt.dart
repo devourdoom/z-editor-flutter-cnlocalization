@@ -33,9 +33,7 @@ Future<void> maybeShowKongfuRocketFlickPrompt(
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(dialogCtx, false),
-          style: TextButton.styleFrom(
-            foregroundColor: const Color(0xFF4CAF50),
-          ),
+          style: TextButton.styleFrom(foregroundColor: const Color(0xFF4CAF50)),
           child: Text(l10n?.cancel ?? 'Cancel'),
         ),
         FilledButton(

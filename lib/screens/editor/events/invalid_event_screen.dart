@@ -43,11 +43,15 @@ class InvalidEventScreen extends StatelessWidget {
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.eventHelpInvalidBody ?? 'This event is referenced in the wave container but the parser cannot find its entity definition. The RTID points to nothing.',
+                  body:
+                      l10n?.eventHelpInvalidBody ??
+                      'This event is referenced in the wave container but the parser cannot find its entity definition. The RTID points to nothing.',
                 ),
                 HelpSectionData(
                   title: l10n?.impact ?? 'Impact',
-                  body: l10n?.eventHelpInvalidImpact ?? 'Keeping this invalid reference in the level will cause the game to crash when loading. You must remove it manually.',
+                  body:
+                      l10n?.eventHelpInvalidImpact ??
+                      'Keeping this invalid reference in the level will cause the game to crash when loading. You must remove it manually.',
                 ),
               ],
             ),
@@ -60,11 +64,7 @@ class InvalidEventScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                editorErrorIcon,
-                size: 80,
-                color: theme.colorScheme.error,
-              ),
+              Icon(editorErrorIcon, size: 80, color: theme.colorScheme.error),
               const SizedBox(height: 16),
               Text(
                 l10n?.aliasNotFound(alias) ?? 'Alias "$alias" not found',
@@ -75,7 +75,8 @@ class InvalidEventScreen extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                l10n?.invalidRefBody(waveIndex) ?? 'Wave $waveIndex references this event, but no matching entity exists in the level. This usually happens when an object was deleted or renamed. Keeping it will cause a crash.',
+                l10n?.invalidRefBody(waveIndex) ??
+                    'Wave $waveIndex references this event, but no matching entity exists in the level. This usually happens when an object was deleted or renamed. Keeping it will cause a crash.',
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
                 ),
@@ -90,7 +91,10 @@ class InvalidEventScreen extends StatelessWidget {
                     onBack();
                   },
                   icon: const Icon(Icons.delete_forever),
-                  label: Text(l10n?.removeInvalidRef ?? 'Remove this invalid reference from wave'),
+                  label: Text(
+                    l10n?.removeInvalidRef ??
+                        'Remove this invalid reference from wave',
+                  ),
                   style: FilledButton.styleFrom(
                     backgroundColor: theme.colorScheme.error,
                   ),

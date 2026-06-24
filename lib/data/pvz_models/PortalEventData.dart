@@ -37,4 +37,3 @@ class PortalEventData extends PvzModel {
     'IgnoreGraveStone': ignoreGraveStone,
   };
 }
-

@@ -16,7 +16,4 @@ class ModuleOpenHint {
   final int? heianWindWaveNumber;
 }
 
-typedef OpenModuleCallback = void Function(
-  String rtid, {
-  ModuleOpenHint? hint,
-});
+typedef OpenModuleCallback = void Function(String rtid, {ModuleOpenHint? hint});

@@ -21,8 +21,10 @@ class GroundSpawnEventScreen extends StatelessWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(String) onSelected) onRequestZombieSelection;
-  final void Function(void Function(String) onSelected)? onRequestPlantSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestZombieSelection;
+  final void Function(void Function(String) onSelected)?
+  onRequestPlantSelection;
   final void Function(String rtid)? onEditCustomZombie;
   final String? Function(String alias)? onInjectCustomZombie;
 
@@ -34,7 +36,9 @@ class GroundSpawnEventScreen extends StatelessWidget {
       levelFile: levelFile,
       onChanged: onChanged,
       onBack: onBack,
-      eventSubtitle: l10n?.eventTitle_SpawnZombiesFromGroundSpawnerProps ?? 'GroundSpawnEvent',
+      eventSubtitle:
+          l10n?.eventTitle_SpawnZombiesFromGroundSpawnerProps ??
+          'GroundSpawnEvent',
       isGroundSpawner: true,
       onRequestZombieSelection: onRequestZombieSelection,
       onRequestPlantSelection: onRequestPlantSelection,

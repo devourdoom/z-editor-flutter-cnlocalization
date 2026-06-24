@@ -7,7 +7,8 @@ import 'package:c_editor/theme/app_theme.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/plant_selection_screen.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Legacy preset plants (frozen plant placement). Ported from Z-Editor-master InitialPlantPropertiesEP.kt
@@ -32,7 +33,8 @@ class InitialPlantPropertiesScreen extends StatefulWidget {
       _InitialPlantPropertiesScreenState();
 }
 
-class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScreen> {
+class _InitialPlantPropertiesScreenState
+    extends State<InitialPlantPropertiesScreen> {
   late PvzObject _moduleObj;
   late InitialPlantPropertiesData _data;
   int _selectedX = 0;
@@ -68,7 +70,8 @@ class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScr
     }
     _data = InitialPlantPropertiesData(
       placements: List.from(_data.placements),
-      isInitialIntensiveCarrotPlacements: _data.isInitialIntensiveCarrotPlacements,
+      isInitialIntensiveCarrotPlacements:
+          _data.isInitialIntensiveCarrotPlacements,
     );
   }
 
@@ -86,14 +89,18 @@ class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScr
           isMultiSelect: false,
           onPlantSelected: (id) {
             Navigator.pop(context);
-            final newList = List<InitialPlantPlacementData>.from(_data.placements);
-            newList.add(InitialPlantPlacementData(
-              gridX: _selectedX,
-              gridY: _selectedY,
-              typeName: id,
-              level: 1,
-              condition: null,
-            ));
+            final newList = List<InitialPlantPlacementData>.from(
+              _data.placements,
+            );
+            newList.add(
+              InitialPlantPlacementData(
+                gridX: _selectedX,
+                gridY: _selectedY,
+                typeName: id,
+                level: 1,
+                condition: null,
+              ),
+            );
             _data = InitialPlantPropertiesData(
               placements: newList,
               isInitialIntensiveCarrotPlacements:
@@ -176,20 +183,24 @@ class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScr
     final isDark = theme.brightness == Brightness.dark;
     final barColor = isDark ? pvzGreenDark : pvzGreenLight;
     final placementsAtPosition = _data.placements
-        .where((p) =>
-            p.gridX == _selectedX &&
-            p.gridY == _selectedY &&
-            p.gridX >= 0 &&
-            p.gridY >= 0 &&
-            p.gridX < _gridCols &&
-            p.gridY < _gridRows)
+        .where(
+          (p) =>
+              p.gridX == _selectedX &&
+              p.gridY == _selectedY &&
+              p.gridX >= 0 &&
+              p.gridY >= 0 &&
+              p.gridX < _gridCols &&
+              p.gridY < _gridRows,
+        )
         .toList();
     final placementsOutsideLawn = _data.placements
-        .where((p) =>
-            p.gridX < 0 ||
-            p.gridY < 0 ||
-            p.gridX >= _gridCols ||
-            p.gridY >= _gridRows)
+        .where(
+          (p) =>
+              p.gridX < 0 ||
+              p.gridY < 0 ||
+              p.gridX >= _gridCols ||
+              p.gridY >= _gridRows,
+        )
         .toList();
 
     return Scaffold(
@@ -288,22 +299,22 @@ class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScr
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    ...placementsAtPosition.map((p) => _PlacementCard(
-                          placement: p,
-                          gridRows: _gridRows,
-                          gridCols: _gridCols,
-                          showCoordinates: false,
-                          onTap: () {
-                            setState(() {
-                              _selectedX = p.gridX;
-                              _selectedY = p.gridY;
-                              _editingPlacement = p;
-                            });
-                          },
-                        )),
-                    AddItemCard(
-                      onPressed: _handleSelectPlant,
+                    ...placementsAtPosition.map(
+                      (p) => _PlacementCard(
+                        placement: p,
+                        gridRows: _gridRows,
+                        gridCols: _gridCols,
+                        showCoordinates: false,
+                        onTap: () {
+                          setState(() {
+                            _selectedX = p.gridX;
+                            _selectedY = p.gridY;
+                            _editingPlacement = p;
+                          });
+                        },
+                      ),
                     ),
+                    AddItemCard(onPressed: _handleSelectPlant),
                   ],
                 ),
                 if (placementsOutsideLawn.isNotEmpty) ...[
@@ -320,19 +331,21 @@ class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScr
                     spacing: 8,
                     runSpacing: 8,
                     children: placementsOutsideLawn
-                        .map((p) => _PlacementCard(
-                              placement: p,
-                              gridRows: _gridRows,
-                              gridCols: _gridCols,
-                              showCoordinates: true,
-                              onTap: () {
-                                setState(() {
-                                  _selectedX = p.gridX;
-                                  _selectedY = p.gridY;
-                                  _editingPlacement = p;
-                                });
-                              },
-                            ))
+                        .map(
+                          (p) => _PlacementCard(
+                            placement: p,
+                            gridRows: _gridRows,
+                            gridCols: _gridCols,
+                            showCoordinates: true,
+                            onTap: () {
+                              setState(() {
+                                _selectedX = p.gridX;
+                                _selectedY = p.gridY;
+                                _editingPlacement = p;
+                              });
+                            },
+                          ),
+                        )
                         .toList(),
                   ),
                 ],
@@ -368,13 +381,13 @@ class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScr
                 return Expanded(
                   child: Row(
                     children: List.generate(cols, (col) {
-                      final isSelected =
-                          row == _selectedY && col == _selectedX;
+                      final isSelected = row == _selectedY && col == _selectedX;
                       final cellPlacements = _data.placements
                           .where((p) => p.gridX == col && p.gridY == row)
                           .toList();
-                      final firstPlacement =
-                          cellPlacements.isNotEmpty ? cellPlacements.first : null;
+                      final firstPlacement = cellPlacements.isNotEmpty
+                          ? cellPlacements.first
+                          : null;
                       final count = cellPlacements.length;
                       return Expanded(
                         child: GestureDetector(
@@ -407,7 +420,8 @@ class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScr
                                           child: FittedBox(
                                             fit: BoxFit.contain,
                                             child: _PlantIconSmall(
-                                                firstPlacement.typeName),
+                                              firstPlacement.typeName,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -421,12 +435,15 @@ class _InitialPlantPropertiesScreenState extends State<InitialPlantPropertiesScr
                                               vertical: 3,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: theme.colorScheme
+                                              color: theme
+                                                  .colorScheme
                                                   .onSurfaceVariant,
                                               borderRadius:
                                                   const BorderRadius.only(
-                                                bottomLeft: Radius.circular(6),
-                                              ),
+                                                    bottomLeft: Radius.circular(
+                                                      6,
+                                                    ),
+                                                  ),
                                             ),
                                             child: Text(
                                               '+${count - 1}',
@@ -587,14 +604,18 @@ class _PlacementCard extends StatelessWidget {
                           children: [
                             Icon(
                               editorWarningIcon,
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                               size: 16,
                             ),
                             const SizedBox(width: 4),
                             Text(
                               'R${placement.gridY + 1}:C${placement.gridX + 1}',
                               style: theme.textTheme.bodySmall?.copyWith(
-                                color: editorWarningBannerForeground(theme.brightness),
+                                color: editorWarningBannerForeground(
+                                  theme.brightness,
+                                ),
                               ),
                             ),
                           ],
@@ -690,19 +711,18 @@ class _PlacementEditDialogState extends State<_PlacementEditDialog> {
           ),
           child: Text(l10n.delete),
         ),
-        TextButton(
-          onPressed: widget.onCancel,
-          child: Text(l10n.cancel),
-        ),
+        TextButton(onPressed: widget.onCancel, child: Text(l10n.cancel)),
         FilledButton(
           onPressed: () {
-            widget.onSave(InitialPlantPlacementData(
-              gridX: widget.placement.gridX,
-              gridY: widget.placement.gridY,
-              typeName: widget.placement.typeName,
-              level: _level,
-              condition: _condition,
-            ));
+            widget.onSave(
+              InitialPlantPlacementData(
+                gridX: widget.placement.gridX,
+                gridY: widget.placement.gridY,
+                typeName: widget.placement.typeName,
+                level: _level,
+                condition: _condition,
+              ),
+            );
           },
           child: Text(l10n.save),
         ),

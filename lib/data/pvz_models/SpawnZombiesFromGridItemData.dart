@@ -44,4 +44,3 @@ class SpawnZombiesFromGridItemData extends PvzModel {
     return data;
   }
 }
-

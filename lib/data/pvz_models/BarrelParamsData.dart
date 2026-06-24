@@ -43,4 +43,3 @@ class BarrelParamsData extends PvzModel {
     return m;
   }
 }
-

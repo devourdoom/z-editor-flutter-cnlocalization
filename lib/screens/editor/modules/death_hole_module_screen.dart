@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
-import 'package:c_editor/widgets/editor_components.dart' show editorInputDecoration;
+import 'package:c_editor/widgets/editor_components.dart'
+    show editorInputDecoration;
 
 /// Death hole module editor. Ported from Z-Editor-master DeathHoleModuleEP.kt
 class DeathHoleModuleScreen extends StatefulWidget {
@@ -82,7 +83,10 @@ class _DeathHoleModuleScreenState extends State<DeathHoleModuleScreen> {
     final l10n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: widget.onBack),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: widget.onBack,
+        ),
         title: Text(l10n?.deathHole ?? 'Death Hole'),
       ),
       body: SingleChildScrollView(
@@ -106,7 +110,8 @@ class _DeathHoleModuleScreenState extends State<DeathHoleModuleScreen> {
                   keyboardType: TextInputType.number,
                   decoration: editorInputDecoration(
                     context,
-                    labelText: l10n?.holeLifetimeSeconds ?? 'Hole lifetime (seconds)',
+                    labelText:
+                        l10n?.holeLifetimeSeconds ?? 'Hole lifetime (seconds)',
                     focusColor: Theme.of(context).colorScheme.primary,
                     isFocused: _lifeTimeFocusNode.hasFocus,
                   ),

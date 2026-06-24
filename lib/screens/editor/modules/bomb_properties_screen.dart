@@ -90,9 +90,7 @@ class _BombPropertiesScreenState extends State<BombPropertiesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) widget.onChanged();
     });
-    _flameSpeedCtrl = TextEditingController(
-      text: _data.flameSpeed.toString(),
-    );
+    _flameSpeedCtrl = TextEditingController(text: _data.flameSpeed.toString());
   }
 
   void _sync() {
@@ -146,7 +144,8 @@ class _BombPropertiesScreenState extends State<BombPropertiesScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n?.bombPropertiesFlameSpeed ?? 'Flame speed (FlameSpeed)',
+                        l10n?.bombPropertiesFlameSpeed ??
+                            'Flame speed (FlameSpeed)',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -184,7 +183,8 @@ class _BombPropertiesScreenState extends State<BombPropertiesScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n?.bombPropertiesFuseLengths ?? 'Fuse lengths (FuseLengths)',
+                        l10n?.bombPropertiesFuseLengths ??
+                            'Fuse lengths (FuseLengths)',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -214,10 +214,13 @@ class _BombPropertiesScreenState extends State<BombPropertiesScreen> {
                               ),
                               Expanded(
                                 child: TextFormField(
-                                  key: ValueKey('fuse_${i}_${_data.fuseLengths[i]}'),
+                                  key: ValueKey(
+                                    'fuse_${i}_${_data.fuseLengths[i]}',
+                                  ),
                                   initialValue: _data.fuseLengths[i],
                                   decoration: InputDecoration(
-                                    labelText: l10n?.bombPropertiesFuseLength ??
+                                    labelText:
+                                        l10n?.bombPropertiesFuseLength ??
                                         'Length',
                                     border: const OutlineInputBorder(),
                                   ),

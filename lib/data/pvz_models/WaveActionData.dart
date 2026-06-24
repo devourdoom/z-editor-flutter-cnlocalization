@@ -52,4 +52,3 @@ class WaveActionData extends PvzModel {
     return data;
   }
 }
-

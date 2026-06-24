@@ -46,4 +46,3 @@ class BeachStageEventData extends PvzModel {
     'WaveStartMessage': waveStartMessage,
   };
 }
-

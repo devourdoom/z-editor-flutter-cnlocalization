@@ -4,10 +4,7 @@ import 'package:flutter/foundation.dart';
 
 /// Debounced click callback. Ported from Z-Editor-master ComposeUtils.kt
 /// Returns a callback that ignores rapid repeated calls within [waitMs].
-VoidCallback debouncedClick({
-  int waitMs = 500,
-  required VoidCallback onClick,
-}) {
+VoidCallback debouncedClick({int waitMs = 500, required VoidCallback onClick}) {
   var lastClickTime = 0;
   return () {
     final now = DateTime.now().millisecondsSinceEpoch;

@@ -27,7 +27,8 @@ class CustomFishPropertiesScreen extends StatefulWidget {
       _CustomFishPropertiesScreenState();
 }
 
-class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen> {
+class _CustomFishPropertiesScreenState
+    extends State<CustomFishPropertiesScreen> {
   PvzObject? _typeObj;
   PvzObject? _propsObj;
   String _typeName = '';
@@ -220,7 +221,10 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
     );
   }
 
-  Widget _numberField(TextEditingController controller, {required String label}) {
+  Widget _numberField(
+    TextEditingController controller, {
+    required String label,
+  }) {
     return TextField(
       controller: controller,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
@@ -259,8 +263,9 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
     }
   }
 
-  Color get _themeColor =>
-      Theme.of(context).brightness == Brightness.dark ? pvzFishDark : pvzFishLight;
+  Color get _themeColor => Theme.of(context).brightness == Brightness.dark
+      ? pvzFishDark
+      : pvzFishLight;
 
   Widget _editRow({
     required String title,
@@ -280,13 +285,16 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),
@@ -375,7 +383,13 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
     final propsData = _propsData;
     final rectKeys = ['HitRect', 'AttackRect', 'ScareRect', 'Scarerect'];
     final pointKeys = ['ArtCenter'];
-    final numberKeys = ['Speed', 'ScareSpeed', 'Damage', 'Hitpoints', 'HitPoints'];
+    final numberKeys = [
+      'Speed',
+      'ScareSpeed',
+      'Damage',
+      'Hitpoints',
+      'HitPoints',
+    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -396,12 +410,14 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
               sections: [
                 HelpSectionData(
                   title: l10n?.customFishHelpIntro ?? 'Brief introduction',
-                  body: l10n?.customFishHelpIntroBody ??
+                  body:
+                      l10n?.customFishHelpIntroBody ??
                       'This screen edits custom fish parameters. Only common properties are supported; animation and special attributes require manual JSON editing.',
                 ),
                 HelpSectionData(
                   title: l10n?.customFishHelpProps ?? 'Properties',
-                  body: l10n?.customFishHelpPropsBody ??
+                  body:
+                      l10n?.customFishHelpPropsBody ??
                       'HitRect, AttackRect, ScareRect define collision areas. Speed and ScareSpeed control movement. ArtCenter is the drawing anchor.',
                 ),
               ],
@@ -471,13 +487,16 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
                           const SizedBox(height: 12),
                         ],
                       if (propsData.keys
-                          .where((x) =>
-                              numberKeys.contains(x) ||
-                              rectKeys.contains(x) ||
-                              pointKeys.contains(x))
+                          .where(
+                            (x) =>
+                                numberKeys.contains(x) ||
+                                rectKeys.contains(x) ||
+                                pointKeys.contains(x),
+                          )
                           .isEmpty)
                         Text(
-                          l10n?.noEditableFishProps ?? 'No editable properties found.',
+                          l10n?.noEditableFishProps ??
+                              'No editable properties found.',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: theme.colorScheme.onSurfaceVariant,
                           ),
@@ -507,7 +526,8 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
                               subtitle: _formatRect(propsData[k]),
                               icon: Icons.aspect_ratio,
                               onTap: () => _showRectDialog(
-                                title: '${l10n?.edit ?? 'Edit'} ${_fishPropLabel(l10n, k)}',
+                                title:
+                                    '${l10n?.edit ?? 'Edit'} ${_fishPropLabel(l10n, k)}',
                                 key: k,
                                 initial: _parseRect(propsData[k]),
                               ),
@@ -522,7 +542,8 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
                           subtitle: _formatPoint(propsData[k]),
                           icon: Icons.center_focus_strong,
                           onTap: () => _showPointDialog(
-                            title: '${l10n?.edit ?? 'Edit'} ${_fishPropLabel(l10n, k)}',
+                            title:
+                                '${l10n?.edit ?? 'Edit'} ${_fishPropLabel(l10n, k)}',
                             key: k,
                             initial: _parsePoint(propsData[k]),
                           ),
@@ -538,7 +559,9 @@ class _CustomFishPropertiesScreenState extends State<CustomFishPropertiesScreen>
                 ),
               ),
               Text(
-                l10n?.propertyAliasLabel(RtidParser.parse(_propsRtid)?.alias ?? '') ??
+                l10n?.propertyAliasLabel(
+                      RtidParser.parse(_propsRtid)?.alias ?? '',
+                    ) ??
                     'Property alias: ${RtidParser.parse(_propsRtid)?.alias ?? ''}',
                 style: theme.textTheme.bodySmall?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,

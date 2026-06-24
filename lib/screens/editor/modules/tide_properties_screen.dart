@@ -30,7 +30,8 @@ class _TidePropertiesScreenState extends State<TidePropertiesScreen> {
   late TidePropertiesData _data;
   late TextEditingController _startLocCtrl;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _gridRows => _isDeepSeaLawn ? 6 : 5;
   int get _gridCols => _isDeepSeaLawn ? 10 : 9;
 
@@ -63,7 +64,9 @@ class _TidePropertiesScreenState extends State<TidePropertiesScreen> {
     } catch (_) {
       _data = TidePropertiesData();
     }
-    _startLocCtrl = TextEditingController(text: '${_data.startingWaveLocation}');
+    _startLocCtrl = TextEditingController(
+      text: '${_data.startingWaveLocation}',
+    );
   }
 
   void _sync() {
@@ -99,11 +102,15 @@ class _TidePropertiesScreenState extends State<TidePropertiesScreen> {
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.moduleHelpTideBody ?? 'Enables tide system and sets initial tide position.',
+                  body:
+                      l10n?.moduleHelpTideBody ??
+                      'Enables tide system and sets initial tide position.',
                 ),
                 HelpSectionData(
                   title: l10n?.position ?? 'Position',
-                  body: l10n?.moduleHelpTidePosition ?? 'Right edge is 0, left edge is 9. Negative values allowed.',
+                  body:
+                      l10n?.moduleHelpTidePosition ??
+                      'Right edge is 0, left edge is 9. Negative values allowed.',
                 ),
               ],
             ),
@@ -133,7 +140,9 @@ class _TidePropertiesScreenState extends State<TidePropertiesScreen> {
                       controller: _startLocCtrl,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
-                        labelText: l10n?.startingWaveLocation ?? 'Starting wave location',
+                        labelText:
+                            l10n?.startingWaveLocation ??
+                            'Starting wave location',
                         border: const OutlineInputBorder(),
                       ),
                       onChanged: (v) {
@@ -188,7 +197,9 @@ class _TidePropertiesScreenState extends State<TidePropertiesScreen> {
                                           margin: const EdgeInsets.all(0.5),
                                           decoration: BoxDecoration(
                                             color: isWater
-                                                ? Colors.blue.withValues(alpha: 0.4)
+                                                ? Colors.blue.withValues(
+                                                    alpha: 0.4,
+                                                  )
                                                 : Colors.transparent,
                                             border: Border.all(
                                               color: theme.dividerColor,

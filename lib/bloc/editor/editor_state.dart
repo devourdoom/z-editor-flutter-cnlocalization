@@ -33,6 +33,11 @@ final class EditorState extends Equatable {
   }
 
   @override
-  List<Object?> get props =>
-      [levelFile, parsedData, isLoading, hasChanges, availableTabs];
+  List<Object?> get props => [
+    levelFile,
+    parsedData,
+    isLoading,
+    hasChanges,
+    availableTabs,
+  ];
 }

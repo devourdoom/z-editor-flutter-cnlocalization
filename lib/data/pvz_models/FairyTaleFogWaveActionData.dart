@@ -29,4 +29,3 @@ class FairyTaleFogWaveActionData extends PvzModel {
     'Range': range.toJson(),
   };
 }
-

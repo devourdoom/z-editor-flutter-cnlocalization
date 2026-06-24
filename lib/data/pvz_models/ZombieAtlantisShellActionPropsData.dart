@@ -26,4 +26,3 @@ class ZombieAtlantisShellActionPropsData extends PvzModel {
     'Tiles': tiles.map((e) => e.toJson()).toList(),
   };
 }
-

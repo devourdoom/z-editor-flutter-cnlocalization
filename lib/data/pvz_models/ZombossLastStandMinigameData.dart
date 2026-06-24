@@ -12,12 +12,9 @@ class ZombossLastStandMinigameData extends PvzModel {
     this.zombossTypeName = 'zomboss_qinshihuang',
     this.skipPlanting = true,
   }) : resourceGroupNames = List<String>.from(
-          resourceGroupNames ??
-              const [
-                'ZombossQinShiHuangGroup',
-                'ZombossQinShiHuangAudio',
-              ],
-        );
+         resourceGroupNames ??
+             const ['ZombossQinShiHuangGroup', 'ZombossQinShiHuangAudio'],
+       );
 
   List<String> resourceGroupNames;
   int startingPlantfood;
@@ -31,7 +28,8 @@ class ZombossLastStandMinigameData extends PvzModel {
 
   factory ZombossLastStandMinigameData.fromJson(Map<String, dynamic> json) {
     return ZombossLastStandMinigameData(
-      resourceGroupNames: (json['ResourceGroupNames'] as List<dynamic>?)
+      resourceGroupNames:
+          (json['ResourceGroupNames'] as List<dynamic>?)
               ?.map((e) => e.toString())
               .toList() ??
           const [],
@@ -49,16 +47,16 @@ class ZombossLastStandMinigameData extends PvzModel {
 
   @override
   Map<String, dynamic> toJson() => {
-        'ResourceGroupNames': resourceGroupNames,
-        'IsRandom': false,
-        'BossMusic': true,
-        'StartingPlantfood': startingPlantfood,
-        'StartingSun': startingSun,
-        'ZombossInitialGridCol': zombossInitialGridCol,
-        'ZombossInitialGridRow': zombossInitialGridRow,
-        'ZombossStartStageIndex': 0,
-        'ReservedColumnCount': reservedColumnCount,
-        'ZombossTypeName': zombossTypeName,
-        'SkipPlanting': skipPlanting,
-      };
+    'ResourceGroupNames': resourceGroupNames,
+    'IsRandom': false,
+    'BossMusic': true,
+    'StartingPlantfood': startingPlantfood,
+    'StartingSun': startingSun,
+    'ZombossInitialGridCol': zombossInitialGridCol,
+    'ZombossInitialGridRow': zombossInitialGridRow,
+    'ZombossStartStageIndex': 0,
+    'ReservedColumnCount': reservedColumnCount,
+    'ZombossTypeName': zombossTypeName,
+    'SkipPlanting': skipPlanting,
+  };
 }

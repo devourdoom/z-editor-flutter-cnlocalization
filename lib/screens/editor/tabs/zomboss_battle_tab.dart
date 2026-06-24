@@ -32,7 +32,9 @@ class _ZombossBattleTabState extends State<ZombossBattleTab> {
   late FocusNode _startingSunFocus;
 
   (int maxRow, int maxCol) get _gridMaxIndices {
-    final (rows, cols) = LevelParser.getGridDimensionsFromFile(widget.levelFile);
+    final (rows, cols) = LevelParser.getGridDimensionsFromFile(
+      widget.levelFile,
+    );
     return (rows - 1, cols - 1);
   }
 
@@ -128,9 +130,8 @@ class _ZombossBattleTabState extends State<ZombossBattleTab> {
     final baseId = await Navigator.push<String>(
       context,
       MaterialPageRoute(
-        builder: (context) => ZombossBattleBaseSelectionScreen(
-          selectedBaseId: _selectedBaseId,
-        ),
+        builder: (context) =>
+            ZombossBattleBaseSelectionScreen(selectedBaseId: _selectedBaseId),
       ),
     );
     if (baseId != null && mounted) {
@@ -143,21 +144,23 @@ class _ZombossBattleTabState extends State<ZombossBattleTab> {
     final base = ZombossBattleRepository.getBase(baseId);
     if (base == null) return;
     final previousBaseId = _selectedBaseId;
-    _sync(extra: () {
-      _selectedBaseId = baseId;
-      _data.resourceGroupNames = List<String>.from(base.resourceGroups);
-      if (!base.variations.contains(_data.zombossTypeName)) {
-        _data.zombossTypeName = base.variations.first;
-      }
-      if (_levelDef != null) {
-        ZombossBattleRepository.syncAutoModules(
-          levelFile: widget.levelFile,
-          levelDef: _levelDef!,
-          previousBaseId: previousBaseId,
-          newBaseId: baseId,
-        );
-      }
-    });
+    _sync(
+      extra: () {
+        _selectedBaseId = baseId;
+        _data.resourceGroupNames = List<String>.from(base.resourceGroups);
+        if (!base.variations.contains(_data.zombossTypeName)) {
+          _data.zombossTypeName = base.variations.first;
+        }
+        if (_levelDef != null) {
+          ZombossBattleRepository.syncAutoModules(
+            levelFile: widget.levelFile,
+            levelDef: _levelDef!,
+            previousBaseId: previousBaseId,
+            newBaseId: baseId,
+          );
+        }
+      },
+    );
   }
 
   void _onVariationChanged(String? variation) {
@@ -274,7 +277,9 @@ class _ZombossBattleTabState extends State<ZombossBattleTab> {
         ),
         const SizedBox(height: 12),
         _StepperControl(
-          label: l10n?.zombossBattleStartingPlantfoodLabel ?? 'Starting plant food',
+          label:
+              l10n?.zombossBattleStartingPlantfoodLabel ??
+              'Starting plant food',
           tooltip: l10n?.zombossBattleStartingPlantfoodHint ?? '',
           value: _data.startingPlantfood,
           onChanged: (val) => _sync(extra: () => _data.startingPlantfood = val),
@@ -282,7 +287,8 @@ class _ZombossBattleTabState extends State<ZombossBattleTab> {
           max: 5,
         ),
         _StepperControl(
-          label: l10n?.zombossBattleInitialGridColLabel ?? 'Initial grid column',
+          label:
+              l10n?.zombossBattleInitialGridColLabel ?? 'Initial grid column',
           tooltip: l10n?.zombossBattleInitialGridColHint ?? '',
           value: _data.zombossInitialGridCol,
           onChanged: (val) =>
@@ -303,7 +309,8 @@ class _ZombossBattleTabState extends State<ZombossBattleTab> {
           label: l10n?.reservedColumnCount ?? 'Reserved column count',
           tooltip: l10n?.reservedColumnCountHint ?? '',
           value: _data.reservedColumnCount,
-          onChanged: (val) => _sync(extra: () => _data.reservedColumnCount = val),
+          onChanged: (val) =>
+              _sync(extra: () => _data.reservedColumnCount = val),
           min: 0,
           max: 9,
         ),

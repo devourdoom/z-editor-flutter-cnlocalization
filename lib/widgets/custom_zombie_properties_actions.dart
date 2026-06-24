@@ -30,7 +30,8 @@ class CustomZombiePropertiesSheetActions extends StatelessWidget {
 
   bool get _isCustom => CustomZombieLevelUtils.isCustomZombieRtid(currentRtid);
 
-  String? get _currentAlias => CustomZombieLevelUtils.aliasFromRtid(currentRtid);
+  String? get _currentAlias =>
+      CustomZombieLevelUtils.aliasFromRtid(currentRtid);
 
   void _openSwitchDialog(BuildContext context) {
     onCloseSheet?.call();
@@ -84,9 +85,7 @@ class CustomZombiePropertiesSheetActions extends StatelessWidget {
               foregroundColor: Colors.black87,
             ),
             icon: const Icon(Icons.build),
-            label: Text(
-              l10n?.editCustomZombieAlias(alias) ?? 'Edit $alias',
-            ),
+            label: Text(l10n?.editCustomZombieAlias(alias) ?? 'Edit $alias'),
           ),
         ],
       ],
@@ -109,7 +108,8 @@ Future<void> showCustomZombiePropertiesSwitchDialog(
   final selectedGreen = isDark ? pvzGreenDark : pvzGreenLight;
   final defaultRtid = CustomZombieLevelUtils.defaultRtid(baseType);
   final variations = CustomZombieLevelUtils.listVariations(levelFile, baseType);
-  final isDefaultSelected = !CustomZombieLevelUtils.isCustomZombieRtid(currentRtid) ||
+  final isDefaultSelected =
+      !CustomZombieLevelUtils.isCustomZombieRtid(currentRtid) ||
       currentRtid == defaultRtid;
 
   await showDialog<void>(
@@ -148,9 +148,7 @@ Future<void> showCustomZombiePropertiesSwitchDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx),
-          style: TextButton.styleFrom(
-            foregroundColor: theme.colorScheme.error,
-          ),
+          style: TextButton.styleFrom(foregroundColor: theme.colorScheme.error),
           child: Text(l10n?.cancel ?? 'Cancel'),
         ),
         if (onInjectCustomZombie != null)

@@ -12,4 +12,3 @@ class StarChallengeSimultaneousPlantsData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'MaximumPlants': maximumPlants};
 }
-

@@ -27,7 +27,9 @@ abstract final class ResilienceShieldUtils {
   static String nextCustomCodename(PvzLevelFile levelFile) {
     for (var i = 0; i < 1000; i++) {
       final codename = 'CustomResilience$i';
-      if (!levelFile.objects.any((o) => o.aliases?.contains(codename) == true)) {
+      if (!levelFile.objects.any(
+        (o) => o.aliases?.contains(codename) == true,
+      )) {
         return codename;
       }
     }

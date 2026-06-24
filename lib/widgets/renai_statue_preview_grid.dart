@@ -32,7 +32,8 @@ class RenaiStatuePreviewGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final (rows, cols) = LevelParser.getGridDimensionsFromFile(levelFile);
-    final resolvedMaxWidth = maxWidth ??
+    final resolvedMaxWidth =
+        maxWidth ??
         (shrinkOnDesktop
             ? EditorItemCardLayout.gridPreviewMaxWidth(context)
             : renaiStatuePreviewMaxWidth(context));

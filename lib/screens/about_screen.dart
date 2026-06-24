@@ -7,7 +7,8 @@ import 'package:c_editor/l10n/app_localizations.dart';
 
 String _usageTextForPlatform(BuildContext context, AppLocalizations l10n) {
   final p = Theme.of(context).platform;
-  final isDesktop = p == TargetPlatform.windows ||
+  final isDesktop =
+      p == TargetPlatform.windows ||
       p == TargetPlatform.macOS ||
       p == TargetPlatform.linux;
   return isDesktop ? l10n.usageTextDesktop : l10n.usageTextMobile;
@@ -31,7 +32,8 @@ class AboutScreen extends StatefulWidget {
 class _AboutScreenState extends State<AboutScreen> {
   late final Future<AppLinks> _linksFuture = AppLinks.load();
   late final Future<AppProperties> _propertiesFuture = AppProperties.load();
-  late final Future<PackageInfo> _packageInfoFuture = PackageInfo.fromPlatform();
+  late final Future<PackageInfo> _packageInfoFuture =
+      PackageInfo.fromPlatform();
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,10 @@ class _AboutScreenState extends State<AboutScreen> {
                   title: l10n.introSection,
                   child: Text(
                     l10n.introText,
-                    style: TextStyle(height: 1.5, color: theme.colorScheme.onSurface),
+                    style: TextStyle(
+                      height: 1.5,
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
                 ),
                 _InfoCard(
@@ -103,9 +108,13 @@ class _AboutScreenState extends State<AboutScreen> {
                     children: [
                       Text(
                         _usageTextForPlatform(context, l10n),
-                        style: TextStyle(height: 1.5, color: theme.colorScheme.onSurface),
+                        style: TextStyle(
+                          height: 1.5,
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
-                      if (links != null && l10n.usageRecommendedLevelsLabel.isNotEmpty) ...[
+                      if (links != null &&
+                          l10n.usageRecommendedLevelsLabel.isNotEmpty) ...[
                         const SizedBox(height: 8),
                         _LinkRow(
                           label: l10n.usageRecommendedLevelsLabel,
@@ -114,7 +123,8 @@ class _AboutScreenState extends State<AboutScreen> {
                           linkColor: theme.colorScheme.primary,
                         ),
                       ],
-                      if (links != null && l10n.discordInviteLabel.isNotEmpty) ...[
+                      if (links != null &&
+                          l10n.discordInviteLabel.isNotEmpty) ...[
                         const SizedBox(height: 8),
                         _LinkRow(
                           label: l10n.discordInviteLabel,
@@ -132,9 +142,15 @@ class _AboutScreenState extends State<AboutScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       _Bullet(l10n.authorLabel),
-                      Text(l10n.authorName, style: TextStyle(color: theme.colorScheme.onSurface)),
+                      Text(
+                        l10n.authorName,
+                        style: TextStyle(color: theme.colorScheme.onSurface),
+                      ),
                       _Bullet(l10n.thanksLabel),
-                      Text(l10n.thanksNames, style: TextStyle(color: theme.colorScheme.onSurface)),
+                      Text(
+                        l10n.thanksNames,
+                        style: TextStyle(color: theme.colorScheme.onSurface),
+                      ),
                       if (links != null) ...[
                         _LinkRow(
                           label: l10n.sourceLabel,
@@ -152,7 +168,10 @@ class _AboutScreenState extends State<AboutScreen> {
                       const SizedBox(height: 12),
                       Text(
                         l10n.zEditorAcknowledgment,
-                        style: TextStyle(height: 1.5, color: theme.colorScheme.onSurface),
+                        style: TextStyle(
+                          height: 1.5,
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
                       const SizedBox(height: 12),
                       Text(
@@ -164,11 +183,20 @@ class _AboutScreenState extends State<AboutScreen> {
                       ),
                       const SizedBox(height: 8),
                       _Bullet(l10n.zEditorAuthorLabel),
-                      Text(l10n.zEditorAuthorName, style: TextStyle(color: theme.colorScheme.onSurface)),
+                      Text(
+                        l10n.zEditorAuthorName,
+                        style: TextStyle(color: theme.colorScheme.onSurface),
+                      ),
                       _Bullet(l10n.zEditorThanksLabel),
-                      Text(l10n.zEditorThanksNames, style: TextStyle(color: theme.colorScheme.onSurface)),
+                      Text(
+                        l10n.zEditorThanksNames,
+                        style: TextStyle(color: theme.colorScheme.onSurface),
+                      ),
                       _Bullet(l10n.zEditorQqGroupLabel),
-                      Text(l10n.zEditorQqGroupNumber, style: TextStyle(color: theme.colorScheme.onSurface)),
+                      Text(
+                        l10n.zEditorQqGroupNumber,
+                        style: TextStyle(color: theme.colorScheme.onSurface),
+                      ),
                     ],
                   ),
                 ),
@@ -182,23 +210,22 @@ class _AboutScreenState extends State<AboutScreen> {
                 ),
                 const SizedBox(height: 20),
                 FutureBuilder<(PackageInfo, AppProperties)>(
-                  future: Future.wait([
-                    _packageInfoFuture,
-                    _propertiesFuture,
-                  ]).then(
-                    (results) => (
-                      results[0] as PackageInfo,
-                      results[1] as AppProperties,
-                    ),
-                  ),
+                  future: Future.wait([_packageInfoFuture, _propertiesFuture])
+                      .then(
+                        (results) => (
+                          results[0] as PackageInfo,
+                          results[1] as AppProperties,
+                        ),
+                      ),
                   builder: (context, snapshot) {
                     final packageInfo = snapshot.data?.$1;
                     final properties = snapshot.data?.$2;
                     final editorVersion =
                         packageInfo?.version.isNotEmpty == true
-                            ? packageInfo!.version
-                            : '0.0.0';
-                    final gameVersion = properties?.supportedGameVersion ?? '0.0.0';
+                        ? packageInfo!.version
+                        : '0.0.0';
+                    final gameVersion =
+                        properties?.supportedGameVersion ?? '0.0.0';
                     final versionStyle = theme.textTheme.bodySmall?.copyWith(
                       color: Colors.grey,
                     );
@@ -248,7 +275,10 @@ class _LinkRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('• ', style: TextStyle(fontWeight: FontWeight.bold, color: linkColor)),
+          Text(
+            '• ',
+            style: TextStyle(fontWeight: FontWeight.bold, color: linkColor),
+          ),
           Expanded(
             child: Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
@@ -323,8 +353,19 @@ class _Bullet extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text('• ', style: TextStyle(fontWeight: FontWeight.bold, color: theme.colorScheme.primary)),
-          Expanded(child: Text(text, style: TextStyle(height: 1.5, color: theme.colorScheme.onSurface))),
+          Text(
+            '• ',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              color: theme.colorScheme.primary,
+            ),
+          ),
+          Expanded(
+            child: Text(
+              text,
+              style: TextStyle(height: 1.5, color: theme.colorScheme.onSurface),
+            ),
+          ),
         ],
       ),
     );

@@ -18,5 +18,3 @@ class FairyTaleWindWaveActionData extends PvzModel {
     'VelocityScale': velocityScale,
   };
 }
-
-

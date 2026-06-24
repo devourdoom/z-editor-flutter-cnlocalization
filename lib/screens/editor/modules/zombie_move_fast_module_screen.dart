@@ -24,7 +24,8 @@ class ZombieMoveFastModuleScreen extends StatefulWidget {
       _ZombieMoveFastModuleScreenState();
 }
 
-class _ZombieMoveFastModuleScreenState extends State<ZombieMoveFastModuleScreen> {
+class _ZombieMoveFastModuleScreenState
+    extends State<ZombieMoveFastModuleScreen> {
   late PvzObject _moduleObj;
   late ZombieMoveFastModulePropertiesData _data;
   late TextEditingController _stopColCtrl;
@@ -80,8 +81,13 @@ class _ZombieMoveFastModuleScreenState extends State<ZombieMoveFastModuleScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: widget.onBack),
-        title: Text(AppLocalizations.of(context)?.zombieMoveFast ?? 'Zombie Move Fast'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: widget.onBack,
+        ),
+        title: Text(
+          AppLocalizations.of(context)?.zombieMoveFast ?? 'Zombie Move Fast',
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -116,7 +122,9 @@ class _ZombieMoveFastModuleScreenState extends State<ZombieMoveFastModuleScreen>
                 const SizedBox(height: 12),
                 TextField(
                   controller: _speedUpCtrl,
-                  keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                  keyboardType: const TextInputType.numberWithOptions(
+                    decimal: true,
+                  ),
                   decoration: const InputDecoration(
                     labelText: 'Speed up (SpeedUp)',
                     border: OutlineInputBorder(),

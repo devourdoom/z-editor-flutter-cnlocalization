@@ -8,4 +8,3 @@ class StarChallengeBlowZombieData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'Count': count};
 }
-

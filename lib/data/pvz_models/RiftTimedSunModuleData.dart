@@ -20,4 +20,3 @@ class RiftTimedSunModuleData extends PvzModel {
     'SunDrops': sunDrops.map((e) => e.toJson()).toList(),
   };
 }
-

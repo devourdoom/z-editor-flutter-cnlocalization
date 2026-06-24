@@ -13,5 +13,3 @@ class BowlingMinigamePropertiesData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'BowlingFoulLine': bowlingFoulLine};
 }
-
-

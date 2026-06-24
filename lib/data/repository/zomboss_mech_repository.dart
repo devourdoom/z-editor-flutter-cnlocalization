@@ -107,7 +107,8 @@ class ZombossMechRepository {
     }
   }
 
-  static ZombossMechCatalogEntry? getCatalog(String baseId) => _catalogById[baseId];
+  static ZombossMechCatalogEntry? getCatalog(String baseId) =>
+      _catalogById[baseId];
 
   static ZombossMechInfo? getBase(String baseId) {
     return allZombossMechs.where((e) => e.id == baseId).firstOrNull;
@@ -144,7 +145,10 @@ class ZombossMechRepository {
         '';
   }
 
-  static bool isCustomVariation(String? mechType, ZombossMechCatalogEntry? catalog) {
+  static bool isCustomVariation(
+    String? mechType,
+    ZombossMechCatalogEntry? catalog,
+  ) {
     if (catalog == null || !catalog.hasCustomInstance) return false;
     return mechType == catalog.editableInstance;
   }

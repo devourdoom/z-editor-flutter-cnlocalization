@@ -26,7 +26,7 @@ class GlacierModuleScreen extends StatefulWidget {
   final VoidCallback onChanged;
   final VoidCallback onBack;
   final void Function(void Function(String) onSelected)
-      onRequestZombieSelection;
+  onRequestZombieSelection;
 
   @override
   State<GlacierModuleScreen> createState() => _GlacierModuleScreenState();
@@ -170,7 +170,8 @@ class _GlacierModuleScreenState extends State<GlacierModuleScreen> {
                   body: l10n?.glacierModuleHelpColumnsBody ?? '',
                 ),
                 HelpSectionData(
-                  title: l10n?.glacierModuleHelpRequirementsTitle ??
+                  title:
+                      l10n?.glacierModuleHelpRequirementsTitle ??
                       'Requirements',
                   body: l10n?.glacierModuleHelpRequirementsBody ?? '',
                 ),
@@ -215,13 +216,15 @@ class _ColumnCard extends StatelessWidget {
   final AppLocalizations? l10n;
   final VoidCallback onAddEntry;
   final void Function(int entryIndex) onRemoveEntry;
-  final void Function(int entryIndex, GlacierSpawnEntryData entry) onUpdateEntry;
+  final void Function(int entryIndex, GlacierSpawnEntryData entry)
+  onUpdateEntry;
   final void Function(int entryIndex) onPickZombie;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final columnLabel = l10n?.glacierModuleColumn(columnIndex + 1) ??
+    final columnLabel =
+        l10n?.glacierModuleColumn(columnIndex + 1) ??
         'Column ${columnIndex + 1} (from left)';
 
     return Card(
@@ -296,7 +299,10 @@ class _EntryRow extends StatelessWidget {
   });
 
   static const _iconSize = 54.0;
-  static const _fieldPadding = EdgeInsets.symmetric(horizontal: 12, vertical: 14);
+  static const _fieldPadding = EdgeInsets.symmetric(
+    horizontal: 12,
+    vertical: 14,
+  );
   static const _fieldMinHeight = 52.0;
 
   final GlacierSpawnEntryData entry;
@@ -324,9 +330,7 @@ class _EntryRow extends StatelessWidget {
         : ResourceNames.lookup(context, repo.getName(typeName));
     final iconPath = zombie?.iconAssetPath;
     final switchLabel =
-        l10n?.switchZombie ??
-        l10n?.switchCustomZombie ??
-        'Switch zombie';
+        l10n?.switchZombie ?? l10n?.switchCustomZombie ?? 'Switch zombie';
     final weightLabel = l10n?.glacierModuleWeight ?? 'Weight';
     final levelLabel = l10n?.glacierModuleLevel ?? 'Level (0–10)';
 
@@ -389,10 +393,7 @@ class _EntryRow extends StatelessWidget {
                   TextButton.icon(
                     onPressed: onPickZombie,
                     icon: const Icon(Icons.swap_horiz, size: 20),
-                    label: Text(
-                      switchLabel,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                    label: Text(switchLabel, overflow: TextOverflow.ellipsis),
                     style: TextButton.styleFrom(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 6,
@@ -442,8 +443,7 @@ class _EntryRow extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 4),
                 child: Tooltip(
                   message:
-                      l10n?.glacierModuleLevelTooltip ??
-                      'Zombie level (0–10).',
+                      l10n?.glacierModuleLevelTooltip ?? 'Zombie level (0–10).',
                   child: DropdownButtonFormField<int>(
                     key: ValueKey('lv_${entry.typeName}_${entry.level}'),
                     initialValue: entry.level.clamp(
@@ -457,7 +457,7 @@ class _EntryRow extends StatelessWidget {
                     iconSize: 22,
                     items: List.generate(
                       _GlacierModuleScreenState._levelMax -
-                              _GlacierModuleScreenState._levelMin +
+                          _GlacierModuleScreenState._levelMin +
                           1,
                       (i) {
                         final lv = i + _GlacierModuleScreenState._levelMin;

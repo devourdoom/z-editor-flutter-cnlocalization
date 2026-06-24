@@ -12,5 +12,3 @@ class LocationData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'mX': x, 'mY': y};
 }
-
-

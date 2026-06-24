@@ -89,9 +89,7 @@ class _ZombieRushModuleScreenState extends State<ZombieRushModuleScreen> {
         ),
         backgroundColor: accentColor,
         foregroundColor: Colors.white,
-        title: Text(
-          l10n?.zombieRushTitle ?? 'Level timer',
-        ),
+        title: Text(l10n?.zombieRushTitle ?? 'Level timer'),
         actions: [
           IconButton(
             icon: const Icon(Icons.help_outline),
@@ -104,12 +102,14 @@ class _ZombieRushModuleScreenState extends State<ZombieRushModuleScreen> {
                 sections: [
                   HelpSectionData(
                     title: l10n?.overview ?? 'Overview',
-                    body: l10n?.zombieRushHelpOverview ??
+                    body:
+                        l10n?.zombieRushHelpOverview ??
                         'Countdown timer for Zombie Rush. Level ends when time runs out.',
                   ),
                   HelpSectionData(
                     title: l10n?.zombieRushHelpNotes ?? 'Notes',
-                    body: l10n?.zombieRushHelpIncompat ??
+                    body:
+                        l10n?.zombieRushHelpIncompat ??
                         'Timer module is incompatible with Yard mode and may crash. Use Zombie Rush timer instead.',
                   ),
                 ],
@@ -140,7 +140,9 @@ class _ZombieRushModuleScreenState extends State<ZombieRushModuleScreen> {
                     const SizedBox(height: 12),
                     TextField(
                       controller: _timeController,
-                      keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                      keyboardType: const TextInputType.numberWithOptions(
+                        decimal: true,
+                      ),
                       decoration: InputDecoration(
                         labelText: l10n?.levelCountdown ?? 'Level countdown',
                         border: const OutlineInputBorder(),

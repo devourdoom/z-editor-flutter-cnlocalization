@@ -10,8 +10,10 @@ void main() {
     });
 
     test('returns false for zombies without a default Resilience field', () {
-      expect(ZombiePropertiesRepository.supportsResilienceShield('tutorial'),
-          isFalse);
+      expect(
+        ZombiePropertiesRepository.supportsResilienceShield('tutorial'),
+        isFalse,
+      );
     });
 
     test('returns true for zombies whose default sheet defines Resilience', () {

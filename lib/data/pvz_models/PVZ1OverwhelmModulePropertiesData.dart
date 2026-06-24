@@ -11,5 +11,3 @@ class PVZ1OverwhelmModulePropertiesData extends PvzModel {
 
   Map<String, dynamic> toJson() => {};
 }
-
-

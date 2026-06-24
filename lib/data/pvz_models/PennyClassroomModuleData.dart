@@ -16,5 +16,3 @@ class PennyClassroomModuleData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'PlantMap': plantMap};
 }
-
-

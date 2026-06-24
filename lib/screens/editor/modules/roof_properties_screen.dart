@@ -57,10 +57,12 @@ class _RoofPropertiesScreenState extends State<RoofPropertiesScreen> {
     } catch (_) {
       _data = RoofPropertiesData();
     }
-    _startColController =
-        TextEditingController(text: '${_data.flowerPotStartColumn}');
-    _endColController =
-        TextEditingController(text: '${_data.flowerPotEndColumn}');
+    _startColController = TextEditingController(
+      text: '${_data.flowerPotStartColumn}',
+    );
+    _endColController = TextEditingController(
+      text: '${_data.flowerPotEndColumn}',
+    );
   }
 
   void _sync() {
@@ -81,7 +83,9 @@ class _RoofPropertiesScreenState extends State<RoofPropertiesScreen> {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)?.roofFlowerPot ?? 'Roof flower pot'),
+        title: Text(
+          AppLocalizations.of(context)?.roofFlowerPot ?? 'Roof flower pot',
+        ),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: widget.onBack,

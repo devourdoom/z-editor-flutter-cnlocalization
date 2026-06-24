@@ -23,5 +23,3 @@ class IncreasedCostModulePropertiesData extends PvzModel {
     'MaxIncreasedCount': maxIncreasedCount,
   };
 }
-
-

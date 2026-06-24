@@ -24,12 +24,14 @@ class AppLinks {
 
   static Future<AppLinks> load() async {
     if (_cached != null) return _cached!;
-    final raw = json.decode(await loadJsonString(assetPath)) as Map<String, dynamic>;
+    final raw =
+        json.decode(await loadJsonString(assetPath)) as Map<String, dynamic>;
     _cached = AppLinks(
       source: raw['source'] as String,
       issues: raw['issues'] as String,
       discordInvite: raw['discordInvite'] as String,
-      recommendedLevels: (raw['recommendedLevels'] ?? raw['levelPlaza']) as String,
+      recommendedLevels:
+          (raw['recommendedLevels'] ?? raw['levelPlaza']) as String,
       levelUpload: raw['levelUpload'] as String,
     );
     return _cached!;

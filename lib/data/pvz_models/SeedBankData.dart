@@ -60,5 +60,3 @@ const kSeedBankGridItemIds = [
   'FrozenIcebloom',
   'BesiegeBox',
 ];
-
-

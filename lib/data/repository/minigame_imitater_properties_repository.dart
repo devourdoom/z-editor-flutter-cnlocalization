@@ -37,8 +37,9 @@ class MinigameImitaterPropertiesRepository {
   Future<void> _ensureLoaded() async {
     if (_initialized) return;
     try {
-      final jsonStr =
-          await rootBundle.loadString('assets/reference/PropertySheets.json');
+      final jsonStr = await rootBundle.loadString(
+        'assets/reference/PropertySheets.json',
+      );
       final root = jsonDecode(jsonStr) as Map<String, dynamic>;
       final objects = root['objects'] as List<dynamic>? ?? [];
       for (final e in objects) {
@@ -50,8 +51,9 @@ class MinigameImitaterPropertiesRepository {
         if (data is! Map<String, dynamic>) continue;
         final raw = data['SpawnPlantWhiteList'];
         if (raw is! List) continue;
-        _spawnWhitelistByPropertyAlias[alias] =
-            raw.map((x) => x.toString()).toList();
+        _spawnWhitelistByPropertyAlias[alias] = raw
+            .map((x) => x.toString())
+            .toList();
       }
     } catch (_) {
       // leave map partial / empty

@@ -37,7 +37,9 @@ class _StageBaseSelectionScreenState extends State<StageBaseSelectionScreen> {
     var items = StageCatalogRepository.stageBaseOptions();
 
     if (_selectedType != 'all') {
-      items = items.where((option) => _optionTypeName(option) == _selectedType).toList();
+      items = items
+          .where((option) => _optionTypeName(option) == _selectedType)
+          .toList();
     }
 
     if (normalizeSelectionSearchQuery(_searchQuery).isNotEmpty) {
@@ -98,12 +100,13 @@ class _StageBaseSelectionScreenState extends State<StageBaseSelectionScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.search_off, size: 64, color: theme.colorScheme.outline),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No lawn found',
-                    style: theme.textTheme.bodyLarge,
+                  Icon(
+                    Icons.search_off,
+                    size: 64,
+                    color: theme.colorScheme.outline,
                   ),
+                  const SizedBox(height: 16),
+                  Text('No lawn found', style: theme.textTheme.bodyLarge),
                 ],
               ),
             )

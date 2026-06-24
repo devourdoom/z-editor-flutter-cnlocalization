@@ -23,7 +23,8 @@ class WaveGeneratorPropertiesData extends PvzModel {
       waveSpendingPoints <= waveSpendingPointIncrement;
 
   factory WaveGeneratorPropertiesData.fromJson(Map<String, dynamic> json) {
-    final waves = (json['Waves'] as List<dynamic>?)
+    final waves =
+        (json['Waves'] as List<dynamic>?)
             ?.map(
               (e) => WaveGeneratorWaveData.fromJson(
                 Map<String, dynamic>.from(e as Map),
@@ -32,7 +33,8 @@ class WaveGeneratorPropertiesData extends PvzModel {
             .toList() ??
         [];
     return WaveGeneratorPropertiesData(
-      addToZombiePool: (json['AddToZombiePool'] as List<dynamic>?)
+      addToZombiePool:
+          (json['AddToZombiePool'] as List<dynamic>?)
               ?.map(
                 (e) => WaveGeneratorPoolEntryData.fromJson(
                   Map<String, dynamic>.from(e as Map),

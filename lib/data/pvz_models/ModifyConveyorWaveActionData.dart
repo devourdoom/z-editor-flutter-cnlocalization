@@ -39,4 +39,3 @@ class ModifyConveyorWaveActionData extends PvzModel {
     'Remove': removeList.map((e) => e.toJson()).toList(),
   };
 }
-

@@ -6,10 +6,7 @@ import 'package:c_editor/widgets/editor_components.dart';
 
 /// Module selection. Ported from Z-Editor-master ModuleSelectionScreen.kt
 class ModuleSelectionScreen extends StatefulWidget {
-  const ModuleSelectionScreen({
-    super.key,
-    required this.existingObjClasses,
-  });
+  const ModuleSelectionScreen({super.key, required this.existingObjClasses});
 
   final Set<String> existingObjClasses;
 
@@ -28,7 +25,8 @@ class _ModuleSelectionScreenState extends State<ModuleSelectionScreen> {
     final allModules = ModuleRegistry.getAllModules();
 
     final filteredModules = allModules.where((meta) {
-      final categoryMatch = _selectedCategory == null || meta.category == _selectedCategory;
+      final categoryMatch =
+          _selectedCategory == null || meta.category == _selectedCategory;
       final searchMatch = matchesSelectionSearch(_searchQuery, [
         meta.getTitle(context),
         meta.getDescription(context),
@@ -53,7 +51,10 @@ class _ModuleSelectionScreenState extends State<ModuleSelectionScreen> {
           child: Column(
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 child: SelectionSearchField(
                   hintText: l10n?.search ?? 'Search',
                   query: _searchQuery,
@@ -69,14 +70,16 @@ class _ModuleSelectionScreenState extends State<ModuleSelectionScreen> {
                     AccentBarChoiceChip(
                       label: l10n?.stageTypeAll ?? 'All',
                       selected: _selectedCategory == null,
-                      onSelected: (_) => setState(() => _selectedCategory = null),
+                      onSelected: (_) =>
+                          setState(() => _selectedCategory = null),
                       padding: const EdgeInsets.symmetric(horizontal: 4),
                     ),
                     ...ModuleCategory.values.map((cat) {
                       return AccentBarChoiceChip(
                         label: _categoryLabel(cat, l10n),
                         selected: _selectedCategory == cat,
-                        onSelected: (_) => setState(() => _selectedCategory = cat),
+                        onSelected: (_) =>
+                            setState(() => _selectedCategory = cat),
                         padding: const EdgeInsets.symmetric(horizontal: 4),
                       );
                     }),
@@ -92,12 +95,18 @@ class _ModuleSelectionScreenState extends State<ModuleSelectionScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.search_off, size: 64, color: theme.colorScheme.outline),
+                  Icon(
+                    Icons.search_off,
+                    size: 64,
+                    color: theme.colorScheme.outline,
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     _searchQuery.isNotEmpty
-                        ? (l10n?.noResultsFor(_searchQuery) ?? 'No results for "$_searchQuery"')
-                        : (l10n?.noModulesInCategory ?? 'No modules in this category'),
+                        ? (l10n?.noResultsFor(_searchQuery) ??
+                              'No results for "$_searchQuery"')
+                        : (l10n?.noModulesInCategory ??
+                              'No modules in this category'),
                     style: theme.textTheme.bodyLarge,
                   ),
                 ],
@@ -108,7 +117,9 @@ class _ModuleSelectionScreenState extends State<ModuleSelectionScreen> {
               itemCount: filteredModules.length,
               itemBuilder: (context, index) {
                 final meta = filteredModules[index];
-                final isAlreadyAdded = widget.existingObjClasses.contains(meta.objClass);
+                final isAlreadyAdded = widget.existingObjClasses.contains(
+                  meta.objClass,
+                );
                 final isEnabled = !isAlreadyAdded || meta.allowMultiple;
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
@@ -129,17 +140,25 @@ class _ModuleSelectionScreenState extends State<ModuleSelectionScreen> {
   String _categoryLabel(ModuleCategory cat, AppLocalizations? l10n) {
     if (l10n == null) {
       switch (cat) {
-        case ModuleCategory.base: return 'Base';
-        case ModuleCategory.mode: return 'Game Modes';
-        case ModuleCategory.scene: return 'Scene';
-        case ModuleCategory.gimmick: return 'Gimmick';
+        case ModuleCategory.base:
+          return 'Base';
+        case ModuleCategory.mode:
+          return 'Game Modes';
+        case ModuleCategory.scene:
+          return 'Scene';
+        case ModuleCategory.gimmick:
+          return 'Gimmick';
       }
     }
     switch (cat) {
-      case ModuleCategory.base: return l10n.moduleCategoryBase;
-      case ModuleCategory.mode: return l10n.moduleCategoryMode;
-      case ModuleCategory.scene: return l10n.moduleCategoryScene;
-      case ModuleCategory.gimmick: return l10n.moduleCategoryGimmick;
+      case ModuleCategory.base:
+        return l10n.moduleCategoryBase;
+      case ModuleCategory.mode:
+        return l10n.moduleCategoryMode;
+      case ModuleCategory.scene:
+        return l10n.moduleCategoryScene;
+      case ModuleCategory.gimmick:
+        return l10n.moduleCategoryGimmick;
     }
   }
 }
@@ -163,7 +182,9 @@ class _ModuleSelectionCard extends StatelessWidget {
     return Opacity(
       opacity: isEnabled ? 1 : 0.6,
       child: Card(
-        color: isEnabled ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerHighest,
+        color: isEnabled
+            ? theme.colorScheme.surface
+            : theme.colorScheme.surfaceContainerHighest,
         elevation: isEnabled ? 2 : 0,
         child: InkWell(
           onTap: onTap,
@@ -176,13 +197,19 @@ class _ModuleSelectionCard extends StatelessWidget {
                   width: 48,
                   height: 48,
                   decoration: BoxDecoration(
-                    color: (isEnabled ? theme.colorScheme.primary : theme.colorScheme.outline).withValues(alpha: 0.1),
+                    color:
+                        (isEnabled
+                                ? theme.colorScheme.primary
+                                : theme.colorScheme.outline)
+                            .withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Icon(
                     meta.icon,
                     size: 28,
-                    color: isEnabled ? theme.colorScheme.primary : theme.colorScheme.outline,
+                    color: isEnabled
+                        ? theme.colorScheme.primary
+                        : theme.colorScheme.outline,
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -194,13 +221,17 @@ class _ModuleSelectionCard extends StatelessWidget {
                         meta.getTitle(context),
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
-                          color: isEnabled ? theme.colorScheme.onSurface : theme.colorScheme.onSurfaceVariant,
+                          color: isEnabled
+                              ? theme.colorScheme.onSurface
+                              : theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                       const SizedBox(height: 4),
                       Text(
                         meta.getDescription(context),
-                        style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

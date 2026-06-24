@@ -32,6 +32,7 @@ class ZombieSelectionScreen extends StatefulWidget {
   final void Function(String) onZombieSelected;
   final void Function(List<String>)? onMultiZombieSelected;
   final VoidCallback onBack;
+
   /// When set (e.g. from the level editor), enables Kongfu rocket → flick module prompt.
   final EditorCubit? editorCubit;
 
@@ -78,10 +79,10 @@ class _ZombieSelectionScreenState extends State<ZombieSelectionScreen> {
     if (category == ZombieCategory.other) {
       return const [
         ZombieTag.all,
-        ZombieTag.international,
-        ZombieTag.chinese,
-        ZombieTag.custom,
         ZombieTag.evildave,
+        ZombieTag.custom,
+        ZombieTag.chinese,
+        ZombieTag.international,
       ];
     }
     return [
@@ -108,7 +109,11 @@ class _ZombieSelectionScreenState extends State<ZombieSelectionScreen> {
     final isFav = ZombieRepository().isFavorite(id);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(isFav ? (l10n?.addedToFavorites ?? 'Added to favorites') : (l10n?.removedFromFavorites ?? 'Removed from favorites')),
+        content: Text(
+          isFav
+              ? (l10n?.addedToFavorites ?? 'Added to favorites')
+              : (l10n?.removedFromFavorites ?? 'Removed from favorites'),
+        ),
         duration: const Duration(milliseconds: 1200),
       ),
     );
@@ -145,10 +150,9 @@ class _ZombieSelectionScreenState extends State<ZombieSelectionScreen> {
         : mergeUniqueSelectionResults(
             repositoryZombies,
             _categoryFilteredZombies(repo).where(
-              (zombie) => matchesSelectionSearch(
-                _searchQuery,
-                [ResourceNames.lookup(context, zombie.name)],
-              ),
+              (zombie) => matchesSelectionSearch(_searchQuery, [
+                ResourceNames.lookup(context, zombie.name),
+              ]),
             ),
             (zombie) => zombie.id,
           );
@@ -210,100 +214,56 @@ class _ZombieSelectionScreenState extends State<ZombieSelectionScreen> {
               child: ScrollableWithMouseDrag(
                 child: SingleChildScrollView(
                   child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-                      child: SelectionSearchField(
-                        hintText: widget.multiSelect
-                            ? (l10n?.selectedCountTapToSearch(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
+                        child: SelectionSearchField(
+                          hintText: widget.multiSelect
+                              ? (l10n?.selectedCountTapToSearch(
                                       _selectedCount,
                                     ) ??
                                     'Selected $_selectedCount, tap to search')
-                            : (l10n?.searchZombie ?? 'Search zombie'),
-                        query: _searchQuery,
-                        fillColor: theme.colorScheme.surface,
-                        onChanged: (v) => setState(() => _searchQuery = v),
-                        onClear: () => setState(() => _searchQuery = ''),
+                              : (l10n?.searchZombie ?? 'Search zombie'),
+                          query: _searchQuery,
+                          fillColor: theme.colorScheme.surface,
+                          onChanged: (v) => setState(() => _searchQuery = v),
+                          onClear: () => setState(() => _searchQuery = ''),
+                        ),
                       ),
-                    ),
-                    DefaultTabController(
-                      key: ValueKey(_selectedCategory),
-                      length: ZombieCategory.values.length,
-                      initialIndex:
-                          ZombieCategory.values.indexOf(_selectedCategory),
-                      child: TabBar(
-                        isScrollable: true,
-                        indicatorColor: tabColors.indicator,
-                        labelColor: tabColors.label,
-                        unselectedLabelColor: tabColors.unselectedLabel,
-                        onTap: (index) =>
-                            _setCategory(ZombieCategory.values[index]),
-                        tabs: ZombieCategory.values.map((category) {
-                          final isSelected = _selectedCategory == category;
-                          return Tab(
-                            child: Row(
-                              children: [
-                                if (category == ZombieCategory.collection) ...[
-                                  Icon(
-                                    Icons.star,
-                                    size: 16,
-                                    color: isSelected
-                                        ? tabColors.label
-                                        : tabColors.unselectedLabel,
-                                  ),
-                                  const SizedBox(width: 4),
-                                ],
-                                Text(
-                                  category.getLabel(context),
-                                  style: TextStyle(
-                                    fontWeight: isSelected
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      ),
-                    ),
-                    if (_selectedCategory != ZombieCategory.collection)
                       DefaultTabController(
-                        key: ValueKey('${_selectedCategory.name}_tags'),
-                        length: visibleTags.length,
-                        initialIndex: safeTagIndex,
+                        key: ValueKey(_selectedCategory),
+                        length: ZombieCategory.values.length,
+                        initialIndex: ZombieCategory.values.indexOf(
+                          _selectedCategory,
+                        ),
                         child: TabBar(
                           isScrollable: true,
                           indicatorColor: tabColors.indicator,
                           labelColor: tabColors.label,
                           unselectedLabelColor: tabColors.unselectedLabel,
-                          onTap: (index) => setState(
-                            () => _selectedTag = visibleTags[index],
-                          ),
-                          tabs: visibleTags.map((tag) {
-                            final isSelected = _selectedTag == tag;
-                            final iconName = tag.iconName;
+                          onTap: (index) =>
+                              _setCategory(ZombieCategory.values[index]),
+                          tabs: ZombieCategory.values.map((category) {
+                            final isSelected = _selectedCategory == category;
                             return Tab(
                               child: Row(
                                 children: [
-                                  if (iconName != null) ...[
-                                    AssetImageWidget(
-                                      assetPath:
-                                          'assets/images/tags/$iconName',
-                                      width: 18,
-                                      height: 18,
-                                      altCandidates: imageAltCandidates(
-                                        'assets/images/tags/$iconName',
-                                      ),
+                                  if (category ==
+                                      ZombieCategory.collection) ...[
+                                    Icon(
+                                      Icons.star,
+                                      size: 16,
+                                      color: isSelected
+                                          ? tabColors.label
+                                          : tabColors.unselectedLabel,
                                     ),
-                                    const SizedBox(width: 6),
+                                    const SizedBox(width: 4),
                                   ],
                                   Text(
-                                    tag.getLabel(context),
+                                    category.getLabel(context),
                                     style: TextStyle(
-                                      fontSize: 13,
                                       fontWeight: isSelected
                                           ? FontWeight.bold
                                           : FontWeight.normal,
@@ -315,9 +275,55 @@ class _ZombieSelectionScreenState extends State<ZombieSelectionScreen> {
                           }).toList(),
                         ),
                       ),
-                    const SizedBox(height: 8),
-                  ],
-                ),
+                      if (_selectedCategory != ZombieCategory.collection)
+                        DefaultTabController(
+                          key: ValueKey('${_selectedCategory.name}_tags'),
+                          length: visibleTags.length,
+                          initialIndex: safeTagIndex,
+                          child: TabBar(
+                            isScrollable: true,
+                            indicatorColor: tabColors.indicator,
+                            labelColor: tabColors.label,
+                            unselectedLabelColor: tabColors.unselectedLabel,
+                            onTap: (index) => setState(
+                              () => _selectedTag = visibleTags[index],
+                            ),
+                            tabs: visibleTags.map((tag) {
+                              final isSelected = _selectedTag == tag;
+                              final iconName = tag.iconName;
+                              return Tab(
+                                child: Row(
+                                  children: [
+                                    if (iconName != null) ...[
+                                      AssetImageWidget(
+                                        assetPath:
+                                            'assets/images/tags/$iconName',
+                                        width: 18,
+                                        height: 18,
+                                        altCandidates: imageAltCandidates(
+                                          'assets/images/tags/$iconName',
+                                        ),
+                                      ),
+                                      const SizedBox(width: 6),
+                                    ],
+                                    Text(
+                                      tag.getLabel(context),
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: isSelected
+                                            ? FontWeight.bold
+                                            : FontWeight.normal,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
+                      const SizedBox(height: 8),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -326,78 +332,75 @@ class _ZombieSelectionScreenState extends State<ZombieSelectionScreen> {
             child: !_isLoaded
                 ? const Center(child: CircularProgressIndicator())
                 : zombies.isEmpty
-                    ? Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.search,
-                              size: 64,
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              _selectedCategory == ZombieCategory.collection
-                                  ? (l10n?.noFavoritesLongPress ??
-                                        'No favorites. Long-press to favorite.')
-                                  : (l10n?.noZombieFound ?? 'No zombie found'),
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          ],
+                ? Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.search,
+                          size: 64,
+                          color: theme.colorScheme.onSurfaceVariant,
                         ),
-                      )
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(12),
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                        const SizedBox(height: 16),
+                        Text(
+                          _selectedCategory == ZombieCategory.collection
+                              ? (l10n?.noFavoritesLongPress ??
+                                    'No favorites. Long-press to favorite.')
+                              : (l10n?.noZombieFound ?? 'No zombie found'),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                : GridView.builder(
+                    padding: const EdgeInsets.all(12),
+                    gridDelegate:
+                        const SliverGridDelegateWithMaxCrossAxisExtent(
                           maxCrossAxisExtent: 72,
                           mainAxisSpacing: 12,
                           crossAxisSpacing: 8,
                           childAspectRatio: 0.65,
                         ),
-                        itemCount: zombies.length,
-                        itemBuilder: (_, i) {
-                          final zombie = zombies[i];
-                          final selectionCount = widget.allowDuplicateSelection
-                              ? _selectedIdsWithDuplicates
-                                  .where((id) => id == zombie.id)
-                                  .length
-                              : (_selectedIds.contains(zombie.id) ? 1 : 0);
-                          final isSelected = selectionCount > 0;
-                          final isFavorite = repo.isFavorite(zombie.id);
-                          return _ZombieGridItem(
-                            zombie: zombie,
-                            isSelected: isSelected,
-                            isFavorite: isFavorite,
-                            selectionColor: widget.multiSelect ? themeColor : null,
-                            onTap: () async {
-                              if (widget.multiSelect) {
-                                setState(() {
-                                  if (widget.allowDuplicateSelection) {
-                                    _selectedIdsWithDuplicates.add(zombie.id);
-                                  } else if (isSelected) {
-                                    _selectedIds.remove(zombie.id);
-                                  } else {
-                                    _selectedIds.add(zombie.id);
-                                  }
-                                });
+                    itemCount: zombies.length,
+                    itemBuilder: (_, i) {
+                      final zombie = zombies[i];
+                      final selectionCount = widget.allowDuplicateSelection
+                          ? _selectedIdsWithDuplicates
+                                .where((id) => id == zombie.id)
+                                .length
+                          : (_selectedIds.contains(zombie.id) ? 1 : 0);
+                      final isSelected = selectionCount > 0;
+                      final isFavorite = repo.isFavorite(zombie.id);
+                      return _ZombieGridItem(
+                        zombie: zombie,
+                        isSelected: isSelected,
+                        isFavorite: isFavorite,
+                        selectionColor: widget.multiSelect ? themeColor : null,
+                        onTap: () async {
+                          if (widget.multiSelect) {
+                            setState(() {
+                              if (widget.allowDuplicateSelection) {
+                                _selectedIdsWithDuplicates.add(zombie.id);
+                              } else if (isSelected) {
+                                _selectedIds.remove(zombie.id);
                               } else {
-                                await maybeShowKongfuRocketFlickPrompt(
-                                  context,
-                                  [zombie.id],
-                                  editorCubit: widget.editorCubit,
-                                );
-                                if (!context.mounted) return;
-                                widget.onZombieSelected(zombie.id);
+                                _selectedIds.add(zombie.id);
                               }
-                            },
-                            onLongPress: () =>
-                                _toggleFavorite(context, zombie.id),
-                          );
+                            });
+                          } else {
+                            await maybeShowKongfuRocketFlickPrompt(context, [
+                              zombie.id,
+                            ], editorCubit: widget.editorCubit);
+                            if (!context.mounted) return;
+                            widget.onZombieSelected(zombie.id);
+                          }
                         },
-                      ),
+                        onLongPress: () => _toggleFavorite(context, zombie.id),
+                      );
+                    },
+                  ),
           ),
         ],
       ),
@@ -430,8 +433,9 @@ class _ZombieGridItem extends StatelessWidget {
 
     final accent = selectionColor ?? theme.colorScheme.primary;
     final borderColor = isSelected ? accent : Colors.transparent;
-    final bgColor =
-        isSelected ? accent.withValues(alpha: 0.08) : Colors.transparent;
+    final bgColor = isSelected
+        ? accent.withValues(alpha: 0.08)
+        : Colors.transparent;
     return Material(
       color: bgColor,
       borderRadius: BorderRadius.circular(8),

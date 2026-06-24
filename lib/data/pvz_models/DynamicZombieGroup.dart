@@ -34,5 +34,3 @@ class DynamicZombieGroup extends PvzModel {
     'ZombieLevel': zombieLevel,
   };
 }
-
-

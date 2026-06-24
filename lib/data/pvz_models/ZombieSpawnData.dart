@@ -27,5 +27,3 @@ class ZombieSpawnData extends PvzModel {
     return data;
   }
 }
-
-

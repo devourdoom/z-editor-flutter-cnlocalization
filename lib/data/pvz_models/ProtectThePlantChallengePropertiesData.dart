@@ -29,4 +29,3 @@ class ProtectThePlantChallengePropertiesData extends PvzModel {
     'Plants': plants.map((e) => e.toJson()).toList(),
   };
 }
-

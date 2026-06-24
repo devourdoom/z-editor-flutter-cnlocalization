@@ -7,7 +7,8 @@ import 'package:c_editor/data/repository/plant_repository.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/screens/select/plant_selection_screen.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Protect-the-plant challenge. Ported from ProtectThePlantChallengePropertiesEP.kt
@@ -84,12 +85,16 @@ class _ProtectPlantChallengeScreenState
           onPlantSelected: (id) {
             Navigator.pop(context);
             final list = List<ProtectPlantData>.from(_data.plants)
-              ..removeWhere((e) => e.gridX == _selectedX && e.gridY == _selectedY)
-              ..add(ProtectPlantData(
-                gridX: _selectedX,
-                gridY: _selectedY,
-                plantType: id,
-              ));
+              ..removeWhere(
+                (e) => e.gridX == _selectedX && e.gridY == _selectedY,
+              )
+              ..add(
+                ProtectPlantData(
+                  gridX: _selectedX,
+                  gridY: _selectedY,
+                  plantType: id,
+                ),
+              );
             _data = ProtectThePlantChallengePropertiesData(plants: list);
             _sync();
           },
@@ -226,17 +231,19 @@ class _ProtectPlantChallengeScreenState
               ),
             ),
             const SizedBox(height: 8),
-            ...sorted.map((p) => _PlantListTile(
-                  plant: p,
-                  gridRows: _gridRows,
-                  gridCols: _gridCols,
-                  onDelete: () => _removePlant(p),
-                  onSelect: () => setState(() {
-                    _selectedX = p.gridX;
-                    _selectedY = p.gridY;
-                  }),
-                  deleteTooltip: l10n.delete,
-                )),
+            ...sorted.map(
+              (p) => _PlantListTile(
+                plant: p,
+                gridRows: _gridRows,
+                gridCols: _gridCols,
+                onDelete: () => _removePlant(p),
+                onSelect: () => setState(() {
+                  _selectedX = p.gridX;
+                  _selectedY = p.gridY;
+                }),
+                deleteTooltip: l10n.delete,
+              ),
+            ),
           ],
         ),
       ),
@@ -277,8 +284,9 @@ class _ProtectPlantChallengeScreenState
                             margin: const EdgeInsets.all(0.5),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? theme.colorScheme.primary
-                                      .withValues(alpha: 0.2)
+                                  ? theme.colorScheme.primary.withValues(
+                                      alpha: 0.2,
+                                    )
                                   : Colors.transparent,
                               border: Border.all(
                                 color: isSelected
@@ -296,7 +304,9 @@ class _ProtectPlantChallengeScreenState
                                           padding: const EdgeInsets.all(2),
                                           child: FittedBox(
                                             fit: BoxFit.contain,
-                                            child: _PlantIconSmall(plant.plantType),
+                                            child: _PlantIconSmall(
+                                              plant.plantType,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -359,8 +369,7 @@ class _PlantListTile extends StatelessWidget {
   final VoidCallback onSelect;
   final String deleteTooltip;
 
-  bool get _isOutOfBounds =>
-      plant.gridX >= gridCols || plant.gridY >= gridRows;
+  bool get _isOutOfBounds => plant.gridX >= gridCols || plant.gridY >= gridRows;
 
   @override
   Widget build(BuildContext context) {

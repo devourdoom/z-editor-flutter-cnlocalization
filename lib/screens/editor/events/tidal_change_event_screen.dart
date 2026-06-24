@@ -29,7 +29,8 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
   late PvzObject _moduleObj;
   late TidalChangeWaveActionData _data;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _gridRows => _isDeepSeaLawn ? 6 : 5;
   int get _gridCols => _isDeepSeaLawn ? 10 : 9;
 
@@ -81,8 +82,9 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
     final l10n = AppLocalizations.of(context);
     final info = RtidParser.parse(widget.rtid);
     final alias = info?.alias ?? '';
-    final hasTideModule = widget.levelFile.objects
-        .any((o) => o.objClass == 'TideProperties');
+    final hasTideModule = widget.levelFile.objects.any(
+      (o) => o.objClass == 'TideProperties',
+    );
 
     return Scaffold(
       appBar: AppBar(
@@ -95,7 +97,8 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
           children: [
             Text(l10n?.editAlias(alias) ?? 'Edit $alias'),
             Text(
-              l10n?.eventDesc_TidalChangeWaveActionProps ?? 'Event: Tidal change',
+              l10n?.eventDesc_TidalChangeWaveActionProps ??
+                  'Event: Tidal change',
               style: theme.textTheme.bodySmall,
             ),
           ],
@@ -105,15 +108,21 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
             icon: const Icon(Icons.help_outline),
             onPressed: () => showEditorHelpDialog(
               context,
-              title: l10n?.eventTitle_TidalChangeWaveActionProps ?? 'Tidal change event',
+              title:
+                  l10n?.eventTitle_TidalChangeWaveActionProps ??
+                  'Tidal change event',
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.eventHelpTidalChangeBody ?? 'This event changes the tide position during a wave.',
+                  body:
+                      l10n?.eventHelpTidalChangeBody ??
+                      'This event changes the tide position during a wave.',
                 ),
                 HelpSectionData(
                   title: l10n?.position ?? 'Position',
-                  body: l10n?.eventHelpTidalChangePosition ?? 'Column 0 is rightmost, 9 is leftmost. ChangeAmount sets the water boundary.',
+                  body:
+                      l10n?.eventHelpTidalChangePosition ??
+                      'Column 0 is rightmost, 9 is leftmost. ChangeAmount sets the water boundary.',
                 ),
               ],
             ),
@@ -134,17 +143,15 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
                     padding: const EdgeInsets.all(16),
                     child: Row(
                       children: [
-                        Icon(
-                          editorErrorIcon,
-                          color: theme.colorScheme.error,
-                        ),
+                        Icon(editorErrorIcon, color: theme.colorScheme.error),
                         const SizedBox(width: 12),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                l10n?.missingTideModule ?? 'Missing tide module',
+                                l10n?.missingTideModule ??
+                                    'Missing tide module',
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   fontWeight: FontWeight.bold,
                                   color: theme.colorScheme.error,
@@ -152,7 +159,8 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                l10n?.levelHasNoTideProperties ?? 'Level has no TideProperties. This event may not work.',
+                                l10n?.levelHasNoTideProperties ??
+                                    'Level has no TideProperties. This event may not work.',
                                 style: theme.textTheme.bodySmall?.copyWith(
                                   color: theme.colorScheme.error,
                                 ),
@@ -172,7 +180,8 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n?.changePositionChangeAmount ?? 'Change position (ChangeAmount)',
+                        l10n?.changePositionChangeAmount ??
+                            'Change position (ChangeAmount)',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                         ),
@@ -181,7 +190,9 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
                       TextFormField(
                         initialValue: _data.tidalChange.changeAmount.toString(),
                         decoration: InputDecoration(
-                          labelText: l10n?.waterBoundaryColumn ?? 'Water boundary column',
+                          labelText:
+                              l10n?.waterBoundaryColumn ??
+                              'Water boundary column',
                           border: const OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.number,
@@ -240,11 +251,11 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
                                         decoration: BoxDecoration(
                                           color: inWater
                                               ? theme.colorScheme.primary
-                                                  .withValues(alpha: 0.6)
+                                                    .withValues(alpha: 0.6)
                                               : (theme.brightness ==
-                                                      Brightness.dark
-                                                  ? const Color(0xFF2C2C2C)
-                                                  : Colors.white),
+                                                        Brightness.dark
+                                                    ? const Color(0xFF2C2C2C)
+                                                    : Colors.white),
                                           border: Border.all(
                                             color: theme.colorScheme.outline
                                                 .withValues(alpha: 0.5),
@@ -268,8 +279,9 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
                             width: 20,
                             height: 20,
                             decoration: BoxDecoration(
-                              color: theme.colorScheme.primary
-                                  .withValues(alpha: 0.6),
+                              color: theme.colorScheme.primary.withValues(
+                                alpha: 0.6,
+                              ),
                               border: Border.all(
                                 color: theme.colorScheme.outline,
                               ),
@@ -318,7 +330,8 @@ class _TidalChangeEventScreenState extends State<TidalChangeEventScreen> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: Text(
-                          l10n?.eventHelpTidalChangePosition ?? 'Column 0 is rightmost, 9 is leftmost.',
+                          l10n?.eventHelpTidalChangePosition ??
+                              'Column 0 is rightmost, 9 is leftmost.',
                           style: theme.textTheme.bodySmall,
                         ),
                       ),

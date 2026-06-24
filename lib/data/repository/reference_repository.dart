@@ -17,18 +17,24 @@ class ReferenceRepository {
   static Future<void> init() async {
     if (instance._moduleCache != null) return;
     try {
-      final modulesJson = await rootBundle.loadString('assets/reference/LevelModules.json');
+      final modulesJson = await rootBundle.loadString(
+        'assets/reference/LevelModules.json',
+      );
       final modulesMap = jsonDecode(modulesJson) as Map<String, dynamic>;
       final list = modulesMap['objects'] as List<dynamic>? ?? [];
       final cache = <String, PvzObject>{};
       for (final e in list) {
         final obj = PvzObject.fromJson(e as Map<String, dynamic>);
-        final alias = obj.aliases?.isNotEmpty == true ? obj.aliases!.first : 'unknown';
+        final alias = obj.aliases?.isNotEmpty == true
+            ? obj.aliases!.first
+            : 'unknown';
         if (!cache.containsKey(alias)) cache[alias] = obj;
       }
       instance._moduleCache = cache;
 
-      final gridJson = await rootBundle.loadString('assets/reference/GridItemTypes.json');
+      final gridJson = await rootBundle.loadString(
+        'assets/reference/GridItemTypes.json',
+      );
       final gridMap = jsonDecode(gridJson) as Map<String, dynamic>;
       final gridList = gridMap['objects'] as List<dynamic>? ?? [];
       for (final e in gridList) {

@@ -17,4 +17,3 @@ class Point3DDouble extends PvzModel {
 
   Map<String, dynamic> toJson() => {'x': x, 'y': y, 'z': z};
 }
-

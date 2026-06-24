@@ -25,7 +25,7 @@ class WaveGeneratorModuleScreen extends StatefulWidget {
   final VoidCallback onChanged;
   final VoidCallback onBack;
   final void Function(void Function(String) onSelected)
-      onRequestZombieSelection;
+  onRequestZombieSelection;
 
   @override
   State<WaveGeneratorModuleScreen> createState() =>
@@ -152,9 +152,7 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
   }
 
   bool _isYetiZombie(String id) {
-    return id == 'yeti' ||
-        id == 'treasureyeti' ||
-        id == 'treasureyeti_egypt';
+    return id == 'yeti' || id == 'treasureyeti' || id == 'treasureyeti_egypt';
   }
 
   void _showYetiZombieBlockedMessage(AppLocalizations? l10n) {
@@ -207,7 +205,8 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              l10n?.eliteZombiesNotAllowed ?? 'Elite zombies are not allowed here',
+              l10n?.eliteZombiesNotAllowed ??
+                  'Elite zombies are not allowed here',
             ),
           ),
         );
@@ -341,22 +340,30 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
               sections: [
                 HelpSectionData(
                   title: l10n?.waveGeneratorModuleHelpOverview ?? 'Overview',
-                  body: l10n?.waveGeneratorModuleHelpOverviewBody ??
+                  body:
+                      l10n?.waveGeneratorModuleHelpOverviewBody ??
                       'Legacy embedded wave definition used in campaign-style levels. Edit individual waves on the Waves tab.',
                 ),
                 HelpSectionData(
-                  title: l10n?.waveGeneratorModuleHelpSpending ?? 'Spending points',
-                  body: l10n?.waveGeneratorModuleHelpSpendingBody ??
+                  title:
+                      l10n?.waveGeneratorModuleHelpSpending ??
+                      'Spending points',
+                  body:
+                      l10n?.waveGeneratorModuleHelpSpendingBody ??
                       'WaveSpendingPoints must be less than or equal to WaveSpendingPointIncrement or the level crashes on load.',
                 ),
                 HelpSectionData(
                   title: l10n?.waveGeneratorModuleHelpPool ?? 'Zombie pool',
-                  body: l10n?.waveGeneratorModuleHelpPoolBody ??
+                  body:
+                      l10n?.waveGeneratorModuleHelpPoolBody ??
                       'AddToZombiePool extends random spawn options. Only built-in zombie types are supported.',
                 ),
                 HelpSectionData(
-                  title: l10n?.waveGeneratorModuleHelpIncompat ?? 'Incompatibilities',
-                  body: l10n?.waveGeneratorModuleHelpIncompatBody ??
+                  title:
+                      l10n?.waveGeneratorModuleHelpIncompat ??
+                      'Incompatibilities',
+                  body:
+                      l10n?.waveGeneratorModuleHelpIncompatBody ??
                       'Cannot coexist with Wave Manager modules, Renai, or Witch modules.',
                 ),
               ],
@@ -369,7 +376,6 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
@@ -386,7 +392,8 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
                     const SizedBox(height: 12),
                     _buildLabeledNumberField(
                       controller: _flagIntervalCtrl,
-                      label: l10n?.flagWaveInterval ??
+                      label:
+                          l10n?.flagWaveInterval ??
                           'Flag wave interval (FlagWaveInterval)',
                       helperText: l10n?.waveGeneratorFlagIntervalHint,
                       onChanged: (v) {
@@ -400,7 +407,8 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
                     const SizedBox(height: 12),
                     _buildLabeledNumberField(
                       controller: _spendingPointsCtrl,
-                      label: l10n?.waveGeneratorSpendingPoints ??
+                      label:
+                          l10n?.waveGeneratorSpendingPoints ??
                           'Spending points (WaveSpendingPoints)',
                       onChanged: (v) {
                         final n = int.tryParse(v);
@@ -413,7 +421,8 @@ class _WaveGeneratorModuleScreenState extends State<WaveGeneratorModuleScreen> {
                     const SizedBox(height: 12),
                     _buildLabeledNumberField(
                       controller: _spendingIncrementCtrl,
-                      label: l10n?.waveGeneratorSpendingPointIncrement ??
+                      label:
+                          l10n?.waveGeneratorSpendingPointIncrement ??
                           'Point increment (WaveSpendingPointIncrement)',
                       onChanged: (v) {
                         final n = int.tryParse(v);

@@ -21,5 +21,3 @@ class RoofPropertiesData extends PvzModel {
     'FlowerPotEndColumn': flowerPotEndColumn,
   };
 }
-
-

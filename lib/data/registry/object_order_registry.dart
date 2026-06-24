@@ -140,7 +140,8 @@ class ObjectOrderRegistry {
     return _orderMap[objClass] ?? 0x7FFFFFFF;
   }
 
-  static bool _isDigit(String c) => c.length == 1 && c.codeUnitAt(0) >= 0x30 && c.codeUnitAt(0) <= 0x39;
+  static bool _isDigit(String c) =>
+      c.length == 1 && c.codeUnitAt(0) >= 0x30 && c.codeUnitAt(0) <= 0x39;
 
   static int _naturalCompare(String s1, String s2) {
     var i = 0;

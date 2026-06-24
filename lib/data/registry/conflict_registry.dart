@@ -96,24 +96,15 @@ class ConflictRegistry {
       descriptionKey: 'conflictDesc_WaveGeneratorWaveManagerModule',
     ),
     ModuleConflictRule(
-      conflictingClasses: {
-        'WaveGeneratorProperties',
-        'WaveManagerProperties',
-      },
+      conflictingClasses: {'WaveGeneratorProperties', 'WaveManagerProperties'},
       descriptionKey: 'conflictDesc_WaveGeneratorWaveManager',
     ),
     ModuleConflictRule(
-      conflictingClasses: {
-        'WaveGeneratorProperties',
-        'RenaiModuleProperties',
-      },
+      conflictingClasses: {'WaveGeneratorProperties', 'RenaiModuleProperties'},
       descriptionKey: 'conflictDesc_WaveGeneratorRenai',
     ),
     ModuleConflictRule(
-      conflictingClasses: {
-        'WaveGeneratorProperties',
-        'WitchModuleProperties',
-      },
+      conflictingClasses: {'WaveGeneratorProperties', 'WitchModuleProperties'},
       descriptionKey: 'conflictDesc_WaveGeneratorWitch',
     ),
   ];
@@ -145,9 +136,7 @@ class ConflictRegistry {
         .where((c) => c.endsWith('WinConProperties'))
         .length;
     if (winConCount > 1) {
-      result.add(
-        Pair(title, l10n.conflictDesc_WinConditionExclusive),
-      );
+      result.add(Pair(title, l10n.conflictDesc_WinConditionExclusive));
     }
 
     return result;

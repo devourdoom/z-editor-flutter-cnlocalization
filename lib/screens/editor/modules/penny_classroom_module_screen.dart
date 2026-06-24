@@ -5,7 +5,8 @@ import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/plant_selection_screen.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Penny classroom module (global plant levels). Ported from PennyClassroomModulePropertiesEP.kt
@@ -30,7 +31,8 @@ class PennyClassroomModuleScreen extends StatefulWidget {
       _PennyClassroomModuleScreenState();
 }
 
-class _PennyClassroomModuleScreenState extends State<PennyClassroomModuleScreen> {
+class _PennyClassroomModuleScreenState
+    extends State<PennyClassroomModuleScreen> {
   late PvzObject _moduleObj;
   late PennyClassroomModuleData _data;
   double _batchLevel = 1.0;
@@ -270,10 +272,12 @@ class _PlantLevelRow extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(ResourceNames.lookup(
-                    context,
-                    PlantRepository().getName(plantId),
-                  )),
+                  Text(
+                    ResourceNames.lookup(
+                      context,
+                      PlantRepository().getName(plantId),
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Row(
                     children: [

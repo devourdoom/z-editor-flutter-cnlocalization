@@ -43,7 +43,10 @@ void main() {
       print('  $k');
     }
   }
-  if (missingInZh.isEmpty && missingInRu.isEmpty && extraInZh.isEmpty && extraInRu.isEmpty) {
+  if (missingInZh.isEmpty &&
+      missingInRu.isEmpty &&
+      extraInZh.isEmpty &&
+      extraInRu.isEmpty) {
     print('\nAll ARB files have identical keys.');
   }
 }

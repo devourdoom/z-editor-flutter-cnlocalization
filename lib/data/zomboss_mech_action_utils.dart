@@ -67,16 +67,18 @@ abstract class ZombossMechActionUtils {
     );
   }
 
-  static Map<String, dynamic> dataFromCatalogAction(ZombossMechCatalogAction action) {
+  static Map<String, dynamic> dataFromCatalogAction(
+    ZombossMechCatalogAction action,
+  ) {
     if (action.defaultData.isNotEmpty) {
-      return Map<String, dynamic>.from(
-        _deepClone(action.defaultData) as Map,
-      );
+      return Map<String, dynamic>.from(_deepClone(action.defaultData) as Map);
     }
     return defaultsFromFields(action.fields);
   }
 
-  static Map<String, dynamic> defaultsFromFields(List<ZombossMechFieldSpec> fields) {
+  static Map<String, dynamic> defaultsFromFields(
+    List<ZombossMechFieldSpec> fields,
+  ) {
     final data = <String, dynamic>{};
     for (final field in fields) {
       if (field.name.isEmpty || field.name.startsWith('#')) continue;
@@ -116,8 +118,8 @@ abstract class ZombossMechActionUtils {
       final data = raw is Map<String, dynamic>
           ? Map<String, dynamic>.from(raw)
           : raw is Map
-              ? Map<String, dynamic>.from(raw)
-              : <String, dynamic>{};
+          ? Map<String, dynamic>.from(raw)
+          : <String, dynamic>{};
       return ZombossResolvedAction(
         rtid: rtid,
         alias: info.alias,
@@ -205,10 +207,7 @@ abstract class ZombossMechActionUtils {
     return keys.any(name.contains);
   }
 
-  static String uniqueCustomAlias(
-    PvzLevelFile levelFile,
-    String baseAlias,
-  ) {
+  static String uniqueCustomAlias(PvzLevelFile levelFile, String baseAlias) {
     if (!levelFile.objects.any((o) => o.aliases?.contains(baseAlias) == true)) {
       return baseAlias;
     }

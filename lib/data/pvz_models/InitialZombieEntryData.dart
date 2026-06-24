@@ -23,4 +23,3 @@ class InitialZombieEntryData extends PvzModel {
     'InitialZombiePlacements': placements.map((e) => e.toJson()).toList(),
   };
 }
-

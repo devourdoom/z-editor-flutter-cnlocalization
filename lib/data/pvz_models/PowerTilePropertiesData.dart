@@ -21,4 +21,3 @@ class PowerTilePropertiesData extends PvzModel {
     'LinkedTiles': linkedTiles.map((e) => e.toJson()).toList(),
   };
 }
-

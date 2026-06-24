@@ -28,7 +28,8 @@ class WaveGeneratorWaveData extends PvzModel {
   factory WaveGeneratorWaveData.fromJson(Map<String, dynamic> json) {
     return WaveGeneratorWaveData(
       disableRandomSpawns: json['DisableRandomSpawns'] as bool? ?? true,
-      zombies: (json['Zombies'] as List<dynamic>?)
+      zombies:
+          (json['Zombies'] as List<dynamic>?)
               ?.map(
                 (e) => WaveGeneratorZombieEntryData.fromJson(
                   Map<String, dynamic>.from(e as Map),
@@ -37,7 +38,8 @@ class WaveGeneratorWaveData extends PvzModel {
               .toList() ??
           [],
       spawnPlantFoodCount: json['SpawnPlantFoodCount'] as int?,
-      addToZombiePool: (json['AddToZombiePool'] as List<dynamic>?)
+      addToZombiePool:
+          (json['AddToZombiePool'] as List<dynamic>?)
               ?.map(
                 (e) => WaveGeneratorPoolEntryData.fromJson(
                   Map<String, dynamic>.from(e as Map),
@@ -62,8 +64,7 @@ class WaveGeneratorWaveData extends PvzModel {
       data['SpawnPlantFoodCount'] = spawnPlantFoodCount;
     }
     if (addToZombiePool.isNotEmpty) {
-      data['AddToZombiePool'] =
-          addToZombiePool.map((e) => e.toJson()).toList();
+      data['AddToZombiePool'] = addToZombiePool.map((e) => e.toJson()).toList();
     }
     if (wavePointStart != null) data['WavePointStart'] = wavePointStart;
     if (wavePointIncrement != null) {

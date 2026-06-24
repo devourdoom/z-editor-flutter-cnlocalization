@@ -29,4 +29,3 @@ class LinkedTileData extends PvzModel {
     'Location': location.toJson(),
   };
 }
-

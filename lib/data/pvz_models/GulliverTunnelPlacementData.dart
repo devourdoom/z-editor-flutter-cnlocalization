@@ -15,7 +15,8 @@ class GulliverTunnelPlacementData extends PvzModel {
     return GulliverTunnelPlacementData(
       gridX: (json['GridX'] as num?)?.toInt() ?? 0,
       gridY: (json['GridY'] as num?)?.toInt() ?? 0,
-      orientation: json['Orientation'] as String? ??
+      orientation:
+          json['Orientation'] as String? ??
           'GULLIVERTUNNEL_ORIENTATION_BIG_ON_LEFT',
     );
   }

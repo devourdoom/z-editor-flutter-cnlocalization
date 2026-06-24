@@ -33,5 +33,3 @@ class SeedRainItem extends PvzModel {
     'Weight': weight,
   };
 }
-
-

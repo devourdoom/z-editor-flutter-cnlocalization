@@ -16,7 +16,9 @@ class GlacierColumnSpawnData extends PvzModel {
         if (e is Map<String, dynamic>) {
           list.add(GlacierSpawnEntryData.fromJson(e));
         } else if (e is Map) {
-          list.add(GlacierSpawnEntryData.fromJson(Map<String, dynamic>.from(e)));
+          list.add(
+            GlacierSpawnEntryData.fromJson(Map<String, dynamic>.from(e)),
+          );
         }
       }
     }

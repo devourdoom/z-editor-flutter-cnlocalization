@@ -32,4 +32,3 @@ class VaseDefinition extends PvzModel {
     return data;
   }
 }
-

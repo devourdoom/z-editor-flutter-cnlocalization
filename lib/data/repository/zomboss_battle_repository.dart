@@ -73,7 +73,8 @@ class ZombossBattleRepository {
               resourceGroups: (item['resourceGroups'] as List<dynamic>)
                   .map((e) => e.toString())
                   .toList(),
-              modules: (item['modules'] as List<dynamic>?)
+              modules:
+                  (item['modules'] as List<dynamic>?)
                       ?.map(
                         (entry) => ZombossAutoModule.fromJson(
                           Map<String, dynamic>.from(entry as Map),

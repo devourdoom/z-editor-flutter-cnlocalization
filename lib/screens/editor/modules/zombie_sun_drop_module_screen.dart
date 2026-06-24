@@ -6,8 +6,10 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
-import 'package:c_editor/theme/app_theme.dart' show pvzPurpleDark, pvzPurpleLight;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/theme/app_theme.dart'
+    show pvzPurpleDark, pvzPurpleLight;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Zombie Sun Drop module: zombie sun drop values per tier (1–10). Ported from Z-Editor-master LevelMutatorRiftTimedSunEP.kt
@@ -25,7 +27,8 @@ class ZombieSunDropModuleScreen extends StatefulWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(List<String>) onSelected) onRequestZombieSelection;
+  final void Function(void Function(List<String>) onSelected)
+  onRequestZombieSelection;
 
   @override
   State<ZombieSunDropModuleScreen> createState() =>
@@ -79,10 +82,12 @@ class _ZombieSunDropModuleScreenState extends State<ZombieSunDropModuleScreen> {
     for (final id in selectedIds) {
       final alias = repo.buildZombieAliases(id);
       if (newList.none((e) => e.zombieTypeName == alias)) {
-        newList.add(RiftTimedSunData(
-          zombieTypeName: alias,
-          sunDropValues: List.filled(10, 0),
-        ));
+        newList.add(
+          RiftTimedSunData(
+            zombieTypeName: alias,
+            sunDropValues: List.filled(10, 0),
+          ),
+        );
       }
     }
     _data = RiftTimedSunModuleData(sunDrops: newList);
@@ -153,12 +158,14 @@ class _ZombieSunDropModuleScreenState extends State<ZombieSunDropModuleScreen> {
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.zombieSunDropHelpOverview ??
+                  body:
+                      l10n?.zombieSunDropHelpOverview ??
                       'Set sun dropped by specific zombies per tier (used in Pursuit). This module also disables sun shovel.',
                 ),
                 HelpSectionData(
                   title: l10n?.zombieSunDropHelpValues ?? 'Values',
-                  body: l10n?.zombieSunDropHelpValuesBody ??
+                  body:
+                      l10n?.zombieSunDropHelpValuesBody ??
                       'Ten integers correspond to tiers 1–10. If tier exceeds 10, tier 1 value is used.',
                 ),
               ],
@@ -218,11 +225,12 @@ class _ZombieSunDropItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final typeId = ZombiePropertiesRepository.getTypeNameByAlias(item.zombieTypeName);
-    final info = ZombieRepository().getZombieById(typeId) ??
-        ZombieRepository().getZombieById(
-          typeId.replaceAll('_elite', ''),
-        );
+    final typeId = ZombiePropertiesRepository.getTypeNameByAlias(
+      item.zombieTypeName,
+    );
+    final info =
+        ZombieRepository().getZombieById(typeId) ??
+        ZombieRepository().getZombieById(typeId.replaceAll('_elite', ''));
     final path = info?.icon != null
         ? 'assets/images/zombies/${info!.icon}'
         : 'assets/images/others/unknown.webp';
@@ -266,16 +274,16 @@ class _ZombieSunDropItemCard extends StatelessWidget {
                     ),
                     Text(
                       '${AppLocalizations.of(context)?.zombieSunDropDefaultDrop ?? 'Default drop'}: $firstDrop ${AppLocalizations.of(context)?.zombieSunDropSun ?? 'sun'}',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: themeColor,
-                      ),
+                      style: TextStyle(fontSize: 12, color: themeColor),
                     ),
                   ],
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.delete_outline, color: theme.colorScheme.error),
+                icon: Icon(
+                  Icons.delete_outline,
+                  color: theme.colorScheme.error,
+                ),
                 onPressed: onDelete,
               ),
             ],
@@ -316,7 +324,9 @@ class _SunValuesEditDialogState extends State<_SunValuesEditDialog> {
       _values.add(0);
     }
     _values = _values.take(10).toList();
-    _controllers = _values.map((v) => TextEditingController(text: '$v')).toList();
+    _controllers = _values
+        .map((v) => TextEditingController(text: '$v'))
+        .toList();
     _focusNodes = List.generate(10, (_) => FocusNode());
     for (final fn in _focusNodes) {
       fn.addListener(() => setState(() {}));
@@ -370,7 +380,8 @@ class _SunValuesEditDialogState extends State<_SunValuesEditDialog> {
                         controller: _controllers[i],
                         decoration: editorInputDecoration(
                           context,
-                          labelText: '${l10n?.zombieSunDropTier ?? 'Tier'} ${i + 1}',
+                          labelText:
+                              '${l10n?.zombieSunDropTier ?? 'Tier'} ${i + 1}',
                           focusColor: widget.themeColor,
                           isFocused: _focusNodes[i].hasFocus,
                         ),
@@ -390,7 +401,8 @@ class _SunValuesEditDialogState extends State<_SunValuesEditDialog> {
                         controller: _controllers[j],
                         decoration: editorInputDecoration(
                           context,
-                          labelText: '${l10n?.zombieSunDropTier ?? 'Tier'} ${j + 1}',
+                          labelText:
+                              '${l10n?.zombieSunDropTier ?? 'Tier'} ${j + 1}',
                           focusColor: widget.themeColor,
                           isFocused: _focusNodes[j].hasFocus,
                         ),
@@ -417,10 +429,12 @@ class _SunValuesEditDialogState extends State<_SunValuesEditDialog> {
         ),
         FilledButton(
           onPressed: () {
-            widget.onConfirm(RiftTimedSunData(
-              zombieTypeName: widget.item.zombieTypeName,
-              sunDropValues: List<int>.from(_values),
-            ));
+            widget.onConfirm(
+              RiftTimedSunData(
+                zombieTypeName: widget.item.zombieTypeName,
+                sunDropValues: List<int>.from(_values),
+              ),
+            );
           },
           child: Text(l10n?.save ?? 'Save'),
         ),

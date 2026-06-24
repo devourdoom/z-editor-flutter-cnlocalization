@@ -19,9 +19,5 @@ class ArmrackOverrideItemData extends PvzModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'mX': mX,
-    'mY': mY,
-    'type': type,
-  };
+  Map<String, dynamic> toJson() => {'mX': mX, 'mY': mY, 'type': type};
 }

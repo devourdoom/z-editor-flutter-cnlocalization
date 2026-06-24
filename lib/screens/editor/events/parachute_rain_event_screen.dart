@@ -6,7 +6,8 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Parachute/Bass/Spider rain event editor. Ported from Z-Editor-master
@@ -45,9 +46,11 @@ class ParachuteRainEventScreen extends StatefulWidget {
   final VoidCallback onChanged;
   final VoidCallback onBack;
   final String eventSubtitle;
+
   /// 'ParachuteRainZombieSpawnerProps', 'BassRainZombieSpawnerProps', or 'SpiderRainZombieSpawnerProps'
   final String eventObjClass;
-  final void Function(void Function(String) onSelected) onRequestZombieSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestZombieSelection;
 
   @override
   State<ParachuteRainEventScreen> createState() =>
@@ -129,10 +132,7 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(l10n?.editAlias(alias) ?? 'Edit $alias'),
-            Text(
-              widget.eventSubtitle,
-              style: theme.textTheme.bodySmall,
-            ),
+            Text(widget.eventSubtitle, style: theme.textTheme.bodySmall),
           ],
         ),
         actions: [
@@ -140,7 +140,9 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
             icon: const Icon(Icons.help_outline),
             onPressed: () => showEditorHelpDialog(
               context,
-              title: l10n?.eventParachuteRain ?? 'Parachute/Bass/Spider rain event',
+              title:
+                  l10n?.eventParachuteRain ??
+                  'Parachute/Bass/Spider rain event',
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
@@ -188,7 +190,11 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
     }
   }
 
-  Widget _buildZombieConfigCard(BuildContext context, ThemeData theme, AppLocalizations? l10n) {
+  Widget _buildZombieConfigCard(
+    BuildContext context,
+    ThemeData theme,
+    AppLocalizations? l10n,
+  ) {
     final allowedIds = _getAllowedZombieIds();
     final useDropdown = allowedIds.isNotEmpty;
 
@@ -204,10 +210,15 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
             children: [
               Row(
                 children: [
-                  Icon(Icons.groups, color: theme.colorScheme.primary, size: 24),
+                  Icon(
+                    Icons.groups,
+                    color: theme.colorScheme.primary,
+                    size: 24,
+                  ),
                   const SizedBox(width: 12),
                   Text(
-                    l10n?.zombieTypeSpiderZombieName ?? 'Zombie type (SpiderZombieName)',
+                    l10n?.zombieTypeSpiderZombieName ??
+                        'Zombie type (SpiderZombieName)',
                     style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
@@ -223,7 +234,10 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 16,
+                    ),
                   ),
                   isExpanded: true,
                   iconSize: 48,
@@ -241,20 +255,20 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
                     return _ZombieDropdownRow(zombieId: id, iconSize: 48);
                   }).toList(),
                   onChanged: (id) {
-                  if (id == null) return;
-                  _data = ParachuteRainEventData(
-                    columnStart: _data.columnStart,
-                    columnEnd: _data.columnEnd,
-                    groupSize: _data.groupSize,
-                    spiderCount: _data.spiderCount,
-                    spiderZombieName: id,
-                    timeBeforeFullSpawn: _data.timeBeforeFullSpawn,
-                    timeBetweenGroups: _data.timeBetweenGroups,
-                    zombieFallTime: _data.zombieFallTime,
-                    waveStartMessage: _data.waveStartMessage,
-                  );
-                  _sync();
-                },
+                    if (id == null) return;
+                    _data = ParachuteRainEventData(
+                      columnStart: _data.columnStart,
+                      columnEnd: _data.columnEnd,
+                      groupSize: _data.groupSize,
+                      spiderCount: _data.spiderCount,
+                      spiderZombieName: id,
+                      timeBeforeFullSpawn: _data.timeBeforeFullSpawn,
+                      timeBetweenGroups: _data.timeBetweenGroups,
+                      zombieFallTime: _data.zombieFallTime,
+                      waveStartMessage: _data.waveStartMessage,
+                    );
+                    _sync();
+                  },
                 ),
               ),
             ],
@@ -278,7 +292,9 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
         : null;
     final zombieDisplay = _data.spiderZombieName.isEmpty
         ? (l10n?.noneSelected ?? 'None selected')
-        : (displayName != null && displayName != nameKey ? displayName : typeName ?? _data.spiderZombieName);
+        : (displayName != null && displayName != nameKey
+              ? displayName
+              : typeName ?? _data.spiderZombieName);
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -290,7 +306,8 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
                 Icon(Icons.groups, color: theme.colorScheme.primary, size: 24),
                 const SizedBox(width: 12),
                 Text(
-                  l10n?.zombieTypeSpiderZombieName ?? 'Zombie type (SpiderZombieName)',
+                  l10n?.zombieTypeSpiderZombieName ??
+                      'Zombie type (SpiderZombieName)',
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -362,7 +379,11 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
     );
   }
 
-  Widget _buildCountCard(BuildContext context, ThemeData theme, AppLocalizations? l10n) {
+  Widget _buildCountCard(
+    BuildContext context,
+    ThemeData theme,
+    AppLocalizations? l10n,
+  ) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -427,7 +448,11 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
     );
   }
 
-  Widget _buildRangeTimeCard(BuildContext context, ThemeData theme, AppLocalizations? l10n) {
+  Widget _buildRangeTimeCard(
+    BuildContext context,
+    ThemeData theme,
+    AppLocalizations? l10n,
+  ) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -491,7 +516,8 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
               children: [
                 Expanded(
                   child: _DoubleField(
-                    label: l10n?.timeBetweenGroups ?? 'Time between batches (s)',
+                    label:
+                        l10n?.timeBetweenGroups ?? 'Time between batches (s)',
                     value: _data.timeBetweenGroups,
                     onChanged: (v) {
                       _data = ParachuteRainEventData(
@@ -574,7 +600,9 @@ class _ParachuteRainEventScreenState extends State<ParachuteRainEventScreen> {
             TextFormField(
               initialValue: _data.waveStartMessage,
               decoration: InputDecoration(
-                hintText: l10n?.optionalWarningText ?? 'Optional warning text before spawn',
+                hintText:
+                    l10n?.optionalWarningText ??
+                    'Optional warning text before spawn',
                 border: const OutlineInputBorder(),
               ),
               onChanged: (v) {
@@ -633,12 +661,7 @@ class _ZombieDropdownRow extends StatelessWidget {
           ),
           SizedBox(width: iconSize * 0.35),
         ],
-        Expanded(
-          child: Text(
-            displayName,
-            overflow: TextOverflow.ellipsis,
-          ),
-        ),
+        Expanded(child: Text(displayName, overflow: TextOverflow.ellipsis)),
       ],
     );
   }

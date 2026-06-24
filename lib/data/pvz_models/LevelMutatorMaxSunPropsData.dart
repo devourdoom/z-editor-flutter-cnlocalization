@@ -35,5 +35,3 @@ class LevelMutatorMaxSunPropsData extends PvzModel {
     'IconText': iconText,
   };
 }
-
-

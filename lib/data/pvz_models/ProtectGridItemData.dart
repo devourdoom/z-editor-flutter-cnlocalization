@@ -21,5 +21,3 @@ class ProtectGridItemData extends PvzModel {
     'GridItemType': gridItemType,
   };
 }
-
-

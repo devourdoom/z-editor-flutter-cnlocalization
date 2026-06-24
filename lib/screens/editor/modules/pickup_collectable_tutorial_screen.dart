@@ -6,9 +6,12 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
-import 'package:c_editor/theme/app_theme.dart' show pvzPurpleDark, pvzPurpleLight;
-import 'package:c_editor/widgets/editor_components.dart' show showEditorHelpDialog, HelpSectionData, editorInputDecoration;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/theme/app_theme.dart'
+    show pvzPurpleDark, pvzPurpleLight;
+import 'package:c_editor/widgets/editor_components.dart'
+    show showEditorHelpDialog, HelpSectionData, editorInputDecoration;
 
 class _LootTypeOption {
   const _LootTypeOption(this.value, this.labelKey, this.fallback);
@@ -37,7 +40,8 @@ class PickupCollectableTutorialScreen extends StatefulWidget {
   final PvzLevelFile levelFile;
   final VoidCallback onChanged;
   final VoidCallback onBack;
-  final void Function(void Function(String) onSelected) onRequestZombieSelection;
+  final void Function(void Function(String) onSelected)
+  onRequestZombieSelection;
 
   @override
   State<PickupCollectableTutorialScreen> createState() =>
@@ -97,7 +101,9 @@ class _PickupCollectableTutorialScreenState
     }
     if (_data.dropperZombieType.isEmpty) {
       _data = PickupCollectableTutorialData(
-        dropperZombieType: ZombieRepository().buildZombieAliases('zombie_tutorial'),
+        dropperZombieType: ZombieRepository().buildZombieAliases(
+          'zombie_tutorial',
+        ),
         lootType: _data.lootType,
         pickupAdvice: _data.pickupAdvice,
         postPickupAdvice: _data.postPickupAdvice,
@@ -150,17 +156,22 @@ class _PickupCollectableTutorialScreenState
             icon: const Icon(Icons.help_outline),
             onPressed: () => showEditorHelpDialog(
               context,
-              title: l10n?.pickupCollectableTutorialHelpTitle ?? 'Pickup tutorial',
+              title:
+                  l10n?.pickupCollectableTutorialHelpTitle ?? 'Pickup tutorial',
               themeColor: appBarColor,
               sections: [
                 HelpSectionData(
-                  title: l10n?.pickupCollectableTutorialHelpBasic ?? 'Description',
-                  body: l10n?.pickupCollectableTutorialHelpBasicBody ??
+                  title:
+                      l10n?.pickupCollectableTutorialHelpBasic ?? 'Description',
+                  body:
+                      l10n?.pickupCollectableTutorialHelpBasicBody ??
                       'Configure a zombie that drops a collectable and the dialog text before/after pickup. First kill of that zombie type in the level shows the dialog.',
                 ),
                 HelpSectionData(
-                  title: l10n?.pickupCollectableTutorialHelpDialogs ?? 'Dialogs',
-                  body: l10n?.pickupCollectableTutorialHelpDialogsBody ??
+                  title:
+                      l10n?.pickupCollectableTutorialHelpDialogs ?? 'Dialogs',
+                  body:
+                      l10n?.pickupCollectableTutorialHelpDialogsBody ??
                       'Dialogs appear before and after picking up the item and can pause the level.',
                 ),
               ],
@@ -182,7 +193,8 @@ class _PickupCollectableTutorialScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n?.pickupCollectableTutorialCoreConfig ?? 'Core config',
+                        l10n?.pickupCollectableTutorialCoreConfig ??
+                            'Core config',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: appBarColor,
@@ -190,7 +202,8 @@ class _PickupCollectableTutorialScreenState
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        l10n?.pickupCollectableTutorialZombieLabel ?? 'Zombie that carries the item',
+                        l10n?.pickupCollectableTutorialZombieLabel ??
+                            'Zombie that carries the item',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: theme.colorScheme.onSurfaceVariant,
                         ),
@@ -218,7 +231,8 @@ class _PickupCollectableTutorialScreenState
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        l10n?.pickupCollectableTutorialGuideText ?? 'Guide text',
+                        l10n?.pickupCollectableTutorialGuideText ??
+                            'Guide text',
                         style: theme.textTheme.titleMedium?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: appBarColor,
@@ -230,7 +244,9 @@ class _PickupCollectableTutorialScreenState
                         controller: _pickupController,
                         decoration: editorInputDecoration(
                           context,
-                          labelText: l10n?.pickupCollectableTutorialPickupAdvice ?? 'Before pickup (PickupAdvice)',
+                          labelText:
+                              l10n?.pickupCollectableTutorialPickupAdvice ??
+                              'Before pickup (PickupAdvice)',
                           focusColor: appBarColor,
                           isFocused: _pickupFocusNode.hasFocus,
                         ),
@@ -252,7 +268,9 @@ class _PickupCollectableTutorialScreenState
                         controller: _postPickupController,
                         decoration: editorInputDecoration(
                           context,
-                          labelText: l10n?.pickupCollectableTutorialPostPickupAdvice ?? 'After pickup (PostPickupAdvice)',
+                          labelText:
+                              l10n?.pickupCollectableTutorialPostPickupAdvice ??
+                              'After pickup (PostPickupAdvice)',
                           focusColor: appBarColor,
                           isFocused: _postPickupFocusNode.hasFocus,
                         ),
@@ -285,11 +303,12 @@ class _PickupCollectableTutorialScreenState
     Color appBarColor,
     AppLocalizations? l10n,
   ) {
-    final typeId = ZombiePropertiesRepository.getTypeNameByAlias(_data.dropperZombieType);
-    final info = ZombieRepository().getZombieById(typeId) ??
-        ZombieRepository().getZombieById(
-          typeId.replaceAll('_elite', ''),
-        );
+    final typeId = ZombiePropertiesRepository.getTypeNameByAlias(
+      _data.dropperZombieType,
+    );
+    final info =
+        ZombieRepository().getZombieById(typeId) ??
+        ZombieRepository().getZombieById(typeId.replaceAll('_elite', ''));
     final path = info?.icon != null
         ? 'assets/images/zombies/${info!.icon}'
         : 'assets/images/others/unknown.webp';
@@ -367,10 +386,7 @@ class _PickupCollectableTutorialScreenState
       initialValue: _lootTypes.any((e) => e.value == _data.lootType)
           ? _data.lootType
           : _lootTypes.first.value,
-      decoration: editorInputDecoration(
-        context,
-        focusColor: appBarColor,
-      ),
+      decoration: editorInputDecoration(context, focusColor: appBarColor),
       items: _lootTypes
           .map(
             (e) => DropdownMenuItem(

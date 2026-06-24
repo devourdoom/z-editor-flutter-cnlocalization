@@ -4,8 +4,8 @@ import 'package:c_editor/widgets/editor_components.dart';
 
 Color customStageAccent(BuildContext context) =>
     Theme.of(context).brightness == Brightness.dark
-        ? pvzGreenDark
-        : pvzGreenLight;
+    ? pvzGreenDark
+    : pvzGreenLight;
 
 InputDecoration customStageInputDecoration(
   BuildContext context, {
@@ -40,12 +40,13 @@ ThemeData customStageInputTheme(BuildContext context) {
 
 Color customStageBadgeColor(BuildContext context) =>
     Theme.of(context).brightness == Brightness.dark
-        ? const Color(0xFF1976D2)
-        : const Color(0xFF42A5F5);
+    ? const Color(0xFF1976D2)
+    : const Color(0xFF42A5F5);
 
 double customStageBadgeFontSize(BuildContext context) {
   final platform = Theme.of(context).platform;
-  final isDesktop = platform == TargetPlatform.windows ||
+  final isDesktop =
+      platform == TargetPlatform.windows ||
       platform == TargetPlatform.macOS ||
       platform == TargetPlatform.linux;
   return isDesktop ? 11 : 9;

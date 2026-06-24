@@ -198,8 +198,9 @@ class _CustomZombiePropertiesScreenState
     var i = 0;
     while (true) {
       final codename = 'CustomResilience$i';
-      final exists = widget.levelFile.objects
-          .any((o) => o.aliases?.contains(codename) == true);
+      final exists = widget.levelFile.objects.any(
+        (o) => o.aliases?.contains(codename) == true,
+      );
       if (!exists) return codename;
       i++;
     }
@@ -221,8 +222,9 @@ class _CustomZombiePropertiesScreenState
       _selectedResilienceRtid = rtid;
       return rtid;
     }
-    final existing = widget.levelFile.objects
-        .firstWhereOrNull((o) => o.aliases?.contains(codename) == true);
+    final existing = widget.levelFile.objects.firstWhereOrNull(
+      (o) => o.aliases?.contains(codename) == true,
+    );
     if (existing != null && existing.objClass == 'ZombieResilience') {
       _customResilienceObj = existing;
       _customResilienceObj!.objData = _customResilienceData.toLevelJson();
@@ -264,8 +266,11 @@ class _CustomZombiePropertiesScreenState
   }
 
   ResilienceConfigEntry? _currentResilienceEntry() {
-    final rtid = _selectedResilienceRtid ??
-        (_propsData.resilience is String ? _propsData.resilience as String : null);
+    final rtid =
+        _selectedResilienceRtid ??
+        (_propsData.resilience is String
+            ? _propsData.resilience as String
+            : null);
     return ResilienceShieldUtils.resolveEntry(rtid, widget.levelFile);
   }
 
@@ -275,7 +280,8 @@ class _CustomZombiePropertiesScreenState
       MaterialPageRoute(
         builder: (context) => ResilienceShieldSelectionScreen(
           levelFile: widget.levelFile,
-          currentRtid: _selectedResilienceRtid ??
+          currentRtid:
+              _selectedResilienceRtid ??
               (_propsData.resilience is String
                   ? _propsData.resilience as String
                   : null),
@@ -288,12 +294,10 @@ class _CustomZombiePropertiesScreenState
     _sync();
   }
 
-  Widget _buildResilienceShieldCard(
-    ThemeData theme,
-    AppLocalizations? l10n,
-  ) {
+  Widget _buildResilienceShieldCard(ThemeData theme, AppLocalizations? l10n) {
     final entry = _currentResilienceEntry();
-    final alias = entry?.alias ??
+    final alias =
+        entry?.alias ??
         RtidParser.parse(_selectedResilienceRtid ?? '')?.alias ??
         '';
     final source =
@@ -320,7 +324,7 @@ class _CustomZombiePropertiesScreenState
                 alias.isNotEmpty && source.isNotEmpty
                     ? '$alias@$source'
                     : (l10n?.resiliencePresetSelect ??
-                        'Selected resilience shield'),
+                          'Selected resilience shield'),
                 style: theme.textTheme.bodyMedium,
               ),
               const SizedBox(width: 4),
@@ -351,22 +355,26 @@ class _CustomZombiePropertiesScreenState
           weakType: data.weakType,
         ),
         ResilienceShieldParameterRow(
-          label: l10n?.resilienceRecoverSpeed ??
+          label:
+              l10n?.resilienceRecoverSpeed ??
               'Resilience bar recovery speed (RecoverSpeed)',
           value: '${data.recoverSpeed}',
         ),
         ResilienceShieldParameterRow(
-          label: l10n?.resilienceDamageThresholdPerSecond ??
+          label:
+              l10n?.resilienceDamageThresholdPerSecond ??
               'Zombie damage threshold per second (DamageThresholdPerSecond)',
           value: '${data.damageThresholdPerSecond}',
         ),
         ResilienceShieldParameterRow(
-          label: l10n?.resilienceBaseDamageThreshold ??
+          label:
+              l10n?.resilienceBaseDamageThreshold ??
               'Resilience base damage threshold (ResilienceBaseDamageThreshold)',
           value: '${data.resilienceBaseDamageThreshold}',
         ),
         ResilienceShieldParameterRow(
-          label: l10n?.resilienceExtraDamageThreshold ??
+          label:
+              l10n?.resilienceExtraDamageThreshold ??
               'Resilience extra damage threshold (ResilienceExtraDamageThreshold)',
           value: '${data.resilienceExtraDamageThreshold}',
         ),
@@ -417,25 +425,17 @@ class _CustomZombiePropertiesScreenState
           children: [
             Row(
               children: [
-                Expanded(
-                  child: _numberField(xController, label: 'X'),
-                ),
+                Expanded(child: _numberField(xController, label: 'X')),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: _numberField(yController, label: 'Y'),
-                ),
+                Expanded(child: _numberField(yController, label: 'Y')),
               ],
             ),
             const SizedBox(height: 8),
             Row(
               children: [
-                Expanded(
-                  child: _numberField(wController, label: 'Width'),
-                ),
+                Expanded(child: _numberField(wController, label: 'Width')),
                 const SizedBox(width: 8),
-                Expanded(
-                  child: _numberField(hController, label: 'Height'),
-                ),
+                Expanded(child: _numberField(hController, label: 'Height')),
               ],
             ),
           ],
@@ -606,13 +606,17 @@ class _CustomZombiePropertiesScreenState
     return TextField(
       controller: controller,
       keyboardType: const TextInputType.numberWithOptions(decimal: true),
-      decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+      ),
       onChanged: (_) {},
     );
   }
 
-  Color get _themeColor =>
-      Theme.of(context).brightness == Brightness.dark ? pvzOrangeDark : pvzOrangeLight;
+  Color get _themeColor => Theme.of(context).brightness == Brightness.dark
+      ? pvzOrangeDark
+      : pvzOrangeLight;
 
   ThemeData _inputTheme(ThemeData theme) {
     final accent = _themeColor;
@@ -667,7 +671,9 @@ class _CustomZombiePropertiesScreenState
             icon: const Icon(Icons.arrow_back),
             onPressed: widget.onBack,
           ),
-          title: Text(l10n?.customZombieProperties ?? 'Custom zombie properties'),
+          title: Text(
+            l10n?.customZombieProperties ?? 'Custom zombie properties',
+          ),
           backgroundColor: themeColor,
           foregroundColor: theme.colorScheme.onPrimary,
         ),
@@ -686,7 +692,8 @@ class _CustomZombiePropertiesScreenState
               ),
               const SizedBox(height: 8),
               Text(
-                l10n?.propertyObjectNotFoundHint(propsAlias) ?? 'The custom zombie\'s property object ($propsAlias) was not found in the level. The property definition does not point to level internals, so it cannot be edited here.',
+                l10n?.propertyObjectNotFoundHint(propsAlias) ??
+                    'The custom zombie\'s property object ($propsAlias) was not found in the level. The property definition does not point to level internals, so it cannot be edited here.',
                 textAlign: TextAlign.center,
                 style: theme.textTheme.bodyMedium?.copyWith(
                   color: theme.colorScheme.onSurfaceVariant,
@@ -718,19 +725,27 @@ class _CustomZombiePropertiesScreenState
               sections: [
                 HelpSectionData(
                   title: l10n?.customZombieHelpIntro ?? 'Brief introduction',
-                  body: l10n?.customZombieHelpIntroBody ?? 'This screen edits custom zombie parameters injected into the level. Only common properties are supported; many special attributes require manual JSON editing.',
+                  body:
+                      l10n?.customZombieHelpIntroBody ??
+                      'This screen edits custom zombie parameters injected into the level. Only common properties are supported; many special attributes require manual JSON editing.',
                 ),
                 HelpSectionData(
                   title: l10n?.customZombieHelpBase ?? 'Base properties',
-                  body: l10n?.customZombieHelpBaseBody ?? 'Custom zombies can modify base stats (HP, speed, eat damage). Custom zombies do not appear in the level preview pool.',
+                  body:
+                      l10n?.customZombieHelpBaseBody ??
+                      'Custom zombies can modify base stats (HP, speed, eat damage). Custom zombies do not appear in the level preview pool.',
                 ),
                 HelpSectionData(
                   title: l10n?.customZombieHelpHit ?? 'Hit/position',
-                  body: l10n?.customZombieHelpHitBody ?? 'X and Y are offsets; W and H are width and height. Offsetting ArtCenter can hide the zombie sprite. Leaving ground track empty lets the zombie walk in place.',
+                  body:
+                      l10n?.customZombieHelpHitBody ??
+                      'X and Y are offsets; W and H are width and height. Offsetting ArtCenter can hide the zombie sprite. Leaving ground track empty lets the zombie walk in place.',
                 ),
                 HelpSectionData(
                   title: l10n?.customZombieHelpManual ?? 'Manual editing',
-                  body: l10n?.customZombieHelpManualBody ?? 'Custom injection auto-fills all properties from game files. You can further edit the JSON file manually if needed.',
+                  body:
+                      l10n?.customZombieHelpManualBody ??
+                      'Custom injection auto-fills all properties from game files. You can further edit the JSON file manually if needed.',
                 ),
               ],
             ),
@@ -779,325 +794,173 @@ class _CustomZombiePropertiesScreenState
                         ),
                         const SizedBox(height: 12),
                         _doubleInput(
-                        label: l10n?.hitpoints ?? 'Hitpoints',
-                        value: _propsData.hitpoints,
-                        onChanged: (v) {
-                          _propsData.hitpoints = v;
-                          _sync();
-                        },
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: _doubleInput(
-                              label: l10n?.speed ?? 'Speed',
-                              value: _propsData.speed,
-                              onChanged: (v) {
-                                _propsData.speed = v;
-                                _sync();
-                              },
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: _doubleInput(
-                              label: l10n?.speedVariance ?? 'Speed variance',
-                              value: _propsData.speedVariance ?? 0.1,
-                              onChanged: (v) {
-                                _propsData.speedVariance = v;
-                                _sync();
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      _doubleInput(
-                        label: l10n?.eatDPS ?? 'EatDPS',
-                        value: _propsData.eatDPS,
-                        onChanged: (v) {
-                          _propsData.eatDPS = v;
-                          _sync();
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(l10n?.hitPosition ?? 'Hit / position',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: themeColor,
-                  )),
-              const SizedBox(height: 8),
-              Card(
-                child: Column(
-                  children: [
-                    _editRow(
-                      title: l10n?.hitRect ?? 'HitRect',
-                      subtitle: _formatRect(_propsData.hitRect),
-                      icon: Icons.aspect_ratio,
-                      onTap: () => _showRectDialog(
-                        title: l10n?.editHitRect ?? 'Edit HitRect',
-                        initial: _propsData.hitRect ??
-                            RectData(mX: 10, mY: 10, mWidth: 32, mHeight: 95),
-                        onConfirm: (r) {
-                          _propsData.hitRect = r;
-                          _sync();
-                        },
-                      ),
-                    ),
-                    const Divider(height: 1),
-                    _editRow(
-                      title: l10n?.attackRect ?? 'AttackRect',
-                      subtitle: _formatRect(_propsData.attackRect),
-                      icon: Icons.aspect_ratio,
-                      onTap: () => _showRectDialog(
-                        title: l10n?.editAttackRect ?? 'Edit AttackRect',
-                        initial: _propsData.attackRect ??
-                            RectData(mX: 15, mY: 0, mWidth: 20, mHeight: 95),
-                        onConfirm: (r) {
-                          _propsData.attackRect = r;
-                          _sync();
-                        },
-                      ),
-                    ),
-                    const Divider(height: 1),
-                    _editRow(
-                      title: l10n?.artCenter ?? 'ArtCenter',
-                      subtitle: _formatPoint(_propsData.artCenter),
-                      icon: Icons.center_focus_strong,
-                      onTap: () => _showPoint2Dialog(
-                        title: l10n?.editArtCenter ?? 'Edit ArtCenter',
-                        initial:
-                            _propsData.artCenter ?? Point2D(x: 90, y: 125),
-                        onConfirm: (p) {
-                          _propsData.artCenter = p;
-                          _sync();
-                        },
-                      ),
-                    ),
-                    const Divider(height: 1),
-                    _editRow(
-                      title: l10n?.shadowOffset ?? 'ShadowOffset',
-                      subtitle: _formatPoint3D(_propsData.shadowOffset),
-                      icon: Icons.layers,
-                      onTap: () => _showPoint3Dialog(
-                        title: l10n?.editShadowOffset ?? 'Edit ShadowOffset',
-                        initial: _propsData.shadowOffset ??
-                            Point3DDouble(x: 5.0, y: 0.0, z: 1.2),
-                        onConfirm: (p) {
-                          _propsData.shadowOffset = p;
-                          _sync();
-                        },
-                      ),
-                    ),
-                    const Divider(height: 1),
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: DropdownButtonFormField<String>(
-                        initialValue: _propsData.groundTrackName == 'ground_swatch'
-                            ? 'ground_swatch'
-                            : '',
-                        decoration: InputDecoration(
-                          labelText: l10n?.groundTrackName ?? 'GroundTrackName (行进轨迹)',
-                          border: const OutlineInputBorder(),
+                          label: l10n?.hitpoints ?? 'Hitpoints',
+                          value: _propsData.hitpoints,
+                          onChanged: (v) {
+                            _propsData.hitpoints = v;
+                            _sync();
+                          },
                         ),
-                        items: [
-                          DropdownMenuItem(
-                            value: 'ground_swatch',
-                            child: Text(l10n?.groundTrackNormal ?? 'Normal ground (ground_swatch)'),
-                          ),
-                          DropdownMenuItem(
-                            value: '',
-                            child: Text(l10n?.groundTrackNone ?? 'None (null)'),
-                          ),
-                        ],
-                        onChanged: (val) {
-                          if (val == null) return;
-                          _propsData.groundTrackName = val;
-                          _sync();
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(l10n?.appearanceBehavior ?? 'Appearance & behavior',
-                  style: theme.textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                    color: themeColor,
-                  )),
-              const SizedBox(height: 8),
-              Card(
-                child: Theme(
-                  data: theme.copyWith(
-                    switchTheme: SwitchThemeData(
-                      trackColor: WidgetStateProperty.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return themeColor; // Amber when on
-                        }
-                        return null;
-                      }),
-                      thumbColor: WidgetStateProperty.resolveWith((states) {
-                        if (states.contains(WidgetState.selected)) {
-                          return theme.colorScheme.onPrimary;
-                        }
-                        return null;
-                      }),
-                    ),
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                      children: [
-                        InkWell(
-                          onTap: _showSizeTypeDialog,
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(l10n?.sizeType ?? 'SizeType',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    Text(
-                                      _propsData.sizeType ?? 'null',
-                                      style: theme.textTheme.bodySmall?.copyWith(
-                                        color: theme.colorScheme.onSurfaceVariant,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _doubleInput(
+                                label: l10n?.speed ?? 'Speed',
+                                value: _propsData.speed,
+                                onChanged: (v) {
+                                  _propsData.speed = v;
+                                  _sync();
+                                },
                               ),
-                              const Icon(Icons.edit, size: 18),
-                            ],
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: _doubleInput(
+                                label: l10n?.speedVariance ?? 'Speed variance',
+                                value: _propsData.speedVariance ?? 0.1,
+                                onChanged: (v) {
+                                  _propsData.speedVariance = v;
+                                  _sync();
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        _doubleInput(
+                          label: l10n?.eatDPS ?? 'EatDPS',
+                          value: _propsData.eatDPS,
+                          onChanged: (v) {
+                            _propsData.eatDPS = v;
+                            _sync();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  l10n?.hitPosition ?? 'Hit / position',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: themeColor,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Card(
+                  child: Column(
+                    children: [
+                      _editRow(
+                        title: l10n?.hitRect ?? 'HitRect',
+                        subtitle: _formatRect(_propsData.hitRect),
+                        icon: Icons.aspect_ratio,
+                        onTap: () => _showRectDialog(
+                          title: l10n?.editHitRect ?? 'Edit HitRect',
+                          initial:
+                              _propsData.hitRect ??
+                              RectData(mX: 10, mY: 10, mWidth: 32, mHeight: 95),
+                          onConfirm: (r) {
+                            _propsData.hitRect = r;
+                            _sync();
+                          },
+                        ),
+                      ),
+                      const Divider(height: 1),
+                      _editRow(
+                        title: l10n?.attackRect ?? 'AttackRect',
+                        subtitle: _formatRect(_propsData.attackRect),
+                        icon: Icons.aspect_ratio,
+                        onTap: () => _showRectDialog(
+                          title: l10n?.editAttackRect ?? 'Edit AttackRect',
+                          initial:
+                              _propsData.attackRect ??
+                              RectData(mX: 15, mY: 0, mWidth: 20, mHeight: 95),
+                          onConfirm: (r) {
+                            _propsData.attackRect = r;
+                            _sync();
+                          },
+                        ),
+                      ),
+                      const Divider(height: 1),
+                      _editRow(
+                        title: l10n?.artCenter ?? 'ArtCenter',
+                        subtitle: _formatPoint(_propsData.artCenter),
+                        icon: Icons.center_focus_strong,
+                        onTap: () => _showPoint2Dialog(
+                          title: l10n?.editArtCenter ?? 'Edit ArtCenter',
+                          initial:
+                              _propsData.artCenter ?? Point2D(x: 90, y: 125),
+                          onConfirm: (p) {
+                            _propsData.artCenter = p;
+                            _sync();
+                          },
+                        ),
+                      ),
+                      const Divider(height: 1),
+                      _editRow(
+                        title: l10n?.shadowOffset ?? 'ShadowOffset',
+                        subtitle: _formatPoint3D(_propsData.shadowOffset),
+                        icon: Icons.layers,
+                        onTap: () => _showPoint3Dialog(
+                          title: l10n?.editShadowOffset ?? 'Edit ShadowOffset',
+                          initial:
+                              _propsData.shadowOffset ??
+                              Point3DDouble(x: 5.0, y: 0.0, z: 1.2),
+                          onConfirm: (p) {
+                            _propsData.shadowOffset = p;
+                            _sync();
+                          },
+                        ),
+                      ),
+                      const Divider(height: 1),
+                      Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: DropdownButtonFormField<String>(
+                          initialValue:
+                              _propsData.groundTrackName == 'ground_swatch'
+                              ? 'ground_swatch'
+                              : '',
+                          decoration: InputDecoration(
+                            labelText:
+                                l10n?.groundTrackName ??
+                                'GroundTrackName (行进轨迹)',
+                            border: const OutlineInputBorder(),
                           ),
-                        ),
-                        const Divider(height: 24),
-                      _switchRow(
-                        title: l10n?.disableDropFractions ?? 'Disable drop fractions',
-                        checked: _propsData.armDropFraction != null ||
-                            _propsData.headDropFraction != null,
-                        onChanged: (checked) {
-                          if (checked) {
-                            _propsData.armDropFraction = -1;
-                            _propsData.headDropFraction = 0;
-                          } else {
-                            _propsData.armDropFraction = null;
-                            _propsData.headDropFraction = null;
-                          }
-                          _sync();
-                        },
-                      ),
-                      _switchRow(
-                        title: l10n?.immuneToKnockback ?? 'Immune to knockback',
-                        checked: _propsData.canBeLaunchedByPlants != null ||
-                            _propsData.canBePlantTossedStrong != null ||
-                            _propsData.canBePlantTossedweak != null,
-                        onChanged: (checked) {
-                          if (checked) {
-                            _propsData.canBeLaunchedByPlants = false;
-                            _propsData.canBePlantTossedweak = false;
-                            _propsData.canBePlantTossedStrong = false;
-                          } else {
-                            _propsData.canBeLaunchedByPlants = null;
-                            _propsData.canBePlantTossedweak = null;
-                            _propsData.canBePlantTossedStrong = null;
-                          }
-                          _sync();
-                        },
-                      ),
-                      _switchRow(
-                        title: l10n?.showHealthBarOnDamage ?? 'Show health bar on damage',
-                        checked: _propsData.enableShowHealthBarByDamage == true,
-                        onChanged: (checked) {
-                          _propsData.enableShowHealthBarByDamage =
-                              checked ? true : null;
-                          _propsData.drawHealthBarTime = checked
-                              ? (_propsData.drawHealthBarTime ?? 4.0)
-                              : null;
-                          _sync();
-                        },
-                      ),
-                      if (_propsData.enableShowHealthBarByDamage == true)
-                        _doubleInput(
-                          label: l10n?.drawHealthBarTime ?? 'DrawHealthBarTime',
-                          value: _propsData.drawHealthBarTime ?? 4.0,
-                          onChanged: (v) {
-                            _propsData.drawHealthBarTime = v;
+                          items: [
+                            DropdownMenuItem(
+                              value: 'ground_swatch',
+                              child: Text(
+                                l10n?.groundTrackNormal ??
+                                    'Normal ground (ground_swatch)',
+                              ),
+                            ),
+                            DropdownMenuItem(
+                              value: '',
+                              child: Text(
+                                l10n?.groundTrackNone ?? 'None (null)',
+                              ),
+                            ),
+                          ],
+                          onChanged: (val) {
+                            if (val == null) return;
+                            _propsData.groundTrackName = val;
                             _sync();
                           },
                         ),
-                      _switchRow(
-                        title: l10n?.enableEliteScale ?? 'Enable elite scale',
-                        checked: _propsData.enableEliteScale == true,
-                        onChanged: (checked) {
-                          _propsData.enableEliteScale = checked ? true : null;
-                          _propsData.eliteScale = checked
-                              ? (_propsData.eliteScale ?? 1.2)
-                              : null;
-                          _sync();
-                        },
-                      ),
-                      if (_propsData.enableEliteScale == true)
-                        _doubleInput(
-                          label: l10n?.eliteScale ?? 'EliteScale',
-                          value: _propsData.eliteScale ?? 1.2,
-                          onChanged: (v) {
-                            _propsData.eliteScale = v;
-                            _sync();
-                          },
-                        ),
-                      _switchRow(
-                        title: l10n?.enableEliteImmunities ?? 'Enable elite immunities',
-                        checked: _propsData.enableEliteImmunities == true,
-                        onChanged: (checked) {
-                          _propsData.enableEliteImmunities =
-                              checked ? true : null;
-                          _sync();
-                        },
-                      ),
-                      _switchRow(
-                        title: l10n?.canSpawnPlantFood ?? 'Can spawn plant food',
-                        checked: _propsData.canSpawnPlantFood,
-                        onChanged: (checked) {
-                          _propsData.canSpawnPlantFood = checked;
-                          _sync();
-                        },
-                      ),
-                      _switchRow(
-                        title: l10n?.canSurrender ?? 'Can surrender',
-                        checked: _propsData.canSurrender == true,
-                        onChanged: (checked) {
-                          _propsData.canSurrender = checked ? true : null;
-                          _sync();
-                        },
-                      ),
-                      _switchRow(
-                        title: l10n?.canTriggerZombieWin ?? 'Can trigger zombie win',
-                        checked: _propsData.canTriggerZombieWin != false,
-                        onChanged: (checked) {
-                          _propsData.canTriggerZombieWin = checked ? null : false;
-                          _sync();
-                        },
                       ),
                     ],
                   ),
                 ),
-              ),
-            ),
-              if (_supportsResilienceShield) ...[
                 const SizedBox(height: 16),
-                Text(l10n?.resilienceArmor ?? 'Resilience (armor)',
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      color: themeColor,
-                    )),
+                Text(
+                  l10n?.appearanceBehavior ?? 'Appearance & behavior',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: themeColor,
+                  ),
+                ),
                 const SizedBox(height: 8),
                 Card(
                   child: Theme(
@@ -1105,7 +968,7 @@ class _CustomZombiePropertiesScreenState
                       switchTheme: SwitchThemeData(
                         trackColor: WidgetStateProperty.resolveWith((states) {
                           if (states.contains(WidgetState.selected)) {
-                            return themeColor;
+                            return themeColor; // Amber when on
                           }
                           return null;
                         }),
@@ -1120,115 +983,324 @@ class _CustomZombiePropertiesScreenState
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          InkWell(
+                            onTap: _showSizeTypeDialog,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        l10n?.sizeType ?? 'SizeType',
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        _propsData.sizeType ?? 'null',
+                                        style: theme.textTheme.bodySmall
+                                            ?.copyWith(
+                                              color: theme
+                                                  .colorScheme
+                                                  .onSurfaceVariant,
+                                            ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const Icon(Icons.edit, size: 18),
+                              ],
+                            ),
+                          ),
+                          const Divider(height: 24),
                           _switchRow(
                             title:
-                                l10n?.enableResilience ?? 'Enable resilience',
-                            checked: _isResilienceEnabled,
-                            onChanged: (checked) async {
+                                l10n?.disableDropFractions ??
+                                'Disable drop fractions',
+                            checked:
+                                _propsData.armDropFraction != null ||
+                                _propsData.headDropFraction != null,
+                            onChanged: (checked) {
                               if (checked) {
-                                final options = _resilienceShieldOptions();
-                                if (options.isNotEmpty) {
-                                  _applySelectedResilienceRtid(
-                                    options.first.rtid,
-                                  );
-                                  _sync();
-                                } else {
-                                  await _pickResilienceShield();
-                                }
+                                _propsData.armDropFraction = -1;
+                                _propsData.headDropFraction = 0;
                               } else {
-                                _propsData.resilience = null;
-                                _sync();
+                                _propsData.armDropFraction = null;
+                                _propsData.headDropFraction = null;
                               }
-                              setState(() {});
+                              _sync();
                             },
                           ),
-                          if (_isResilienceEnabled) ...[
-                            const Divider(height: 24),
-                            _buildResilienceShieldCard(theme, l10n),
-                            const SizedBox(height: 16),
-                            _buildResilienceParametersSummary(l10n),
-                          ],
+                          _switchRow(
+                            title:
+                                l10n?.immuneToKnockback ??
+                                'Immune to knockback',
+                            checked:
+                                _propsData.canBeLaunchedByPlants != null ||
+                                _propsData.canBePlantTossedStrong != null ||
+                                _propsData.canBePlantTossedweak != null,
+                            onChanged: (checked) {
+                              if (checked) {
+                                _propsData.canBeLaunchedByPlants = false;
+                                _propsData.canBePlantTossedweak = false;
+                                _propsData.canBePlantTossedStrong = false;
+                              } else {
+                                _propsData.canBeLaunchedByPlants = null;
+                                _propsData.canBePlantTossedweak = null;
+                                _propsData.canBePlantTossedStrong = null;
+                              }
+                              _sync();
+                            },
+                          ),
+                          _switchRow(
+                            title:
+                                l10n?.showHealthBarOnDamage ??
+                                'Show health bar on damage',
+                            checked:
+                                _propsData.enableShowHealthBarByDamage == true,
+                            onChanged: (checked) {
+                              _propsData.enableShowHealthBarByDamage = checked
+                                  ? true
+                                  : null;
+                              _propsData.drawHealthBarTime = checked
+                                  ? (_propsData.drawHealthBarTime ?? 4.0)
+                                  : null;
+                              _sync();
+                            },
+                          ),
+                          if (_propsData.enableShowHealthBarByDamage == true)
+                            _doubleInput(
+                              label:
+                                  l10n?.drawHealthBarTime ??
+                                  'DrawHealthBarTime',
+                              value: _propsData.drawHealthBarTime ?? 4.0,
+                              onChanged: (v) {
+                                _propsData.drawHealthBarTime = v;
+                                _sync();
+                              },
+                            ),
+                          _switchRow(
+                            title:
+                                l10n?.enableEliteScale ?? 'Enable elite scale',
+                            checked: _propsData.enableEliteScale == true,
+                            onChanged: (checked) {
+                              _propsData.enableEliteScale = checked
+                                  ? true
+                                  : null;
+                              _propsData.eliteScale = checked
+                                  ? (_propsData.eliteScale ?? 1.2)
+                                  : null;
+                              _sync();
+                            },
+                          ),
+                          if (_propsData.enableEliteScale == true)
+                            _doubleInput(
+                              label: l10n?.eliteScale ?? 'EliteScale',
+                              value: _propsData.eliteScale ?? 1.2,
+                              onChanged: (v) {
+                                _propsData.eliteScale = v;
+                                _sync();
+                              },
+                            ),
+                          _switchRow(
+                            title:
+                                l10n?.enableEliteImmunities ??
+                                'Enable elite immunities',
+                            checked: _propsData.enableEliteImmunities == true,
+                            onChanged: (checked) {
+                              _propsData.enableEliteImmunities = checked
+                                  ? true
+                                  : null;
+                              _sync();
+                            },
+                          ),
+                          _switchRow(
+                            title:
+                                l10n?.canSpawnPlantFood ??
+                                'Can spawn plant food',
+                            checked: _propsData.canSpawnPlantFood,
+                            onChanged: (checked) {
+                              _propsData.canSpawnPlantFood = checked;
+                              _sync();
+                            },
+                          ),
+                          _switchRow(
+                            title: l10n?.canSurrender ?? 'Can surrender',
+                            checked: _propsData.canSurrender == true,
+                            onChanged: (checked) {
+                              _propsData.canSurrender = checked ? true : null;
+                              _sync();
+                            },
+                          ),
+                          _switchRow(
+                            title:
+                                l10n?.canTriggerZombieWin ??
+                                'Can trigger zombie win',
+                            checked: _propsData.canTriggerZombieWin != false,
+                            onChanged: (checked) {
+                              _propsData.canTriggerZombieWin = checked
+                                  ? null
+                                  : false;
+                              _sync();
+                            },
+                          ),
                         ],
                       ),
                     ),
                   ),
                 ),
-              ],
-              const SizedBox(height: 16),
-              Text(l10n?.resilience ?? 'Resilience',
+                if (_supportsResilienceShield) ...[
+                  const SizedBox(height: 16),
+                  Text(
+                    l10n?.resilienceArmor ?? 'Resilience (armor)',
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
+                      color: themeColor,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Card(
+                    child: Theme(
+                      data: theme.copyWith(
+                        switchTheme: SwitchThemeData(
+                          trackColor: WidgetStateProperty.resolveWith((states) {
+                            if (states.contains(WidgetState.selected)) {
+                              return themeColor;
+                            }
+                            return null;
+                          }),
+                          thumbColor: WidgetStateProperty.resolveWith((states) {
+                            if (states.contains(WidgetState.selected)) {
+                              return theme.colorScheme.onPrimary;
+                            }
+                            return null;
+                          }),
+                        ),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _switchRow(
+                              title:
+                                  l10n?.enableResilience ?? 'Enable resilience',
+                              checked: _isResilienceEnabled,
+                              onChanged: (checked) async {
+                                if (checked) {
+                                  final options = _resilienceShieldOptions();
+                                  if (options.isNotEmpty) {
+                                    _applySelectedResilienceRtid(
+                                      options.first.rtid,
+                                    );
+                                    _sync();
+                                  } else {
+                                    await _pickResilienceShield();
+                                  }
+                                } else {
+                                  _propsData.resilience = null;
+                                  _sync();
+                                }
+                                setState(() {});
+                              },
+                            ),
+                            if (_isResilienceEnabled) ...[
+                              const Divider(height: 24),
+                              _buildResilienceShieldCard(theme, l10n),
+                              const SizedBox(height: 16),
+                              _buildResilienceParametersSummary(l10n),
+                            ],
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 16),
+                Text(
+                  l10n?.resilience ?? 'Resilience',
                   style: theme.textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                     color: themeColor,
-                  )),
-              const SizedBox(height: 8),
-              Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    children: [
-                      _resistanceInput(
-                        context: context,
-                        index: 0,
-                        label: l10n?.instantKillResistance ?? 'Instant kill resistance',
-                        iconPath: null,
-                      ),
-                      const SizedBox(height: 12),
-                      for (var i = 0; i < 3; i++)
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: _resistanceInput(
-                                  context: context,
-                                  index: 1 + i * 2,
-                                  label: _resLabel(context, 1 + i * 2),
-                                  iconPath: _resIcons[1 + i * 2],
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: _resistanceInput(
-                                  context: context,
-                                  index: 2 + i * 2,
-                                  label: _resLabel(context, 2 + i * 2),
-                                  iconPath: _resIcons[2 + i * 2],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      Text(
-                        l10n?.resilienceHint ?? '0.0 = none, 1.0 = full immunity',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
-                      ),
-                    ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                l10n?.zombieTypeLabel(_typeData.typeName) ?? 'Zombie type: ${_typeData.typeName}',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+                const SizedBox(height: 8),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        _resistanceInput(
+                          context: context,
+                          index: 0,
+                          label:
+                              l10n?.instantKillResistance ??
+                              'Instant kill resistance',
+                          iconPath: null,
+                        ),
+                        const SizedBox(height: 12),
+                        for (var i = 0; i < 3; i++)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: _resistanceInput(
+                                    context: context,
+                                    index: 1 + i * 2,
+                                    label: _resLabel(context, 1 + i * 2),
+                                    iconPath: _resIcons[1 + i * 2],
+                                  ),
+                                ),
+                                const SizedBox(width: 12),
+                                Expanded(
+                                  child: _resistanceInput(
+                                    context: context,
+                                    index: 2 + i * 2,
+                                    label: _resLabel(context, 2 + i * 2),
+                                    iconPath: _resIcons[2 + i * 2],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        Text(
+                          l10n?.resilienceHint ??
+                              '0.0 = none, 1.0 = full immunity',
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: theme.colorScheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-              Text(
-                l10n?.propertyAliasLabel(RtidParser.parse(_typeData.properties)?.alias ?? '') ?? 'Property alias: ${RtidParser.parse(_typeData.properties)?.alias ?? ''}',
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
+                const SizedBox(height: 16),
+                Text(
+                  l10n?.zombieTypeLabel(_typeData.typeName) ??
+                      'Zombie type: ${_typeData.typeName}',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 24),
-            ],
+                Text(
+                  l10n?.propertyAliasLabel(
+                        RtidParser.parse(_typeData.properties)?.alias ?? '',
+                      ) ??
+                      'Property alias: ${RtidParser.parse(_typeData.properties)?.alias ?? ''}',
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.onSurfaceVariant,
+                  ),
+                ),
+                const SizedBox(height: 24),
+              ],
+            ),
           ),
         ),
-      ),
       ),
     );
   }
@@ -1236,13 +1308,20 @@ class _CustomZombiePropertiesScreenState
   String _resLabel(BuildContext context, int index) {
     final l10n = AppLocalizations.of(context);
     switch (index) {
-      case 1: return l10n?.resiliencePhysics ?? 'Physics';
-      case 2: return l10n?.resiliencePoison ?? 'Poison';
-      case 3: return l10n?.resilienceElectric ?? 'Electric';
-      case 4: return l10n?.resilienceMagic ?? 'Magic';
-      case 5: return l10n?.resilienceIce ?? 'Ice';
-      case 6: return l10n?.resilienceFire ?? 'Fire';
-      default: return '';
+      case 1:
+        return l10n?.resiliencePhysics ?? 'Physics';
+      case 2:
+        return l10n?.resiliencePoison ?? 'Poison';
+      case 3:
+        return l10n?.resilienceElectric ?? 'Electric';
+      case 4:
+        return l10n?.resilienceMagic ?? 'Magic';
+      case 5:
+        return l10n?.resilienceIce ?? 'Ice';
+      case 6:
+        return l10n?.resilienceFire ?? 'Fire';
+      default:
+        return '';
     }
   }
 
@@ -1293,13 +1372,16 @@ class _CustomZombiePropertiesScreenState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                    ),
                   ),
                 ],
               ),

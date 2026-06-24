@@ -7,7 +7,8 @@ import 'package:c_editor/data/repository/challenge_repository.dart';
 import 'package:c_editor/screens/select/challenge_selection_screen.dart';
 import 'package:c_editor/theme/app_theme.dart';
 import 'package:c_editor/widgets/editor_components.dart';
-import 'package:c_editor/screens/editor/modules/challenge_editors.dart' show showChallengeEditorDialog;
+import 'package:c_editor/screens/editor/modules/challenge_editors.dart'
+    show showChallengeEditorDialog;
 
 class StarChallengeModuleScreen extends StatefulWidget {
   const StarChallengeModuleScreen({
@@ -24,7 +25,8 @@ class StarChallengeModuleScreen extends StatefulWidget {
   final VoidCallback onBack;
 
   @override
-  State<StarChallengeModuleScreen> createState() => _StarChallengeModuleScreenState();
+  State<StarChallengeModuleScreen> createState() =>
+      _StarChallengeModuleScreenState();
 }
 
 class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
@@ -40,10 +42,11 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
   void _loadData() {
     final info = RtidParser.parse(widget.rtid);
     if (info == null) return;
-    
+
     _moduleObj = widget.levelFile.objects.firstWhere(
       (o) => o.aliases?.contains(info.alias) == true,
-      orElse: () => PvzObject(objClass: 'StarChallengeModuleProperties', objData: {}),
+      orElse: () =>
+          PvzObject(objClass: 'StarChallengeModuleProperties', objData: {}),
     );
 
     try {
@@ -51,7 +54,7 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
     } catch (e) {
       _data = StarChallengeModuleData();
     }
-    
+
     // Ensure at least one list exists (for 1st star)
     if (_data.challenges.isEmpty) {
       _data.challenges.add([]);
@@ -69,9 +72,9 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
     final l10n = AppLocalizations.of(context);
     final message = isLocal
         ? (l10n?.deleteChallengeConfirmLocal(title) ??
-            'Remove "$title"? Local challenge data will be deleted permanently.')
+              'Remove "$title"? Local challenge data will be deleted permanently.')
         : (l10n?.deleteChallengeConfirmRef(title) ??
-            'Remove "$title"? Reference will be removed. Challenge stays in LevelModules.');
+              'Remove "$title"? Reference will be removed. Challenge stays in LevelModules.');
 
     showDialog<bool>(
       context: context,
@@ -87,7 +90,10 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
             onPressed: () => Navigator.pop(ctx, true),
             child: Text(
               l10n?.delete ?? 'Delete',
-              style: const TextStyle(color: Colors.red, fontWeight: FontWeight.w600),
+              style: const TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
         ],
@@ -106,7 +112,9 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
       // Also remove the object if it's local
       final info = RtidParser.parse(challengeRtid);
       if (info != null && info.source == 'CurrentLevel') {
-        widget.levelFile.objects.removeWhere((o) => o.aliases?.contains(info.alias) == true);
+        widget.levelFile.objects.removeWhere(
+          (o) => o.aliases?.contains(info.alias) == true,
+        );
       }
 
       _saveData();
@@ -232,11 +240,12 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
-    final challenges = _data.challenges.isNotEmpty ? _data.challenges[0] : <String>[];
+    final challenges = _data.challenges.isNotEmpty
+        ? _data.challenges[0]
+        : <String>[];
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
     final themeColor = isDark ? pvzOrangeDark : pvzOrangeLight;
@@ -263,12 +272,16 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
                 sections: [
                   HelpSectionData(
                     title: l10n?.overview ?? 'Overview',
-                    body: l10n?.starChallengeHelpOverview ??
+                    body:
+                        l10n?.starChallengeHelpOverview ??
                         'Select challenge modules used in the level here. You can set multiple challenge goals and use the same challenge type multiple times.',
                   ),
                   HelpSectionData(
-                    title: l10n?.starChallengeHelpSuggestionTitle ?? 'Optimization suggestion',
-                    body: l10n?.starChallengeHelpSuggestion ??
+                    title:
+                        l10n?.starChallengeHelpSuggestionTitle ??
+                        'Optimization suggestion',
+                    body:
+                        l10n?.starChallengeHelpSuggestion ??
                         'Some challenges have in-game progress stat boxes. When there are too many challenge modules, stat boxes may overlap.',
                   ),
                 ],
@@ -283,7 +296,11 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
           if (challenges.isEmpty)
             Padding(
               padding: const EdgeInsets.all(32),
-              child: Center(child: Text(l10n?.noChallengesConfigured ?? 'No challenges configured')),
+              child: Center(
+                child: Text(
+                  l10n?.noChallengesConfigured ?? 'No challenges configured',
+                ),
+              ),
             )
           else
             ...challenges.asMap().entries.map((entry) {
@@ -292,7 +309,7 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
               final info = RtidParser.parse(rtid);
               final alias = info?.alias ?? rtid;
               final isLocal = info?.source == 'CurrentLevel';
-              
+
               String? objClass;
               if (isLocal) {
                 objClass = widget.levelFile.objects
@@ -320,18 +337,33 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
                     decoration: BoxDecoration(
                       color: themeColor.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: themeColor.withValues(alpha: 0.5)),
+                      border: Border.all(
+                        color: themeColor.withValues(alpha: 0.5),
+                      ),
                     ),
                     child: Icon(icon, color: themeColor),
                   ),
-                  title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  title: Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   subtitle: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       if (description.isNotEmpty)
-                        Text(description, style: theme.textTheme.bodySmall, maxLines: 2, overflow: TextOverflow.ellipsis),
-                      Text(alias, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                        Text(
+                          description,
+                          style: theme.textTheme.bodySmall,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      Text(
+                        alias,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: theme.colorScheme.onSurfaceVariant,
+                        ),
+                      ),
                     ],
                   ),
                   trailing: Row(
@@ -347,7 +379,8 @@ class _StarChallengeModuleScreenState extends State<StarChallengeModuleScreen> {
                         icon: const Icon(Icons.delete),
                         tooltip: l10n?.delete ?? 'Delete',
                         color: Colors.red,
-                        onPressed: () => _confirmRemoveChallenge(index, rtid, title),
+                        onPressed: () =>
+                            _confirmRemoveChallenge(index, rtid, title),
                       ),
                     ],
                   ),

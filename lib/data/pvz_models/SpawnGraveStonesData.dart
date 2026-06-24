@@ -34,4 +34,3 @@ class SpawnGraveStonesData extends PvzModel {
     'SpawnPositionsPool': spawnPositionsPool.map((e) => e.toJson()).toList(),
   };
 }
-

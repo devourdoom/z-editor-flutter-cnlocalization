@@ -6,4 +6,3 @@ class StarChallengeSaveMowerData extends PvzModel {
       StarChallengeSaveMowerData();
   Map<String, dynamic> toJson() => {};
 }
-

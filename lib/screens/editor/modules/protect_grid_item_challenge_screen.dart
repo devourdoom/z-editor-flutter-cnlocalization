@@ -83,12 +83,16 @@ class _ProtectGridItemChallengeScreenState
           onGridItemSelected: (id) {
             Navigator.pop(context);
             final list = List<ProtectGridItemData>.from(_data.gridItems)
-              ..removeWhere((e) => e.gridX == _selectedX && e.gridY == _selectedY)
-              ..add(ProtectGridItemData(
-                gridX: _selectedX,
-                gridY: _selectedY,
-                gridItemType: id,
-              ));
+              ..removeWhere(
+                (e) => e.gridX == _selectedX && e.gridY == _selectedY,
+              )
+              ..add(
+                ProtectGridItemData(
+                  gridX: _selectedX,
+                  gridY: _selectedY,
+                  gridItemType: id,
+                ),
+              );
             _data = ProtectTheGridItemChallengePropertiesData(
               description: _data.description,
               gridItems: list,
@@ -150,22 +154,26 @@ class _ProtectGridItemChallengeScreenState
             tooltip: l10n?.tooltipAboutModule ?? 'About this module',
             onPressed: () => showEditorHelpDialog(
               context,
-              title: l10n?.protectGridItemChallengeHelpTitle ??
+              title:
+                  l10n?.protectGridItemChallengeHelpTitle ??
                   'Protect Item Challenge Guide',
               sections: [
                 HelpSectionData(
                   title: l10n?.briefOverview ?? 'Brief Overview',
-                  body: l10n?.protectGridItemChallengeHelpOverview ??
+                  body:
+                      l10n?.protectGridItemChallengeHelpOverview ??
                       'Defines the items that must be protected in the level. If these items are destroyed, the level fails.',
                 ),
                 HelpSectionData(
                   title: l10n?.automaticCount ?? 'Automatic Count',
-                  body: l10n?.protectGridItemChallengeHelpAutoCountBody ??
+                  body:
+                      l10n?.protectGridItemChallengeHelpAutoCountBody ??
                       'The editor automatically updates the number of grid items that must be protected based on the items you add.',
                 ),
                 HelpSectionData(
                   title: l10n?.operationGuide ?? 'Operation Guide',
-                  body: l10n?.protectGridItemChallengeHelpOperationGuide ??
+                  body:
+                      l10n?.protectGridItemChallengeHelpOperationGuide ??
                       'Tap a coordinate in the grid above, then tap Add Target to choose the type of item to protect.',
                 ),
               ],
@@ -267,17 +275,19 @@ class _ProtectGridItemChallengeScreenState
               ),
             ),
             const SizedBox(height: 8),
-            ...sorted.map((item) => _GridItemTile(
-                  item: item,
-                  gridRows: _gridRows,
-                  gridCols: _gridCols,
-                  onDelete: () => _removeItem(item),
-                  onSelect: () => setState(() {
-                    _selectedX = item.gridX;
-                    _selectedY = item.gridY;
-                  }),
-                  deleteTooltip: l10n?.delete ?? 'Delete',
-                )),
+            ...sorted.map(
+              (item) => _GridItemTile(
+                item: item,
+                gridRows: _gridRows,
+                gridCols: _gridCols,
+                onDelete: () => _removeItem(item),
+                onSelect: () => setState(() {
+                  _selectedX = item.gridX;
+                  _selectedY = item.gridY;
+                }),
+                deleteTooltip: l10n?.delete ?? 'Delete',
+              ),
+            ),
           ],
         ),
       ),
@@ -320,8 +330,9 @@ class _ProtectGridItemChallengeScreenState
                             margin: const EdgeInsets.all(0.5),
                             decoration: BoxDecoration(
                               color: isSelected
-                                  ? theme.colorScheme.primary
-                                      .withValues(alpha: 0.2)
+                                  ? theme.colorScheme.primary.withValues(
+                                      alpha: 0.2,
+                                    )
                                   : Colors.transparent,
                               border: Border.all(
                                 color: isSelected
@@ -383,13 +394,15 @@ class _GridItemTile extends StatelessWidget {
   final VoidCallback onSelect;
   final String deleteTooltip;
 
-  bool get _isOutOfBounds =>
-      item.gridX >= gridCols || item.gridY >= gridRows;
+  bool get _isOutOfBounds => item.gridX >= gridCols || item.gridY >= gridRows;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final displayName = ResourceNames.lookup(context, 'griditem_${item.gridItemType}');
+    final displayName = ResourceNames.lookup(
+      context,
+      'griditem_${item.gridItemType}',
+    );
     final name = displayName != 'griditem_${item.gridItemType}'
         ? displayName
         : item.gridItemType;

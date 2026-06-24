@@ -22,22 +22,27 @@ class ZombossRobotSpawnEntry {
 
   static List<ZombossRobotSpawnEntry> parseList(dynamic raw) {
     if (raw is! List) return [];
-    return raw.map((e) {
-      if (e is! Map) return null;
-      final map = e is Map<String, dynamic>
-          ? e
-          : Map<String, dynamic>.from(e);
-      return ZombossRobotSpawnEntry(
-        zombieTypeName: map['ZombieTypeName']?.toString() ?? '',
-        row: _asInt(map['Row'], -1),
-        level: _asInt(map['Level'], 1),
-        hasPlantfood: map['HasPlantfood'] == true,
-        weight: _asInt(map['Weight'], 100),
-      );
-    }).whereType<ZombossRobotSpawnEntry>().toList();
+    return raw
+        .map((e) {
+          if (e is! Map) return null;
+          final map = e is Map<String, dynamic>
+              ? e
+              : Map<String, dynamic>.from(e);
+          return ZombossRobotSpawnEntry(
+            zombieTypeName: map['ZombieTypeName']?.toString() ?? '',
+            row: _asInt(map['Row'], -1),
+            level: _asInt(map['Level'], 1),
+            hasPlantfood: map['HasPlantfood'] == true,
+            weight: _asInt(map['Weight'], 100),
+          );
+        })
+        .whereType<ZombossRobotSpawnEntry>()
+        .toList();
   }
 
-  static List<Map<String, dynamic>> toJsonList(List<ZombossRobotSpawnEntry> entries) {
+  static List<Map<String, dynamic>> toJsonList(
+    List<ZombossRobotSpawnEntry> entries,
+  ) {
     return entries
         .map(
           (e) => {
@@ -52,12 +57,12 @@ class ZombossRobotSpawnEntry {
   }
 
   Map<String, dynamic> toJson() => {
-        'ZombieTypeName': zombieTypeName,
-        'Row': row,
-        'Level': level,
-        'HasPlantfood': hasPlantfood,
-        'Weight': weight,
-      };
+    'ZombieTypeName': zombieTypeName,
+    'Row': row,
+    'Level': level,
+    'HasPlantfood': hasPlantfood,
+    'Weight': weight,
+  };
 
   static int _asInt(dynamic value, int fallback) {
     if (value is int) return value;

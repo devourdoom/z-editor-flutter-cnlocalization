@@ -31,7 +31,8 @@ class InitialGridItemEntryScreen extends StatefulWidget {
       _InitialGridItemEntryScreenState();
 }
 
-class _InitialGridItemEntryScreenState extends State<InitialGridItemEntryScreen> {
+class _InitialGridItemEntryScreenState
+    extends State<InitialGridItemEntryScreen> {
   late PvzObject _moduleObj;
   late InitialGridItemEntryData _data;
   int _selectedX = 0;
@@ -85,11 +86,13 @@ class _InitialGridItemEntryScreenState extends State<InitialGridItemEntryScreen>
           onGridItemSelected: (typeName) {
             Navigator.pop(context);
             final newList = List<InitialGridItemData>.from(_data.placements);
-            newList.add(InitialGridItemData(
-              gridX: _selectedX,
-              gridY: _selectedY,
-              typeName: typeName,
-            ));
+            newList.add(
+              InitialGridItemData(
+                gridX: _selectedX,
+                gridY: _selectedY,
+                typeName: typeName,
+              ),
+            );
             _data = InitialGridItemEntryData(placements: newList);
             _sync();
           },
@@ -119,20 +122,24 @@ class _InitialGridItemEntryScreenState extends State<InitialGridItemEntryScreen>
     final theme = Theme.of(context);
     final l10n = AppLocalizations.of(context);
     final itemsAtPosition = _data.placements
-        .where((p) =>
-            p.gridX == _selectedX &&
-            p.gridY == _selectedY &&
-            p.gridX >= 0 &&
-            p.gridY >= 0 &&
-            p.gridX < _gridCols &&
-            p.gridY < _gridRows)
+        .where(
+          (p) =>
+              p.gridX == _selectedX &&
+              p.gridY == _selectedY &&
+              p.gridX >= 0 &&
+              p.gridY >= 0 &&
+              p.gridX < _gridCols &&
+              p.gridY < _gridRows,
+        )
         .toList();
     final itemsOutsideLawn = _data.placements
-        .where((p) =>
-            p.gridX < 0 ||
-            p.gridY < 0 ||
-            p.gridX >= _gridCols ||
-            p.gridY >= _gridRows)
+        .where(
+          (p) =>
+              p.gridX < 0 ||
+              p.gridY < 0 ||
+              p.gridX >= _gridCols ||
+              p.gridY >= _gridRows,
+        )
         .toList();
 
     return Scaffold(
@@ -201,18 +208,17 @@ class _InitialGridItemEntryScreenState extends State<InitialGridItemEntryScreen>
                   spacing: 8,
                   runSpacing: 8,
                   children: [
-                    ...itemsAtPosition.map((item) => _GridItemCard(
-                      item: item,
-                      gridRows: _gridRows,
-                      gridCols: _gridCols,
-                      showCoordinates: false,
-                      onDelete: () => setState(() => _itemToDelete = item),
-                      deleteTooltip: l10n?.delete ?? 'Delete',
-                    )),
-                    AddItemCard(
-                      onPressed: _handleSelectItem,
-                      minHeight: 130,
+                    ...itemsAtPosition.map(
+                      (item) => _GridItemCard(
+                        item: item,
+                        gridRows: _gridRows,
+                        gridCols: _gridCols,
+                        showCoordinates: false,
+                        onDelete: () => setState(() => _itemToDelete = item),
+                        deleteTooltip: l10n?.delete ?? 'Delete',
+                      ),
                     ),
+                    AddItemCard(onPressed: _handleSelectItem, minHeight: 130),
                   ],
                 ),
                 if (itemsOutsideLawn.isNotEmpty) ...[
@@ -229,14 +235,17 @@ class _InitialGridItemEntryScreenState extends State<InitialGridItemEntryScreen>
                     spacing: 8,
                     runSpacing: 8,
                     children: itemsOutsideLawn
-                        .map((item) => _GridItemCard(
-                              item: item,
-                              gridRows: _gridRows,
-                              gridCols: _gridCols,
-                              showCoordinates: true,
-                              onDelete: () => setState(() => _itemToDelete = item),
-                              deleteTooltip: l10n?.delete ?? 'Delete',
-                            ))
+                        .map(
+                          (item) => _GridItemCard(
+                            item: item,
+                            gridRows: _gridRows,
+                            gridCols: _gridCols,
+                            showCoordinates: true,
+                            onDelete: () =>
+                                setState(() => _itemToDelete = item),
+                            deleteTooltip: l10n?.delete ?? 'Delete',
+                          ),
+                        )
                         .toList(),
                   ),
                 ],
@@ -327,30 +336,32 @@ class _InitialGridItemEntryScreenState extends State<InitialGridItemEntryScreen>
                                             scale: cellBadgeScale,
                                             alignment: Alignment.topRight,
                                             child: Container(
-                                            padding:
-                                                const EdgeInsets.symmetric(
-                                              horizontal: 6,
-                                              vertical: 3,
-                                            ),
-                                            decoration: BoxDecoration(
-                                              color: theme.colorScheme
-                                                  .onSurfaceVariant,
-                                              borderRadius:
-                                                  const BorderRadius.only(
-                                                bottomLeft: Radius.circular(6),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 6,
+                                                    vertical: 3,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: theme
+                                                    .colorScheme
+                                                    .onSurfaceVariant,
+                                                borderRadius:
+                                                    const BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(6),
+                                                    ),
                                               ),
-                                            ),
-                                            child: Text(
-                                              '+${count - 1}',
-                                              style: const TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
+                                              child: Text(
+                                                '+${count - 1}',
+                                                style: const TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
                                               ),
                                             ),
                                           ),
                                         ),
-                                      ),
                                     ],
                                   )
                                 : null,
@@ -371,12 +382,20 @@ class _InitialGridItemEntryScreenState extends State<InitialGridItemEntryScreen>
   Widget _buildDeleteDialog() {
     final l10n = AppLocalizations.of(context);
     final item = _itemToDelete!;
-    final displayName = ResourceNames.lookup(context, 'griditem_${item.typeName}');
-    final name = displayName != 'griditem_${item.typeName}' ? displayName : item.typeName;
+    final displayName = ResourceNames.lookup(
+      context,
+      'griditem_${item.typeName}',
+    );
+    final name = displayName != 'griditem_${item.typeName}'
+        ? displayName
+        : item.typeName;
     return AlertDialog(
       title: Text(l10n?.removeItem ?? 'Remove item'),
       content: Text(
-        l10n?.removeItemConfirm('R${item.gridY + 1}:C${item.gridX + 1} $name') ?? 'Remove R${item.gridY + 1}:C${item.gridX + 1} $name?',
+        l10n?.removeItemConfirm(
+              'R${item.gridY + 1}:C${item.gridX + 1} $name',
+            ) ??
+            'Remove R${item.gridY + 1}:C${item.gridX + 1} $name?',
       ),
       actions: [
         TextButton(
@@ -418,7 +437,10 @@ class _GridItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final displayName = ResourceNames.lookup(context, 'griditem_${item.typeName}');
+    final displayName = ResourceNames.lookup(
+      context,
+      'griditem_${item.typeName}',
+    );
     final name = displayName != 'griditem_${item.typeName}'
         ? displayName
         : item.typeName;
@@ -461,14 +483,18 @@ class _GridItemCard extends StatelessWidget {
                         children: [
                           Icon(
                             editorWarningIcon,
-                            color: editorWarningBannerForeground(theme.brightness),
+                            color: editorWarningBannerForeground(
+                              theme.brightness,
+                            ),
                             size: 16,
                           ),
                           const SizedBox(width: 4),
                           Text(
                             'R${item.gridY + 1}:C${item.gridX + 1}',
                             style: theme.textTheme.bodySmall?.copyWith(
-                              color: editorWarningBannerForeground(theme.brightness),
+                              color: editorWarningBannerForeground(
+                                theme.brightness,
+                              ),
                             ),
                           ),
                         ],

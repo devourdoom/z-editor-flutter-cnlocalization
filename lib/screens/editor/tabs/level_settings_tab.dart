@@ -59,6 +59,7 @@ class LevelSettingsTab extends StatefulWidget {
   final LevelDefinitionData? levelDef;
   final Map<String, PvzObject> objectMap;
   final List<ModuleMetadata> missingModules;
+
   /// Module objClass -> list of plant IDs that need this module but it's missing (parallel plants warning).
   final Map<String, List<String>>? missingModuleWarnings;
   final bool showGlacierModuleCompatibilityWarning;
@@ -85,7 +86,11 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
     if (localized != key) return localized;
     return plantId
         .split('_')
-        .map((s) => s.isEmpty ? '' : s[0].toUpperCase() + s.substring(1).toLowerCase())
+        .map(
+          (s) => s.isEmpty
+              ? ''
+              : s[0].toUpperCase() + s.substring(1).toLowerCase(),
+        )
         .join(' ');
   }
 
@@ -161,8 +166,10 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
       context,
       existingObjClasses,
     );
-    final showTunnelDefendRecommendation =
-        _shouldRecommendTunnelDefendModule(levelDef, existingObjClasses);
+    final showTunnelDefendRecommendation = _shouldRecommendTunnelDefendModule(
+      levelDef,
+      existingObjClasses,
+    );
 
     return Stack(
       children: [
@@ -263,14 +270,18 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
                         children: [
                           Icon(
                             Icons.error,
-                            color: Theme.of(context).colorScheme.onErrorContainer,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onErrorContainer,
                           ),
                           const SizedBox(width: 8),
                           Text(
                             pair.first,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.onErrorContainer,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onErrorContainer,
                             ),
                           ),
                         ],
@@ -298,8 +309,9 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
                 final plantList = e.value
                     .map((id) => _plantDisplayName(context, repo, id))
                     .join(', ');
-                final message = AppLocalizations.of(context)!
-                    .missingModuleForPlantsWarning(moduleName, plantList);
+                final message = AppLocalizations.of(
+                  context,
+                )!.missingModuleForPlantsWarning(moduleName, plantList);
                 return Card(
                   color: Theme.of(context).colorScheme.errorContainer,
                   margin: const EdgeInsets.only(bottom: 12),
@@ -312,9 +324,9 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
                           children: [
                             Icon(
                               Icons.error,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onErrorContainer,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onErrorContainer,
                             ),
                             const SizedBox(width: 8),
                             Expanded(
@@ -323,9 +335,9 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
                                     'Missing module for parallel plants',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onErrorContainer,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onErrorContainer,
                                 ),
                               ),
                             ),
@@ -335,9 +347,9 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
                         Text(
                           message,
                           style: TextStyle(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .onErrorContainer,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onErrorContainer,
                           ),
                         ),
                       ],
@@ -350,7 +362,8 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
             if (widget.missingModules.isNotEmpty)
               EditorWarningBanner(
                 title: l10n?.missingModules ?? 'Missing modules',
-                message: l10n?.missingModulesRecommended ??
+                message:
+                    l10n?.missingModulesRecommended ??
                     'The level might not function correctly. Recommended to add:',
                 children: widget.missingModules
                     .map(
@@ -370,9 +383,11 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
             if (widget.showGlacierModuleCompatibilityWarning) ...[
               const SizedBox(height: 12),
               EditorWarningBanner(
-                title: ModuleRegistry.getMetadata('GlacierModuleProperties')
-                    .getTitle(context),
-                message: l10n?.glacierModuleCompatibilityWarning ??
+                title: ModuleRegistry.getMetadata(
+                  'GlacierModuleProperties',
+                ).getTitle(context),
+                message:
+                    l10n?.glacierModuleCompatibilityWarning ??
                     'This module only works with the Zomboss Battle module '
                         'and an Ice Age Zomboss Mech (zombossmech_iceage). '
                         'Add or fix those settings so glacier blocks can spawn zombies.',
@@ -382,9 +397,11 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
             if (showTunnelDefendRecommendation) ...[
               const SizedBox(height: 12),
               EditorWarningBanner(
-                title: l10n?.recommendedTunnelDefendTitle ??
+                title:
+                    l10n?.recommendedTunnelDefendTitle ??
                     'Tunnel pathways strongly recommended',
-                message: l10n?.recommendedTunnelDefendBody ??
+                message:
+                    l10n?.recommendedTunnelDefendBody ??
                     'The tiles in Underground Palace Secret Realm lawns must be placed through the "Underground Palace Pathways" module. If this module is not added, the lawns may appear overly empty in-game.',
               ),
             ],

@@ -75,8 +75,8 @@ void showWaveGeneratorExpectationDialog(
                 l10n?.waveGeneratorExpectationPoolNote ??
                     'Expectations are based on the cumulative AddToZombiePool. Other zombies may still appear if points are high enough.',
                 style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                      color: Theme.of(ctx).colorScheme.onSurfaceVariant,
-                    ),
+                  color: Theme.of(ctx).colorScheme.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 12),
               SizedBox(
@@ -96,8 +96,7 @@ void showWaveGeneratorExpectationDialog(
                       final nameKey =
                           info?.name ?? ZombieRepository().getName(typeName);
                       final displayName = ResourceNames.lookup(ctx, nameKey);
-                      final iconPath =
-                          info?.iconAssetPath ?? _kUnknownIconPath;
+                      final iconPath = info?.iconAssetPath ?? _kUnknownIconPath;
                       return Padding(
                         padding: EdgeInsets.symmetric(
                           vertical: isDesktopPlatform(ctx) ? 5 : 4,
@@ -107,16 +106,15 @@ void showWaveGeneratorExpectationDialog(
                             ClipRRect(
                               borderRadius: BorderRadius.circular(8),
                               child: ColoredBox(
-                                color: Theme.of(ctx)
-                                    .colorScheme
-                                    .surfaceContainerHighest,
+                                color: Theme.of(
+                                  ctx,
+                                ).colorScheme.surfaceContainerHighest,
                                 child: SizedBox(
                                   width: iconSize,
                                   height: iconSize,
                                   child: AssetImageWidget(
                                     assetPath: iconPath,
-                                    altCandidates:
-                                        imageAltCandidates(iconPath),
+                                    altCandidates: imageAltCandidates(iconPath),
                                     width: iconSize,
                                     height: iconSize,
                                     fit: BoxFit.contain,
@@ -134,23 +132,17 @@ void showWaveGeneratorExpectationDialog(
                                         ? displayName
                                         : typeName,
                                     overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(ctx)
-                                        .textTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          fontWeight: FontWeight.w500,
-                                        ),
+                                    style: Theme.of(ctx).textTheme.bodyMedium
+                                        ?.copyWith(fontWeight: FontWeight.w500),
                                   ),
                                   Text(
                                     typeName,
                                     overflow: TextOverflow.ellipsis,
-                                    style: Theme.of(ctx)
-                                        .textTheme
-                                        .bodySmall
+                                    style: Theme.of(ctx).textTheme.bodySmall
                                         ?.copyWith(
-                                          color: Theme.of(ctx)
-                                              .colorScheme
-                                              .onSurfaceVariant,
+                                          color: Theme.of(
+                                            ctx,
+                                          ).colorScheme.onSurfaceVariant,
                                         ),
                                   ),
                                 ],

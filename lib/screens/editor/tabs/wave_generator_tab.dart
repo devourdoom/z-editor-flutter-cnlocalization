@@ -101,9 +101,9 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
   List<WaveGeneratorPoolEntryData> _scriptedPoolEntries(
     WaveGeneratorPropertiesData data,
   ) {
-    return _scriptedZombieTypes(data)
-        .map((type) => WaveGeneratorPoolEntryData(type: type))
-        .toList();
+    return _scriptedZombieTypes(
+      data,
+    ).map((type) => WaveGeneratorPoolEntryData(type: type)).toList();
   }
 
   List<WaveGeneratorPoolEntryData> _visibleWavePoolEntriesForWave(
@@ -231,8 +231,7 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
   bool _waveHasHeianWindActivity(int waveIndex) {
     final heianWind = _getHeianWindModuleData();
     if (heianWind == null) return false;
-    return heianWind.waveWindInfos
-        .any((w) => w.waveNumber + 1 == waveIndex);
+    return heianWind.waveWindInfos.any((w) => w.waveNumber + 1 == waveIndex);
   }
 
   String _zombieDisplayName(String rtid) {
@@ -346,9 +345,9 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
       onOpenModuleSettings: widget.onOpenModule == null
           ? null
           : () => _openModule(
-                'HeianWindModuleProperties',
-                hint: ModuleOpenHint(heianWindWaveNumber: waveIndex - 1),
-              ),
+              'HeianWindModuleProperties',
+              hint: ModuleOpenHint(heianWindWaveNumber: waveIndex - 1),
+            ),
     );
   }
 
@@ -367,9 +366,9 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
       onOpenModuleSettings: widget.onOpenModule == null
           ? null
           : () => _openModule(
-                'DropShipProperties',
-                hint: ModuleOpenHint(dropShipWave: waves.first.wave),
-              ),
+              'DropShipProperties',
+              hint: ModuleOpenHint(dropShipWave: waves.first.wave),
+            ),
     );
   }
 
@@ -385,14 +384,15 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
       context,
       levelFile: widget.levelFile,
       items: items,
-      title: l10n?.waveGeneratorGridOverrideWavePreviewTitle(waveIndex, label) ??
+      title:
+          l10n?.waveGeneratorGridOverrideWavePreviewTitle(waveIndex, label) ??
           '${l10n?.waveLabel ?? 'Wave'} $waveIndex — $label',
       onOpenModuleSettings: widget.onOpenModule == null
           ? null
           : () => _openModule(
-                'ArmrackProperties',
-                hint: ModuleOpenHint(gridOverrideModuleWave: moduleWave),
-              ),
+              'ArmrackProperties',
+              hint: ModuleOpenHint(gridOverrideModuleWave: moduleWave),
+            ),
     );
   }
 
@@ -408,14 +408,15 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
       context,
       levelFile: widget.levelFile,
       items: items,
-      title: l10n?.waveGeneratorGridOverrideWavePreviewTitle(waveIndex, label) ??
+      title:
+          l10n?.waveGeneratorGridOverrideWavePreviewTitle(waveIndex, label) ??
           '${l10n?.waveLabel ?? 'Wave'} $waveIndex — $label',
       onOpenModuleSettings: widget.onOpenModule == null
           ? null
           : () => _openModule(
-                'EnergyGridProperties',
-                hint: ModuleOpenHint(gridOverrideModuleWave: moduleWave),
-              ),
+              'EnergyGridProperties',
+              hint: ModuleOpenHint(gridOverrideModuleWave: moduleWave),
+            ),
     );
   }
 
@@ -467,7 +468,6 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
             onTap: widget.onEditWaveGeneratorSettings,
           ),
         ),
-
       ],
     );
   }
@@ -506,7 +506,9 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
               child: Padding(
                 padding: const EdgeInsets.all(24),
                 child: Center(
-                  child: Text(l10n?.waveGeneratorNoWaves ?? 'No waves defined.'),
+                  child: Text(
+                    l10n?.waveGeneratorNoWaves ?? 'No waves defined.',
+                  ),
                 ),
               ),
             )
@@ -535,8 +537,8 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
                   wave.waitUntilAllZombiesDie == true &&
                   wave.colNumPlantIsDragged != null) {
                 actionButtons.add((
-                  label: l10n?.eventTitle_BlackHoleWaveActionProps ??
-                      'Black Hole',
+                  label:
+                      l10n?.eventTitle_BlackHoleWaveActionProps ?? 'Black Hole',
                   onTap: () => _showBlackHoleInfoDialog(
                     context,
                     waveIndex,
@@ -558,7 +560,8 @@ class _WaveGeneratorTabState extends State<WaveGeneratorTab> {
               }
               if (_waveHasEnergyGridActivity(waveIndex)) {
                 actionButtons.add((
-                  label: l10n?.energyGridModuleExpectationLabel ?? 'Taiji tiles',
+                  label:
+                      l10n?.energyGridModuleExpectationLabel ?? 'Taiji tiles',
                   onTap: () => _showEnergyGridInfoDialog(context, waveIndex),
                 ));
               }
@@ -650,8 +653,8 @@ class _WaveRowCard extends StatelessWidget {
         final actionColumnWidth = isDesktop
             ? 220.0
             : (constraints.maxWidth * (veryCompactWidth ? 0.26 : 0.24))
-                .clamp(86.0, 132.0)
-                .toDouble();
+                  .clamp(86.0, 132.0)
+                  .toDouble();
         final chipFontSize = isDesktop ? 12.0 : 10.5;
 
         return Card(
@@ -746,14 +749,18 @@ class _WaveRowCard extends StatelessWidget {
                                 for (final entry in globalPool)
                                   WaveGeneratorZombieIconChip(
                                     sourceBadge: 'Z',
-                                    localizedName: zombieDisplayName(entry.type),
+                                    localizedName: zombieDisplayName(
+                                      entry.type,
+                                    ),
                                     codename: zombieCodename(entry.type),
                                     iconPath: zombieIcon(entry.type),
                                   ),
                                 for (final entry in wavePoolEntries)
                                   WaveGeneratorZombieIconChip(
                                     sourceBadge: 'W',
-                                    localizedName: zombieDisplayName(entry.type),
+                                    localizedName: zombieDisplayName(
+                                      entry.type,
+                                    ),
                                     codename: zombieCodename(entry.type),
                                     iconPath: zombieIcon(entry.type),
                                   ),

@@ -1,4 +1,5 @@
-String normalizeSelectionSearchQuery(String query) => query.trim().toLowerCase();
+String normalizeSelectionSearchQuery(String query) =>
+    query.trim().toLowerCase();
 
 bool matchesSelectionSearch(String query, Iterable<String?> values) {
   final normalizedQuery = normalizeSelectionSearchQuery(query);

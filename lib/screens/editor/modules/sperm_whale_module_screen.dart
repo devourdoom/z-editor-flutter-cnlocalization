@@ -154,7 +154,8 @@ class _SpermWhaleModuleScreenState extends State<SpermWhaleModuleScreen> {
             if (!_isDeepSea)
               EditorWarningBanner(
                 margin: EdgeInsets.zero,
-                message: l10n?.spermWhaleModuleNotDeepSeaWarning ??
+                message:
+                    l10n?.spermWhaleModuleNotDeepSeaWarning ??
                     'This module is meant for Deep Sea / Deep Sea Land stages. '
                         'The lawn grid below reflects your current level; for standard lawns it will not match Atlantis gameplay.',
               ),

@@ -28,7 +28,8 @@ class _FrostWindEventScreenState extends State<FrostWindEventScreen> {
   late PvzObject _moduleObj;
   late FrostWindWaveActionPropsData _data;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _maxRowIndex => _isDeepSeaLawn ? 5 : 4;
 
   @override
@@ -69,7 +70,10 @@ class _FrostWindEventScreenState extends State<FrostWindEventScreen> {
 
   void _addWind() {
     _data = FrostWindWaveActionPropsData(
-      winds: [..._data.winds, FrostWindData(row: 2, direction: 'right')],
+      winds: [
+        ..._data.winds,
+        FrostWindData(row: 2, direction: 'right'),
+      ],
     );
     _sync();
   }
@@ -148,7 +152,10 @@ class _FrostWindEventScreenState extends State<FrostWindEventScreen> {
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.ac_unit, color: theme.colorScheme.secondary),
+                            Icon(
+                              Icons.ac_unit,
+                              color: theme.colorScheme.secondary,
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               l10n?.windN(idx + 1) ?? 'Wind #${idx + 1}',
@@ -166,7 +173,10 @@ class _FrostWindEventScreenState extends State<FrostWindEventScreen> {
                         const SizedBox(height: 12),
                         Row(
                           children: [
-                            Text(l10n?.rowNShort(wind.row + 1) ?? 'Row: ${wind.row + 1}'),
+                            Text(
+                              l10n?.rowNShort(wind.row + 1) ??
+                                  'Row: ${wind.row + 1}',
+                            ),
                             const SizedBox(width: 16),
                             Row(
                               children: [
@@ -184,7 +194,8 @@ class _FrostWindEventScreenState extends State<FrostWindEventScreen> {
                                 const SizedBox(width: 8),
                                 ChoiceChip(
                                   label: Text(l10n?.right ?? 'Right'),
-                                  selected: wind.direction == 'right' ||
+                                  selected:
+                                      wind.direction == 'right' ||
                                       wind.direction.isEmpty,
                                   onSelected: (_) => _updateWind(
                                     idx,
@@ -205,25 +216,28 @@ class _FrostWindEventScreenState extends State<FrostWindEventScreen> {
                               icon: const Icon(Icons.remove),
                               onPressed: wind.row > 0
                                   ? () => _updateWind(
-                                        idx,
-                                        FrostWindData(
-                                          row: wind.row - 1,
-                                          direction: wind.direction,
-                                        ),
-                                      )
+                                      idx,
+                                      FrostWindData(
+                                        row: wind.row - 1,
+                                        direction: wind.direction,
+                                      ),
+                                    )
                                   : null,
                             ),
-                            Text(l10n?.rowNShort(wind.row + 1) ?? 'Row ${wind.row + 1}'),
+                            Text(
+                              l10n?.rowNShort(wind.row + 1) ??
+                                  'Row ${wind.row + 1}',
+                            ),
                             IconButton(
                               icon: const Icon(Icons.add),
                               onPressed: wind.row < _maxRowIndex
                                   ? () => _updateWind(
-                                        idx,
-                                        FrostWindData(
-                                          row: wind.row + 1,
-                                          direction: wind.direction,
-                                        ),
-                                      )
+                                      idx,
+                                      FrostWindData(
+                                        row: wind.row + 1,
+                                        direction: wind.direction,
+                                      ),
+                                    )
                                   : null,
                             ),
                           ],

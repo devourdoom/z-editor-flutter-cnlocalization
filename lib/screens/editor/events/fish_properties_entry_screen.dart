@@ -7,7 +7,8 @@ import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/select/fish_selection_screen.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Lawn grid for placing fishes. Row = Y, Column = X, both 0-based.
@@ -40,7 +41,8 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
   int _selectedCol = 0;
   int _selectedRow = 0;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _gridRows => _isDeepSeaLawn ? 6 : 5;
   int get _gridCols => _isDeepSeaLawn ? 10 : 9;
 
@@ -55,12 +57,9 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
     setState(() {});
   }
 
-  List<FishSpawnData> _fishesAt(int col, int row) =>
-      _fishes
-          .where((f) =>
-              f.position.mX == col &&
-              f.position.mY == row)
-          .toList();
+  List<FishSpawnData> _fishesAt(int col, int row) => _fishes
+      .where((f) => f.position.mX == col && f.position.mY == row)
+      .toList();
 
   bool _isCustomFish(FishSpawnData fish) {
     final info = RtidParser.parse(fish.type);
@@ -91,10 +90,12 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
             Navigator.pop(context);
             final rtid = FishTypeRepository().buildFishRtid(alias);
             _fishes = List<FishSpawnData>.from(_fishes)
-              ..add(FishSpawnData(
-                type: rtid,
-                position: FishPositionData(mX: col, mY: row),
-              ));
+              ..add(
+                FishSpawnData(
+                  type: rtid,
+                  position: FishPositionData(mX: col, mY: row),
+                ),
+              );
             _sync();
           },
           onBack: () => Navigator.pop(context),
@@ -108,18 +109,20 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
         .where((o) => o.objClass == 'CreatureType')
         .where((o) => o.aliases?.isNotEmpty == true)
         .map((o) {
-      try {
-        final data = o.objData;
-        if (data is Map<String, dynamic> && data['TypeName'] == baseType) {
-          final alias = o.aliases!.first;
-          return _CustomFishOption(
-            alias: alias,
-            rtid: RtidParser.build(alias, 'CurrentLevel'),
-          );
-        }
-      } catch (_) {}
-      return null;
-    }).whereType<_CustomFishOption>().toList();
+          try {
+            final data = o.objData;
+            if (data is Map<String, dynamic> && data['TypeName'] == baseType) {
+              final alias = o.aliases!.first;
+              return _CustomFishOption(
+                alias: alias,
+                rtid: RtidParser.build(alias, 'CurrentLevel'),
+              );
+            }
+          } catch (_) {}
+          return null;
+        })
+        .whereType<_CustomFishOption>()
+        .toList();
   }
 
   void _showCustomFishSwapDialog({
@@ -148,8 +151,8 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                     ? Text(
                         l10n?.current ?? 'Current',
                         style: Theme.of(ctx).textTheme.bodySmall?.copyWith(
-                              color: Theme.of(ctx).colorScheme.primary,
-                            ),
+                          color: Theme.of(ctx).colorScheme.primary,
+                        ),
                       )
                     : null,
                 onTap: () {
@@ -182,10 +185,12 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
 
   void _copyFish(FishSpawnData fish) {
     _fishes = List<FishSpawnData>.from(_fishes)
-      ..add(FishSpawnData(
-        type: fish.type,
-        position: FishPositionData(mX: _selectedCol, mY: _selectedRow),
-      ));
+      ..add(
+        FishSpawnData(
+          type: fish.type,
+          position: FishPositionData(mX: _selectedCol, mY: _selectedRow),
+        ),
+      );
     _sync();
   }
 
@@ -212,9 +217,9 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
     final theme = Theme.of(context);
     final isCustom = _isCustomFish(fish);
     final baseType = _getBaseTypeName(fish);
-    final compatibleCustom = _findCompatibleCustomFishes(baseType)
-        .where((opt) => opt.rtid != fish.type)
-        .toList();
+    final compatibleCustom = _findCompatibleCustomFishes(
+      baseType,
+    ).where((opt) => opt.rtid != fish.type).toList();
     final canEditCustom = isCustom && widget.onEditCustomFish != null;
     final canMakeCustom = !isCustom && widget.onInjectCustomFish != null;
     final canSwitchCustom = compatibleCustom.isNotEmpty;
@@ -304,8 +309,12 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
               Builder(
                 builder: (ctx) {
                   final isDark = Theme.of(ctx).brightness == Brightness.dark;
-                  final primaryBlue = isDark ? const Color(0xFF1976D2) : const Color(0xFF42A5F5);
-                  final secondaryBlue = isDark ? const Color(0xFF1565C0) : const Color(0xFF64B5F6);
+                  final primaryBlue = isDark
+                      ? const Color(0xFF1976D2)
+                      : const Color(0xFF42A5F5);
+                  final secondaryBlue = isDark
+                      ? const Color(0xFF1565C0)
+                      : const Color(0xFF64B5F6);
                   return Row(
                     children: [
                       if (canSwitchCustom)
@@ -344,7 +353,8 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                             ),
                             icon: const Icon(Icons.edit),
                             label: Text(
-                              l10n?.editCustomFishProperties ?? 'Edit properties',
+                              l10n?.editCustomFishProperties ??
+                                  'Edit properties',
                             ),
                           ),
                         )
@@ -352,7 +362,9 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                         Expanded(
                           child: FilledButton.icon(
                             onPressed: () {
-                              final newRtid = widget.onInjectCustomFish!(baseType);
+                              final newRtid = widget.onInjectCustomFish!(
+                                baseType,
+                              );
                               if (newRtid != null) {
                                 _fishes = List<FishSpawnData>.from(_fishes);
                                 _fishes[fishIndex] = FishSpawnData(
@@ -383,14 +395,15 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
     );
   }
 
-  List<FishSpawnData> get _fishesOutsideLawn =>
-      _fishes
-          .where((f) =>
-              f.position.mX < 0 ||
-              f.position.mY < 0 ||
-              f.position.mX >= _gridCols ||
-              f.position.mY >= _gridRows)
-          .toList();
+  List<FishSpawnData> get _fishesOutsideLawn => _fishes
+      .where(
+        (f) =>
+            f.position.mX < 0 ||
+            f.position.mY < 0 ||
+            f.position.mX >= _gridCols ||
+            f.position.mY >= _gridRows,
+      )
+      .toList();
 
   @override
   Widget build(BuildContext context) {
@@ -398,11 +411,13 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
     final l10n = AppLocalizations.of(context);
     final fishesAtSelected = _fishesAt(_selectedCol, _selectedRow);
     final fishesInBounds = fishesAtSelected
-        .where((f) =>
-            f.position.mX >= 0 &&
-            f.position.mY >= 0 &&
-            f.position.mX < _gridCols &&
-            f.position.mY < _gridRows)
+        .where(
+          (f) =>
+              f.position.mX >= 0 &&
+              f.position.mY >= 0 &&
+              f.position.mX < _gridCols &&
+              f.position.mY < _gridRows,
+        )
         .toList();
     final outsideLawn = _fishesOutsideLawn;
 
@@ -425,12 +440,14 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
-                  body: l10n?.eventHelpZombieFishWaveFish ??
+                  body:
+                      l10n?.eventHelpZombieFishWaveFish ??
                       'Place fishes on the grid. Row = Y, Column = X. Grid size depends on stage (deep sea 6×10, otherwise 5×9).',
                 ),
                 HelpSectionData(
                   title: l10n?.fishAtPosition ?? 'Fish at position',
-                  body: l10n?.fishPropertiesEntryHelp ??
+                  body:
+                      l10n?.fishPropertiesEntryHelp ??
                       'Tap a grid cell to select it, then add fishes. Tap + to add built-in fish. Tap a fish card to copy, delete, switch custom variant, or make custom. Custom fishes show a blue "C" badge.',
                 ),
               ],
@@ -481,7 +498,9 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                                   : const Color(0xFFD7ECF1),
                               borderRadius: BorderRadius.circular(6),
                               border: Border.all(
-                                  color: const Color(0xFF6B899A), width: 1),
+                                color: const Color(0xFF6B899A),
+                                width: 1,
+                              ),
                             ),
                             child: Column(
                               children: List.generate(_gridRows, (row) {
@@ -489,9 +508,9 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                                   child: Row(
                                     children: List.generate(_gridCols, (col) {
                                       final isSelected =
-                                          row == _selectedRow && col == _selectedCol;
-                                      final cellFishes =
-                                          _fishesAt(col, row);
+                                          row == _selectedRow &&
+                                          col == _selectedCol;
+                                      final cellFishes = _fishesAt(col, row);
                                       final first = cellFishes.firstOrNull;
                                       return Expanded(
                                         child: GestureDetector(
@@ -504,7 +523,7 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                                             decoration: BoxDecoration(
                                               color: isSelected
                                                   ? theme.colorScheme.primary
-                                                      .withValues(alpha: 0.2)
+                                                        .withValues(alpha: 0.2)
                                                   : Colors.transparent,
                                               border: Border.all(
                                                 color: isSelected
@@ -513,7 +532,8 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                                                 width: 0.5,
                                               ),
                                             ),
-                                            child: cellFishes.isNotEmpty &&
+                                            child:
+                                                cellFishes.isNotEmpty &&
                                                     first != null
                                                 ? Stack(
                                                     fit: StackFit.expand,
@@ -521,13 +541,20 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                                                       Positioned.fill(
                                                         child: Padding(
                                                           padding:
-                                                              const EdgeInsets
-                                                                  .all(2),
+                                                              const EdgeInsets.all(
+                                                                2,
+                                                              ),
                                                           child: FittedBox(
                                                             fit: BoxFit.contain,
                                                             child: _FishIconSmall(
-                                                              iconPath: _fishIconPath(first),
-                                                              isCustom: _isCustomFish(first),
+                                                              iconPath:
+                                                                  _fishIconPath(
+                                                                    first,
+                                                                  ),
+                                                              isCustom:
+                                                                  _isCustomFish(
+                                                                    first,
+                                                                  ),
                                                             ),
                                                           ),
                                                         ),
@@ -538,23 +565,21 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                                                           right: 3,
                                                           child: Container(
                                                             padding:
-                                                                const EdgeInsets
-                                                                    .symmetric(
-                                                                        horizontal: 6,
-                                                                        vertical: 3),
-                                                            decoration:
-                                                                BoxDecoration(
+                                                                const EdgeInsets.symmetric(
+                                                                  horizontal: 6,
+                                                                  vertical: 3,
+                                                                ),
+                                                            decoration: BoxDecoration(
                                                               color: theme
                                                                   .colorScheme
                                                                   .onSurfaceVariant,
                                                               borderRadius:
-                                                                  const BorderRadius
-                                                                      .only(
-                                                                bottomLeft:
-                                                                    Radius
-                                                                        .circular(
-                                                                            6),
-                                                              ),
+                                                                  const BorderRadius.only(
+                                                                    bottomLeft:
+                                                                        Radius.circular(
+                                                                          6,
+                                                                        ),
+                                                                  ),
                                                             ),
                                                             child: Text(
                                                               '+${cellFishes.length - 1}',
@@ -608,7 +633,11 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                     iconPath: _fishIconPath(fish),
                     isCustom: _isCustomFish(fish),
                     onTap: () => _showFishEditSheet(
-                        fish, idx, _selectedCol, _selectedRow),
+                      fish,
+                      idx,
+                      _selectedCol,
+                      _selectedRow,
+                    ),
                   );
                 }),
                 AddItemCard(
@@ -650,7 +679,11 @@ class _FishPropertiesEntryScreenState extends State<FishPropertiesEntryScreen> {
                     gridCols: _gridCols,
                     gridRows: _gridRows,
                     onTap: () => _showFishEditSheet(
-                        fish, idx, fish.position.mX, fish.position.mY),
+                      fish,
+                      idx,
+                      fish.position.mX,
+                      fish.position.mY,
+                    ),
                   );
                 }).toList(),
               ),

@@ -1,10 +1,7 @@
 import 'package:c_editor/data/pvz_models/PvzModel.dart';
 
 class EnergyGridOverrideItemData extends PvzModel {
-  EnergyGridOverrideItemData({
-    this.mX = 0,
-    this.mY = 0,
-  });
+  EnergyGridOverrideItemData({this.mX = 0, this.mY = 0});
 
   int mX;
   int mY;
@@ -16,8 +13,5 @@ class EnergyGridOverrideItemData extends PvzModel {
     );
   }
 
-  Map<String, dynamic> toJson() => {
-    'mX': mX,
-    'mY': mY,
-  };
+  Map<String, dynamic> toJson() => {'mX': mX, 'mY': mY};
 }

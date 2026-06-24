@@ -36,5 +36,3 @@ class SunDropperPropertiesData extends PvzModel {
     'SunCountdownRange': sunCountdownRange,
   };
 }
-
-

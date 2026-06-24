@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 /// Inner padding for module editor section cards (no extra horizontal inset).
-const EdgeInsets kGridOverrideModuleSectionPadding =
-    EdgeInsets.symmetric(vertical: 16);
+const EdgeInsets kGridOverrideModuleSectionPadding = EdgeInsets.symmetric(
+  vertical: 16,
+);
 
 /// Height shared by wave-group chips and the add (+) control.
 const double kGridOverrideGroupChipHeight = 44;
@@ -115,10 +116,7 @@ class _GroupChip extends StatelessWidget {
 }
 
 class _AddGroupChip extends StatelessWidget {
-  const _AddGroupChip({
-    required this.onTap,
-    required this.theme,
-  });
+  const _AddGroupChip({required this.onTap, required this.theme});
 
   final VoidCallback onTap;
   final ThemeData theme;
@@ -134,9 +132,7 @@ class _AddGroupChip extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           borderRadius: BorderRadius.circular(8),
-          child: const Center(
-            child: Icon(Icons.add, size: 24),
-          ),
+          child: const Center(child: Icon(Icons.add, size: 24)),
         ),
       ),
     );

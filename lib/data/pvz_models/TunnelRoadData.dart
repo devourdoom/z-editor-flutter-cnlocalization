@@ -17,5 +17,3 @@ class TunnelRoadData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'GridX': gridX, 'GridY': gridY, 'Img': img};
 }
-
-

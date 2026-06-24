@@ -29,16 +29,11 @@ class _DinoEventScreenState extends State<DinoEventScreen> {
   late PvzObject _moduleObj;
   late DinoWaveActionPropsData _data;
 
-  bool get _isDeepSeaLawn => LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
+  bool get _isDeepSeaLawn =>
+      LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   int get _maxRowIndex => _isDeepSeaLawn ? 5 : 4;
 
-  static const _dinoTypeIds = [
-    'raptor',
-    'stego',
-    'ptero',
-    'tyranno',
-    'ankylo',
-  ];
+  static const _dinoTypeIds = ['raptor', 'stego', 'ptero', 'tyranno', 'ankylo'];
 
   String _dinoTypeLabel(BuildContext context, String typeId) {
     final key = 'dinoType_$typeId';
@@ -125,7 +120,8 @@ class _DinoEventScreenState extends State<DinoEventScreen> {
                 ),
                 HelpSectionData(
                   title: l10n?.dinoWaveDuration ?? 'Stay duration',
-                  body: l10n?.eventHelpDinoWaveDuration ??
+                  body:
+                      l10n?.eventHelpDinoWaveDuration ??
                       l10n?.eventHelpDinoDuration ??
                       '',
                 ),
@@ -169,10 +165,12 @@ class _DinoEventScreenState extends State<DinoEventScreen> {
                           border: const OutlineInputBorder(),
                         ),
                         items: _dinoTypeIds
-                            .map((id) => DropdownMenuItem(
-                                  value: id,
-                                  child: Text(_dinoTypeLabel(context, id)),
-                                ))
+                            .map(
+                              (id) => DropdownMenuItem(
+                                value: id,
+                                child: Text(_dinoTypeLabel(context, id)),
+                              ),
+                            )
                             .toList(),
                         onChanged: (v) {
                           if (v != null) {
@@ -194,7 +192,9 @@ class _DinoEventScreenState extends State<DinoEventScreen> {
                           height: 160,
                           decoration: BoxDecoration(
                             border: Border.all(
-                              color: theme.colorScheme.secondary.withValues(alpha: 0.3),
+                              color: theme.colorScheme.secondary.withValues(
+                                alpha: 0.3,
+                              ),
                             ),
                             borderRadius: BorderRadius.circular(16),
                           ),

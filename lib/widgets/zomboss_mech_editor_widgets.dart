@@ -28,10 +28,10 @@ Color zombossMechActionTagColor(String tag, BuildContext context) {
 
 TextStyle zombossMechActionTitleStyle(BuildContext context) {
   return Theme.of(context).textTheme.titleSmall!.copyWith(
-        fontWeight: FontWeight.bold,
-        fontSize: 15,
-        height: 1.25,
-      );
+    fontWeight: FontWeight.bold,
+    fontSize: 15,
+    height: 1.25,
+  );
 }
 
 /// Shared zomboss mech base card: icon + localized name in one row.
@@ -49,8 +49,10 @@ class ZombossMechBaseCard extends StatelessWidget {
 
   final String baseId;
   final String? icon;
+
   /// Tighter padding for the battle-tab summary row.
   final bool compact;
+
   /// Hides the outline (e.g. summary row on battle tabs).
   final bool hideBorder;
   final bool selected;
@@ -85,8 +87,8 @@ class ZombossMechBaseCard extends StatelessWidget {
       color: hideBorder
           ? Colors.transparent
           : selected
-              ? theme.colorScheme.primaryContainer.withValues(alpha: 0.35)
-              : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
+          ? theme.colorScheme.primaryContainer.withValues(alpha: 0.35)
+          : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
       borderRadius: BorderRadius.circular(12),
       child: InkWell(
         onTap: onTap,
@@ -104,15 +106,13 @@ class ZombossMechBaseCard extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 color: hideBorder
-                    ? theme.colorScheme.surfaceContainerHighest
-                        .withValues(alpha: 0.45)
+                    ? theme.colorScheme.surfaceContainerHighest.withValues(
+                        alpha: 0.45,
+                      )
                     : null,
                 border: hideBorder
                     ? null
-                    : Border.all(
-                        color: borderColor,
-                        width: selected ? 2 : 1,
-                      ),
+                    : Border.all(color: borderColor, width: selected ? 2 : 1),
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -130,10 +130,7 @@ class ZombossMechBaseCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (trailing != null) ...[
-                    SizedBox(width: gap),
-                    trailing!,
-                  ],
+                  if (trailing != null) ...[SizedBox(width: gap), trailing!],
                 ],
               ),
             );
@@ -289,7 +286,9 @@ class ZombossMechActionRow extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.55),
+        color: theme.colorScheme.surfaceContainerHighest.withValues(
+          alpha: 0.55,
+        ),
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: accent.withValues(alpha: 0.35)),
       ),
@@ -317,12 +316,13 @@ class ZombossMechActionRow extends StatelessWidget {
                   label,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
-                  style: (mutedLabel
-                          ? theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant,
-                            )
-                          : zombossMechActionTitleStyle(context))
-                      ?.copyWith(fontSize: compact ? 13 : 15),
+                  style:
+                      (mutedLabel
+                              ? theme.textTheme.bodyMedium?.copyWith(
+                                  color: theme.colorScheme.onSurfaceVariant,
+                                )
+                              : zombossMechActionTitleStyle(context))
+                          ?.copyWith(fontSize: compact ? 13 : 15),
                 ),
               ),
             ),

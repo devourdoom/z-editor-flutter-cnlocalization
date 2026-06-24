@@ -105,9 +105,7 @@ class _WaveManagerModuleScreenState extends State<WaveManagerModuleScreen> {
   }
 
   bool _isYetiZombie(String id) {
-    return id == 'yeti' ||
-        id == 'treasureyeti' ||
-        id == 'treasureyeti_egypt';
+    return id == 'yeti' || id == 'treasureyeti' || id == 'treasureyeti_egypt';
   }
 
   void _showYetiZombieBlockedMessage(AppLocalizations? l10n) {
@@ -145,7 +143,8 @@ class _WaveManagerModuleScreenState extends State<WaveManagerModuleScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              l10n?.eliteZombiesNotAllowed ?? 'Elite zombies are not allowed here',
+              l10n?.eliteZombiesNotAllowed ??
+                  'Elite zombies are not allowed here',
             ),
           ),
         );
@@ -167,10 +166,10 @@ class _WaveManagerModuleScreenState extends State<WaveManagerModuleScreen> {
     if (info?.source == 'CurrentLevel' && mounted) {
       final choice =
           await CustomZombieLevelUtils.maybePromptDeleteOrphanBeforeRemove(
-        context: context,
-        levelFile: widget.levelFile,
-        alias: info!.alias,
-      );
+            context: context,
+            levelFile: widget.levelFile,
+            alias: info!.alias,
+          );
       if (!mounted || choice == null) return;
       eraseOrphan = choice;
     }
@@ -215,21 +214,13 @@ class _WaveManagerModuleScreenState extends State<WaveManagerModuleScreen> {
   String _waveManagerPropsTitle(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     return l10n?.moduleTitle_WaveManagerProperties ??
-        _localizedText(
-          context,
-          zh: '波次管理属性',
-          en: 'Wave Manager Properties',
-        );
+        _localizedText(context, zh: '波次管理属性', en: 'Wave Manager Properties');
   }
 
   String _currentWaveManagerPropsText(BuildContext context, String value) {
     final l10n = AppLocalizations.of(context);
     return l10n?.waveManagerPropsCurrent(value) ??
-        _localizedText(
-          context,
-          zh: '当前值：$value',
-          en: 'Current: $value',
-        );
+        _localizedText(context, zh: '当前值：$value', en: 'Current: $value');
   }
 
   @override

@@ -61,11 +61,7 @@ class ZombossMechActionFieldsEditor extends StatelessWidget {
   }
 
   Widget _buildField(BuildContext context, ZombossMechFieldSpec field) {
-    final padding = EdgeInsets.only(
-      left: depth * 12.0,
-      top: 8,
-      bottom: 4,
-    );
+    final padding = EdgeInsets.only(left: depth * 12.0, top: 8, bottom: 4);
     final label = _fieldLabel(context, field);
 
     if (ZombossMechActionUtils.isZombieTypeField(field)) {
@@ -90,9 +86,7 @@ class ZombossMechActionFieldsEditor extends StatelessWidget {
 
       final ids = field.type == 'List<zombieType>'
           ? ZombossMechActionUtils.parseZombieTypeList(raw)
-          : [
-              if (raw != null && raw.toString().isNotEmpty) raw.toString(),
-            ];
+          : [if (raw != null && raw.toString().isNotEmpty) raw.toString()];
       return Padding(
         padding: padding,
         child: ZombossMechZombieTypeListEditor(
@@ -117,18 +111,15 @@ class ZombossMechActionFieldsEditor extends StatelessWidget {
       final nestedMap = nested is Map<String, dynamic>
           ? nested
           : nested is Map
-              ? Map<String, dynamic>.from(nested)
-              : ZombossMechActionUtils.defaultsFromFields(field.objectFields);
+          ? Map<String, dynamic>.from(nested)
+          : ZombossMechActionUtils.defaultsFromFields(field.objectFields);
       if (nested is! Map) data[field.name] = nestedMap;
       return Padding(
         padding: padding,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              label,
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
+            Text(label, style: Theme.of(context).textTheme.titleSmall),
             ZombossMechActionFieldsEditor(
               mechId: mechId,
               fields: field.objectFields,
@@ -231,10 +222,7 @@ class _ScalarFieldState extends State<_ScalarField> {
           return TextFormField(
             controller: _controller,
             focusNode: _focusNode,
-            decoration: editorInputDecoration(
-              context,
-              labelText: label,
-            ),
+            decoration: editorInputDecoration(context, labelText: label),
             keyboardType: TextInputType.number,
             onChanged: (v) {
               final parsed = int.tryParse(v);
@@ -248,8 +236,9 @@ class _ScalarFieldState extends State<_ScalarField> {
             final compact = constraints.maxWidth < 280;
             final stepper = Row(
               mainAxisSize: compact ? MainAxisSize.max : MainAxisSize.min,
-              mainAxisAlignment:
-                  compact ? MainAxisAlignment.center : MainAxisAlignment.start,
+              mainAxisAlignment: compact
+                  ? MainAxisAlignment.center
+                  : MainAxisAlignment.start,
               children: [
                 IconButton(
                   visualDensity: VisualDensity.compact,
@@ -276,10 +265,7 @@ class _ScalarFieldState extends State<_ScalarField> {
             if (compact) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(label),
-                  stepper,
-                ],
+                children: [Text(label), stepper],
               );
             }
             return Row(
@@ -294,10 +280,7 @@ class _ScalarFieldState extends State<_ScalarField> {
         return TextFormField(
           controller: _controller,
           focusNode: _focusNode,
-          decoration: editorInputDecoration(
-            context,
-            labelText: label,
-          ),
+          decoration: editorInputDecoration(context, labelText: label),
           keyboardType: const TextInputType.numberWithOptions(decimal: true),
           onChanged: (v) {
             final parsed = double.tryParse(v);
@@ -308,10 +291,7 @@ class _ScalarFieldState extends State<_ScalarField> {
         return TextFormField(
           controller: _controller,
           focusNode: _focusNode,
-          decoration: editorInputDecoration(
-            context,
-            labelText: label,
-          ),
+          decoration: editorInputDecoration(context, labelText: label),
           onChanged: (v) => widget.onChanged(v),
         );
     }

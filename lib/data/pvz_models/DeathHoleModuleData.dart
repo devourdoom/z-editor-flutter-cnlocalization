@@ -11,5 +11,3 @@ class DeathHoleModuleData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'LifeTime': lifeTime};
 }
-
-

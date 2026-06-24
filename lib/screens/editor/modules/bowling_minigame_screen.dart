@@ -74,7 +74,11 @@ class _BowlingMinigameScreenState extends State<BowlingMinigameScreen> {
     super.dispose();
   }
 
-  void _showHelp(BuildContext context, AppLocalizations? l10n, Color accentColor) {
+  void _showHelp(
+    BuildContext context,
+    AppLocalizations? l10n,
+    Color accentColor,
+  ) {
     showEditorHelpDialog(
       context,
       title: l10n?.bowlingMinigame ?? 'Bulb Bowling module',
@@ -82,12 +86,14 @@ class _BowlingMinigameScreenState extends State<BowlingMinigameScreen> {
       sections: [
         HelpSectionData(
           title: l10n?.overview ?? 'Overview',
-          body: l10n?.bowlingMinigameHelpOverview ??
+          body:
+              l10n?.bowlingMinigameHelpOverview ??
               'Sets the no-planting line column for bulb bowling levels.',
         ),
         HelpSectionData(
           title: l10n?.bowlingFoulLine ?? 'No-planting line',
-          body: l10n?.bowlingMinigameHelpFoulLine ??
+          body:
+              l10n?.bowlingMinigameHelpFoulLine ??
               'Column index from the left (0-based).',
         ),
       ],

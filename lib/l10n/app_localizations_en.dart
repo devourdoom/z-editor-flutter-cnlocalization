@@ -39,7 +39,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get plantTagInternational => 'International';
 
   @override
-  String get plantTagChinese => 'Chinese';
+  String get plantTagChinese => 'China Only';
 
   @override
   String get aboutSoftware => 'About';
@@ -94,6 +94,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get download => 'Download';
+
+  @override
+  String get favorite => 'Favorite';
+
+  @override
+  String get unfavorite => 'Unfavorite';
 
   @override
   String get move => 'Move';
@@ -688,6 +694,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get plantTagPhysical => 'Physical';
 
   @override
+  String get plantTagWorldTutorial => 'Tutorial';
+
+  @override
   String get plantTagWorldEgypt => 'Ancient Egypt';
 
   @override
@@ -736,13 +745,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get plantTagWorldHeian => 'Heian Ages';
 
   @override
-  String get plantTagWorldAtlantis => 'Atlantis';
+  String get plantTagWorldAtlantis => 'Underwater World';
 
   @override
   String get plantTagWorldFairytale => 'Fairytale Forest';
 
   @override
-  String get plantTagWorldZcorp => 'ZCorp';
+  String get plantTagWorldZcorp => 'ZCorp Takeover';
 
   @override
   String get plantTagWorldMausoleum => 'Underground Palace';
@@ -3941,7 +3950,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get row => 'Row';
 
   @override
-  String get addType => 'Add type';
+  String get addType => 'Add';
 
   @override
   String get plantFunExperimental => 'Plant (work in progress)';
@@ -6897,14 +6906,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get customStageSectionResourceGroups => 'Resource Groups';
 
   @override
-  String get customStageSectionMusicAndOther =>
-      'Lawn appearance, Music & Other';
+  String get customStageSectionMusicAndOther => 'Basic Elements';
 
   @override
   String get customStageSectionAdvanced => 'Advanced Settings';
 
   @override
-  String get customStageAlias => 'Stage alias';
+  String get customStageAlias => 'Stage alias (English only)';
 
   @override
   String get customStageNoResourceGroups => 'No resource groups in list';
@@ -7052,96 +7060,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get customStagePresetSectionTitle => 'Preset custom lawns';
-
-  @override
-  String get customStagePreset_bigWaveNight => 'Big Wave Night';
-
-  @override
-  String get customStagePreset_mixtapeSummerNight => 'Mixtape Summer Night';
-
-  @override
-  String get customStagePreset_oneSidedAtlantis => 'One-Sided Atlantis';
-
-  @override
-  String get customStagePreset_futureLawn => 'Future Lawn';
-
-  @override
-  String get customStagePreset_roofNight => 'Roof Night';
-
-  @override
-  String get customStagePreset_snowModern => 'Snow Modern';
-
-  @override
-  String get customStagePreset_poolDaylight => 'Pool Daylight';
-
-  @override
-  String get customStagePreset_renai => 'Renai';
-
-  @override
-  String get customStagePreset_steam => 'Steam';
-
-  @override
-  String get customStagePreset_lostVolcano => 'Lost Volcano';
-
-  @override
-  String get customStagePreset_summerDaylight => 'Summer Daylight';
-
-  @override
-  String get customStagePreset_newYearNight => 'New Year Night';
-
-  @override
-  String get customStagePreset_autumnLate => 'Autumn Late';
-
-  @override
-  String get customStagePresetSource_memoryLaneS25Week6Boss =>
-      'From Memory Lane Season 25 Week 6 Boss level';
-
-  @override
-  String get customStagePresetSource_memoryLaneS26HardLevel1 =>
-      'From Memory Lane Season 26 Hard Mode Level 1';
-
-  @override
-  String get customStagePresetSource_memoryLaneS28Week3Original5_8 =>
-      'From Memory Lane Season 28 Week 3, original Levels 5-8';
-
-  @override
-  String get customStagePresetSource_memoryLaneS28Level5 =>
-      'From Memory Lane Season 28 Level 5';
-
-  @override
-  String get customStagePresetSource_memoryLaneS27Level61 =>
-      'From Memory Lane Season 27 Level 61';
-
-  @override
-  String get customStagePresetSource_memoryLaneS29Level57 =>
-      'From Memory Lane Season 29 Level 57';
-
-  @override
-  String get customStagePresetSource_memoryLaneS31Level20 =>
-      'From Memory Lane Season 31 Level 20';
-
-  @override
-  String get customStagePresetSource_memoryLaneS30Level31 =>
-      'From Memory Lane Season 30 Level 31';
-
-  @override
-  String get customStagePresetSource_memoryLaneS31Level9 =>
-      'From Memory Lane Season 31 Level 9';
-
-  @override
-  String get customStagePresetSource_memoryLaneS30Boss6 =>
-      'From Memory Lane Season 30 Boss level 6';
-
-  @override
-  String get customStagePresetSource_minigameGame33 => 'From Minigame level 33';
-
-  @override
-  String get customStagePresetSource_memoryLaneS30Hard1 =>
-      'From Memory Lane Season 30 Hard Mode Level 1';
-
-  @override
-  String get customStagePresetSource_memoryLaneS28Level13 =>
-      'From Memory Lane Season 28 Level 13';
 
   @override
   String get editCustomStage => 'Edit custom lawn';

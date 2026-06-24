@@ -28,4 +28,3 @@ class HeianWindModulePropertiesData extends PvzModel {
     'WaveWindInfos': waveWindInfos.map((e) => e.toJson()).toList(),
   };
 }
-

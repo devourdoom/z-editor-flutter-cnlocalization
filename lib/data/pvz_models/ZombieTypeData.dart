@@ -23,4 +23,3 @@ class ZombieTypeData extends PvzModel {
     if (resistences != null) 'Resistences': resistences,
   };
 }
-

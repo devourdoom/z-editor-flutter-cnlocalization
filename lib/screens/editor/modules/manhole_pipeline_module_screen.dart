@@ -3,7 +3,8 @@ import 'package:c_editor/data/level_parser.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
-import 'package:c_editor/widgets/asset_image.dart' show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/asset_image.dart'
+    show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart';
 
 /// Manhole pipeline module. Ported from ManholePipelinePropertiesEP.kt
@@ -74,17 +75,23 @@ class _ManholePipelineModuleScreenState
       _data = ManholePipelineModuleData();
     }
     if (_data.pipelineList.isEmpty) {
-      _data.pipelineList = [PipelineData(startX: 6, startY: 2, endX: 2, endY: 2)];
+      _data.pipelineList = [
+        PipelineData(startX: 6, startY: 2, endX: 2, endY: 2),
+      ];
     } else {
       _data = ManholePipelineModuleData(
         operationTimePerGrid: _data.operationTimePerGrid,
         damagePerSecond: _data.damagePerSecond,
-        pipelineList: _data.pipelineList.map((p) => PipelineData(
-          startX: _clampCol(p.startX),
-          startY: _clampRow(p.startY),
-          endX: _clampCol(p.endX),
-          endY: _clampRow(p.endY),
-        )).toList(),
+        pipelineList: _data.pipelineList
+            .map(
+              (p) => PipelineData(
+                startX: _clampCol(p.startX),
+                startY: _clampRow(p.startY),
+                endX: _clampCol(p.endX),
+                endY: _clampRow(p.endY),
+              ),
+            )
+            .toList(),
       );
       _moduleObj.objData = _data.toJson();
     }
@@ -123,7 +130,10 @@ class _ManholePipelineModuleScreenState
   }
 
   PipelineData get _current =>
-      _data.pipelineList[_selectedIndex.clamp(0, _data.pipelineList.length - 1)];
+      _data.pipelineList[_selectedIndex.clamp(
+        0,
+        _data.pipelineList.length - 1,
+      )];
 
   void _updateCurrent(PipelineData newData) {
     final list = List<PipelineData>.from(_data.pipelineList);
@@ -273,8 +283,7 @@ class _ManholePipelineModuleScreenState
                 ),
               ],
               selected: {_editingEnd},
-              onSelectionChanged: (s) =>
-                  setState(() => _editingEnd = s.first),
+              onSelectionChanged: (s) => setState(() => _editingEnd = s.first),
             ),
             const SizedBox(height: 12),
             _buildGrid(theme),
@@ -344,13 +353,15 @@ class _ManholePipelineModuleScreenState
                           markersInCell.add((index: i, isStart: false));
                         }
                       }
-                      markersInCell.sort((a, b) =>
-                          a.index == _selectedIndex
-                              ? 1
-                              : b.index == _selectedIndex
-                                  ? -1
-                                  : a.index.compareTo(b.index));
-                      final isTarget = markersInCell.any((m) => m.index == _selectedIndex) &&
+                      markersInCell.sort(
+                        (a, b) => a.index == _selectedIndex
+                            ? 1
+                            : b.index == _selectedIndex
+                            ? -1
+                            : a.index.compareTo(b.index),
+                      );
+                      final isTarget =
+                          markersInCell.any((m) => m.index == _selectedIndex) &&
                           ((_editingEnd &&
                                   col == _current.endX &&
                                   row == _current.endY) ||
@@ -442,7 +453,10 @@ class _ManholePipelineModuleScreenState
     return TextField(
       controller: controller,
       keyboardType: TextInputType.number,
-      decoration: InputDecoration(labelText: label, border: const OutlineInputBorder()),
+      decoration: InputDecoration(
+        labelText: label,
+        border: const OutlineInputBorder(),
+      ),
       onChanged: onChanged,
     );
   }

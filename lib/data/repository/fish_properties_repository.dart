@@ -86,8 +86,9 @@ class FishPropertiesRepository {
 
   static Future<List<PvzObject>> _loadCreatureTypes() async {
     try {
-      final jsonStr =
-          await rootBundle.loadString('assets/reference/CreatureTypes.json');
+      final jsonStr = await rootBundle.loadString(
+        'assets/reference/CreatureTypes.json',
+      );
       final root = jsonDecode(jsonStr) as Map<String, dynamic>?;
       final list = root?['objects'] as List<dynamic>? ?? [];
       return list
@@ -101,8 +102,9 @@ class FishPropertiesRepository {
 
   static Future<Map<String, PvzObject>> _loadPropertySheets() async {
     try {
-      final jsonStr =
-          await rootBundle.loadString('assets/reference/PropertySheets.json');
+      final jsonStr = await rootBundle.loadString(
+        'assets/reference/PropertySheets.json',
+      );
       final root = jsonDecode(jsonStr) as Map<String, dynamic>;
       final list = (root['objects'] as List<dynamic>? ?? [])
           .whereType<Map<String, dynamic>>()

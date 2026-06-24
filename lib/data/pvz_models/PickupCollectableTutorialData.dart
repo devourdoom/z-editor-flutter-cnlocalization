@@ -29,5 +29,3 @@ class PickupCollectableTutorialData extends PvzModel {
     'PostPickupAdvice': postPickupAdvice,
   };
 }
-
-

@@ -52,9 +52,7 @@ Future<bool> showAliasRenameConfirmDialog(
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(ctx, false),
-          style: TextButton.styleFrom(
-            foregroundColor: theme.colorScheme.error,
-          ),
+          style: TextButton.styleFrom(foregroundColor: theme.colorScheme.error),
           child: Text(l10n?.cancel ?? 'Cancel'),
         ),
         FilledButton(

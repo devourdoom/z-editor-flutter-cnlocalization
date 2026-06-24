@@ -4,7 +4,7 @@ import 'package:c_editor/data/pvz_models/SchoolBusDesData.dart';
 
 class SchoolBusWaveActionPropsData extends PvzModel {
   SchoolBusWaveActionPropsData({SchoolBusDesData? des})
-      : des = des ?? SchoolBusDesData();
+    : des = des ?? SchoolBusDesData();
 
   SchoolBusDesData des;
 

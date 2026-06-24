@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
-import 'package:c_editor/widgets/editor_components.dart' show editorInputDecoration;
+import 'package:c_editor/widgets/editor_components.dart'
+    show editorInputDecoration;
 
 /// Increased cost module editor. Ported from Z-Editor-master IncreasedCostModulePropertiesEP.kt
 class IncreasedCostModuleScreen extends StatefulWidget {
@@ -89,8 +90,13 @@ class _IncreasedCostModuleScreenState extends State<IncreasedCostModuleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(icon: const Icon(Icons.arrow_back), onPressed: widget.onBack),
-        title: Text(AppLocalizations.of(context)?.increasedCost ?? 'Increased Cost'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: widget.onBack,
+        ),
+        title: Text(
+          AppLocalizations.of(context)?.increasedCost ?? 'Increased Cost',
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -101,7 +107,8 @@ class _IncreasedCostModuleScreenState extends State<IncreasedCostModuleScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  AppLocalizations.of(context)?.inflationParams ?? 'Inflation params',
+                  AppLocalizations.of(context)?.inflationParams ??
+                      'Inflation params',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -113,7 +120,9 @@ class _IncreasedCostModuleScreenState extends State<IncreasedCostModuleScreen> {
                   keyboardType: TextInputType.number,
                   decoration: editorInputDecoration(
                     context,
-                    labelText: AppLocalizations.of(context)?.baseCostIncreaseLabel ?? 'Base cost increase (BaseCostIncreased)',
+                    labelText:
+                        AppLocalizations.of(context)?.baseCostIncreaseLabel ??
+                        'Base cost increase (BaseCostIncreased)',
                     focusColor: Theme.of(context).colorScheme.primary,
                     isFocused: _baseCostFocusNode.hasFocus,
                   ),
@@ -132,7 +141,9 @@ class _IncreasedCostModuleScreenState extends State<IncreasedCostModuleScreen> {
                   keyboardType: TextInputType.number,
                   decoration: editorInputDecoration(
                     context,
-                    labelText: AppLocalizations.of(context)?.maxIncreaseCountLabel ?? 'Max increase count (MaxIncreasedCount)',
+                    labelText:
+                        AppLocalizations.of(context)?.maxIncreaseCountLabel ??
+                        'Max increase count (MaxIncreasedCount)',
                     focusColor: Theme.of(context).colorScheme.primary,
                     isFocused: _maxCountFocusNode.hasFocus,
                   ),

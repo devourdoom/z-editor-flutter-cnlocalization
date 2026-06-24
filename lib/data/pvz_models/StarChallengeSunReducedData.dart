@@ -10,4 +10,3 @@ class StarChallengeSunReducedData extends PvzModel {
   }
   Map<String, dynamic> toJson() => {'sunModifier': sunModifier};
 }
-

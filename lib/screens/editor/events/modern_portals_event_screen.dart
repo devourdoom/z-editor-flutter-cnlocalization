@@ -77,7 +77,11 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
     setState(() {});
   }
 
-  void _showPreviewDialog(BuildContext context, AppLocalizations? l10n, PortalWorldDef def) {
+  void _showPreviewDialog(
+    BuildContext context,
+    AppLocalizations? l10n,
+    PortalWorldDef def,
+  ) {
     showDialog(
       context: context,
       builder: (ctx) => _buildPreviewDialog(ctx, l10n, def),
@@ -293,50 +297,53 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
                               physics: const NeverScrollableScrollPhysics(),
                               gridDelegate:
                                   SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: _gridCols,
-                                childAspectRatio: 1,
-                              ),
+                                    crossAxisCount: _gridCols,
+                                    childAspectRatio: 1,
+                                  ),
                               itemCount: _gridCols * _gridRows,
                               itemBuilder: (context, i) {
                                 final col = i % _gridCols;
                                 final row = i ~/ _gridCols;
-                            final isSelected =
-                                row == _data.portalRow && col == _data.portalColumn;
-                            return GestureDetector(
-                              onTap: () {
-                                _data = PortalEventData(
-                                  portalType: _data.portalType,
-                                  portalColumn: col,
-                                  portalRow: row,
-                                  spawnEffect: _data.spawnEffect,
-                                  spawnSoundID: _data.spawnSoundID,
-                                  ignoreGraveStone: _data.ignoreGraveStone,
-                                );
-                                _sync();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? theme.colorScheme.primary
-                                      : theme.colorScheme.surfaceContainerHighest,
-                                  border: Border.all(
-                                    color: theme.colorScheme.outlineVariant,
+                                final isSelected =
+                                    row == _data.portalRow &&
+                                    col == _data.portalColumn;
+                                return GestureDetector(
+                                  onTap: () {
+                                    _data = PortalEventData(
+                                      portalType: _data.portalType,
+                                      portalColumn: col,
+                                      portalRow: row,
+                                      spawnEffect: _data.spawnEffect,
+                                      spawnSoundID: _data.spawnSoundID,
+                                      ignoreGraveStone: _data.ignoreGraveStone,
+                                    );
+                                    _sync();
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: isSelected
+                                          ? theme.colorScheme.primary
+                                          : theme
+                                                .colorScheme
+                                                .surfaceContainerHighest,
+                                      border: Border.all(
+                                        color: theme.colorScheme.outlineVariant,
+                                      ),
+                                    ),
+                                    child: isSelected
+                                        ? Icon(
+                                            Icons.check,
+                                            color: theme.colorScheme.onPrimary,
+                                            size: 16,
+                                          )
+                                        : null,
                                   ),
-                                ),
-                                child: isSelected
-                                    ? Icon(
-                                        Icons.check,
-                                        color: theme.colorScheme.onPrimary,
-                                        size: 16,
-                                      )
-                                    : null,
-                              ),
-                            );
-                          },
+                                );
+                              },
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
                     ],
                   ),
                 ),
@@ -359,8 +366,7 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
                         spacing: 8,
                         runSpacing: 8,
                         children: PortalRepository.portalDefinitions.map((def) {
-                          final isSelected =
-                              def.typeCode == _data.portalType;
+                          final isSelected = def.typeCode == _data.portalType;
                           return SizedBox(
                             width: 130,
                             child: Card(
@@ -391,11 +397,14 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                        IconButton(
+                                      IconButton(
                                         icon: const Icon(Icons.info_outline),
                                         iconSize: 18,
-                                        onPressed: () =>
-                                            _showPreviewDialog(context, l10n, def),
+                                        onPressed: () => _showPreviewDialog(
+                                          context,
+                                          l10n,
+                                          def,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -412,9 +421,13 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
               const SizedBox(height: 16),
               Card(
                 child: SwitchListTile(
-                  title: Text(l10n?.ignoreGravestone ?? 'Ignore gravestone (IgnoreGraveStone)'),
+                  title: Text(
+                    l10n?.ignoreGravestone ??
+                        'Ignore gravestone (IgnoreGraveStone)',
+                  ),
                   subtitle: Text(
-                    l10n?.ignoreGravestoneSubtitle ?? 'Enable to spawn regardless of obstacles',
+                    l10n?.ignoreGravestoneSubtitle ??
+                        'Enable to spawn regardless of obstacles',
                   ),
                   value: _data.ignoreGraveStone,
                   onChanged: (v) {
@@ -438,13 +451,19 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
     );
   }
 
-  Widget _buildPreviewDialog(BuildContext context, AppLocalizations? l10n, PortalWorldDef def) {
+  Widget _buildPreviewDialog(
+    BuildContext context,
+    AppLocalizations? l10n,
+    PortalWorldDef def,
+  ) {
     final theme = Theme.of(context);
     final zombieRepo = ZombieRepository();
     final portalName = _portalDisplayName(l10n, def);
 
     return AlertDialog(
-      title: Text(l10n?.zombiePreview(portalName) ?? '$portalName - Zombie preview'),
+      title: Text(
+        l10n?.zombiePreview(portalName) ?? '$portalName - Zombie preview',
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -475,7 +494,9 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
                         : CircleAvatar(
                             child: Text(
                               zombieRepo.getName(typeName).isNotEmpty
-                                  ? zombieRepo.getName(typeName)[0].toUpperCase()
+                                  ? zombieRepo
+                                        .getName(typeName)[0]
+                                        .toUpperCase()
                                   : '?',
                             ),
                           ),
@@ -484,16 +505,16 @@ class _ModernPortalsEventScreenState extends State<ModernPortalsEventScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          ResourceNames.lookup(context, zombieRepo.getName(typeName)),
+                          ResourceNames.lookup(
+                            context,
+                            zombieRepo.getName(typeName),
+                          ),
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 14,
                           ),
                         ),
-                        Text(
-                          typeName,
-                          style: theme.textTheme.bodySmall,
-                        ),
+                        Text(typeName, style: theme.textTheme.bodySmall),
                       ],
                     ),
                   ],

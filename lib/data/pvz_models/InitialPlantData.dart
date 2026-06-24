@@ -33,5 +33,3 @@ class InitialPlantData extends PvzModel {
     'PlantTypes': plantTypes,
   };
 }
-
-

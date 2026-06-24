@@ -212,7 +212,8 @@ class _TideWaveEventScreenState extends State<TideWaveEventScreen> {
               ),
               _buildField(
                 context,
-                l10n?.tideWaveSubmarineMovingDistance ?? 'Submarine moving distance',
+                l10n?.tideWaveSubmarineMovingDistance ??
+                    'Submarine moving distance',
                 _data.submarineMovingDistance.toString(),
                 (v) {
                   final n = double.tryParse(v);

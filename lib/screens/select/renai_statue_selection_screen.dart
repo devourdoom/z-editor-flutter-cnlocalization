@@ -22,7 +22,8 @@ class RenaiStatueSelectionScreen extends StatefulWidget {
       _RenaiStatueSelectionScreenState();
 }
 
-class _RenaiStatueSelectionScreenState extends State<RenaiStatueSelectionScreen> {
+class _RenaiStatueSelectionScreenState
+    extends State<RenaiStatueSelectionScreen> {
   String _searchQuery = '';
 
   List<GridItemInfo> get _displayList {
@@ -69,8 +70,9 @@ class _RenaiStatueSelectionScreenState extends State<RenaiStatueSelectionScreen>
                     Icon(
                       Icons.view_module,
                       size: 64,
-                      color: theme.colorScheme.onSurfaceVariant
-                          .withValues(alpha: 0.5),
+                      color: theme.colorScheme.onSurfaceVariant.withValues(
+                        alpha: 0.5,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -86,23 +88,27 @@ class _RenaiStatueSelectionScreenState extends State<RenaiStatueSelectionScreen>
                 builder: (context, constraints) {
                   final crossAxisCount =
                       RenaiStatueCardLayout.selectionCrossAxisCount(
-                    constraints.maxWidth,
-                  );
+                        constraints.maxWidth,
+                      );
                   const spacing = 12.0;
                   const padding = 16.0;
-                  final cellWidth = (constraints.maxWidth -
+                  final cellWidth =
+                      (constraints.maxWidth -
                           padding * 2 -
                           spacing * (crossAxisCount - 1)) /
                       crossAxisCount;
-                  final iconSize =
-                      RenaiStatueCardLayout.selectionIconSize(cellWidth);
+                  final iconSize = RenaiStatueCardLayout.selectionIconSize(
+                    cellWidth,
+                  );
 
                   return GridView.builder(
                     padding: const EdgeInsets.all(padding),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: crossAxisCount,
-                      childAspectRatio: RenaiStatueCardLayout
-                          .selectionChildAspectRatio(constraints.maxWidth),
+                      childAspectRatio:
+                          RenaiStatueCardLayout.selectionChildAspectRatio(
+                            constraints.maxWidth,
+                          ),
                       crossAxisSpacing: spacing,
                       mainAxisSpacing: spacing,
                     ),

@@ -18,7 +18,8 @@ abstract final class ZombieDisplayUtils {
     PvzLevelFile? levelFile,
   }) {
     final typeName = _resolveTypeName(typeOrRtid, levelFile: levelFile);
-    final info = ZombieRepository().getZombieById(typeName) ??
+    final info =
+        ZombieRepository().getZombieById(typeName) ??
         ZombieRepository().getZombieById(typeName.replaceAll('_elite', ''));
     if (info != null) {
       return ResourceNames.lookup(context, info.name);
@@ -31,10 +32,7 @@ abstract final class ZombieDisplayUtils {
     return codename(typeOrRtid);
   }
 
-  static String? iconPath(
-    String typeOrRtid, {
-    PvzLevelFile? levelFile,
-  }) {
+  static String? iconPath(String typeOrRtid, {PvzLevelFile? levelFile}) {
     final typeName = _resolveTypeName(typeOrRtid, levelFile: levelFile);
     return ZombieRepository().getZombieById(typeName)?.iconAssetPath ??
         ZombieRepository()
@@ -42,10 +40,7 @@ abstract final class ZombieDisplayUtils {
             ?.iconAssetPath;
   }
 
-  static String _resolveTypeName(
-    String typeOrRtid, {
-    PvzLevelFile? levelFile,
-  }) {
+  static String _resolveTypeName(String typeOrRtid, {PvzLevelFile? levelFile}) {
     final alias = codename(typeOrRtid);
     final mapped = ZombiePropertiesRepository.getTypeNameByAlias(alias);
     if (mapped != alias) return mapped;

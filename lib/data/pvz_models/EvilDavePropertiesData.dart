@@ -13,5 +13,3 @@ class EvilDavePropertiesData extends PvzModel {
 
   Map<String, dynamic> toJson() => {'PlantDistance': plantDistance};
 }
-
-

@@ -44,9 +44,8 @@ class StageZombieTypePickerRow extends StatelessWidget {
     final localized = nameKey == null
         ? null
         : ResourceNames.lookup(context, nameKey);
-    final displayName = (localized != null &&
-            localized.isNotEmpty &&
-            localized != nameKey)
+    final displayName =
+        (localized != null && localized.isNotEmpty && localized != nameKey)
         ? localized
         : (id ?? '—');
     final iconPath = info?.iconAssetPath ?? _kUnknownZombieIcon;

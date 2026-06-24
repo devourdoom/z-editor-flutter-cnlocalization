@@ -179,9 +179,7 @@ class WaveGeneratorZombieTile extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         child: Container(
           width: cardWidth,
-          constraints: fitContent
-              ? const BoxConstraints(maxWidth: 420)
-              : null,
+          constraints: fitContent ? const BoxConstraints(maxWidth: 420) : null,
           padding: EdgeInsets.all(isDesktop ? 12 : 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(12),
@@ -194,8 +192,9 @@ class WaveGeneratorZombieTile extends StatelessWidget {
           ),
           child: Row(
             mainAxisSize: fitContent ? MainAxisSize.min : MainAxisSize.max,
-            crossAxisAlignment:
-                fitContent ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+            crossAxisAlignment: fitContent
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
             children: [
               _buildIcon(
                 context,
@@ -315,7 +314,7 @@ class WaveGeneratorZombieTile extends StatelessWidget {
     final isDesktop = isDesktopPlatform(context);
     final showSourceBadge =
         style == WaveGeneratorZombieTileStyle.poolSourceBadge &&
-            sourceBadge != null;
+        sourceBadge != null;
 
     Color? badgeColor;
     Color? badgeForeground;

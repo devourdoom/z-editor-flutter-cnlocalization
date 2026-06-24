@@ -37,16 +37,14 @@ class _ZombieConditionSelectionScreenState
   List<String> get _filteredIds {
     final q = _query.trim().toLowerCase();
     if (q.isEmpty) return ZombieConditions.allIds;
-    return ZombieConditions.allIds
-        .where((id) {
-          return matchesSelectionSearch(_query, [
-            id,
-            'condition_$id',
-            'zombieCondition_$id',
-            ChallengeResourceL10n.condition(context, id),
-          ]);
-        })
-        .toList();
+    return ZombieConditions.allIds.where((id) {
+      return matchesSelectionSearch(_query, [
+        id,
+        'condition_$id',
+        'zombieCondition_$id',
+        ChallengeResourceL10n.condition(context, id),
+      ]);
+    }).toList();
   }
 
   @override
@@ -99,7 +97,10 @@ class _ZombieConditionSelectionScreenState
                     });
                   },
                   title: Text(label),
-                  subtitle: Text(id, style: Theme.of(context).textTheme.bodySmall),
+                  subtitle: Text(
+                    id,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
                   controlAffinity: ListTileControlAffinity.leading,
                 );
               },
