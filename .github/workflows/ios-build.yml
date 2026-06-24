@@ -1,6 +1,10 @@
 name: iOS Build
 
 on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
   workflow_dispatch:
     inputs:
       build_id:
@@ -35,6 +39,7 @@ on:
 
 jobs:
   build:
+    name: iOS Debug
     runs-on: macos-latest
     timeout-minutes: 30
 
