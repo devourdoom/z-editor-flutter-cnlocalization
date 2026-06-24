@@ -26,7 +26,6 @@
   { "alias": "ChildrenDayStage", "type": "extra", "iconName": "Stage_ChildrenDay.webp" },
   { "alias": "HalloweenStage", "type": "extra", "iconName": "Stage_Halloween.webp" },
   { "alias": "UnchartedAnniversaryStage", "type": "extra", "iconName": "Stage_Anniversary.webp" },
-  { "alias": "VacationLostCityStage", "type": "extra", "iconName": "Stage_LostVolcano.webp" },
   { "alias": "UnchartedIceageStage", "type": "extra", "iconName": "Stage_FBCR.webp" },
   { "alias": "RunningNormalStage", "type": "extra", "iconName": "Stage_Subway.webp" },
   { "alias": "UnchartedNeedforspeedStage", "type": "extra", "iconName": "Stage_NFS.webp" },

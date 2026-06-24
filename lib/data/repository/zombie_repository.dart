@@ -48,10 +48,10 @@ enum ZombieTag {
   strong,
   gargantuar,
   elite,
-  custom,
   evildave,
-  international,
+  custom,
   chinese,
+  international
 }
 
 extension ZombieTagExtension on ZombieTag {

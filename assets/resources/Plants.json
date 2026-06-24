@@ -3112,8 +3112,7 @@
             "Orange",
             "Ranger",
             "Physical",
-            "International",
-            "Chinese"
+            "International"
         ],
         "icon": "icon_megagatling.webp"
     },
@@ -3321,6 +3320,16 @@
         "icon": "icon_goldencassia.webp"
     },
     {
+        "id": "uncharted_haystack",
+        "name": "plant_uncharted_haystack",
+        "tags": [
+            "White",
+            "Support",
+            "Chinese"
+        ],
+        "icon": "icon_uncharted_haystack.webp"
+    },
+    {
         "id": "moton",
         "name": "plant_moton",
         "tags": [
@@ -3438,21 +3447,9 @@
             "Green",
             "Support",
             "Magic",
-            "International"
-        ],
-        "icon": "icon_moonflower.webp"
-    },
-    {
-        "id": "uncharted_haystack",
-        "name": "plant_uncharted_haystack",
-        "tags": [
-            "Parallel",
-            "_internal_mausoleum",
-            "White",
-            "Support",
             "Chinese"
         ],
-        "icon": "icon_uncharted_haystack.webp"
+        "icon": "icon_moonflower.webp"
     },
     {
         "id": "uncharted_phatbeet",
@@ -3464,7 +3461,7 @@
             "Vanguard",
             "Physical",
             "Magic",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_phatbeet.webp"
     },
@@ -3489,7 +3486,7 @@
             "_internal_no42",
             "White",
             "SunProducer",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_sunflower.webp"
     },
@@ -3501,7 +3498,7 @@
             "_internal_no42",
             "White",
             "Ranger",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_peashooter.webp"
     },
@@ -3513,7 +3510,7 @@
             "_internal_no42",
             "White",
             "Defence",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_wallnut.webp"
     },
@@ -3526,7 +3523,7 @@
             "White",
             "Trapper",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_potatomine.webp"
     },
@@ -3539,7 +3536,7 @@
             "Blue",
             "Vanguard",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_chomper.webp"
     },
@@ -3552,7 +3549,7 @@
             "Blue",
             "Trapper",
             "Fire",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_cherry_bomb.webp"
     },
@@ -3565,7 +3562,7 @@
             "White",
             "Trapper",
             "Ice",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_iceburg.webp"
     },
@@ -3578,7 +3575,7 @@
             "Blue",
             "Vanguard",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_bonkchoy.webp"
     },
@@ -3591,7 +3588,7 @@
             "Green",
             "Support",
             "Magic",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_moonflower.webp"
     },
@@ -3604,7 +3601,7 @@
             "Blue",
             "Trapper",
             "Poison",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_shadowshroom.webp"
     },
@@ -3617,7 +3614,7 @@
             "Purple",
             "Trapper",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_grimrose.webp"
     },
@@ -3630,7 +3627,7 @@
             "Purple",
             "Vanguard",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_nightshade.webp"
     },
@@ -3643,7 +3640,7 @@
             "Orange",
             "Ranger",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_dusklobber.webp"
     },
@@ -3656,7 +3653,7 @@
             "Purple",
             "Ranger",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_shadowpeashooter.webp"
     },
@@ -3681,7 +3678,7 @@
             "_internal_no42",
             "Blue",
             "SunProducer",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_primalsunflower.webp"
     },
@@ -3694,7 +3691,7 @@
             "Blue",
             "Ranger",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_primalpeashooter.webp"
     },
@@ -3707,7 +3704,7 @@
             "Blue",
             "Defence",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_primalwallnut.webp"
     },
@@ -3720,7 +3717,7 @@
             "Purple",
             "Trapper",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_primalpotatomine.webp"
     },
@@ -3732,7 +3729,7 @@
             "_internal_no42",
             "Blue",
             "Defence",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_pumpkin.webp"
     },
@@ -3758,7 +3755,7 @@
             "White",
             "Ranger",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_kernelpult.webp"
     },
@@ -3784,7 +3781,7 @@
             "White",
             "Trapper",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_spikeweed.webp"
     },
@@ -3797,7 +3794,7 @@
             "White",
             "Ranger",
             "Physical",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_splitpea.webp"
     },
@@ -3810,7 +3807,7 @@
             "Orange",
             "Ranger",
             "Ice",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_wintermelon.gif"
     },
@@ -3822,7 +3819,7 @@
             "Orange",
             "Fire",
             "_internal_no42",
-            "International"
+            "Chinese"
         ],
         "icon": "icon_doomshroom.gif"
     },

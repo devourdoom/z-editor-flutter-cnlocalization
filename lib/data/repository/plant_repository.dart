@@ -46,6 +46,7 @@ enum PlantTag {
   poison,
   electric,
   physical,
+  worldTutorial,
   worldEgypt,
   worldPirate,
   worldWildWest,
@@ -68,9 +69,9 @@ enum PlantTag {
   worldMausoleum,
   original,
   parallel,
-  international,
-  chinese,
   special,
+  chinese,
+  international,
 }
 
 extension PlantTagExtension on PlantTag {
@@ -115,6 +116,8 @@ extension PlantTagExtension on PlantTag {
         return s.plantTagElectric;
       case PlantTag.physical:
         return s.plantTagPhysical;
+      case PlantTag.worldTutorial:
+        return s.plantTagWorldTutorial;
       case PlantTag.worldEgypt:
         return s.plantTagWorldEgypt;
       case PlantTag.worldPirate:

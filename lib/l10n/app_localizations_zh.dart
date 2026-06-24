@@ -36,10 +36,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uiSize => '界面大小';
 
   @override
-  String get plantTagInternational => '国际的';
+  String get plantTagInternational => '国际版移植';
 
   @override
-  String get plantTagChinese => '中国人';
+  String get plantTagChinese => '中文版原创';
 
   @override
   String get aboutSoftware => '关于软件';
@@ -679,6 +679,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get plantTagPhysical => '物理属性';
 
   @override
+  String get plantTagWorldTutorial => '教程庭院';
+
+  @override
   String get plantTagWorldEgypt => '神秘埃及';
 
   @override
@@ -700,7 +703,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get plantTagWorldBeach => '巨浪沙滩';
 
   @override
-  String get plantTagWorldIceage => '冰河世纪';
+  String get plantTagWorldIceage => '冰河世界';
 
   @override
   String get plantTagWorldSkycity => '天空之城';
@@ -6603,7 +6606,7 @@ class AppLocalizationsZh extends AppLocalizations {
       '从其他地图导入资源组，以在此解锁更多地图外观选项。';
 
   @override
-  String get stageBackgroundAddFromStage => '再添加地图外观';
+  String get stageBackgroundAddFromStage => '添加地图外观';
 
   @override
   String get customStageNameSuffix => '（自定义）';
@@ -6697,87 +6700,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get customStagePresetSectionTitle => '预设自定义地图';
-
-  @override
-  String get customStagePreset_bigWaveNight => '巨浪黑夜';
-
-  @override
-  String get customStagePreset_mixtapeSummerNight => '摇滚夏夜';
-
-  @override
-  String get customStagePreset_oneSidedAtlantis => '单面海底';
-
-  @override
-  String get customStagePreset_futureLawn => '未来草坪';
-
-  @override
-  String get customStagePreset_roofNight => '屋顶黑夜';
-
-  @override
-  String get customStagePreset_snowModern => '现代雪夜';
-
-  @override
-  String get customStagePreset_poolDaylight => '泳池白天';
-
-  @override
-  String get customStagePreset_renai => '文艺复兴';
-
-  @override
-  String get customStagePreset_steam => '蒸汽';
-
-  @override
-  String get customStagePreset_lostVolcano => '失落火山';
-
-  @override
-  String get customStagePreset_summerDaylight => '夏日白天';
-
-  @override
-  String get customStagePreset_newYearNight => '新年黑夜';
-
-  @override
-  String get customStagePreset_autumnLate => '深秋';
-
-  @override
-  String get customStagePresetSource_memoryLaneS25Week6Boss =>
-      '出自回忆之旅25赛季第六周BOSS关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS26HardLevel1 =>
-      '出自回忆之旅26赛季困难模式第1关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS28Week3Original5_8 =>
-      '出自回忆之旅28赛季第三周原5~8关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS28Level5 => '出自回忆之旅28赛季第5关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS27Level61 => '出自回忆之旅27赛季第61关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS29Level57 => '出自回忆之旅29赛季第57关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS31Level20 => '出自回忆之旅31赛季第20关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS30Level31 => '出自回忆之旅30赛季第31关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS31Level9 => '出自回忆之旅31赛季第9关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS30Boss6 => '出自回忆之旅30赛季BOSS第6关';
-
-  @override
-  String get customStagePresetSource_minigameGame33 => '出自小游戏第33关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS30Hard1 => '出自回忆之旅30赛季困难模式第1关';
-
-  @override
-  String get customStagePresetSource_memoryLaneS28Level13 => '出自回忆之旅28赛季第13关';
 
   @override
   String get editCustomStage => '编辑自定义地图';
