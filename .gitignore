@@ -48,6 +48,10 @@ app.*.map.json
 
 # Other
 /z-editor-original
+/ios-builder.exe
+/dist
+/.mobai
+
 #/assets/
 report.txt
 /ANDROID_LASTEST_BUILD

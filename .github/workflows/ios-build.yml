@@ -35,6 +35,7 @@ on:
 
 jobs:
   build:
+    name: iOS Debug
     runs-on: macos-latest
     timeout-minutes: 30
 
