@@ -5,6 +5,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:c_editor/utils/3rdParty/sen_popcap_zlib.dart';
 import 'package:c_editor/utils/3rdParty/sen_buffer.dart';
+import 'package:c_editor/utils/apple_folder_access.dart';
 
 import '../pvz_models.dart';
 import 'level_repository_base.dart';
@@ -14,6 +15,28 @@ LevelRepositoryBase createLevelRepository() => LevelRepositoryNativeImpl();
 class LevelRepositoryNativeImpl extends LevelRepositoryBase {
   static const _prefsFolderKey = 'folder_path';
   static const _prefsLastLevelDirKey = 'last_level_directory';
+
+  @override
+  Future<String> ensureIosLibraryPath() => AppleFolderAccess.defaultLibraryPath();
+
+  @override
+  Future<bool> ensureFolderAccess() async {
+    if (!Platform.isIOS) return true;
+    final path = await getSavedFolderPath();
+    if (path == null || path.isEmpty) return false;
+    if (await AppleFolderAccess.isAppSandboxPath(path)) return true;
+    return AppleFolderAccess.grantAccessForPath(path);
+  }
+
+  Future<void> _requireFolderAccess() async {
+    if (!Platform.isIOS) return;
+    if (!await ensureFolderAccess()) {
+      throw const FileSystemException(
+        'Cannot access level library folder',
+        'apple_folder_access',
+      );
+    }
+  }
 
   @override
   Future<String?> getSavedFolderPath() async {
@@ -53,18 +76,24 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
 
   @override
   Future<bool> fileExistsInDirectory(String dirPath, String fileName) async {
+    await _requireFolderAccess();
     final path = p.join(dirPath, fileName);
     return File(path).exists();
   }
 
   @override
   Future<List<FileItem>> getDirectoryContents(String dirPath) async {
+    await _requireFolderAccess();
     final dir = Directory(dirPath);
     if (!await dir.exists()) return [];
 
     final favoritePaths = await readFavoriteLevelPaths();
     final list = <FileItem>[];
-    await for (final entity in dir.list()) {
+    final entities = await dir
+        .list()
+        .toList()
+        .timeout(const Duration(seconds: 30));
+    for (final entity in entities) {
       final stat = await entity.stat();
       final name = p.basename(entity.path);
       final isDir = stat.type == FileSystemEntityType.directory;
@@ -95,6 +124,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
 
   @override
   Future<bool> createDirectory(String parentPath, String name) async {
+    await _requireFolderAccess();
     final dir = Directory(p.join(parentPath, name));
     if (await dir.exists()) return false;
     await dir.create(recursive: true);
@@ -108,6 +138,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     String newName,
     bool isDirectory,
   ) async {
+    await _requireFolderAccess();
     final oldPath = p.join(currentDirPath, oldName);
     final newPath = p.join(currentDirPath, newName);
     if (await File(newPath).exists() || await Directory(newPath).exists()) {
@@ -144,6 +175,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     String fileName,
     bool isDirectory,
   ) async {
+    await _requireFolderAccess();
     final targetPath = p.join(currentDirPath, fileName);
     if (isDirectory) {
       await Directory(targetPath).delete(recursive: true);
@@ -165,6 +197,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     String targetDirPath,
     String targetFileName,
   ) async {
+    await _requireFolderAccess();
     final destPath = p.join(targetDirPath, targetFileName);
     if (await File(destPath).exists()) return false;
     try {
@@ -182,6 +215,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     String fileName,
     String destDirPath,
   ) async {
+    await _requireFolderAccess();
     if (srcDirPath == destDirPath) return false;
     final srcPath = p.join(srcDirPath, fileName);
     final destPath = p.join(destDirPath, fileName);
@@ -206,6 +240,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     String fileName,
     String destDirPath,
   ) async {
+    await _requireFolderAccess();
     if (srcDirPath == destDirPath) return false;
     final srcPath = p.join(srcDirPath, fileName);
     final destPath = p.join(destDirPath, fileName);
@@ -233,6 +268,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     String destDirPath,
     String newFileName,
   ) async {
+    await _requireFolderAccess();
     if (srcDirPath == destDirPath) return null;
     final srcPath = p.join(srcDirPath, fileName);
     final destPath = p.join(destDirPath, newFileName);
@@ -269,6 +305,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
   @override
   Future<bool> prepareInternalCache(String sourcePath, String fileName) async {
     try {
+      await _requireFolderAccess();
       final cacheDir = await getCacheDir();
       final destPath = p.join(cacheDir, fileName);
       await File(sourcePath).copy(destPath);
@@ -309,6 +346,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
 
   @override
   Future<PvzLevelFile?> loadLevelFromPath(String filePath) async {
+    await _requireFolderAccess();
     final file = File(filePath);
     if (!await file.exists()) return null;
     try {
@@ -327,6 +365,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
 
   @override
   Future<void> saveAndExport(String filePath, PvzLevelFile levelData) async {
+    await _requireFolderAccess();
     final fileName = p.basename(filePath);
     final bytes = encodeLevelBytes(fileName, levelData);
     final file = File(filePath);
@@ -343,6 +382,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     required String targetExtension,
     String? targetName,
   }) async {
+    await _requireFolderAccess();
     final srcFile = File(sourcePath);
     if (!await srcFile.exists()) return null;
     final parent = p.dirname(sourcePath);
@@ -397,6 +437,7 @@ class LevelRepositoryNativeImpl extends LevelRepositoryBase {
     String newFileName,
     String assetContent,
   ) async {
+    await _requireFolderAccess();
     final destPath = p.join(currentDirPath, newFileName);
     if (await File(destPath).exists()) return false;
     try {

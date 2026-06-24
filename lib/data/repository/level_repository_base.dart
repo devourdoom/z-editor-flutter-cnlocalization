@@ -52,6 +52,8 @@ abstract class LevelRepositoryBase {
 
   Future<String?> getSavedFolderPath();
   Future<void> setSavedFolderPath(String path);
+  Future<String> ensureIosLibraryPath();
+  Future<bool> ensureFolderAccess() async => true;
   Future<void> setLastOpenedLevelDirectory(String path);
   Future<String?> getLastOpenedLevelDirectory();
   Future<String> getCacheDir();

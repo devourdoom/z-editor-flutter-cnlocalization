@@ -15,6 +15,10 @@ class LevelRepository {
   static Future<void> setSavedFolderPath(String path) =>
       _impl.setSavedFolderPath(path);
 
+  static Future<String> ensureIosLibraryPath() => _impl.ensureIosLibraryPath();
+
+  static Future<bool> ensureFolderAccess() => _impl.ensureFolderAccess();
+
   static Future<void> setLastOpenedLevelDirectory(String path) =>
       _impl.setLastOpenedLevelDirectory(path);
 

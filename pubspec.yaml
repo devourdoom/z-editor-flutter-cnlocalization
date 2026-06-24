@@ -23,13 +23,14 @@ dependencies:
   crypto: ^3.0.3
   shared_preferences: ^2.2.2
   path_provider: ^2.1.1
-  file_picker: ^10.3.10
+  file_picker: ^11.0.2
   path: ^1.8.3
   permission_handler: ^11.3.1
   archive: ^4.0.2
   package_info_plus: ^8.1.2
   url_launcher: ^6.3.1
   rijndael: ^1.0.1
+  accessing_security_scoped_resource: ^3.5.0
 
 dev_dependencies:
   flutter_test:

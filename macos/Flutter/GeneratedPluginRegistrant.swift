@@ -5,12 +5,14 @@
 import FlutterMacOS
 import Foundation
 
+import accessing_security_scoped_resource
 import file_picker
 import package_info_plus
 import shared_preferences_foundation
 import url_launcher_macos
 
 func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
+  AccessingSecurityScopedResourcePlugin.register(with: registry.registrar(forPlugin: "AccessingSecurityScopedResourcePlugin"))
   FilePickerPlugin.register(with: registry.registrar(forPlugin: "FilePickerPlugin"))
   FPPPackageInfoPlusPlugin.register(with: registry.registrar(forPlugin: "FPPPackageInfoPlusPlugin"))
   SharedPreferencesPlugin.register(with: registry.registrar(forPlugin: "SharedPreferencesPlugin"))

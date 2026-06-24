@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:c_editor/data/app_links.dart';
 import 'package:c_editor/data/repository/level_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/screens/level_list_platform.dart';
+import 'package:c_editor/utils/apple_folder_access.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class LevelListScreen extends StatefulWidget {
@@ -204,19 +207,25 @@ class _LevelListScreenState extends State<LevelListScreen> {
       _loadCurrentDirectory();
       return;
     }
-    if (path != null && mounted) {
+    var resolvedPath = path;
+    if (resolvedPath == null && Platform.isIOS) {
+      resolvedPath = await LevelRepository.ensureIosLibraryPath();
+      await LevelRepository.setSavedFolderPath(resolvedPath);
+    }
+    if (resolvedPath != null && mounted) {
+      final libraryPath = resolvedPath;
       setState(() {
-        _rootFolderPath = path;
+        _rootFolderPath = libraryPath;
         if (_pathStack.isEmpty) {
           List<({String name, String path})> stack = [];
-          final rootName = path.split(RegExp(r'[/\\]')).last;
-          stack.add((name: rootName.isEmpty ? 'Root' : rootName, path: path));
-          if (lastLevelDir != null && lastLevelDir != path) {
+          final rootName = libraryPath.split(RegExp(r'[/\\]')).last;
+          stack.add((name: rootName.isEmpty ? 'Root' : rootName, path: libraryPath));
+          if (lastLevelDir != null && lastLevelDir != libraryPath) {
             try {
-              final rel = p.relative(lastLevelDir, from: path);
+              final rel = p.relative(lastLevelDir, from: libraryPath);
               if (rel.startsWith('..')) throw ArgumentError('not under root');
               if (rel.isNotEmpty && rel != '.') {
-                var current = path;
+                var current = libraryPath;
                 for (final segment in p.split(rel)) {
                   if (segment.isEmpty) continue;
                   current = p.join(current, segment);
@@ -240,21 +249,34 @@ class _LevelListScreenState extends State<LevelListScreen> {
       await _pickAndAddFile();
       return;
     }
-    final result = await FilePicker.platform.getDirectoryPath();
-    if (result != null && mounted) {
-      await LevelRepository.setSavedFolderPath(result);
-      setState(() {
-        _rootFolderPath = result;
-        final name = result.split(RegExp(r'[/\\]')).last;
-        _pathStack = [(name: name.isEmpty ? 'Root' : name, path: result)];
-      });
-      _loadCurrentDirectory();
+    final result = await FilePicker.getDirectoryPath();
+    if (result == null || !mounted) return;
+    if (Platform.isIOS) {
+      final granted = await AppleFolderAccess.grantAccessForPath(result);
+      if (!granted && mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              AppLocalizations.of(context)?.selectFolderPrompt ??
+                  'Please select a folder for your level library.',
+            ),
+          ),
+        );
+        return;
+      }
     }
+    await LevelRepository.setSavedFolderPath(result);
+    setState(() {
+      _rootFolderPath = result;
+      final name = result.split(RegExp(r'[/\\]')).last;
+      _pathStack = [(name: name.isEmpty ? 'Root' : name, path: result)];
+    });
+    _loadCurrentDirectory();
   }
 
   /// Web-only: pick a .json file and add to virtual workspace.
   Future<void> _pickAndAddFile() async {
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['json', 'hujson', 'rton'],
     );
@@ -285,12 +307,42 @@ class _LevelListScreenState extends State<LevelListScreen> {
         : _rootFolderPath;
     if (currentPath == null) return;
     setState(() => _isLoading = true);
-    final items = await LevelRepository.getDirectoryContents(currentPath);
-    if (mounted) {
-      setState(() {
-        _fileItems = items;
-        _isLoading = false;
-      });
+    try {
+      if (!kIsWeb && Platform.isIOS) {
+        final ok = await LevelRepository.ensureFolderAccess();
+        if (!ok && mounted) {
+          setState(() {
+            _fileItems = [];
+            _isLoading = false;
+            _rootFolderPath = null;
+            _pathStack = [];
+          });
+          final l10n = AppLocalizations.of(context);
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                l10n?.selectFolderPrompt ??
+                    'Please select a folder for your level library.',
+              ),
+            ),
+          );
+          return;
+        }
+      }
+      final items = await LevelRepository.getDirectoryContents(currentPath);
+      if (mounted) {
+        setState(() {
+          _fileItems = items;
+          _isLoading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) {
+        setState(() {
+          _fileItems = [];
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -981,8 +1033,9 @@ class _LevelListScreenState extends State<LevelListScreen> {
                                 l10n: l10n,
                                 onTap: () async {
                                   if (isMovingMode) {
-                                    if (item.isDirectory)
+                                    if (item.isDirectory) {
                                       _navigateToFolder(item);
+                                    }
                                   } else {
                                     if (item.isDirectory) {
                                       _navigateToFolder(item);

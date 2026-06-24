@@ -92,6 +92,9 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
   }
 
   @override
+  Future<String> ensureIosLibraryPath() async => _webPathPrefix;
+
+  @override
   Future<void> setLastOpenedLevelDirectory(String path) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_prefsLastLevelDirKey, path);
@@ -434,7 +437,7 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
     if (content == null) return;
     final downloadName = _leafNameFromWebPath(fileName);
     final ext = _extensionFromName(downloadName);
-    await FilePicker.platform.saveFile(
+    await FilePicker.saveFile(
       dialogTitle: 'Save level',
       fileName: downloadName,
       type: FileType.custom,
@@ -455,7 +458,7 @@ class LevelRepositoryWebImpl extends LevelRepositoryBase {
   }
 
   Future<void> _triggerDownloadBytes(String fileName, Uint8List bytes) async {
-    await FilePicker.platform.saveFile(
+    await FilePicker.saveFile(
       dialogTitle: 'Save file',
       fileName: fileName,
       type: FileType.custom,
