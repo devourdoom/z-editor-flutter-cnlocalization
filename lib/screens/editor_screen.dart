@@ -3266,16 +3266,6 @@ class _EditorScreenState extends State<EditorScreen> {
             ),
             actions: [
               IconButton(
-                icon: const Icon(Icons.language),
-                tooltip: l10n?.language ?? 'Language',
-                onPressed: () => widget.onLanguageTap(context),
-              ),
-              IconButton(
-                icon: const Icon(Icons.aspect_ratio),
-                tooltip: l10n?.uiSize ?? 'UI size',
-                onPressed: () => _showUiScaleDialog(context),
-              ),
-              IconButton(
                 icon: const Icon(Icons.code),
                 tooltip: l10n?.tooltipJsonViewer ?? 'View/edit JSON',
                 onPressed: _ec.state.levelFile != null
@@ -3306,18 +3296,50 @@ class _EditorScreenState extends State<EditorScreen> {
                     : null,
               ),
               IconButton(
-                icon: Icon(
-                  settings.themeMode == ThemeMode.dark
-                      ? Icons.light_mode
-                      : Icons.dark_mode,
-                ),
-                tooltip: l10n?.toggleTheme ?? 'Toggle theme',
-                onPressed: () => context.read<SettingsCubit>().cycleTheme(),
-              ),
-              IconButton(
                 icon: const Icon(Icons.save),
                 tooltip: l10n?.tooltipSave ?? 'Save',
                 onPressed: _ec.state.hasChanges ? _save : null,
+              ),
+              PopupMenuButton<String>(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    value: 'lang',
+                    child: ListTile(
+                      leading: const Icon(Icons.language),
+                      title: Text(l10n?.language ?? 'Language'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'ui',
+                    child: ListTile(
+                      leading: const Icon(Icons.aspect_ratio),
+                      title: Text(l10n?.uiSize ?? 'UI size'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  PopupMenuItem(
+                    value: 'theme',
+                    child: ListTile(
+                      leading: Icon(
+                        settings.themeMode == ThemeMode.dark
+                            ? Icons.light_mode
+                            : Icons.dark_mode,
+                      ),
+                      title: Text(l10n?.toggleTheme ?? 'Toggle theme'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ],
+                onSelected: (value) {
+                  if (value == 'lang') {
+                    widget.onLanguageTap(context);
+                  } else if (value == 'ui') {
+                    _showUiScaleDialog(context);
+                  } else if (value == 'theme') {
+                    context.read<SettingsCubit>().cycleTheme();
+                  }
+                },
               ),
             ],
           ),

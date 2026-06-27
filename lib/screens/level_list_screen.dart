@@ -632,24 +632,32 @@ class _LevelListScreenState extends State<LevelListScreen> {
             tooltip: l10n.refresh,
             onPressed: _loadCurrentDirectory,
           ),
-          IconButton(
-            icon: Icon(
-              settings.themeMode == ThemeMode.dark
-                  ? Icons.light_mode
-                  : Icons.dark_mode,
+          if (!kIsWeb)
+            IconButton(
+              icon: const Icon(Icons.folder_open),
+              tooltip: l10n.switchFolder,
+              onPressed: _pickFolder,
             ),
-            tooltip: l10n.toggleTheme,
-            onPressed: () => context.read<SettingsCubit>().cycleTheme(),
-          ),
           PopupMenuButton<String>(
             itemBuilder: (context) => [
-              PopupMenuItem(
-                value: kIsWeb ? 'download_all' : 'folder',
-                child: ListTile(
-                  leading: Icon(kIsWeb ? Icons.download : Icons.folder_open),
-                  title: Text(
-                    kIsWeb ? 'Download all levels' : l10n.switchFolder,
+              if (kIsWeb)
+                PopupMenuItem(
+                  value: 'download_all',
+                  child: ListTile(
+                    leading: const Icon(Icons.download),
+                    title: const Text('Download all levels'),
+                    contentPadding: EdgeInsets.zero,
                   ),
+                ),
+              PopupMenuItem(
+                value: 'theme',
+                child: ListTile(
+                  leading: Icon(
+                    settings.themeMode == ThemeMode.dark
+                        ? Icons.light_mode
+                        : Icons.dark_mode,
+                  ),
+                  title: Text(l10n.toggleTheme),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -687,8 +695,8 @@ class _LevelListScreenState extends State<LevelListScreen> {
               ),
             ],
             onSelected: (value) async {
-              if (value == 'folder') {
-                _pickFolder();
+              if (value == 'theme') {
+                context.read<SettingsCubit>().cycleTheme();
               } else if (value == 'download_all') {
                 await LevelRepository.downloadAllLevelsAsZip();
               } else if (value == 'cache') {
