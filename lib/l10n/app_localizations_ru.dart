@@ -1752,12 +1752,11 @@ class AppLocalizationsRu extends AppLocalizations {
       'Заставка и полоска здоровья Зомбота';
 
   @override
-  String get moduleTitle_ZombossLastStandMinigameProperties =>
-      'Бой с Зомбоссом';
+  String get moduleTitle_ZombossLastStandMinigameProperties => 'Бой с Боссом';
 
   @override
   String get moduleDesc_ZombossLastStandMinigameProperties =>
-      'Параметры боя с Боссами (Kongfu, Цинь и т.д.)';
+      'Параметры боя с Боссами (Мастер Цигун, Пиродемон и т.д.)';
 
   @override
   String get moduleTitle_SeedRainProperties => 'Дождь из семян';
@@ -1829,7 +1828,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Устаревшие предустановленные растения';
 
   @override
-  String get frozenPlantPlacementLastStand => 'Режим последнего рубежа';
+  String get frozenPlantPlacementLastStand => 'Режим ласт стенда';
 
   @override
   String get frozenPlantPlacementSelectedPosition => 'Выбранная позиция';
@@ -1926,7 +1925,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get moduleTitle_PiratePlankProperties => 'Пиратские доски';
 
   @override
-  String get moduleDesc_PiratePlankProperties => 'Ряды досок в Пиратском море';
+  String get moduleDesc_PiratePlankProperties => 'Ряды досок в Пиратских Морях';
 
   @override
   String get moduleTitle_RailcartProperties => 'Вагонетки';
@@ -1935,18 +1934,18 @@ class AppLocalizationsRu extends AppLocalizations {
   String get moduleDesc_RailcartProperties => 'Вагонетки и рельсы';
 
   @override
-  String get moduleTitle_MechanismPlankProperties => 'Connected Minecart';
+  String get moduleTitle_MechanismPlankProperties => 'Объединённые вагонетки';
 
   @override
   String get moduleDesc_MechanismPlankProperties =>
-      'Configures the initial layout of Kongfu World minecarts and rails';
+      'Редактирование распложения вагонеток и рельс из мира Кунг-Фу';
 
   @override
   String get moduleTitle_PowerTileProperties => 'Силовые плитки';
 
   @override
   String get moduleDesc_PowerTileProperties =>
-      'Расклад силовых плиток в Будущем';
+      'Расположение силовых плиток в Будущем';
 
   @override
   String get moduleTitle_ManholePipelineModuleProperties => 'Люки';
@@ -1964,7 +1963,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Настраивает люки с ядовитым паром на газоне';
 
   @override
-  String get moduleTitle_RoofProperties => 'Крышные горшки';
+  String get moduleTitle_RoofProperties => 'Горшки крыши';
 
   @override
   String get moduleDesc_RoofProperties => 'Колонки горшков на крыше';
@@ -1976,10 +1975,11 @@ class AppLocalizationsRu extends AppLocalizations {
   String get moduleDesc_TideProperties => 'Включить прилив';
 
   @override
-  String get moduleTitle_BombProperties => 'Бочковые бомбы';
+  String get moduleTitle_BombProperties => 'Взрывоопасные бочки';
 
   @override
-  String get moduleDesc_BombProperties => 'Длина фитиля бочки/вишни по рядам';
+  String get moduleDesc_BombProperties =>
+      'Длина фитиля взрывоопасной бочки по рядам';
 
   @override
   String get moduleTitle_BronzeProperties => 'Бронзовые статуи';
@@ -1996,7 +1996,7 @@ class AppLocalizationsRu extends AppLocalizations {
       'Настройка отображения оружейных стоек на газоне (только волна 1)';
 
   @override
-  String get moduleTitle_EnergyGridProperties => 'Плитки Тайцзи';
+  String get moduleTitle_EnergyGridProperties => 'Плитки с подкормкой';
 
   @override
   String get moduleDesc_EnergyGridProperties =>
@@ -2407,10 +2407,10 @@ class AppLocalizationsRu extends AppLocalizations {
       'Смахивать этого зомби с газона? Можно добавить в уровень модуль смахивания ракетного зомби.';
 
   @override
-  String get customZombie => 'Свой зомби';
+  String get customZombie => 'Кастомный зомби';
 
   @override
-  String get customZombieProperties => 'Свойства своего зомби';
+  String get customZombieProperties => 'Свойства кастомного зомби';
 
   @override
   String get zombieTypeNotFound => 'Объект типа зомби не найден.';
@@ -2420,7 +2420,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String propertyObjectNotFoundHint(Object alias) {
-    return 'Объект свойств своего зомби ($alias) не найден в уровне. Определение свойств не указывает на внутренние данные уровня, поэтому его нельзя редактировать здесь.';
+    return 'Объект свойств кастомного зомби ($alias) не найден в уровне. Определение свойств не указывает на внутренние данные уровня, поэтому его нельзя редактировать здесь.';
   }
 
   @override
@@ -2442,28 +2442,28 @@ class AppLocalizationsRu extends AppLocalizations {
   String get hitPosition => 'Попадание / позиция';
 
   @override
-  String get hitRect => 'Прямоугольник попадания';
+  String get hitRect => 'Радиус попадания';
 
   @override
-  String get editHitRect => 'Редактировать HitRect';
+  String get editHitRect => 'Редактировать радиус попадания';
 
   @override
-  String get attackRect => 'Прямоугольник атаки';
+  String get attackRect => 'Радиус атаки';
 
   @override
-  String get editAttackRect => 'Редактировать AttackRect';
+  String get editAttackRect => 'Редактировать радиус атаки';
 
   @override
   String get artCenter => 'Центр отрисовки';
 
   @override
-  String get editArtCenter => 'Редактировать ArtCenter';
+  String get editArtCenter => 'Редактировать центр отрисовки';
 
   @override
   String get shadowOffset => 'Смещение тени';
 
   @override
-  String get editShadowOffset => 'Редактировать ShadowOffset';
+  String get editShadowOffset => 'Редактировать смещение тени';
 
   @override
   String get groundTrackName => 'Траектория движения';
@@ -2496,10 +2496,10 @@ class AppLocalizationsRu extends AppLocalizations {
   String get drawHealthBarTime => 'Время отображения полоски';
 
   @override
-  String get enableEliteScale => 'Включить элитный масштаб';
+  String get enableEliteScale => 'Включить масштаб для элитных зомби';
 
   @override
-  String get eliteScale => 'Элитный масштаб';
+  String get eliteScale => 'Масштаб для элитных зомби';
 
   @override
   String get enableEliteImmunities => 'Включить элитный иммунитет';
@@ -2575,7 +2575,7 @@ class AppLocalizationsRu extends AppLocalizations {
   String get instantKillResistance => 'Устойчивость к мгновенной смерти';
 
   @override
-  String get resiliencePhysics => 'Физика';
+  String get resiliencePhysics => 'Физ.урон';
 
   @override
   String get resiliencePoison => 'Яд';
@@ -2989,7 +2989,7 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get eventHelpBeachStageBody =>
-      'Зомби появляются при отливе. Используется в Pirate Seas.';
+      'Зомби появляются при отливе. Используется в Пиратских морях.';
 
   @override
   String get eventHelpTidalChangeBody =>
