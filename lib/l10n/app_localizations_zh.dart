@@ -4081,6 +4081,21 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
+  String seedRainTypeLabel(String type) {
+    return '类型：$type';
+  }
+
+  @override
+  String seedRainWeightLabel(int weight) {
+    return '权重：$weight';
+  }
+
+  @override
+  String seedRainMaxLabel(int max) {
+    return '最大：$max';
+  }
+
+  @override
   String get random => '随机';
 
   @override

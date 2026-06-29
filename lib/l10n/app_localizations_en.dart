@@ -4285,6 +4285,21 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String seedRainTypeLabel(String type) {
+    return 'Type: $type';
+  }
+
+  @override
+  String seedRainWeightLabel(int weight) {
+    return 'Weight: $weight';
+  }
+
+  @override
+  String seedRainMaxLabel(int max) {
+    return 'Max: $max';
+  }
+
+  @override
   String get random => 'Random';
 
   @override

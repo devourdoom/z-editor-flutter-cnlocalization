@@ -7762,6 +7762,24 @@ abstract class AppLocalizations {
   /// **'Weight: {weight}, Max: {max}'**
   String weightMaxFormat(int weight, int max);
 
+  /// No description provided for @seedRainTypeLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Type: {type}'**
+  String seedRainTypeLabel(String type);
+
+  /// No description provided for @seedRainWeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Weight: {weight}'**
+  String seedRainWeightLabel(int weight);
+
+  /// No description provided for @seedRainMaxLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Max: {max}'**
+  String seedRainMaxLabel(int max);
+
   /// No description provided for @random.
   ///
   /// In en, this message translates to:
