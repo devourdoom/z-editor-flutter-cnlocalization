@@ -133,8 +133,9 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
                       )
                     : LayoutBuilder(
                         builder: (context, constraints) {
-                          final isDesktop = constraints.maxWidth > 600;
-                          final crossAxisCount = isDesktop ? 6 : 2;
+                          final crossAxisCount = _selectionGridColumnCount(
+                            constraints.maxWidth,
+                          );
 
                           return GridView.builder(
                             padding: const EdgeInsets.all(16),
@@ -201,6 +202,13 @@ class _GridItemSelectionScreenState extends State<GridItemSelectionScreen> {
         return l10n.gridItemCategorySpawnableObjects;
     }
   }
+}
+
+int _selectionGridColumnCount(double width) {
+  final columns = (width / 180).floor();
+  if (columns < 2) return 2;
+  if (columns > 6) return 6;
+  return columns;
 }
 
 class _GridItemCard extends StatelessWidget {
