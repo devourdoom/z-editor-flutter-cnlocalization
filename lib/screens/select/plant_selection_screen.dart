@@ -11,7 +11,11 @@ import 'package:c_editor/utils/selection_search.dart';
 import 'package:c_editor/widgets/asset_image.dart'
     show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/editor_components.dart'
-    show AccentBarTabBarStyle, ScrollableWithMouseDrag, SelectionSearchField;
+    show
+        AccentBarFilterTabRow,
+        AccentBarTabBarStyle,
+        ScrollableWithMouseDrag,
+        SelectionSearchField;
 
 /// Placeholder when a plant has no icon or icon fails to load.
 const String _kUnknownIconPath = 'assets/images/others/unknown.webp';
@@ -416,53 +420,37 @@ class _PlantSelectionScreenState extends State<PlantSelectionScreen> {
                         ),
                       ),
                       if (_selectedCategory != PlantCategory.collection)
-                        DefaultTabController(
+                        AccentBarFilterTabRow(
                           key: ValueKey('${_selectedCategory.name}_tags'),
-                          length: visibleTags.length,
-                          initialIndex: safeTagIndex,
-                          child: TabBar(
-                            isScrollable: true,
-                            indicatorColor: tabColors.indicator,
-                            labelColor: tabColors.label,
-                            unselectedLabelColor: tabColors.unselectedLabel,
-                            onTap: (index) => setState(
-                              () => _selectedTag = visibleTags[index],
-                            ),
-                            tabs: visibleTags.map((tag) {
-                              final isSelected = _selectedTag == tag;
-                              final iconPath = tag.iconAssetPath;
-                              return Tab(
-                                child: Row(
-                                  children: [
-                                    if (iconPath != null) ...[
-                                      AssetImageWidget(
-                                        assetPath: iconPath,
-                                        width: 18,
-                                        height: 18,
-                                        altCandidates: imageAltCandidates(
-                                          iconPath,
-                                        ),
-                                        cacheWidth: 36,
-                                        cacheHeight: 36,
-                                      ),
-                                      const SizedBox(width: 6),
-                                    ],
-                                    Text(
-                                      tag.getLabel(context),
-                                      style: TextStyle(
-                                        fontSize: 13,
-                                        fontWeight: isSelected
-                                            ? FontWeight.bold
-                                            : FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              );
-                            }).toList(),
+                          selectedIndex: safeTagIndex,
+                          onSelected: (index) => setState(
+                            () => _selectedTag = visibleTags[index],
                           ),
-                        ),
-                      const SizedBox(height: 8),
+                          tabs: visibleTags.map((tag) {
+                            final iconPath = tag.iconAssetPath;
+                            return Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (iconPath != null) ...[
+                                  AssetImageWidget(
+                                    assetPath: iconPath,
+                                    width: 18,
+                                    height: 18,
+                                    altCandidates: imageAltCandidates(
+                                      iconPath,
+                                    ),
+                                    cacheWidth: 36,
+                                    cacheHeight: 36,
+                                  ),
+                                  const SizedBox(width: 6),
+                                ],
+                                Text(tag.getLabel(context)),
+                              ],
+                            );
+                          }).toList(),
+                        )
+                      else
+                        const SizedBox(height: 8),
                     ],
                   ),
                 ),

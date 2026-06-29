@@ -363,6 +363,207 @@ abstract class AccentBarTabBarStyle {
   }
 }
 
+/// Scrollable filter tab row for saturated accent headers.
+/// Matches accent [TabBar] underline selection. On desktop, shows a horizontal
+/// scrollbar below. Vertical wheel / trackpad scroll moves the row horizontally.
+class AccentBarFilterTabRow extends StatefulWidget {
+  const AccentBarFilterTabRow({
+    super.key,
+    required this.tabs,
+    required this.selectedIndex,
+    required this.onSelected,
+    this.height = 46,
+    this.scrollbarSlotHeight = 16,
+  });
+
+  final List<Widget> tabs;
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+  final double height;
+  final double scrollbarSlotHeight;
+
+  @override
+  State<AccentBarFilterTabRow> createState() => _AccentBarFilterTabRowState();
+}
+
+class _AccentBarFilterTabRowState extends State<AccentBarFilterTabRow> {
+  static const double _scrollbarUnderlineGap = 6;
+
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onPointerScroll(PointerScrollEvent event) {
+    if (!_scrollController.hasClients) return;
+    final position = _scrollController.position;
+    final target = (_scrollController.offset + event.scrollDelta.dy).clamp(
+      position.minScrollExtent,
+      position.maxScrollExtent,
+    );
+    if (target != _scrollController.offset) {
+      _scrollController.jumpTo(target);
+    }
+  }
+
+  Widget _buildTab(
+    int index,
+    ({Color label, Color unselectedLabel, Color indicator}) tabColors,
+  ) {
+    final selected = index == widget.selectedIndex;
+    final baseLabelStyle =
+        Theme.of(context).textTheme.titleSmall ?? const TextStyle(fontSize: 14);
+    final labelStyle = baseLabelStyle.copyWith(
+      color: selected ? tabColors.label : tabColors.unselectedLabel,
+      fontWeight: selected ? FontWeight.bold : FontWeight.normal,
+    );
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: () => widget.onSelected(index),
+        mouseCursor: SystemMouseCursors.click,
+        overlayColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.pressed)) {
+            return Colors.white.withValues(alpha: 0.12);
+          }
+          if (states.contains(WidgetState.hovered) ||
+              states.contains(WidgetState.focused)) {
+            return Colors.white.withValues(alpha: 0.08);
+          }
+          return null;
+        }),
+        child: IntrinsicWidth(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: SizedBox(
+              height: widget.height,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: DefaultTextStyle(
+                        style: labelStyle,
+                        child: widget.tabs[index],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 3,
+                    color: selected ? tabColors.indicator : Colors.transparent,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTabRow(
+    ({Color label, Color unselectedLabel, Color indicator}) tabColors,
+  ) {
+    return Row(
+      children: [
+        for (var i = 0; i < widget.tabs.length; i++) _buildTab(i, tabColors),
+      ],
+    );
+  }
+
+  ScrollbarThemeData _desktopScrollbarTheme() {
+    return ScrollbarThemeData(
+      thumbColor: WidgetStateProperty.all(
+        Colors.white.withValues(alpha: 0.75),
+      ),
+      trackColor: WidgetStateProperty.all(
+        Colors.white.withValues(alpha: 0.18),
+      ),
+      trackBorderColor: WidgetStateProperty.all(Colors.transparent),
+      thickness: WidgetStateProperty.all(6),
+      radius: const Radius.circular(4),
+      crossAxisMargin: 0,
+      mainAxisMargin: 0,
+    );
+  }
+
+  Widget _buildScrollableRow(
+    ({Color label, Color unselectedLabel, Color indicator}) tabColors, {
+    bool alignTabsToBottom = false,
+  }) {
+    Widget row = _buildTabRow(tabColors);
+    if (alignTabsToBottom) {
+      row = Align(
+        alignment: Alignment.bottomLeft,
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: _scrollbarUnderlineGap),
+          child: SizedBox(height: widget.height, child: row),
+        ),
+      );
+    }
+
+    return Listener(
+      onPointerSignal: (event) {
+        if (event is PointerScrollEvent) {
+          _onPointerScroll(event);
+        }
+      },
+      child: ScrollableWithMouseDrag(
+        child: SingleChildScrollView(
+          controller: _scrollController,
+          scrollDirection: Axis.horizontal,
+          child: row,
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final tabColors = AccentBarTabBarStyle.colors(context);
+    final showDesktopScrollbar = isDesktopPlatform(context);
+
+    if (!showDesktopScrollbar) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SizedBox(
+            height: widget.height,
+            child: _buildScrollableRow(tabColors),
+          ),
+          SizedBox(height: widget.scrollbarSlotHeight),
+        ],
+      );
+    }
+
+    return SizedBox(
+      height: widget.height + widget.scrollbarSlotHeight,
+      child: ScrollbarTheme(
+        data: _desktopScrollbarTheme(),
+        child: Scrollbar(
+          controller: _scrollController,
+          thumbVisibility: true,
+          interactive: true,
+          child: _buildScrollableRow(
+            tabColors,
+            alignTabsToBottom: true,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 /// Choice chip with explicit selected/unselected colors for accent header bars.
 class AccentBarChoiceChip extends StatelessWidget {
   const AccentBarChoiceChip({
