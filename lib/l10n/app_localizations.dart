@@ -6868,6 +6868,18 @@ abstract class AppLocalizations {
   /// **'Roof Pots module'**
   String get roofFlowerPot;
 
+  /// No description provided for @roofFlowerPotColumns.
+  ///
+  /// In en, this message translates to:
+  /// **'Flower pot columns (0–8)'**
+  String get roofFlowerPotColumns;
+
+  /// No description provided for @roofFlowerPotPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Flower pot preview'**
+  String get roofFlowerPotPreview;
+
   /// No description provided for @eventConveyorModify.
   ///
   /// In en, this message translates to:
@@ -7522,6 +7534,12 @@ abstract class AppLocalizations {
   /// **'Tide preview'**
   String get preview;
 
+  /// No description provided for @fogPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Fog preview'**
+  String get fogPreview;
+
   /// No description provided for @water.
   ///
   /// In en, this message translates to:
@@ -7576,6 +7594,12 @@ abstract class AppLocalizations {
   /// **'The current lawn is not Pirate Seas. This module may not work correctly and could cause a crash.'**
   String get currentStageNotPirate;
 
+  /// No description provided for @plankPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'Plank preview'**
+  String get plankPreview;
+
   /// No description provided for @plankRows.
   ///
   /// In en, this message translates to:
@@ -7593,12 +7617,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Rows selected:'**
   String get selectedRows;
-
-  /// No description provided for @selectedRowsLabel.
-  ///
-  /// In en, this message translates to:
-  /// **'Selected rows:'**
-  String get selectedRowsLabel;
 
   /// No description provided for @indexLabel.
   ///

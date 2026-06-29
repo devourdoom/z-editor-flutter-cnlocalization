@@ -3806,6 +3806,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get roofFlowerPot => 'Roof Pots module';
 
   @override
+  String get roofFlowerPotColumns => 'Flower pot columns (0–8)';
+
+  @override
+  String get roofFlowerPotPreview => 'Flower pot preview';
+
+  @override
   String get eventConveyorModify => 'Event: Conveyor Change';
 
   @override
@@ -4151,6 +4157,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get preview => 'Tide preview';
 
   @override
+  String get fogPreview => 'Fog preview';
+
+  @override
   String get water => 'Water';
 
   @override
@@ -4181,6 +4190,9 @@ class AppLocalizationsEn extends AppLocalizations {
       'The current lawn is not Pirate Seas. This module may not work correctly and could cause a crash.';
 
   @override
+  String get plankPreview => 'Plank preview';
+
+  @override
   String get plankRows => 'Plank rows';
 
   @override
@@ -4188,9 +4200,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get selectedRows => 'Rows selected:';
-
-  @override
-  String get selectedRowsLabel => 'Selected rows:';
 
   @override
   String get indexLabel => 'Index';

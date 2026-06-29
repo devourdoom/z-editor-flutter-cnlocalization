@@ -3764,6 +3764,12 @@ class AppLocalizationsRu extends AppLocalizations {
   String get roofFlowerPot => 'Цветочный горшок на крыше';
 
   @override
+  String get roofFlowerPotColumns => 'Колонки горшков (0–8)';
+
+  @override
+  String get roofFlowerPotPreview => 'Предпросмотр горшков';
+
+  @override
   String get eventConveyorModify => 'Событие изменения конвейера';
 
   @override
@@ -4106,6 +4112,9 @@ class AppLocalizationsRu extends AppLocalizations {
   String get preview => 'Предпросмотр';
 
   @override
+  String get fogPreview => 'Предпросмотр тумана';
+
+  @override
   String get water => 'Вода';
 
   @override
@@ -4136,6 +4145,9 @@ class AppLocalizationsRu extends AppLocalizations {
       'Текущий этап не Pirate. Модуль может не работать.';
 
   @override
+  String get plankPreview => 'Предпросмотр досок';
+
+  @override
   String get plankRows => 'Ряды досок (0–4)';
 
   @override
@@ -4143,9 +4155,6 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get selectedRows => 'Выбранные ряды';
-
-  @override
-  String get selectedRowsLabel => 'Выбранные ряды:';
 
   @override
   String get indexLabel => 'Индекс';

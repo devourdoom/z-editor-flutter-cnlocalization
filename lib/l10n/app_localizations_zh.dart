@@ -3613,6 +3613,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get roofFlowerPot => '屋顶花盆模块';
 
   @override
+  String get roofFlowerPotColumns => '花盆列数（0–8）';
+
+  @override
+  String get roofFlowerPotPreview => '花盆预览';
+
+  @override
   String get eventConveyorModify => '事件类型：传送带更改';
 
   @override
@@ -3951,6 +3957,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get preview => '潮水位置预览';
 
   @override
+  String get fogPreview => '迷雾预览';
+
+  @override
   String get water => '有潮水';
 
   @override
@@ -3980,6 +3989,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get currentStageNotPirate => '当前地图类型并非海盗港湾，此模块可能在游戏中可能无法生效，甚至导致闪退';
 
   @override
+  String get plankPreview => '甲板预览';
+
+  @override
   String get plankRows => '甲板行数配置';
 
   @override
@@ -3987,9 +3999,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get selectedRows => '已选择的行：';
-
-  @override
-  String get selectedRowsLabel => '已选择的行数：';
 
   @override
   String get indexLabel => '索引';
