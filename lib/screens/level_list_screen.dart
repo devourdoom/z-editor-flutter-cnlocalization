@@ -766,10 +766,11 @@ class _LevelListScreenState extends State<LevelListScreen> {
                   ),
                 )
               else ...[
-                _BreadcrumbBar(
-                  pathStack: _pathStack,
-                  onBreadcrumbClick: _breadcrumbTap,
-                ),
+                if (_viewMode != LevelViewMode.favorites)
+                  _BreadcrumbBar(
+                    pathStack: _pathStack,
+                    onBreadcrumbClick: _breadcrumbTap,
+                  ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   child: LayoutBuilder(
