@@ -245,7 +245,6 @@ class _GravityGeneratorEventScreenState
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final targetSeparator = l10n.localeName.startsWith('zh') ? '：' : ': ';
     final gridMode = _data.targetType == 'grid';
     final (rows, cols) = LevelParser.getGridDimensionsFromFile(
       widget.levelFile,
@@ -301,15 +300,6 @@ class _GravityGeneratorEventScreenState
                 HelpSectionData(
                   title: l10n.gravityHeavy,
                   body: l10n.gravityHelpHeavy,
-                ),
-                HelpSectionData(
-                  title: l10n.gravityTargetType,
-                  body:
-                      '${l10n.gravityTargetPlant}$targetSeparator${l10n.gravityPlantRangeHint}\n${l10n.gravityTargetGrid}$targetSeparator${l10n.gravityGridRangeHint}',
-                ),
-                HelpSectionData(
-                  title: l10n.gravityRestrictions,
-                  body: l10n.gravityRestrictionHint,
                 ),
                 HelpSectionData(
                   title: l10n.gravityHelpParametersTitle,

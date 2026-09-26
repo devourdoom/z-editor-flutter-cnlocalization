@@ -284,12 +284,19 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text(l10n.gravityHelpParameters), findsOneWidget);
       expect(find.text(l10n.gravitySequentialNotice), findsOneWidget);
-      expect(
-        find.text(
-          '${l10n.gravityTargetPlant}: ${l10n.gravityPlantRangeHint}\n${l10n.gravityTargetGrid}: ${l10n.gravityGridRangeHint}',
-        ),
-        findsOneWidget,
-      );
+      final help = find.byType(AlertDialog);
+      for (final text in [
+        l10n.gravityTargetType,
+        l10n.gravityRestrictions,
+        l10n.gravityPlantRangeHint,
+        l10n.gravityGridRangeHint,
+        l10n.gravityRestrictionHint,
+      ]) {
+        expect(
+          find.descendant(of: help, matching: find.textContaining(text)),
+          findsNothing,
+        );
+      }
       expect(l10n.gravityHelpAnti, isNot(contains('ZombieForwardDistance')));
       expect(tester.takeException(), isNull);
     },
