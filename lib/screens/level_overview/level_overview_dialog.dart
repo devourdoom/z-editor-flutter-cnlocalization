@@ -5965,7 +5965,7 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
                           flex: 4,
                           child: AssetImageWidget(
                             assetPath:
-                                'assets/images/others/Pirate_Seas_Planks.png',
+                                'assets/images/others/Pirate_Seas_Planks.webp',
                             fit: BoxFit.fill,
                           ),
                         )

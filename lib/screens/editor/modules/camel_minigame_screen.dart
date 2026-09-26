@@ -263,7 +263,7 @@ class _CamelMinigameScreenState extends State<CamelMinigameScreen> {
                 Opacity(
                   opacity: i <= used ? 1 : 0.25,
                   child: Image.asset(
-                    'assets/images/others/camelminigame_$i.png',
+                    'assets/images/others/camelminigame_$i.webp',
                     key: ValueKey('camelCardTypeIcon$i'),
                     width: 24,
                     height: 24,

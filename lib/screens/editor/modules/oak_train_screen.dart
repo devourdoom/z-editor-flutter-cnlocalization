@@ -232,7 +232,7 @@ class _OakTrainScreenState extends State<OakTrainScreen> {
             const SizedBox(height: 12),
             _buildSection(context, l10n.oakTrainScoresTitle, [
               _buildIntFieldWithIcon(
-                'assets/images/others/oaktrain_normal.png',
+                'assets/images/others/oaktrain_normal.webp',
                 l10n.oakTrainArrowScore,
                 _arrowScoreCtrl,
                 (v) {
@@ -310,7 +310,7 @@ class _OakTrainScreenState extends State<OakTrainScreen> {
             const SizedBox(height: 12),
             _buildSection(context, l10n.oakTrainInitArrowsNum, [
               _buildIntFieldWithIcon(
-                'assets/images/others/oaktrain_normal.png',
+                'assets/images/others/oaktrain_normal.webp',
                 l10n.oakTrainInitArrowNormal,
                 _initNormalCtrl,
                 (v) {
@@ -321,7 +321,7 @@ class _OakTrainScreenState extends State<OakTrainScreen> {
                 },
               ),
               _buildIntFieldWithIcon(
-                'assets/images/others/oaktrain_power.png',
+                'assets/images/others/oaktrain_power.webp',
                 l10n.oakTrainInitArrowPower,
                 _initPowerCtrl,
                 (v) {
@@ -332,7 +332,7 @@ class _OakTrainScreenState extends State<OakTrainScreen> {
                 },
               ),
               _buildIntFieldWithIcon(
-                'assets/images/others/oaktrain_triple.png',
+                'assets/images/others/oaktrain_triple.webp',
                 l10n.oakTrainInitArrowSplit,
                 _initSplitCtrl,
                 (v) {

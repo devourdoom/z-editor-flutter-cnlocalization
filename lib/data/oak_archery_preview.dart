@@ -41,7 +41,7 @@ List<OakArcheryField> oakArcheryFields(
   (
     label: l10n.oakTrainArrowScore,
     value: data.arrowScore,
-    icon: 'others/oaktrain_normal.png',
+    icon: 'others/oaktrain_normal.webp',
   ),
   (
     label: l10n.oakTrainWizardScore,
@@ -74,7 +74,7 @@ List<OakArcheryField> oakArcheryFields(
           '${l10n.oakTrainInitArrowsNum} · ${[l10n.oakTrainInitArrowNormal, l10n.oakTrainInitArrowPower, l10n.oakTrainInitArrowSplit][i]}',
       value: i < data.initArrowsNum.length ? data.initArrowsNum[i] : 0,
       icon:
-          'others/${['oaktrain_normal.png', 'oaktrain_power.png', 'oaktrain_triple.png'][i]}',
+          'others/${['oaktrain_normal.webp', 'oaktrain_power.webp', 'oaktrain_triple.webp'][i]}',
     ),
 ];
 
