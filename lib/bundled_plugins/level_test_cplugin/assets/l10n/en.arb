@@ -40,7 +40,7 @@
   },
   "dynamicRetry": "Retry",
   "dynamicExistsTitle": "File already exists",
-  "dynamicExistsBody": "“{name}” is already in your workspace.\n\nOverwrite it, or save under a different name?",
+  "dynamicExistsBody": "\"{name}\" is already in your workspace.\n\nOverwrite it, or save under a different name?",
   "@dynamicExistsBody": {
     "placeholders": {
       "name": { "type": "String" }
@@ -54,7 +54,7 @@
   "dynamicRenameInvalid": "Enter a valid file name.",
   "dynamicRenameExists": "That file already exists. Choose another name.",
   "dynamicWebImportTitle": "Import dynamic",
-  "dynamicWebImportBody": "1. Let the browser finish downloading {asset}{size}.\n2. Click “Choose file” and select that download to add it to your workspace as {name}.",
+  "dynamicWebImportBody": "1. Let the browser finish downloading {asset}{size}.\n2. Click \"Choose file\" and select that download to add it to your workspace as {name}.",
   "@dynamicWebImportBody": {
     "placeholders": {
       "asset": { "type": "String" },

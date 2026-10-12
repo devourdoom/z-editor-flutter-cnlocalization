@@ -8,25 +8,47 @@ import 'package:c_editor/data/repository/zomboss_battle_repository.dart';
 import 'package:c_editor/data/repository/zomboss_mech_repository.dart';
 import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
+import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/level_overview/level_overview_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const _copy =
-    <String, ({String plants, String zombies, String conveyor, String lawn})>{
+    <
+      String,
+      ({
+        String plants,
+        String zombies,
+        String conveyor,
+        String lawn,
+        String musicModule,
+        String musicType,
+      })
+    >{
       'en': (
         plants: 'Preset plants',
         zombies: 'Preset zombies',
         conveyor: 'Conveyor plants',
         lawn: 'Lawn',
+        musicModule: 'Ancient Egypt (Egypt)',
+        musicType: 'Ancient Egypt - Ultimate Battle (MiniGame_A)',
       ),
-      'zh': (plants: '预选植物', zombies: '预选僵尸', conveyor: '传送带植物', lawn: '草坪'),
+      'zh': (
+        plants: '预选植物',
+        zombies: '预选僵尸',
+        conveyor: '传送带植物',
+        lawn: '地图',
+        musicModule: '神秘埃及 (Egypt)',
+        musicType: '神秘埃及-终“僵”之战 (Ultimate Battle) (MiniGame_A)',
+      ),
       'ru': (
         plants: 'Предустановленные растения',
         zombies: 'Предустановленные зомби',
         conveyor: 'Растения конвейера',
         lawn: 'Поле',
+        musicModule: 'Древний Египет (Egypt)',
+        musicType: 'Древний Египет — решающая битва (MiniGame_A)',
       ),
     };
 
@@ -71,6 +93,7 @@ PvzLevelFile _level({required bool zombieMode}) => PvzLevelFile(
       objClass: 'LevelDefinition',
       objData: LevelDefinitionData(
         stageModule: 'RTID(EgyptStage@LevelModules)',
+        musicType: 'MiniGame_A',
         modules: const [
           'RTID(SeedBank@CurrentLevel)',
           'RTID(Conveyor@CurrentLevel)',
@@ -127,6 +150,7 @@ void main() {
       ZombieRepository().init(),
       GridItemRepository.init(),
       StageRepository.init(),
+      ResourceNames.ensureLoaded(),
       ZombossMechRepository.ensureLoaded(),
       ZombossBattleRepository.init(),
     ]);
@@ -201,6 +225,19 @@ void main() {
               (widget) =>
                   widget is Text &&
                   (widget.data?.startsWith('${copy.lawn}: ') ?? false),
+            ),
+            findsOneWidget,
+          );
+          expect(
+            find.text(
+              '${lookupAppLocalizations(locale).musicSuffix}: '
+              '${copy.musicModule}',
+            ),
+            findsOneWidget,
+          );
+          expect(
+            find.text(
+              '${lookupAppLocalizations(locale).musicType}: ${copy.musicType}',
             ),
             findsOneWidget,
           );

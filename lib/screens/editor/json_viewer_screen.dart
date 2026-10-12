@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:c_editor/data/repository/level_repository.dart';
+import 'package:c_editor/data/interface_menu_config.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/unused_level_object_utils.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
@@ -126,6 +127,7 @@ class JsonViewerScreen extends StatefulWidget {
     required this.onBack,
     this.onSaved,
     this.saveLevel,
+    this.menuActions,
   });
 
   final String fileName;
@@ -135,6 +137,7 @@ class JsonViewerScreen extends StatefulWidget {
   final VoidCallback? onSaved;
   final Future<void> Function(String filePath, PvzLevelFile levelFile)?
   saveLevel;
+  final List<InterfaceMenuActionPreference>? menuActions;
 
   @override
   State<JsonViewerScreen> createState() => _JsonViewerScreenState();
@@ -674,6 +677,76 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
     }
   }
 
+  void _toggleJsonView() {
+    setState(() {
+      _viewMode = _viewMode == _JsonViewMode.rawText
+          ? _JsonViewMode.structured
+          : _JsonViewMode.rawText;
+    });
+    _runSearch();
+  }
+
+  String _jsonActionLabel(AppLocalizations? l10n, String id) {
+    return switch (id) {
+      InterfaceMenuActionIds.toggleJsonView =>
+        l10n?.tooltipToggleObjectView ?? 'Toggle object/raw view',
+      InterfaceMenuActionIds.copyJson =>
+        l10n?.tooltipCopyJson ?? 'Copy level JSON',
+      InterfaceMenuActionIds.clearUnused =>
+        l10n?.tooltipClearUnused ?? 'Clear unused objects',
+      InterfaceMenuActionIds.editJson => l10n?.tooltipEdit ?? 'Edit',
+      _ => id,
+    };
+  }
+
+  IconData _jsonActionIcon(String id) {
+    return switch (id) {
+      InterfaceMenuActionIds.toggleJsonView =>
+        _viewMode == _JsonViewMode.structured ? Icons.list : Icons.data_object,
+      InterfaceMenuActionIds.copyJson => Icons.copy,
+      InterfaceMenuActionIds.clearUnused => Icons.cleaning_services,
+      InterfaceMenuActionIds.editJson => Icons.edit,
+      _ => Icons.more_horiz,
+    };
+  }
+
+  Future<void> _handleJsonAction(String id) async {
+    switch (id) {
+      case InterfaceMenuActionIds.toggleJsonView:
+        _toggleJsonView();
+      case InterfaceMenuActionIds.copyJson:
+        await _copyLevelJson();
+      case InterfaceMenuActionIds.clearUnused:
+        _showClearUnusedDialog();
+      case InterfaceMenuActionIds.editJson:
+        _startEdit();
+    }
+  }
+
+  Widget _jsonToolbarAction(AppLocalizations? l10n, String id) {
+    return IconButton(
+      key: ValueKey('jsonToolbarAction_$id'),
+      icon: Icon(_jsonActionIcon(id)),
+      tooltip: _jsonActionLabel(l10n, id),
+      onPressed: () => _handleJsonAction(id),
+    );
+  }
+
+  PopupMenuEntry<String> _jsonOverflowAction(
+    AppLocalizations? l10n,
+    String id,
+  ) {
+    return PopupMenuItem<String>(
+      key: ValueKey('jsonOverflowAction_$id'),
+      value: id,
+      child: EditorPopupMenuTile(
+        contentPadding: EdgeInsets.zero,
+        leading: Icon(_jsonActionIcon(id)),
+        title: Text(_jsonActionLabel(l10n, id)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -687,6 +760,23 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
       builder: (context, constraints) {
         final isNarrow = constraints.maxWidth < 600;
         final pretty = _isEditing ? '' : _rawPrettyText();
+        final configuredActions =
+            widget.menuActions ??
+            defaultInterfaceMenuActions(InterfaceMenuSurface.jsonViewer);
+        final toolbarActionIds = {
+          if (!isNarrow)
+            for (final action in configuredActions)
+              if (action.placement == InterfaceMenuPlacement.toolbar)
+                action.id,
+        };
+        final overflowActions = configuredActions
+            .where(
+              (action) =>
+                  action.placement == InterfaceMenuPlacement.overflow ||
+                  (action.placement == InterfaceMenuPlacement.toolbar &&
+                      !toolbarActionIds.contains(action.id)),
+            )
+            .toList(growable: false);
 
         Widget child = PopScope(
           canPop: !_isEditing,
@@ -736,100 +826,20 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
                     onPressed: _saveEdit,
                   )
                 else ...[
-                  if (!isNarrow) ...[
-                    IconButton(
-                      icon: Icon(
-                        _viewMode == _JsonViewMode.structured
-                            ? Icons.list
-                            : Icons.data_object,
-                      ),
-                      tooltip:
-                          l10n?.tooltipToggleObjectView ??
-                          'Toggle object/raw view',
-                      onPressed: () {
-                        setState(() {
-                          _viewMode = _viewMode == _JsonViewMode.rawText
-                              ? _JsonViewMode.structured
-                              : _JsonViewMode.rawText;
-                        });
-                        _runSearch();
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.copy),
-                      tooltip: l10n?.tooltipCopyJson ?? 'Copy level JSON',
-                      onPressed: _copyLevelJson,
-                    ),
-                  ],
-                  PopupMenuButton<String>(
-                    tooltip: l10n?.tooltipMore ?? 'More',
-                    icon: const Icon(Icons.more_vert),
-                    onSelected: (value) {
-                      switch (value) {
-                        case 'toggle_view':
-                          setState(() {
-                            _viewMode = _viewMode == _JsonViewMode.rawText
-                                ? _JsonViewMode.structured
-                                : _JsonViewMode.rawText;
-                          });
-                          _runSearch();
-                        case 'copy':
-                          _copyLevelJson();
-                        case 'clear_unused':
-                          _showClearUnusedDialog();
-                        case 'edit':
-                          _startEdit();
-                      }
-                    },
-                    itemBuilder: (context) => [
-                      if (isNarrow) ...[
-                        PopupMenuItem(
-                          value: 'toggle_view',
-                          child: EditorPopupMenuTile(
-                            contentPadding: EdgeInsets.zero,
-                            leading: Icon(
-                              _viewMode == _JsonViewMode.structured
-                                  ? Icons.list
-                                  : Icons.data_object,
-                            ),
-                            title: Text(
-                              l10n?.tooltipToggleObjectView ??
-                                  'Toggle object/raw view',
-                            ),
-                          ),
-                        ),
-                        PopupMenuItem(
-                          value: 'copy',
-                          child: EditorPopupMenuTile(
-                            contentPadding: EdgeInsets.zero,
-                            leading: const Icon(Icons.copy),
-                            title: Text(
-                              l10n?.tooltipCopyJson ?? 'Copy level JSON',
-                            ),
-                          ),
-                        ),
-                        const PopupMenuDivider(),
+                  for (final action in configuredActions)
+                    if (toolbarActionIds.contains(action.id))
+                      _jsonToolbarAction(l10n, action.id),
+                  if (overflowActions.isNotEmpty)
+                    PopupMenuButton<String>(
+                      key: const ValueKey('jsonOverflowMenu'),
+                      tooltip: l10n?.tooltipMore ?? 'More',
+                      icon: const Icon(Icons.more_vert),
+                      onSelected: _handleJsonAction,
+                      itemBuilder: (context) => [
+                        for (final action in overflowActions)
+                          _jsonOverflowAction(l10n, action.id),
                       ],
-                      PopupMenuItem(
-                        value: 'clear_unused',
-                        child: EditorPopupMenuTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: const Icon(Icons.cleaning_services),
-                          title: Text(
-                            l10n?.tooltipClearUnused ?? 'Clear unused objects',
-                          ),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 'edit',
-                        child: EditorPopupMenuTile(
-                          contentPadding: EdgeInsets.zero,
-                          leading: const Icon(Icons.edit),
-                          title: Text(l10n?.tooltipEdit ?? 'Edit'),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
                 ],
               ],
             ),

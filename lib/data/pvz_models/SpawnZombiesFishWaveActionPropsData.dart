@@ -5,6 +5,7 @@ import 'package:c_editor/data/pvz_models/ZombieSpawnData.dart';
 
 class SpawnZombiesFishWaveActionPropsData extends PvzModel {
   SpawnZombiesFishWaveActionPropsData({
+    this.jitterOffsets,
     this.notificationEvents,
     this.additionalPlantFood,
     this.spawnPlantName,
@@ -12,6 +13,9 @@ class SpawnZombiesFishWaveActionPropsData extends PvzModel {
     this.fishes = const [],
   });
 
+  /// Optional level-local `ZombieJitterOffsets` preset. In-game testing has
+  /// confirmed that underwater spawn events honor this field.
+  String? jitterOffsets;
   List<String>? notificationEvents;
   int? additionalPlantFood;
   List<String>? spawnPlantName;
@@ -24,6 +28,7 @@ class SpawnZombiesFishWaveActionPropsData extends PvzModel {
     final zombiesRaw = json['Zombies'] as List<dynamic>? ?? [];
     final fishesRaw = json['Fishes'] as List<dynamic>? ?? [];
     return SpawnZombiesFishWaveActionPropsData(
+      jitterOffsets: json['JitterOffsets'] as String?,
       notificationEvents: (json['NotificationEvents'] as List<dynamic>?)
           ?.cast<String>(),
       additionalPlantFood: json['AdditionalPlantfood'] as int?,
@@ -40,14 +45,20 @@ class SpawnZombiesFishWaveActionPropsData extends PvzModel {
     );
   }
 
+  @override
   Map<String, dynamic> toJson() {
     final m = <String, dynamic>{
       'Zombies': zombies.map((e) => e.toJson()).toList(),
     };
-    if (notificationEvents != null)
+    if (jitterOffsets?.isNotEmpty == true) {
+      m['JitterOffsets'] = jitterOffsets;
+    }
+    if (notificationEvents != null) {
       m['NotificationEvents'] = notificationEvents;
-    if (additionalPlantFood != null)
+    }
+    if (additionalPlantFood != null) {
       m['AdditionalPlantfood'] = additionalPlantFood;
+    }
     if (spawnPlantName != null) m['SpawnPlantName'] = spawnPlantName;
     if (fishes.isNotEmpty) m['Fishes'] = fishes.map((e) => e.toJson()).toList();
     return m;

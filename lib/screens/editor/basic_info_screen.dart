@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:c_editor/data/custom_stage_level_utils.dart';
 import 'package:c_editor/data/level_parser.dart';
+import 'package:c_editor/data/music_type_catalog.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/data/repository/custom_stage_preset_repository.dart';
@@ -12,25 +13,30 @@ import 'package:c_editor/widgets/asset_image.dart'
     show AssetImageWidget, imageAltCandidates;
 import 'package:c_editor/widgets/custom_stage_editor_widgets.dart';
 import 'package:c_editor/widgets/editor_components.dart';
-
-// Options matching LevelDefinitionEP.kt (keep codenames)
-const _musicTypeOptions = [
-  ('MainPath', 'MainPath'),
-  ('MiniGame_A', 'MiniGame_A'),
-  ('MiniGame_B', 'MiniGame_B'),
-  ('MiniGame_C', 'MiniGame_C'),
-  ('MiniGame_D', 'MiniGame_D'),
-  ('MiniGame_E', 'MiniGame_E'),
-];
+import 'package:c_editor/widgets/separated_option_picker_field.dart';
 
 const _lootOptions = [
-  ('RTID(DefaultLoot@LevelModules)', 'DefaultLoot'),
-  ('RTID(NoLoot@LevelModules)', 'NoLoot'),
+  'RTID(DefaultLoot@LevelModules)',
+  'RTID(NoLoot@LevelModules)',
 ];
 const _victoryOptions = [
-  ('RTID(VictoryOutro@LevelModules)', 'VictoryOutro'),
-  ('RTID(ZombossVictoryOutro@LevelModules)', 'ZombossVictoryOutro'),
+  'RTID(VictoryOutro@LevelModules)',
+  'RTID(ZombossVictoryOutro@LevelModules)',
 ];
+
+String _lootOptionLabel(AppLocalizations? l10n, String value) =>
+    switch (value) {
+      'RTID(NoLoot@LevelModules)' => l10n?.lootOptionNone ?? 'No Loot (NoLoot)',
+      _ => l10n?.lootOptionDefault ?? 'Default Loot (DefaultLoot)',
+    };
+
+String _victoryOptionLabel(AppLocalizations? l10n, String value) =>
+    switch (value) {
+      'RTID(ZombossVictoryOutro@LevelModules)' =>
+        l10n?.victoryOptionZomboss ??
+            'Zomboss Battle Victory (ZombossVictoryOutro)',
+      _ => l10n?.victoryOptionDefault ?? 'Default Victory (VictoryOutro)',
+    };
 
 class _BasicInfoEscapeIntent extends Intent {
   const _BasicInfoEscapeIntent();
@@ -177,6 +183,55 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
         );
       }
     }
+    final stageObjdata =
+        customStageData ??
+        LevelParser.resolveStageObjdata(def, widget.levelFile);
+    final stageMusicSuffix = stageObjdata?['MusicSuffix'];
+    final musicSuffix = stageMusicSuffix is String
+        ? stageMusicSuffix
+        : def.musicSuffix;
+    final musicModule = MusicTypeCatalog.forSuffix(musicSuffix);
+    final currentMusicType = def.musicType.isEmpty
+        ? MusicTypeCatalog.mainPath
+        : def.musicType;
+    final musicTypeChoices = <MusicTypeChoice>[
+      ...?musicModule?.choices,
+      if (musicModule == null) ...MusicTypeCatalog.fallbackChoices,
+    ];
+    if (!musicTypeChoices.any((choice) => choice.value == currentMusicType)) {
+      musicTypeChoices.add(
+        MusicTypeChoice(value: currentMusicType, labelKey: currentMusicType),
+      );
+    }
+    String localizedMusicTypeLabel(MusicTypeChoice choice) =>
+        ResourceNames.lookupOrFallback(context, choice.labelKey, choice.value);
+    String? musicTypeSubtitle(MusicTypeChoice choice) {
+      final label = localizedMusicTypeLabel(choice);
+      return label == choice.value ? null : choice.value;
+    }
+
+    String musicTypeFieldLabel(MusicTypeChoice choice) {
+      final label = localizedMusicTypeLabel(choice);
+      return label == choice.value ? label : '$label (${choice.value})';
+    }
+
+    final displayMusicSuffix = musicModule?.suffix ?? musicSuffix.trim();
+    final musicSuffixName = displayMusicSuffix.isEmpty
+        ? '—'
+        : ResourceNames.lookupOrFallback(
+            context,
+            musicModule?.suffixNameKey ?? 'musicSuffix_$displayMusicSuffix',
+            displayMusicSuffix,
+          );
+    final musicPickerTitle = displayMusicSuffix.isEmpty
+        ? '${l10n?.currentMusicModule ?? 'Current music module'} '
+              '(MusicSuffix): —'
+        : '${l10n?.currentMusicModule ?? 'Current music module'} '
+              '(MusicSuffix): $musicSuffixName ($displayMusicSuffix)';
+    final musicPickerNotes = [
+      for (final noteKey in musicModule?.noteKeys ?? const <String>[])
+        ResourceNames.lookupOrFallback(context, noteKey, ''),
+    ];
     final customStageOrigin = customStageObj == null
         ? null
         : CustomStagePresetRepository.originForObject(customStageObj);
@@ -200,6 +255,58 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
           onPressed: widget.onBack,
         ),
         title: Text(l10n?.levelBasicInfo ?? 'Level basic info'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            onPressed: () => showEditorHelpDialog(
+              context,
+              title: l10n?.levelBasicInfoHelpTitle ?? 'Level Definition Basics',
+              useNeutralSectionTitles: true,
+              sections: [
+                HelpSectionData(
+                  title: l10n?.overview ?? 'Overview',
+                  body:
+                      l10n?.levelBasicInfoHelpOverviewBody ??
+                      'The level definition is the root node of a PvZ2 level. '
+                          "It stores the level's global properties and links to "
+                          'every module in the level through its module list. '
+                          "This page lets you edit the level's global properties.",
+                ),
+                HelpSectionData(
+                  title:
+                      l10n?.levelBasicInfoHelpBasicInfoTitle ??
+                      'Basic Information Screen',
+                  body:
+                      l10n?.levelBasicInfoHelpBasicInfoBody ??
+                      'Here you can define basic information such as the level '
+                          'name, description, and starting sun. The level '
+                          'description appears as white subtitle text during the '
+                          'transition into the level. Starting sun is the amount '
+                          "available before the account's sun upgrade is applied.",
+                ),
+                HelpSectionData(
+                  title: l10n?.sceneSettingsSection ?? 'Scene settings',
+                  body:
+                      l10n?.levelBasicInfoHelpSceneBody ??
+                      "Here you can choose the level's map from the list. Note "
+                          'that the Pirate Seas map has no planks by default. '
+                          'The victory setting only applies to certain special '
+                          'level types and generally should not be changed.',
+                ),
+                HelpSectionData(
+                  title: l10n?.restrictionsSection ?? 'Restrictions',
+                  body:
+                      l10n?.levelBasicInfoHelpRestrictionsBody ??
+                      "This section provides switches for disabling Pea Vine's "
+                          'Pea Symbiosis and Artifacts. Artifacts are disabled '
+                          'automatically when the Creative Courtyard module is '
+                          'enabled, so you do not need to enable the disable '
+                          'switch manually.',
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -391,39 +498,26 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(16),
-                child: EditorResponsiveInputField(
-                  label: '${l10n?.musicType ?? 'Music type'} (MusicType)',
-                  decoration: editorInputDecoration(
-                    context,
-                    focusColor: theme.colorScheme.primary,
-                  ),
-                  builder: (context, decoration) =>
-                      DropdownButtonFormField<String>(
-                        isExpanded: true,
-                        initialValue:
-                            _musicTypeOptions
-                                .map((e) => e.$1)
-                                .contains(def.musicType)
-                            ? def.musicType
-                            : 'MainPath',
-                        decoration: decoration,
-                        items: _musicTypeOptions
-                            .map(
-                              (e) => DropdownMenuItem(
-                                value: e.$1,
-                                child: Text(e.$2),
-                              ),
-                            )
-                            .toList(),
-                        onChanged: (v) {
-                          if (v != null) {
-                            setState(() {
-                              def.musicType = v;
-                              _sync();
-                            });
-                          }
-                        },
+                child: SeparatedOptionPickerField<String>(
+                  labelText: '${l10n?.musicType ?? 'Music type'} (MusicType)',
+                  sheetTitle: musicPickerTitle,
+                  sheetSubtitleLines: musicPickerNotes,
+                  value: currentMusicType,
+                  items: [
+                    for (final choice in musicTypeChoices)
+                      SeparatedOptionPickerItem(
+                        value: choice.value,
+                        label: localizedMusicTypeLabel(choice),
+                        subtitle: musicTypeSubtitle(choice),
+                        fieldLabel: musicTypeFieldLabel(choice),
                       ),
+                  ],
+                  onChanged: (value) {
+                    setState(() {
+                      def.musicType = value;
+                      _sync();
+                    });
+                  },
                 ),
               ),
             ),
@@ -440,16 +534,15 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   builder: (context, decoration) =>
                       DropdownButtonFormField<String>(
                         isExpanded: true,
-                        initialValue:
-                            _lootOptions.map((e) => e.$1).contains(def.loot)
+                        initialValue: _lootOptions.contains(def.loot)
                             ? def.loot
-                            : _lootOptions.first.$1,
+                            : _lootOptions.first,
                         decoration: decoration,
                         items: _lootOptions
                             .map(
                               (e) => DropdownMenuItem(
-                                value: e.$1,
-                                child: Text(e.$2),
+                                value: e,
+                                child: Text(_lootOptionLabel(l10n, e)),
                               ),
                             )
                             .toList(),
@@ -480,17 +573,15 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                       DropdownButtonFormField<String>(
                         isExpanded: true,
                         initialValue:
-                            _victoryOptions
-                                .map((e) => e.$1)
-                                .contains(def.victoryModule)
+                            _victoryOptions.contains(def.victoryModule)
                             ? def.victoryModule
-                            : _victoryOptions.first.$1,
+                            : _victoryOptions.first,
                         decoration: decoration,
                         items: _victoryOptions
                             .map(
                               (e) => DropdownMenuItem(
-                                value: e.$1,
-                                child: Text(e.$2),
+                                value: e,
+                                child: Text(_victoryOptionLabel(l10n, e)),
                               ),
                             )
                             .toList(),

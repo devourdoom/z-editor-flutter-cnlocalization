@@ -720,7 +720,7 @@ class _WaveGeneratorWaveScreenState extends State<WaveGeneratorWaveScreen> {
           title: l10n?.waveGeneratorModuleHelpRow ?? 'Rows',
           body:
               l10n?.waveGeneratorModuleHelpRowBody ??
-              'Rows are numbered from 1. Use “?” for a random row.',
+              'Rows are numbered from 1. Use "?" for a random row.',
         ),
       ],
       _WaveGeneratorWaveSection.randomSpawns => [

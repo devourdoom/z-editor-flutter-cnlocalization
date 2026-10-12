@@ -15,6 +15,7 @@ import 'package:c_editor/screens/select/stage_background_selection_screen.dart';
 import 'package:c_editor/screens/select/stage_resource_group_import_screen.dart';
 import 'package:c_editor/widgets/asset_image.dart'
     show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/alias_input_validation.dart';
 import 'package:c_editor/widgets/custom_stage_editor_widgets.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 import 'package:c_editor/widgets/separated_option_picker_field.dart';
@@ -672,10 +673,14 @@ class _CustomStagePropertiesScreenState
         : ResourceNames.lookup(context, baseStageNameKey);
     final baseStageIcon = _stageBaseOption?.iconName;
     final musicSuffix = _objdata['MusicSuffix'] as String? ?? '';
-    final musicName = ResourceNames.lookup(
-      context,
-      musicSuffix.isEmpty ? 'musicSuffix_default' : 'musicSuffix_$musicSuffix',
-    );
+    final canonicalMusicSuffix = MusicSuffixCatalog.canonicalCode(musicSuffix);
+    final musicName = canonicalMusicSuffix.isEmpty
+        ? '—'
+        : ResourceNames.lookupOrFallback(
+            context,
+            MusicSuffixCatalog.resourceKey(canonicalMusicSuffix),
+            canonicalMusicSuffix,
+          );
 
     return Scaffold(
       appBar: AppBar(
@@ -709,10 +714,19 @@ class _CustomStagePropertiesScreenState
                   child: EditorResponsiveInputField(
                     label: l10n?.customStageAlias ?? 'Stage alias',
                     decoration: customStageInputDecoration(context),
-                    builder: (context, decoration) => TextField(
+                    builder: (context, decoration) => TextFormField(
                       controller: _aliasCtrl,
                       decoration: decoration,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      validator: (value) => aliasCharacterValidationError(
+                        l10n,
+                        value ?? '',
+                      ),
                       onChanged: (value) {
+                        if (aliasCharacterValidationError(l10n, value) !=
+                            null) {
+                          return;
+                        }
                         final trimmed = value.trim();
                         if (trimmed.isEmpty ||
                             widget.levelFile.objects.any(

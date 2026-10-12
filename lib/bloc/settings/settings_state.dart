@@ -5,6 +5,7 @@ final class SettingsState extends Equatable {
     required this.locale,
     required this.themeMode,
     required this.uiScale,
+    this.interfaceMenuActions = const {},
     this.autosaveTargets = const {},
   });
 
@@ -12,25 +13,41 @@ final class SettingsState extends Equatable {
   final ThemeMode themeMode;
   final double uiScale;
 
+  final Map<InterfaceMenuSurface, List<InterfaceMenuActionPreference>>
+  interfaceMenuActions;
+
   final Set<AutosaveTarget> autosaveTargets;
 
   bool get autosave => autosaveTargets.contains(AutosaveTarget.level);
   bool get hasAutosave => autosaveTargets.isNotEmpty;
 
+  List<InterfaceMenuActionPreference> interfaceMenuActionsFor(
+    InterfaceMenuSurface surface,
+  ) => interfaceMenuActions[surface] ?? defaultInterfaceMenuActions(surface);
+
   SettingsState copyWith({
     Locale? locale,
     ThemeMode? themeMode,
     double? uiScale,
+    Map<InterfaceMenuSurface, List<InterfaceMenuActionPreference>>?
+    interfaceMenuActions,
     Set<AutosaveTarget>? autosaveTargets,
   }) {
     return SettingsState(
       locale: locale ?? this.locale,
       themeMode: themeMode ?? this.themeMode,
       uiScale: uiScale ?? this.uiScale,
+      interfaceMenuActions: interfaceMenuActions ?? this.interfaceMenuActions,
       autosaveTargets: autosaveTargets ?? this.autosaveTargets,
     );
   }
 
   @override
-  List<Object?> get props => [locale, themeMode, uiScale, autosaveTargets];
+  List<Object?> get props => [
+    locale,
+    themeMode,
+    uiScale,
+    interfaceMenuActions,
+    autosaveTargets,
+  ];
 }

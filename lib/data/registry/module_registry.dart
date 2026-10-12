@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/data/pvz_models.dart';
-import 'package:c_editor/utils/custom_icons.dart';
 
 enum ModuleCategory { base, mode, scene, gimmick }
 
@@ -679,7 +678,7 @@ class ModuleRegistry {
     'CamelMinigameProperties': ModuleMetadata(
       titleKey: 'moduleTitle_CamelMinigameProperties',
       descriptionKey: 'moduleDesc_CamelMinigameProperties',
-      icon: CustomIcons.camel,
+      icon: Icons.pets,
       isCore: true,
       allowMultiple: false,
       category: ModuleCategory.mode,

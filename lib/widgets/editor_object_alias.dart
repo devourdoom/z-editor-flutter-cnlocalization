@@ -6,6 +6,7 @@ import 'package:c_editor/data/registry/module_registry.dart';
 import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/screens/select/event_selection_screen.dart';
+import 'package:c_editor/widgets/alias_input_validation.dart';
 import 'package:c_editor/widgets/app_message.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 
@@ -129,6 +130,7 @@ class EditorAliasInputField extends StatefulWidget {
 class _EditorAliasInputFieldState extends State<EditorAliasInputField> {
   late final TextEditingController _controller;
   late final FocusNode _focusNode;
+  bool _commitInProgress = false;
 
   @override
   void initState() {
@@ -161,9 +163,21 @@ class _EditorAliasInputFieldState extends State<EditorAliasInputField> {
   }
 
   Future<void> _commit() async {
-    if (!mounted) return;
+    if (!mounted || _commitInProgress) return;
     final l10n = AppLocalizations.of(context);
-    final next = _controller.text.trim();
+    final raw = _controller.text;
+    if (raw == widget.alias) return;
+    final characterError = aliasCharacterValidationError(l10n, raw);
+    if (characterError != null) {
+      AppMessage.show(
+        context,
+        characterError,
+        icon: Icons.warning_amber_rounded,
+      );
+      _controller.text = widget.alias;
+      return;
+    }
+    final next = raw.trim();
     if (next.isEmpty || next == widget.alias) {
       if (mounted) {
         _controller.text = widget.alias;
@@ -186,6 +200,7 @@ class _EditorAliasInputFieldState extends State<EditorAliasInputField> {
       }
       return;
     }
+    _commitInProgress = true;
     final confirm = await showDialog<bool>(
       context: context,
       builder: (ctx) => AlertDialog(
@@ -206,6 +221,7 @@ class _EditorAliasInputFieldState extends State<EditorAliasInputField> {
         ],
       ),
     );
+    _commitInProgress = false;
     if (!mounted) return;
     if (confirm != true) {
       _controller.text = widget.alias;
@@ -341,9 +357,20 @@ class _PvzAliasInputDialogState extends State<_PvzAliasInputDialog> {
 
   void _submit() {
     final l10n = AppLocalizations.of(context);
-    final alias = _controller.text.trim();
-    if (alias.isEmpty ||
-        !PvzAliasUtils.isAliasAvailable(widget.levelFile, alias)) {
+    final raw = _controller.text;
+    final characterError = aliasCharacterValidationError(l10n, raw);
+    if (characterError != null) {
+      setState(() => _errorText = characterError);
+      return;
+    }
+    final alias = raw.trim();
+    if (alias.isEmpty) {
+      setState(
+        () => _errorText = l10n?.aliasEmpty ?? 'Alias cannot be empty',
+      );
+      return;
+    }
+    if (!PvzAliasUtils.isAliasAvailable(widget.levelFile, alias)) {
       setState(
         () => _errorText =
             l10n?.aliasAlreadyExists ?? 'Alias already exists in this level.',
@@ -381,6 +408,9 @@ class _PvzAliasInputDialogState extends State<_PvzAliasInputDialog> {
               controller: _controller,
               autofocus: true,
               decoration: decoration,
+              onChanged: (_) {
+                if (_errorText != null) setState(() => _errorText = null);
+              },
               onSubmitted: (_) => _submit(),
             ),
           ),

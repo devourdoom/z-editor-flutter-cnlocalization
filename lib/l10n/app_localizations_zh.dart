@@ -39,7 +39,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get overviewConveyorPlants => '传送带植物';
 
   @override
-  String get overviewLawn => '草坪';
+  String get overviewLawn => '地图';
 
   @override
   String get overviewWhitelist => '白名单';
@@ -225,6 +225,52 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get uiSize => '界面大小';
+
+  @override
+  String get interfaceSettings => '界面设置';
+
+  @override
+  String get lightTheme => '浅色主题';
+
+  @override
+  String get darkTheme => '深色主题';
+
+  @override
+  String get uiScalePreview => '界面大小示例';
+
+  @override
+  String get uiScalePreviewTitle => '示例标题';
+
+  @override
+  String get uiScalePreviewDescription => '拖动滑块查看界面元素的大小变化';
+
+  @override
+  String get menuCustomization => '右上角操作';
+
+  @override
+  String get menuCustomizationDescription =>
+      '分别自定义各界面右上角操作的展示位置和顺序。外显项目会直接显示在标题栏，收纳项目会放入 ⋮ 菜单。';
+
+  @override
+  String get menuCustomizationDragHint => '拖动 ⋮⋮ 调整展示顺序';
+
+  @override
+  String get menuSurfaceWorkspace => '工作区';
+
+  @override
+  String get menuSurfaceLevelEditor => '关卡编辑器';
+
+  @override
+  String get menuSurfaceJsonViewer => 'JSON 文件界面';
+
+  @override
+  String get menuPlacementToolbar => '外显';
+
+  @override
+  String get menuPlacementOverflow => '收纳';
+
+  @override
+  String get menuConfigurationReset => '恢复当前界面默认布局';
 
   @override
   String get aboutSoftware => '关于软件';
@@ -1129,6 +1175,187 @@ class AppLocalizationsZh extends AppLocalizations {
   String get levelBasicInfoSubtitle => '名称、序号、描述、地图背景';
 
   @override
+  String get levelBasicInfoHelpTitle => '关卡定义基础说明';
+
+  @override
+  String get levelBasicInfoHelpOverviewBody =>
+      '关卡定义是PvZ2关卡的根节点，不仅存放了关卡全局属性，还通过模块列表逐级链接了关卡内所有模块。本页面可以对关卡全局属性进行修改。';
+
+  @override
+  String get levelBasicInfoHelpBasicInfoTitle => '基础信息界面';
+
+  @override
+  String get levelBasicInfoHelpBasicInfoBody =>
+      '这里可以定义关卡名称、描述、初始阳光等基本信息。关卡描述字段是进入关卡播放转场动画时的白色字幕。初始阳光是指计算账号阳光强化前的可用阳光。';
+
+  @override
+  String get levelBasicInfoHelpSceneBody =>
+      '这里可以从列表中选择关卡的地图，注意海盗地图默认无甲板。结算方式仅适用于部分特殊关卡种类，一般不建议对其进行修改。';
+
+  @override
+  String get levelBasicInfoHelpRestrictionsBody =>
+      '这里提供禁用豆藤共生和神器开关。在庭院模块下神器自动禁用，无需手动开启禁用开关。';
+
+  @override
+  String get waveTimelineJitterOffsetsTitle => '出怪间隔偏移预设';
+
+  @override
+  String get waveTimelineJitterOffsetsNone => '未创建预设';
+
+  @override
+  String waveTimelineJitterOffsetsSummary(int count, int unused) {
+    return '共 $count 组，其中 $unused 组未被引用';
+  }
+
+  @override
+  String get jitterOffsetsPageTitle => '出怪间隔偏移预设';
+
+  @override
+  String jitterOffsetsPageCount(int count) {
+    return '共 $count 组';
+  }
+
+  @override
+  String get jitterOffsetsAdd => '新建预设';
+
+  @override
+  String get jitterOffsetsEmpty =>
+      '还没有预设。\n未绑定预设的「普通出怪」和「海底出怪」事件会使用游戏内的默认参数；\n如需自定义，请新建预设后在事件中绑定。';
+
+  @override
+  String get jitterOffsetsNoAlias => '（无代号）';
+
+  @override
+  String get jitterOffsetsUnused => '未被任何出怪事件引用';
+
+  @override
+  String jitterOffsetsReferenced(int count) {
+    return '被 $count 个出怪事件引用';
+  }
+
+  @override
+  String get jitterOffsetsIncrementLabel =>
+      '同一行出怪间隔 (ZombieSpawningOffsetIncrement)';
+
+  @override
+  String get jitterOffsetsRandomJitterLabel =>
+      '浮动范围 (ZombieSpawningRandomJitter)';
+
+  @override
+  String get jitterOffsetsIntegerInvalid => '请输入有效的整数。';
+
+  @override
+  String get jitterOffsetsIncrementInvalid => '请输入非负数。同一行出怪间隔为负数时，关卡可能无法正常结算。';
+
+  @override
+  String get jitterOffsetsRandomJitterInvalid =>
+      '请输入正数。浮动范围为 0 时，僵尸会被直接斩杀、无法正常出现；为负数时，关卡可能无法正常结算。';
+
+  @override
+  String get jitterOffsetsRename => '重命名';
+
+  @override
+  String get jitterOffsetsDelete => '删除';
+
+  @override
+  String jitterOffsetsCreated(String alias) {
+    return '已新建预设 $alias';
+  }
+
+  @override
+  String jitterOffsetsRenamed(int count) {
+    return '已同步更新 $count 个事件的引用';
+  }
+
+  @override
+  String get jitterOffsetsRenameTitle => '重命名预设';
+
+  @override
+  String get jitterOffsetsRenameDescription => '重命名后，所有引用该预设的事件都会同步更新。';
+
+  @override
+  String get jitterOffsetsAliasBadChars => '代号不能包含 @ ( )，否则无法正确解析';
+
+  @override
+  String jitterOffsetsAliasTaken(String alias) {
+    return '代号 $alias 已被其他对象占用';
+  }
+
+  @override
+  String get jitterOffsetsDeleteTitle => '删除预设？';
+
+  @override
+  String jitterOffsetsDeleteDescription(String alias) {
+    return '将删除预设 $alias。当前没有事件引用它，删除不影响任何波次。';
+  }
+
+  @override
+  String get jitterOffsetsDeleteBlockedTitle => '无法删除';
+
+  @override
+  String jitterOffsetsDeleteBlockedDescription(String alias, int count) {
+    return '预设 $alias 仍被 $count 个出怪事件引用，无法删除。';
+  }
+
+  @override
+  String get jitterOffsetsDeleteBlockedHint => '请先打开以下事件，将「出怪间隔偏移」改为其他预设或取消启用：';
+
+  @override
+  String get jitterOffsetsEventLabel => '出怪间隔偏移';
+
+  @override
+  String get jitterOffsetsEventNone => '不启用（使用游戏内默认参数）';
+
+  @override
+  String get jitterOffsetsEventManage => '管理预设';
+
+  @override
+  String get jitterOffsetsEventDescription =>
+      '控制同一行各僵尸在场地外生成位置之间的距离。不绑定预设时使用游戏内的默认参数，也能正常出怪。';
+
+  @override
+  String get jitterOffsetsEventNoPresets =>
+      '还没有预设，当前事件会自动使用游戏内的默认参数。如需自定义，请先新建预设。';
+
+  @override
+  String jitterOffsetsEventDangling(String alias) {
+    return '$alias（已失效）';
+  }
+
+  @override
+  String jitterOffsetsEventInvalidOption(String alias) {
+    return '$alias（参数无效）';
+  }
+
+  @override
+  String get jitterOffsetsEventInvalidPreset =>
+      '当前预设包含无效参数。请在「管理预设」中将「同一行出怪间隔」改为非负数，并将「浮动范围」改为正数。';
+
+  @override
+  String get jitterOffsetsHelpTitle => '出怪间隔偏移说明';
+
+  @override
+  String get jitterOffsetsHelpOverviewTitle => '简要介绍';
+
+  @override
+  String get jitterOffsetsHelpOverviewBody =>
+      '在「普通出怪」和「海底出怪」事件中，同一行的僵尸会依次在场地外生成。通过添加出怪间隔偏移预设，可以控制同一行各僵尸生成位置之间的距离。这些事件在不绑定预设时会使用游戏内的默认参数，也能正常出怪，因此本功能不预置默认预设，请按需设置。';
+
+  @override
+  String get jitterOffsetsHelpUsageTitle => '使用说明';
+
+  @override
+  String get jitterOffsetsHelpUsageBody =>
+      '在此创建预设后，打开任意「普通出怪」或「海底出怪」事件，并在「出怪间隔偏移」中选择需要绑定的预设即可。\n同一预设可以被多个事件共用，修改预设后，所有引用该预设的事件都会同步变化。仍被事件引用的预设无法删除，需要先将相关事件改为其他预设或取消启用。';
+
+  @override
+  String get jitterOffsetsHelpParametersTitle => '参数介绍';
+
+  @override
+  String get jitterOffsetsHelpParametersBody =>
+      '「同一行出怪间隔」指同一行相邻僵尸在场地外生成时的基础间距。建议填写非负数；填写负数时，关卡可能无法正常结算。\n「浮动范围」指在基础间距上随机增加或减少的范围。建议填写正数；填写 0 时，僵尸会被直接斩杀、无法正常出现，填写负数时，关卡可能无法正常结算。\n实际生成位置之间的距离会在「同一行出怪间隔 ± 浮动范围」的范围内随机取值。';
+
+  @override
   String get removeModule => '移除模块';
 
   @override
@@ -1823,10 +2050,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get musicType => '音乐类型';
 
   @override
+  String get currentMusicModule => '当前音乐模块';
+
+  @override
   String get loot => '关卡默认掉落';
 
   @override
   String get victoryModule => '胜利结算方式';
+
+  @override
+  String get lootOptionDefault => '默认掉落 (DefaultLoot)';
+
+  @override
+  String get lootOptionNone => '无掉落 (NoLoot)';
+
+  @override
+  String get victoryOptionDefault => '默认胜利 (VictoryOutro)';
+
+  @override
+  String get victoryOptionZomboss => '僵王战胜利 (ZombossVictoryOutro)';
 
   @override
   String get basicInfoSection => '基础信息';
@@ -1846,6 +2088,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get missingModules => '缺失模块';
+
+  @override
+  String get underwaterZombieWinConditionWarning =>
+      '在使用海底世界外观的地图中，若左侧同时自然生成过多僵尸，可能会有僵尸直接生成在失败判定线上，从而触发关卡失败。建议移除「失败判定」模块。';
 
   @override
   String get conflictTitle_ModuleLogic => '模块逻辑冲突';
@@ -2699,7 +2945,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get eventTitle_SpawnZombiesJitteredWaveActionProps => '普通出怪';
 
   @override
-  String get eventDesc_SpawnZombiesJitteredWaveActionProps => '最基础的自然出怪事件';
+  String get eventDesc_SpawnZombiesJitteredWaveActionProps => '最基础的普通出怪事件';
 
   @override
   String get eventTitle_FrostWindWaveActionProps => '寒风侵袭';
@@ -3324,6 +3570,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aliasLabel => '代号 (仅支持英文字母；不支持空格)';
 
   @override
+  String get aliasEmpty => '代号不能为空';
+
+  @override
+  String get aliasWhitespaceUnsupported => '代号不支持空格';
+
+  @override
+  String get aliasChineseUnsupported => '代号不支持输入中文';
+
+  @override
   String get add => '添加';
 
   @override
@@ -3913,7 +4168,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get eventHelpZombieTentFields =>
-      '僵尸帐篷有常规帐篷和新年帐篷两种，二者除外观上的区别外无任何区别。\n权重数值越大，僵尸出现的概率越高。如果两种僵尸的权重分别为10和30，那么两者被选中的概率比例约为1:3。\n 僵尸阶级中的0阶表示随地图阶级，庭院模式下即为1阶。\n手动编辑时，注意JSON文件中帐篷所在的列 (Column) 和行 (Row) 都从1开始计数，如\"Column\": 7代表第7列。';
+      '僵尸帐篷分为常规帐篷和新年帐篷两种。新春僵尸经过新春帐篷后会升级为路障新春僵尸；路障新春僵尸经过后则会升级为铁桶新春僵尸。新春帐篷被击毁时，还会放出一个财神僵尸。\n权重数值越大，僵尸出现的概率越高。如果两种僵尸的权重分别为10和30，那么两者被选中的概率比例约为1:3。\n僵尸阶级中的0阶表示随地图阶级，庭院模式下即为1阶。\n手动编辑时，注意JSON文件中帐篷所在的列 (Column) 和行 (Row) 都从1开始计数，如\"Column\": 7代表第7列。';
 
   @override
   String get eventZombieTentSpawn => '事件：帐篷生成';
@@ -5095,7 +5350,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get waveStartMessageLabel => '红色字幕警告信息 (WaveStartMessage)';
 
   @override
-  String get optionalWarningText => '空降开始时在屏幕中央显示的红字警告，不支持输入中文';
+  String get optionalWarningText => '事件开始时在屏幕中央显示的红字警告，不支持输入中文';
 
   @override
   String rowNShort(int n) {
@@ -5295,7 +5550,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get eventStandardSpawnTitle => '普通出怪事件说明';
 
   @override
-  String get eventGroundSpawnTitle => '地下突袭事件说明';
+  String get eventGroundSpawnTitle => '地底出怪';
 
   @override
   String get eventHelpStandardOverview =>
@@ -5675,7 +5930,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get waveManagerHelpPoints =>
-      '点数出怪会根据僵尸消耗的点数在有效波次中额外刷新僵尸。常规波次点数上限为60000，旗帜波点数会变为2.5倍。点数为正数时，出怪使用的僵尸从僵尸池中选取。在波次容器编辑页面内可查看每种僵尸的出现期望。点数为负数时，会从自然出怪事件中扣除相应点数的僵尸。注意点数出怪池不应该写精英僵尸、雪人僵尸以及自定义僵尸。';
+      '点数出怪会根据僵尸消耗的点数在有效波次中额外刷新僵尸。常规波次点数上限为60000，旗帜波点数会变为2.5倍。点数为正数时，出怪使用的僵尸从僵尸池中选取。在波次容器编辑页面内可查看每种僵尸的出现期望。点数为负数时，会从普通出怪事件中扣除相应点数的僵尸。注意点数出怪池不应该写精英僵尸、雪人僵尸以及自定义僵尸。';
 
   @override
   String get pointsSection => '点数出怪';
@@ -5808,6 +6063,10 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get starChallengeChineseUnsupportedHint => '不支持显示中文。';
+
+  @override
+  String get plantDefeatZombieDescriptionHint =>
+      '默认填写[KILL_DESC]可显示“用...击杀...只僵尸”，不支持直接输入中文';
 
   @override
   String get maximumPlantsLost => '植物损失上限 (MaximumPlantsLost)';
@@ -8787,15 +9046,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get lunarMineVeinHelpHardened =>
-      '外层有坚固岩石保护，需要使用植物的攻击摧毁外壳后才可以正常开采。坚壳晶矿生长出的坚壳水晶固定为3000生命值的版本。';
+      '生长为外层包裹坚固岩石的坚壳水晶。需要先通过植物攻击摧毁外壳，之后才能正常开采。由坚壳晶矿生长出的坚壳水晶固定为3000生命值的版本。';
 
   @override
   String get lunarMineVeinHelpFragile =>
-      '采集过程会持续消耗耐久，直至晶体碎裂。可以添加蕴含宇宙能量豆的特殊易碎晶矿。';
+      '生长为易碎水晶。易碎水晶在采集过程中会持续消耗耐久，直至晶体碎裂。可以添加蕴含宇宙能量豆的特殊易碎晶矿。';
 
   @override
   String get lunarMineVeinHelpRadiation =>
-      '每隔一段时间持续向四周发散辐射，将受到辐射的植物随机变为其他植物，对僵尸造成伤害或使其变异为宇宙辐射巨人僵尸。宇宙辐射巨人僵尸具备超高血量，击败时还将辐射附近的植物和僵尸。';
+      '生长为辐射水晶。辐射水晶会周期性向四周发散辐射，将受到辐射的植物随机变为其他植物，对僵尸造成伤害或使其变异为宇宙辐射巨人僵尸。宇宙辐射巨人僵尸具备超高血量，击败时还将辐射附近的植物和僵尸。';
 
   @override
   String get lunarMineVeinHelpWaveTitle => '波次编号';
@@ -8930,11 +9189,11 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get gladiatorHelpUsage =>
-      '上方的角斗时长、胜利能量豆数量及失败空投参数，以及下方的惩罚僵尸池和权重，均为全局参数，会对模块中的所有角斗生效。点击“添加角斗”，可设置每组角斗的具体参数。加入僵尸时，会自动在模块中添加对应僵尸的资源组。角斗的波次 (Wave)、所在行 (Row)、出怪列 (GridX) 均从0开始计数，如波次填0对应波次时间线的第1波，填4对应第5波。本模块的对决模式 (GameplayVersion) 在编辑器中默认为1，填0会使用另一种废弃的对决模式，可通过手动编辑模式自行探索。';
+      '上方的角斗时长、胜利能量豆数量及失败空投参数，以及下方的惩罚僵尸池和权重，均为全局参数，会对模块中的所有角斗生效。\n点击“添加角斗”，可设置每组角斗的具体参数。加入僵尸时，会自动在模块中添加对应僵尸的资源组。\n角斗的波次 (Wave)、所在行 (Row)、出怪列 (GridX) 均从0开始计数，如波次填0对应波次时间线的第1波，填4对应第5波。\n本模块的对决模式 (GameplayVersion) 在编辑器中默认为1，填0会使用另一种废弃的对决模式，可通过手动编辑模式自行探索。';
 
   @override
   String get gladiatorHelpTips =>
-      '角斗期间，种植植物不再消耗阳光，但仍然会占用维生系统的电力容量。\n巨人僵尸等僵尸的秒杀攻击无法对奖杯造成伤害。\n植物射出角斗行范围的子弹会被围栏阻挡，而离开角斗行范围的僵尸或部分技能瞄准角斗行范围外的僵尸则会静止不动，在角斗计时结束后被释放，继续进攻。\n注意角斗行不会在“海底世界-海底两万里”或“海底世界-亚特兰蒂斯”等海底世界外观的六行地图中生成，「罗马角斗行」模块在波次生成器下也不会生效。';
+      '角斗期间，种植植物不再消耗阳光，但仍然会占用维生系统的电力容量。僵尸不会在奖杯所在格生成。\n植物射出角斗行范围的子弹会被围栏阻挡。离开角斗行范围的植物和僵尸，或仍位于角斗行内但技能锁定了范围外目标的部分植物和僵尸，则会暂时静止，并在角斗计时结束后被释放，恢复行动。\n注意角斗行不会在“海底世界-海底两万里”或“海底世界-亚特兰蒂斯”等海底世界外观的六行地图中生成，「罗马角斗行」模块在波次生成器下也不会生效。';
 
   @override
   String get radiationMeteorHelpTitle => '辐射陨石';
@@ -9202,7 +9461,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get moduleHelpStatueMazeOverviewBody =>
-      '复兴时代的专属小游戏。小游戏分为多个轮次，每轮都会在场上生成一组雕像阵列，其中部分雕像内藏有贵族僵尸。每轮开始时，会先向玩家展示藏有僵尸的雕像位置，随后整个雕像阵列会旋转若干次，干扰玩家的记忆。旋转结束后，玩家需要消耗手中的工具，砸碎所有藏有僵尸的雕像。若可用次数耗尽时仍未找出所有僵尸，则关卡失败。注意玩家也可以在次数耗尽时花费钻石购买额外次数。';
+      '复兴时代的专属小游戏。小游戏分为多个轮次，每轮都会在场上生成一组雕像阵列，其中部分雕像内藏有贵族僵尸。每轮开始时，会先向玩家展示藏有僵尸的雕像位置，随后整个雕像阵列会旋转若干次，干扰玩家的记忆。旋转结束后，玩家需要消耗手中的工具，砸碎所有藏有僵尸的雕像。若可用次数耗尽时仍未找出所有僵尸，则关卡失败。玩家也可以在次数耗尽时花费钻石购买额外次数。注意添加该模块后，关卡中的能量豆槽会被隐藏。';
 
   @override
   String get moduleHelpStatueMazeTimingTitle => '时间参数';
@@ -9509,4 +9768,8 @@ class AppLocalizationsZh extends AppLocalizations {
   String automaticallySavedTo(String path) {
     return '已自动保存到：$path';
   }
+
+  @override
+  String get spawnGravestonesCrashProneItemsWarning =>
+      '通过「障碍物生成」事件生成近卫重盾或骑兵长枪会导致关卡闪退，请通过其他方式生成。';
 }

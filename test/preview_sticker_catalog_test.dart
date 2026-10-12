@@ -239,6 +239,18 @@ void main() {
     );
   });
 
+  test('jamNone is a localized map-and-music sticker', () {
+    final jamNone = stickers.singleWhere(
+      (sticker) => sticker.assetPath == 'assets/images/others/jamNone.webp',
+    );
+    expect(jamNone.tag, 'round_icons');
+    expect(jamNone.labelKey, 'previewStickerNameJamNone');
+    expect(jamNone.searchTerms, containsAll(['jamNone', 'LevelJam', 'None']));
+    expect(_messages('en')['previewStickerNameJamNone'], 'Level Jam — None');
+    expect(_messages('zh')['previewStickerNameJamNone'], '魔音音乐切换（默认/无）');
+    expect(_messages('ru')['previewStickerNameJamNone'], 'Level Jam — нет');
+  });
+
   test('lawn components keep their module labels and internal ordering', () {
     final components = stickers
         .where((sticker) => sticker.tag == 'components')

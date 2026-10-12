@@ -38,7 +38,7 @@ class JitteredEventScreen extends StatelessWidget {
       onBack: onBack,
       eventSubtitle:
           l10n?.eventTitle_SpawnZombiesJitteredWaveActionProps ??
-          'Jittered Event',
+          'Basic Spawner',
       isGroundSpawner: false,
       onRequestZombieSelection: onRequestZombieSelection,
       onRequestPlantSelection: onRequestPlantSelection,

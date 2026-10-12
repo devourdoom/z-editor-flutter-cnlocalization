@@ -94,7 +94,7 @@ Future<String?> _resolveWebFileName(
           host.localize(
             ctx,
             'dynamicExistsBody',
-            '“{name}” is already in your workspace.\n\n'
+            '"{name}" is already in your workspace.\n\n'
                 'Overwrite it, or save under a different name?',
             {'name': preferredName},
           ),
@@ -424,7 +424,7 @@ class _WebBrowserDownloadDialogState extends State<_WebBrowserDownloadDialog> {
             context,
             'dynamicWebImportBody',
             '1. Let the browser finish downloading {asset}{size}.\n'
-                '2. Click “Choose file” and select that download to add it '
+                '2. Click "Choose file" and select that download to add it '
                 'to your workspace as {name}.',
             {
               'asset': widget.option.assetName,

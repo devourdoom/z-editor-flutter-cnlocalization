@@ -1,4 +1,5 @@
 import 'package:c_editor/data/gladiator_row_utils.dart';
+import 'package:c_editor/data/jitter_offsets_utils.dart';
 import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ import 'package:c_editor/screens/select/event_selection_screen.dart';
 import 'package:c_editor/screens/select/existing_wave_event_selection_screen.dart';
 import 'package:c_editor/widgets/asset_image.dart'
     show AssetImageWidget, imageAltCandidates;
+import 'package:c_editor/widgets/alias_input_validation.dart';
 import 'package:c_editor/widgets/editor_components.dart'
     show
         EditorResponsiveInputField,
@@ -153,6 +155,7 @@ class WaveTimelineTab extends StatefulWidget {
     required this.onEditEvent,
     required this.onAddEvent,
     required this.onEditWaveManagerSettings,
+    this.onEditJitterOffsets,
     this.onEditCustomZombie,
     this.onEditCustomFish,
     this.onOpenModule,
@@ -167,6 +170,7 @@ class WaveTimelineTab extends StatefulWidget {
   final Future<void> Function(String rtid, int waveIndex) onEditEvent;
   final void Function(int waveIndex) onAddEvent;
   final VoidCallback onEditWaveManagerSettings;
+  final VoidCallback? onEditJitterOffsets;
   final void Function(String rtid)? onEditCustomZombie;
   final void Function(String rtid)? onEditCustomFish;
   final OpenModuleCallback? onOpenModule;
@@ -610,6 +614,58 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
         ),
         trailing: const Icon(Icons.arrow_forward_ios, size: 16),
         onTap: widget.onEditWaveManagerSettings,
+      ),
+    );
+  }
+
+  Widget _buildJitterOffsetsCard(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final theme = Theme.of(context);
+    final presets = JitterOffsetsUtils.listPresets(widget.levelFile);
+    final unused = JitterOffsetsUtils.unreferencedCount(widget.levelFile);
+    final subtitle = presets.isEmpty
+        ? (l10n?.waveTimelineJitterOffsetsNone ?? 'No presets yet')
+        : (l10n?.waveTimelineJitterOffsetsSummary(presets.length, unused) ??
+              '${presets.length} preset(s), $unused unreferenced');
+
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      color: theme.colorScheme.tertiary,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(color: theme.colorScheme.onTertiary),
+      ),
+      child: ListTile(
+        leading: Icon(Icons.speed, color: theme.colorScheme.onTertiary),
+        title: Text(
+          l10n?.waveTimelineJitterOffsetsTitle ?? 'Spawn Jitter Offset Presets',
+          style: TextStyle(
+            color: theme.colorScheme.onTertiary,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        subtitle: Text(
+          subtitle,
+          style: TextStyle(color: theme.colorScheme.onTertiary),
+        ),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (unused > 0)
+              Icon(
+                Icons.warning_amber_rounded,
+                size: 18,
+                color: theme.colorScheme.onTertiary,
+              ),
+            const SizedBox(width: 4),
+            Icon(
+              Icons.arrow_forward_ios,
+              size: 16,
+              color: theme.colorScheme.onTertiary,
+            ),
+          ],
+        ),
+        onTap: widget.onEditJitterOffsets,
       ),
     );
   }
@@ -1890,7 +1946,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
         content: SizedBox(
           width: double.maxFinite,
           child: EditorResponsiveInputField(
-            label: l10n?.newName ?? 'New name',
+            label: l10n?.aliasLabel ?? 'Alias',
             decoration: InputDecoration(),
             builder: (context, decoration) => TextField(
               controller: ctrl,
@@ -1909,9 +1965,28 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
           ),
           FilledButton(
             onPressed: () {
-              final newAlias = ctrl.text.trim();
+              final raw = ctrl.text;
+              final characterError = aliasCharacterValidationError(l10n, raw);
+              if (characterError != null) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text(characterError)));
+                return;
+              }
+              final newAlias = raw.trim();
+              if (newAlias.isEmpty) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        l10n?.aliasEmpty ?? 'Alias cannot be empty',
+                      ),
+                    ),
+                  );
+                return;
+              }
               Navigator.pop(ctx);
-              if (newAlias.isEmpty) return;
               if (widget.levelFile.objects.any(
                 (o) => o.aliases?.contains(newAlias) == true,
               )) {
@@ -1991,7 +2066,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
         content: SizedBox(
           width: double.maxFinite,
           child: EditorResponsiveInputField(
-            label: l10n?.newName ?? 'New name',
+            label: l10n?.aliasLabel ?? 'Alias',
             decoration: InputDecoration(),
             builder: (context, decoration) =>
                 TextField(controller: ctrl, decoration: decoration),
@@ -2007,9 +2082,28 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
           ),
           FilledButton(
             onPressed: () {
-              final newAlias = ctrl.text.trim();
+              final raw = ctrl.text;
+              final characterError = aliasCharacterValidationError(l10n, raw);
+              if (characterError != null) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(SnackBar(content: Text(characterError)));
+                return;
+              }
+              final newAlias = raw.trim();
+              if (newAlias.isEmpty) {
+                ScaffoldMessenger.of(context)
+                  ..hideCurrentSnackBar()
+                  ..showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        l10n?.aliasEmpty ?? 'Alias cannot be empty',
+                      ),
+                    ),
+                  );
+                return;
+              }
               Navigator.pop(ctx);
-              if (newAlias.isEmpty) return;
               if (widget.levelFile.objects.any(
                 (o) => o.aliases?.contains(newAlias) == true,
               )) {
@@ -2994,6 +3088,7 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
         if (deadLinks.isNotEmpty) _buildDeadLinksCard(context, deadLinks),
         _buildCustomZombieCard(context, customZombies),
         if (isDeepSeaLawn) _buildCustomFishCard(context, customFishes),
+        _buildJitterOffsetsCard(context),
         _buildWaveContainerAliasCard(context),
         _buildWaveManagerSettingsCard(
           context,

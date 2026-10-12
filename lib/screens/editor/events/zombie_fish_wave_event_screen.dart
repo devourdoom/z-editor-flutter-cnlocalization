@@ -9,9 +9,11 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/repository/zombie_properties_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
+import 'package:c_editor/screens/editor/others/jitter_offsets_presets_screen.dart';
 import 'package:c_editor/widgets/custom_zombie_properties_actions.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 import 'package:c_editor/widgets/editor_object_alias.dart';
+import 'package:c_editor/widgets/jitter_offsets_binding_card.dart';
 import 'package:c_editor/widgets/zombie_row_lane_drag_drop_editor.dart';
 import 'package:c_editor/widgets/zombie_row_lane_utils.dart';
 import 'package:c_editor/widgets/zombie_spawn_edit_sheet.dart';
@@ -101,6 +103,34 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     setState(() {});
   }
 
+  void _updateJitterOffsets(String? value) {
+    _data = SpawnZombiesFishWaveActionPropsData(
+      jitterOffsets: value,
+      notificationEvents: _data.notificationEvents,
+      additionalPlantFood: _data.additionalPlantFood,
+      spawnPlantName: _data.spawnPlantName,
+      zombies: _data.zombies,
+      fishes: _data.fishes,
+    );
+    _sync();
+  }
+
+  Future<void> _openJitterOffsetsPresets() async {
+    await Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JitterOffsetsPresetsScreen(
+          levelFile: widget.levelFile,
+          onChanged: widget.onChanged,
+          onBack: () => Navigator.pop(context),
+        ),
+      ),
+    );
+    if (!mounted) return;
+    _loadData();
+    setState(() {});
+  }
+
   String _resolveBaseTypeName(ZombieSpawnData z) {
     final info = RtidParser.parse(z.type);
     final alias = info?.alias ?? z.type;
@@ -138,6 +168,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
       sortZombieSpawnListByRow(zombies, maxRow: _maxRow);
     }
     _data = SpawnZombiesFishWaveActionPropsData(
+      jitterOffsets: _data.jitterOffsets,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: _data.additionalPlantFood,
       spawnPlantName: _data.spawnPlantName,
@@ -190,6 +221,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
           fishes: _data.fishes,
           onChanged: (newFishes) {
             _data = SpawnZombiesFishWaveActionPropsData(
+              jitterOffsets: _data.jitterOffsets,
               notificationEvents: _data.notificationEvents,
               additionalPlantFood: _data.additionalPlantFood,
               spawnPlantName: _data.spawnPlantName,
@@ -241,11 +273,17 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
             onPressed: () => showEditorHelpDialog(
               context,
               isEvent: true,
-              title: l10n?.eventZombieFishWave ?? 'Zombie Fish Wave',
+              title: l10n?.eventZombieFishWave ?? 'Underwater Spawner',
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
                   body: l10n?.eventHelpZombieFishWaveBody ?? '',
+                ),
+                HelpSectionData(
+                  title: l10n?.jitterOffsetsEventLabel ?? 'Spawn Jitter Offset',
+                  body:
+                      l10n?.jitterOffsetsEventDescription ??
+                      'Controls the distance between the off-lawn spawn positions of zombies in the same row. Without a bound preset, the event uses the game\'s default parameters and still spawns normally.',
                 ),
                 HelpSectionData(
                   title: l10n?.fishPropertiesGrid ?? 'Fish placement',
@@ -281,6 +319,13 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                 levelFile: widget.levelFile,
                 onAliasChanged: _handleAliasChanged,
                 onChanged: widget.onChanged,
+              ),
+              const SizedBox(height: 16),
+              JitterOffsetsBindingCard(
+                levelFile: widget.levelFile,
+                currentValue: _data.jitterOffsets,
+                onChanged: _updateJitterOffsets,
+                onManage: _openJitterOffsetsPresets,
               ),
               const SizedBox(height: 16),
               Text(
@@ -381,6 +426,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
       return ZombieSpawnData(type: z.type, row: z.row, level: level);
     }).toList();
     _data = SpawnZombiesFishWaveActionPropsData(
+      jitterOffsets: _data.jitterOffsets,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: _data.additionalPlantFood,
       spawnPlantName: _data.spawnPlantName,
@@ -398,6 +444,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
       currentPlants.removeRange(clamped, currentPlants.length);
     }
     _data = SpawnZombiesFishWaveActionPropsData(
+      jitterOffsets: _data.jitterOffsets,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: clamped == 0 ? null : clamped,
       spawnPlantName: currentPlants.isEmpty ? null : currentPlants,
@@ -415,6 +462,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     }
     plants.add(id);
     _data = SpawnZombiesFishWaveActionPropsData(
+      jitterOffsets: _data.jitterOffsets,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: total,
       spawnPlantName: plants,
@@ -442,6 +490,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
       plants.removeAt(index);
     }
     _data = SpawnZombiesFishWaveActionPropsData(
+      jitterOffsets: _data.jitterOffsets,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: plants.isNotEmpty ? plants.length : null,
       spawnPlantName: plants.isEmpty ? null : plants,
@@ -668,6 +717,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
           direction: zombie.direction == 'left' ? 'left' : null,
         );
         _data = SpawnZombiesFishWaveActionPropsData(
+          jitterOffsets: _data.jitterOffsets,
           notificationEvents: _data.notificationEvents,
           additionalPlantFood: _data.additionalPlantFood,
           spawnPlantName: _data.spawnPlantName,

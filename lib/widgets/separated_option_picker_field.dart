@@ -25,6 +25,8 @@ class SeparatedOptionPickerField<T> extends StatelessWidget {
     required this.onChanged,
     this.enabled = true,
     this.decoration,
+    this.sheetTitle,
+    this.sheetSubtitleLines = const [],
   });
 
   final String labelText;
@@ -33,6 +35,8 @@ class SeparatedOptionPickerField<T> extends StatelessWidget {
   final ValueChanged<T> onChanged;
   final bool enabled;
   final InputDecoration? decoration;
+  final String? sheetTitle;
+  final List<String> sheetSubtitleLines;
 
   SeparatedOptionPickerItem<T>? get _selectedItem {
     for (final item in items) {
@@ -60,14 +64,41 @@ class SeparatedOptionPickerField<T> extends StatelessWidget {
                 if (index == 0) {
                   return Padding(
                     padding: const EdgeInsets.fromLTRB(24, 4, 24, 16),
-                    child: Semantics(
-                      header: true,
-                      child: Text(
-                        labelText,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(sheetContext).textTheme.titleLarge
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Semantics(
+                          header: true,
+                          child: Text(
+                            sheetTitle ?? labelText,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(sheetContext).textTheme.titleLarge
+                                ?.copyWith(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        if (sheetSubtitleLines.any(
+                          (line) => line.trim().isNotEmpty,
+                        )) ...[
+                          const SizedBox(height: 6),
+                          for (final line in sheetSubtitleLines)
+                            if (line.trim().isNotEmpty)
+                              Padding(
+                                padding: const EdgeInsets.only(top: 2),
+                                child: Text(
+                                  line,
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(sheetContext)
+                                      .textTheme
+                                      .bodySmall
+                                      ?.copyWith(
+                                        color: Theme.of(
+                                          sheetContext,
+                                        ).colorScheme.onSurfaceVariant,
+                                      ),
+                                ),
+                              ),
+                        ],
+                      ],
                     ),
                   );
                 }

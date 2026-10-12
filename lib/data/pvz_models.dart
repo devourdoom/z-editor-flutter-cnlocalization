@@ -179,6 +179,7 @@ export 'pvz_models/WarMistPropertiesData.dart';
 export 'pvz_models/WitchModulePropertiesData.dart';
 export 'pvz_models/ZombossFinalStageTimeLimitedChallengePropertiesData.dart';
 export 'pvz_models/WaveActionData.dart';
+export 'pvz_models/ZombieJitterOffsetsData.dart';
 export 'pvz_models/WaveActionZombieTentPropsData.dart';
 export 'pvz_models/ZombieTentData.dart';
 export 'pvz_models/ZombieTentSpawnEntryData.dart';

@@ -10,6 +10,7 @@ import 'package:c_editor/data/rtid_parser.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/theme/app_theme.dart';
 import 'package:c_editor/widgets/asset_image.dart';
+import 'package:c_editor/widgets/alias_input_validation.dart';
 import 'package:c_editor/screens/editor/others/resilience_shield_selection_screen.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 import 'package:c_editor/widgets/resilience_shield_widgets.dart';
@@ -860,7 +861,18 @@ class _CustomZombiePropertiesScreenState
                                 ? _typeObj!.aliases!.first
                                 : '',
                             decoration: decoration,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            validator: (value) =>
+                                aliasCharacterValidationError(
+                                  l10n,
+                                  value ?? '',
+                                ),
                             onChanged: (v) {
+                              if (aliasCharacterValidationError(l10n, v) !=
+                                  null) {
+                                return;
+                              }
                               final trimmed = v.trim();
                               if (trimmed.isNotEmpty && _typeObj != null) {
                                 _typeObj!.aliases = [trimmed];

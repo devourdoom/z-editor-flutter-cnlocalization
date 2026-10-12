@@ -7,6 +7,7 @@ import 'package:c_editor/widgets/app_message.dart';
 import 'package:c_editor/widgets/autosave_settings_dialog.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 import 'package:c_editor/data/level_module_order_utils.dart';
+import 'package:c_editor/data/interface_menu_config.dart';
 import 'package:c_editor/data/cowboy_minigame_utils.dart';
 import 'package:c_editor/data/zomboss_eighties_speaker_presets.dart';
 import 'package:c_editor/data/level_parser.dart';
@@ -24,6 +25,7 @@ import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/plugin_api/c_plugin_host.dart';
 import 'package:c_editor/plugins/plugin_ui_host.dart';
 import 'package:c_editor/screens/level_overview/level_overview.dart';
+import 'package:c_editor/screens/interface_settings_screen.dart';
 import 'package:c_editor/escape_override.dart';
 import 'package:c_editor/data/repository/zombie_properties_repository.dart';
 import 'package:c_editor/data/repository/fish_properties_repository.dart';
@@ -31,6 +33,7 @@ import 'package:c_editor/screens/editor/basic_info_screen.dart';
 import 'package:c_editor/screens/editor/json_viewer_screen.dart';
 import 'package:c_editor/screens/editor/others/custom_zombie_properties_screen.dart';
 import 'package:c_editor/screens/editor/others/custom_fish_properties_screen.dart';
+import 'package:c_editor/screens/editor/others/jitter_offsets_presets_screen.dart';
 import 'package:c_editor/screens/editor/others/unknown_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/star_challenge_screen.dart';
 import 'package:c_editor/screens/editor/modules/max_sun_module_screen.dart';
@@ -147,6 +150,7 @@ import 'package:c_editor/screens/editor/events/gravity_generator_event_screen.da
 import 'package:c_editor/screens/editor/events/jittered_event_screen.dart';
 import 'package:c_editor/screens/editor/events/ground_spawn_event_screen.dart';
 import 'package:c_editor/data/pvz_alias_utils.dart';
+import 'package:c_editor/widgets/alias_input_validation.dart';
 import 'package:c_editor/widgets/editor_object_alias.dart';
 import 'package:c_editor/screens/select/event_selection_screen.dart';
 import 'package:c_editor/data/repository/grid_item_repository.dart';
@@ -2105,6 +2109,21 @@ class _EditorScreenState extends State<EditorScreen> {
     );
   }
 
+  void _handleEditJitterOffsets() {
+    final levelFile = _ec.state.levelFile;
+    if (levelFile == null) return;
+    Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JitterOffsetsPresetsScreen(
+          levelFile: levelFile,
+          onChanged: _markDirty,
+          onBack: () => Navigator.pop(context),
+        ),
+      ),
+    );
+  }
+
   void _openZombieSelection(void Function(String) onSelected) {
     Navigator.push(
       context,
@@ -2312,6 +2331,38 @@ class _EditorScreenState extends State<EditorScreen> {
     _markDirty();
 
     return RtidParser.build(newTypeAlias, 'CurrentLevel');
+  }
+
+  Future<void> _openJsonViewer() async {
+    if (_ec.state.levelFile == null) return;
+    final hadChanges = _ec.state.hasChanges;
+    await _save();
+    if (!mounted) return;
+    if (hadChanges) {
+      // Let the saved banner start its fade-in before the route covers it.
+      await Future<void>.delayed(const Duration(milliseconds: 32));
+      if (!mounted) return;
+    }
+    final jsonMenuActions = context
+        .read<SettingsCubit>()
+        .state
+        .interfaceMenuActionsFor(InterfaceMenuSurface.jsonViewer);
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (!context.mounted) return;
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => JsonViewerScreen(
+            fileName: _ec.fileName,
+            filePath: _ec.filePath,
+            levelFile: _ec.state.levelFile!,
+            onBack: () => Navigator.pop(context),
+            onSaved: () => _ec.onJsonViewerSaved(),
+            menuActions: jsonMenuActions,
+          ),
+        ),
+      );
+    });
   }
 
   void _showUiScaleDialog(BuildContext context) {
@@ -3780,6 +3831,102 @@ class _EditorScreenState extends State<EditorScreen> {
     }
   }
 
+  bool _editorActionEnabled(String id) {
+    return switch (id) {
+      InterfaceMenuActionIds.viewJson ||
+      InterfaceMenuActionIds.levelOverview => _ec.state.levelFile != null,
+      _ => true,
+    };
+  }
+
+  String _editorActionLabel(
+    AppLocalizations? l10n,
+    SettingsState settings,
+    String id,
+  ) {
+    return switch (id) {
+      InterfaceMenuActionIds.language => l10n?.language ?? 'Language',
+      InterfaceMenuActionIds.theme => l10n?.toggleTheme ?? 'Toggle theme',
+      InterfaceMenuActionIds.uiScale => l10n?.uiSize ?? 'UI size',
+      InterfaceMenuActionIds.autosave => settings.hasAutosave
+          ? (l10n?.autosaveOn ?? 'Autosave: on')
+          : (l10n?.autosaveOff ?? 'Autosave: off'),
+      InterfaceMenuActionIds.viewJson =>
+        l10n?.tooltipJsonViewer ?? 'View/edit JSON',
+      InterfaceMenuActionIds.interfaceSettings =>
+        l10n?.interfaceSettings ?? 'Interface settings',
+      InterfaceMenuActionIds.levelOverview =>
+        l10n?.levelOverview ?? 'Level Overview',
+      _ => id,
+    };
+  }
+
+  IconData _editorActionIcon(SettingsState settings, String id) {
+    return switch (id) {
+      InterfaceMenuActionIds.language => Icons.language,
+      InterfaceMenuActionIds.theme => settings.themeMode == ThemeMode.dark
+          ? Icons.light_mode
+          : Icons.dark_mode,
+      InterfaceMenuActionIds.uiScale => Icons.aspect_ratio,
+      InterfaceMenuActionIds.autosave => Icons.save_outlined,
+      InterfaceMenuActionIds.viewJson => Icons.code,
+      InterfaceMenuActionIds.interfaceSettings => Icons.tune,
+      InterfaceMenuActionIds.levelOverview => Icons.visibility,
+      _ => Icons.more_horiz,
+    };
+  }
+
+  Future<void> _handleEditorAction(String id) async {
+    switch (id) {
+      case InterfaceMenuActionIds.viewJson:
+        await _openJsonViewer();
+      case InterfaceMenuActionIds.language:
+        widget.onLanguageTap(context);
+      case InterfaceMenuActionIds.uiScale:
+        _showUiScaleDialog(context);
+      case InterfaceMenuActionIds.theme:
+        context.read<SettingsCubit>().cycleTheme();
+      case InterfaceMenuActionIds.autosave:
+        await showAutosaveSettingsDialog(context);
+      case InterfaceMenuActionIds.interfaceSettings:
+        await showInterfaceSettingsScreen(context);
+      case InterfaceMenuActionIds.levelOverview:
+        await openLevelOverviewFromOpenSession(context);
+    }
+  }
+
+  Widget _editorToolbarAction(
+    AppLocalizations? l10n,
+    SettingsState settings,
+    String id,
+  ) {
+    final enabled = _editorActionEnabled(id);
+    return IconButton(
+      key: ValueKey('editorToolbarAction_$id'),
+      icon: Icon(_editorActionIcon(settings, id)),
+      tooltip: _editorActionLabel(l10n, settings, id),
+      onPressed: enabled ? () => _handleEditorAction(id) : null,
+    );
+  }
+
+  PopupMenuEntry<String> _editorOverflowAction(
+    AppLocalizations? l10n,
+    SettingsState settings,
+    String id,
+  ) {
+    final enabled = _editorActionEnabled(id);
+    return PopupMenuItem<String>(
+      key: ValueKey('editorOverflowAction_$id'),
+      value: id,
+      enabled: enabled,
+      child: EditorPopupMenuTile(
+        enabled: enabled,
+        leading: Icon(_editorActionIcon(settings, id)),
+        title: Text(_editorActionLabel(l10n, settings, id)),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final settings = context.watch<SettingsCubit>().state;
@@ -3804,6 +3951,40 @@ class _EditorScreenState extends State<EditorScreen> {
         builder: (context, editorState) {
           final l10n = AppLocalizations.of(context);
           final editorTopTabs = _editorTopTabEntries();
+          final configuredActions = settings.interfaceMenuActionsFor(
+            InterfaceMenuSurface.levelEditor,
+          );
+          final requestedToolbarActions = configuredActions
+              .where(
+                (action) =>
+                    action.placement == InterfaceMenuPlacement.toolbar,
+              )
+              .toList(growable: false);
+          final pluginAppBarActions = pluginEditorAppBarActions(context);
+          final estimatedToolbarCapacity = ((screenWidth -
+                      200 -
+                      pluginAppBarActions.length * 48) /
+                  48)
+              .floor()
+              .clamp(0, requestedToolbarActions.length)
+              .toInt();
+          final toolbarCapacity = useCompactActions
+              ? (estimatedToolbarCapacity < 3
+                    ? estimatedToolbarCapacity
+                    : 3)
+              : estimatedToolbarCapacity;
+          final toolbarActionIds = {
+            for (final action in requestedToolbarActions.take(toolbarCapacity))
+              action.id,
+          };
+          final overflowActions = configuredActions
+              .where(
+                (action) =>
+                    action.placement == InterfaceMenuPlacement.overflow ||
+                    (action.placement == InterfaceMenuPlacement.toolbar &&
+                        !toolbarActionIds.contains(action.id)),
+              )
+              .toList(growable: false);
           Widget body = Scaffold(
             appBar: AppBar(
               title: Text(_ec.fileName, overflow: TextOverflow.ellipsis),
@@ -3812,43 +3993,9 @@ class _EditorScreenState extends State<EditorScreen> {
                 onPressed: _leaveEditorIfAllowed,
               ),
               actions: [
-                if (!useCompactActions) ...[
-                  IconButton(
-                    icon: const Icon(Icons.code),
-                    tooltip: l10n?.tooltipJsonViewer ?? 'View/edit JSON',
-                    onPressed: _ec.state.levelFile != null
-                        ? () async {
-                            final hadChanges = _ec.state.hasChanges;
-                            await _save();
-                            if (!mounted) return;
-                            if (hadChanges) {
-                              // Let the banner start its fade-in before the route covers the frame.
-                              await Future<void>.delayed(
-                                const Duration(milliseconds: 32),
-                              );
-                              if (!mounted) return;
-                            }
-                            WidgetsBinding.instance.addPostFrameCallback((
-                              _,
-                            ) async {
-                              if (!context.mounted) return;
-                              await Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => JsonViewerScreen(
-                                    fileName: _ec.fileName,
-                                    filePath: _ec.filePath,
-                                    levelFile: _ec.state.levelFile!,
-                                    onBack: () => Navigator.pop(context),
-                                    onSaved: () => _ec.onJsonViewerSaved(),
-                                  ),
-                                ),
-                              );
-                            });
-                          }
-                        : null,
-                  ),
-                ],
+                for (final action in configuredActions)
+                  if (toolbarActionIds.contains(action.id))
+                    _editorToolbarAction(l10n, settings, action.id),
                 Builder(
                   builder: (context) {
                     return IconButton(
@@ -3858,68 +4005,12 @@ class _EditorScreenState extends State<EditorScreen> {
                     );
                   },
                 ),
-                ...pluginEditorAppBarActions(context),
+                ...pluginAppBarActions,
                 PopupMenuButton<String>(
+                  key: const ValueKey('editorOverflowMenu'),
                   itemBuilder: (context) => [
-                    if (useCompactActions) ...[
-                      PopupMenuItem(
-                        value: 'json',
-                        enabled: _ec.state.levelFile != null,
-                        child: EditorPopupMenuTile(
-                          enabled: _ec.state.levelFile != null,
-                          leading: const Icon(Icons.code),
-                          title: Text(
-                            l10n?.tooltipJsonViewer ?? 'View/edit JSON',
-                          ),
-                        ),
-                      ),
-                      const PopupMenuDivider(),
-                    ],
-                    PopupMenuItem(
-                      value: 'lang',
-                      child: EditorPopupMenuTile(
-                        leading: const Icon(Icons.language),
-                        title: Text(l10n?.language ?? 'Language'),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'ui',
-                      child: EditorPopupMenuTile(
-                        leading: const Icon(Icons.aspect_ratio),
-                        title: Text(l10n?.uiSize ?? 'UI size'),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'theme',
-                      child: EditorPopupMenuTile(
-                        leading: Icon(
-                          settings.themeMode == ThemeMode.dark
-                              ? Icons.light_mode
-                              : Icons.dark_mode,
-                        ),
-                        title: Text(l10n?.toggleTheme ?? 'Toggle theme'),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'autosave',
-                      child: EditorPopupMenuTile(
-                        leading: const Icon(Icons.save_outlined),
-                        title: Text(
-                          settings.hasAutosave
-                              ? (l10n?.autosaveOn ?? 'Autosave: on')
-                              : (l10n?.autosaveOff ?? 'Autosave: off'),
-                        ),
-                      ),
-                    ),
-                    PopupMenuItem(
-                      value: 'level_overview',
-                      enabled: _ec.state.levelFile != null,
-                      child: EditorPopupMenuTile(
-                        enabled: _ec.state.levelFile != null,
-                        leading: const Icon(Icons.visibility),
-                        title: Text(l10n?.levelOverview ?? 'Level Overview'),
-                      ),
-                    ),
+                    for (final action in overflowActions)
+                      _editorOverflowAction(l10n, settings, action.id),
                     ...pluginOverflowMenuItems(
                       context: context,
                       slot: CPluginUiSlots.editorOverflow,
@@ -3927,48 +4018,15 @@ class _EditorScreenState extends State<EditorScreen> {
                     ),
                   ],
                   onSelected: (value) async {
-                    if (value == 'json') {
-                      final hadChanges = _ec.state.hasChanges;
-                      await _save();
-                      if (!mounted) return;
-                      if (hadChanges) {
-                        await Future<void>.delayed(
-                          const Duration(milliseconds: 32),
-                        );
-                        if (!mounted) return;
-                      }
-                      WidgetsBinding.instance.addPostFrameCallback((_) async {
-                        if (!context.mounted) return;
-                        await Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => JsonViewerScreen(
-                              fileName: _ec.fileName,
-                              filePath: _ec.filePath,
-                              levelFile: _ec.state.levelFile!,
-                              onBack: () => Navigator.pop(context),
-                              onSaved: () => _ec.onJsonViewerSaved(),
-                            ),
-                          ),
-                        );
-                      });
-                    } else if (value == 'lang') {
-                      widget.onLanguageTap(context);
-                    } else if (value == 'ui') {
-                      _showUiScaleDialog(context);
-                    } else if (value == 'theme') {
-                      context.read<SettingsCubit>().cycleTheme();
-                    } else if (value == 'autosave') {
-                      showAutosaveSettingsDialog(context);
-                    } else if (value == 'level_overview') {
-                      await openLevelOverviewFromOpenSession(context);
-                    } else {
+                    if (value.startsWith('plugin:')) {
                       handlePluginOverflowSelection(
                         context,
                         value: value,
                         valuePrefix: 'plugin:',
                         slot: CPluginUiSlots.editorOverflow,
                       );
+                    } else {
+                      await _handleEditorAction(value);
                     }
                   },
                 ),
@@ -4131,6 +4189,8 @@ class _EditorScreenState extends State<EditorScreen> {
                                             onAddEvent: _handleAddEvent,
                                             onEditWaveManagerSettings:
                                                 _handleEditWaveManagerSettings,
+                                            onEditJitterOffsets:
+                                                _handleEditJitterOffsets,
                                             onEditCustomZombie:
                                                 _handleEditCustomZombie,
                                             onEditCustomFish:
@@ -4328,6 +4388,7 @@ class _CustomStageAliasPromptDialog extends StatefulWidget {
 class _CustomStageAliasPromptDialogState
     extends State<_CustomStageAliasPromptDialog> {
   late final TextEditingController _controller;
+  String? _errorText;
 
   @override
   void initState() {
@@ -4341,7 +4402,23 @@ class _CustomStageAliasPromptDialogState
     super.dispose();
   }
 
-  void _submit() => Navigator.pop(context, _controller.text.trim());
+  void _submit() {
+    final raw = _controller.text;
+    final l10n = AppLocalizations.of(context);
+    final characterError = aliasCharacterValidationError(l10n, raw);
+    if (characterError != null) {
+      setState(() => _errorText = characterError);
+      return;
+    }
+    final alias = raw.trim();
+    if (alias.isEmpty) {
+      setState(
+        () => _errorText = l10n?.aliasEmpty ?? 'Alias cannot be empty',
+      );
+      return;
+    }
+    Navigator.pop(context, alias);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -4370,7 +4447,11 @@ class _CustomStageAliasPromptDialogState
                   decoration: InputDecoration(
                     labelText: l10n?.customStageAlias ?? 'Stage alias',
                     border: const OutlineInputBorder(),
+                    errorText: _errorText,
                   ),
+                  onChanged: (_) {
+                    if (_errorText != null) setState(() => _errorText = null);
+                  },
                   onSubmitted: (_) => _submit(),
                 ),
                 const SizedBox(height: 12),

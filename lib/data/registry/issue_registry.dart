@@ -345,6 +345,7 @@ class LevelIssueRegistry {
   static const zombossBattleModule = 'ZombossBattleModuleProperties';
   static const seeingStarsModule = 'PVZ1SeeingStarsModuleProperties';
   static const statueMazeModule = 'StatueMazeModuleProperties';
+  static const zombieWinCondition = 'ZombiesAteYourBrainsProperties';
   static const zombiesDeadWinCon = 'ZombiesDeadWinConProperties';
   static const bronzeDeadWinCon = 'BronzeDeadWinConProperties';
 
@@ -537,6 +538,14 @@ class LevelIssueRegistry {
     ),
 
     // --- Advisories ---
+    LevelIssueRule(
+      id: 'underwaterZombieWinConditionWarning',
+      isActive: (ctx) =>
+          ctx.hasModule(zombieWinCondition) &&
+          LevelParser.usesDeepSeaBackground(ctx.levelDef, ctx.levelFile),
+      title: (_, l10n) => l10n.warning,
+      message: (_, l10n) => l10n.underwaterZombieWinConditionWarning,
+    ),
     LevelIssueRule(
       id: 'camelMinigameChooserConflict',
       severity: LevelIssueSeverity.error,
@@ -875,13 +884,19 @@ class LevelIssueRegistry {
     );
     final isEvilDave = existing.contains('EvilDaveProperties');
     final isSeeingStars = existing.contains(seeingStarsModule);
+    final usesUnderwaterWorldAppearance = LevelParser.usesDeepSeaBackground(
+      ctx.levelDef,
+      ctx.levelFile,
+    );
 
     final missing = <String>[];
     if (!existing.contains('CustomLevelModuleProperties')) {
       missing.add('CustomLevelModuleProperties');
     }
-    if (!existing.contains('ZombiesAteYourBrainsProperties') && !isEvilDave) {
-      missing.add('ZombiesAteYourBrainsProperties');
+    if (!existing.contains(zombieWinCondition) &&
+        !isEvilDave &&
+        !usesUnderwaterWorldAppearance) {
+      missing.add(zombieWinCondition);
     }
     if (!existing.any((cls) => cls.endsWith('WinConProperties')) &&
         !isEvilDave &&

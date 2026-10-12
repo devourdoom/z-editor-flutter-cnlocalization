@@ -119,6 +119,7 @@ void main() {
         (m) => m.objClass == 'CamelMinigameProperties',
       );
       expect(index, greaterThanOrEqualTo(0));
+      expect(modules[index].icon, Icons.pets);
       expect(modules[index + 1].objClass, 'LastStandMinigameProperties');
       expect(CamelMinigamePropertiesData().toJson(), {
         'AdditionalXBufferBetweenChains': 50,

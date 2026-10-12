@@ -644,6 +644,12 @@ Future<List<PreviewSticker>> loadPreviewStickerCatalog() async {
 
 Iterable<PreviewSticker> _supplementalStickers() sync* {
   yield const PreviewSticker(
+    assetPath: 'assets/images/others/jamNone.webp',
+    tag: 'round_icons',
+    labelKey: 'previewStickerNameJamNone',
+    searchTerms: ['jamNone', 'LevelJam', 'None'],
+  );
+  yield const PreviewSticker(
     assetPath: 'assets/images/zombies/zombie_renai_toxicwater.webp',
     tag: 'zombies',
     labelKey: 'previewStickerNameDisinfectionZombie',

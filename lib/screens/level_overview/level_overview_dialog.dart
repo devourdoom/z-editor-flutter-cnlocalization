@@ -11,6 +11,7 @@ import 'package:c_editor/widgets/editor_components.dart'
 import 'package:c_editor/data/zombie_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:c_editor/data/lunar_mine_vein_type_catalog.dart';
+import 'package:c_editor/data/music_type_catalog.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/level_parser.dart';
 import 'package:c_editor/data/rtid_parser.dart';
@@ -691,6 +692,40 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
         ? 'assets/images/round_icons/$stageIconFile'
         : null;
 
+    final stageObjdata = LevelParser.resolveStageObjdata(def, widget.levelFile);
+    final stageMusicSuffix = stageObjdata?['MusicSuffix'];
+    final rawMusicSuffix = stageMusicSuffix is String
+        ? stageMusicSuffix
+        : def.musicSuffix;
+    final musicModule = MusicTypeCatalog.forSuffix(rawMusicSuffix);
+    final musicSuffixCode = musicModule?.suffix ?? rawMusicSuffix.trim();
+    final musicSuffixName = musicSuffixCode.isEmpty
+        ? '—'
+        : ResourceNames.lookupOrFallback(
+            context,
+            musicModule?.suffixNameKey ?? 'musicSuffix_$musicSuffixCode',
+            musicSuffixCode,
+          );
+    final musicSuffixDisplay =
+        musicSuffixCode.isEmpty || musicSuffixName == musicSuffixCode
+        ? musicSuffixName
+        : '$musicSuffixName ($musicSuffixCode)';
+
+    final musicTypeCode = def.musicType.isEmpty
+        ? MusicTypeCatalog.mainPath
+        : def.musicType;
+    final musicTypeChoice = musicModule?.choices.firstWhereOrNull(
+      (choice) => choice.value == musicTypeCode,
+    );
+    final musicTypeName = ResourceNames.lookupOrFallback(
+      context,
+      musicTypeChoice?.labelKey ?? musicTypeCode,
+      musicTypeCode,
+    );
+    final musicTypeDisplay = musicTypeName == musicTypeCode
+        ? musicTypeName
+        : '$musicTypeName ($musicTypeCode)';
+
     int startingSun = def.startingSun ?? 0;
     int pfCount = PlantFoodDiscovery.getStartingPlantFood(
       widget.levelFile,
@@ -937,6 +972,26 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
                     const SizedBox(height: 6),
                     Text(
                       '${l10n.overviewLawn}: $worldName$customSuffix',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.8,
+                        ),
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${l10n.musicSuffix}: $musicSuffixDisplay',
+                      style: TextStyle(
+                        color: theme.colorScheme.onSurface.withValues(
+                          alpha: 0.8,
+                        ),
+                        fontSize: 14,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${l10n.musicType}: $musicTypeDisplay',
                       style: TextStyle(
                         color: theme.colorScheme.onSurface.withValues(
                           alpha: 0.8,

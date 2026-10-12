@@ -425,11 +425,18 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                       ),
                       const SizedBox(height: 12),
                       EditorResponsiveInputField(
-                        label: l10n?.waveStartMessage ?? 'Wave start message',
+                        label:
+                            l10n?.waveStartMessageLabel ??
+                            'Red warning message (WaveStartMessage)',
                         decoration: InputDecoration(
-                          border: OutlineInputBorder(),
+                          helperText:
+                              l10n?.optionalWarningText ??
+                              'Optional red warning text shown at the center of the screen when the event begins; Chinese is not supported',
+                          helperMaxLines: 3,
+                          border: const OutlineInputBorder(),
                         ),
                         builder: (context, decoration) => TextFormField(
+                          key: const ValueKey('waveStartMessageField'),
                           initialValue: _data.waveStartMessage ?? '',
                           decoration: decoration,
                           onChanged: (v) {

@@ -9,8 +9,11 @@ import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/repository/zombie_properties_repository.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
+import 'package:c_editor/screens/editor/others/jitter_offsets_presets_screen.dart';
 import 'package:c_editor/widgets/custom_zombie_properties_actions.dart';
 import 'package:c_editor/widgets/editor_components.dart';
+import 'package:c_editor/widgets/jitter_offsets_binding_card.dart';
+import 'package:c_editor/widgets/level_jam_picker.dart';
 import 'package:c_editor/widgets/editor_object_alias.dart';
 import 'package:c_editor/widgets/zombie_row_lane_drag_drop_editor.dart';
 import 'package:c_editor/widgets/zombie_row_lane_utils.dart';
@@ -63,15 +66,6 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       LevelParser.isDeepSeaLawnFromFile(widget.levelFile);
   bool get _supportsLevelJamMusic =>
       LevelParser.supportsLevelJamMusicFromFile(widget.levelFile);
-
-  static const _jamOptions = [
-    (null, 'None'),
-    ('jam_pop', 'Pop'),
-    ('jam_rap', 'Rap'),
-    ('jam_metal', 'Metal'),
-    ('jam_punk', 'Punk'),
-    ('jam_8bit', '8-Bit'),
-  ];
 
   @override
   void initState() {
@@ -186,6 +180,7 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       );
     } else {
       _data = WaveActionData(
+        jitterOffsets: (_data as WaveActionData).jitterOffsets,
         notificationEvents: (_data as WaveActionData).notificationEvents,
         additionalPlantFood: (_data as WaveActionData).additionalPlantFood,
         spawnPlantName: (_data as WaveActionData).spawnPlantName,
@@ -289,12 +284,43 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
     if (widget.isGroundSpawner) return;
     final list = value == null ? null : <String>[value];
     _data = WaveActionData(
+      jitterOffsets: (_data as WaveActionData).jitterOffsets,
       notificationEvents: list,
       additionalPlantFood: (_data as WaveActionData).additionalPlantFood,
       spawnPlantName: (_data as WaveActionData).spawnPlantName,
       zombies: _zombies,
     );
     _sync();
+  }
+
+  void _updateJitterOffsets(String? value) {
+    if (widget.isGroundSpawner) return;
+    final data = _data as WaveActionData;
+    _data = WaveActionData(
+      jitterOffsets: value,
+      notificationEvents: data.notificationEvents,
+      additionalPlantFood: data.additionalPlantFood,
+      spawnPlantName: data.spawnPlantName,
+      zombies: data.zombies,
+    );
+    _sync();
+  }
+
+  Future<void> _openJitterOffsetsPresets() async {
+    await Navigator.push<void>(
+      context,
+      MaterialPageRoute(
+        builder: (context) => JitterOffsetsPresetsScreen(
+          levelFile: widget.levelFile,
+          onChanged: widget.onChanged,
+          onBack: () => Navigator.pop(context),
+        ),
+      ),
+    );
+    if (mounted) {
+      _loadData();
+      setState(() {});
+    }
   }
 
   void _updateAdditionalPlantFood(int count) {
@@ -320,6 +346,7 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
         currentPlants.removeRange(clamped, currentPlants.length);
       }
       _data = WaveActionData(
+        jitterOffsets: data.jitterOffsets,
         notificationEvents: data.notificationEvents,
         additionalPlantFood: clamped == 0 ? null : clamped,
         spawnPlantName: currentPlants.isEmpty ? null : currentPlants,
@@ -351,6 +378,7 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       if (total == 0 || list.length >= total) return;
       list.add(plantId);
       _data = WaveActionData(
+        jitterOffsets: data.jitterOffsets,
         notificationEvents: data.notificationEvents,
         additionalPlantFood: total,
         spawnPlantName: list,
@@ -381,6 +409,7 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
         list.removeAt(index);
       }
       _data = WaveActionData(
+        jitterOffsets: data.jitterOffsets,
         notificationEvents: data.notificationEvents,
         additionalPlantFood: data.additionalPlantFood,
         spawnPlantName: list.isEmpty ? null : list,
@@ -708,8 +737,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
               context,
               isEvent: true,
               title: widget.isGroundSpawner
-                  ? (l10n?.eventGroundSpawnTitle ?? 'Ground spawn event')
-                  : (l10n?.eventStandardSpawnTitle ?? 'Standard spawn event'),
+                  ? (l10n?.eventGroundSpawnTitle ?? 'Ground Spawner')
+                  : (l10n?.eventStandardSpawnTitle ?? 'Basic Spawner'),
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
@@ -764,6 +793,15 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
               const SizedBox(height: 16),
               if (widget.isGroundSpawner) _buildColumnRangeCard(theme, l10n),
               if (widget.isGroundSpawner) const SizedBox(height: 16),
+              if (!widget.isGroundSpawner) ...[
+                JitterOffsetsBindingCard(
+                  levelFile: widget.levelFile,
+                  currentValue: (_data as WaveActionData).jitterOffsets,
+                  onChanged: _updateJitterOffsets,
+                  onManage: _openJitterOffsetsPresets,
+                ),
+                const SizedBox(height: 16),
+              ],
               if (!widget.isGroundSpawner && _supportsLevelJamMusic) ...[
                 _buildNotificationCard(theme, l10n),
                 const SizedBox(height: 16),
@@ -879,18 +917,12 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
               ],
             ),
             const SizedBox(height: 12),
-            DropdownButtonFormField<String?>(
-              isExpanded: true,
-              initialValue: current,
+            LevelJamPickerField(
+              labelText:
+                  l10n?.backgroundMusicLevelJam ??
+                  'Background music (LevelJam)',
+              value: current,
               decoration: const InputDecoration(border: OutlineInputBorder()),
-              items: _jamOptions
-                  .map(
-                    (e) => DropdownMenuItem<String?>(
-                      value: e.$1,
-                      child: Text(e.$2),
-                    ),
-                  )
-                  .toList(),
               onChanged: _updateNotificationEvent,
             ),
             const SizedBox(height: 8),
