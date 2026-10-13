@@ -678,7 +678,9 @@ class ModuleRegistry {
     'CamelMinigameProperties': ModuleMetadata(
       titleKey: 'moduleTitle_CamelMinigameProperties',
       descriptionKey: 'moduleDesc_CamelMinigameProperties',
-      icon: Icons.pets,
+      // The two peaks echo the Camel Zombie's humps without reusing the
+      // paw-print icon reserved for dinosaur-related events.
+      icon: Icons.filter_hdr,
       isCore: true,
       allowMultiple: false,
       category: ModuleCategory.mode,

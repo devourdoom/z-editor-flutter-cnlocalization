@@ -26,7 +26,6 @@ Widget _app({
         width: 420,
         child: LevelJamPickerField(
           labelText: 'LevelJam',
-          dialogTitle: 'LevelJam',
           value: value,
           decoration: const InputDecoration(
             labelText: 'LevelJam',
@@ -63,6 +62,10 @@ void main() {
 
       expect(find.text(messages['jamPunk'] as String), findsOneWidget);
       await _openPicker(tester);
+      expect(
+        _dialogDescendant(find.text(messages['selectLevelJamTitle'] as String)),
+        findsOneWidget,
+      );
 
       for (final key in const [
         'jamNone',
@@ -103,16 +106,36 @@ void main() {
     expect(tester.getCenter(dialog).dx, closeTo(450, 0.1));
     expect(tester.getCenter(dialog).dy, closeTo(400, 0.1));
     expect(_dialogDescendant(find.byType(EditorOptionTile)), findsNWidgets(6));
-    for (final value in const [
+    const orderedValues = [
       'none',
+      'jam_punk',
       'jam_pop',
       'jam_rap',
-      'jam_metal',
-      'jam_punk',
       'jam_8bit',
-    ]) {
+      'jam_metal',
+    ];
+    for (final value in orderedValues) {
       expect(find.byKey(ValueKey('levelJamOption_$value')), findsOneWidget);
     }
+    final optionCenters = orderedValues
+        .map(
+          (value) => tester
+              .getCenter(find.byKey(ValueKey('levelJamOption_$value')))
+              .dy,
+        )
+        .toList();
+    expect(optionCenters, orderedEquals([...optionCenters]..sort()));
+
+    final cancel = _dialogDescendant(
+      find.text(_messages('en')['cancel'] as String),
+    );
+    final lastOption = find.byKey(const ValueKey('levelJamOption_jam_metal'));
+    expect(
+      tester.getTopLeft(cancel).dy - tester.getBottomLeft(lastOption).dy,
+      lessThan(24),
+      reason:
+          'the dialog should wrap its content instead of leaving a large gap',
+    );
   });
 
   testWidgets('uses circular avatars with the expected LevelJam assets', (

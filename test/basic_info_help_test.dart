@@ -81,6 +81,11 @@ void main() {
     expect(dialog, findsOneWidget);
     expect(find.text('关卡定义基础说明'), findsOneWidget);
     expect(find.text('关卡定义基础模块说明'), findsNothing);
+    final dialogTitle = tester.widget<Text>(find.text('关卡定义基础说明'));
+    expect(
+      dialogTitle.style?.color,
+      Theme.of(tester.element(dialog)).colorScheme.primary,
+    );
 
     for (final title in const ['• 简要介绍', '• 基础信息界面', '• 场景设置', '• 限制选项']) {
       expect(find.descendant(of: dialog, matching: find.text(title)), findsOne);
@@ -98,7 +103,7 @@ void main() {
     final overviewTitle = tester.widget<Text>(find.text('• 简要介绍'));
     expect(
       overviewTitle.style?.color,
-      Theme.of(tester.element(dialog)).colorScheme.onSurface,
+      Theme.of(tester.element(dialog)).colorScheme.primary,
     );
 
     await tester.tap(find.text('我明白了'));

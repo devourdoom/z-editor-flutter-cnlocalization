@@ -15,6 +15,7 @@ import 'package:c_editor/screens/plugins_screen.dart';
 import 'package:c_editor/theme/app_theme.dart';
 import 'package:c_editor/widgets/app_ui_scaler.dart';
 import 'package:c_editor/widgets/locale_flag_icon.dart';
+import 'package:c_editor/widgets/persistent_scrollbar_scroll_behavior.dart';
 import 'package:c_editor/widgets/editor_components.dart' show EditorOptionTile;
 
 /// Wraps child and handles Escape key on desktop to trigger back/pop.
@@ -110,6 +111,7 @@ class _ZEditorAppState extends State<ZEditorApp> {
         return MaterialApp(
           title: 'C-Editor',
           debugShowCheckedModeBanner: false,
+          scrollBehavior: const PersistentScrollbarScrollBehavior(),
           theme: lightTheme,
           darkTheme: darkTheme,
           themeMode: settings.themeMode,

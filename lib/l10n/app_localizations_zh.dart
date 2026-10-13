@@ -245,14 +245,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get uiScalePreviewDescription => '拖动滑块查看界面元素的大小变化';
 
   @override
-  String get menuCustomization => '右上角操作';
+  String get menuCustomization => '功能显示';
 
   @override
   String get menuCustomizationDescription =>
-      '分别自定义各界面右上角操作的展示位置和顺序。外显项目会直接显示在标题栏，收纳项目会放入 ⋮ 菜单。';
+      '分别自定义各界面功能的展示位置和顺序。外显功能会直接显示在标题栏，收纳功能会放入 ⋮ 菜单；支持的功能也可选择仅保留在本页面。\n当界面空间不足时，原本显示在标题栏中的功能会按排列顺序自动收纳到 ⋮ 菜单中。';
 
   @override
-  String get menuCustomizationDragHint => '拖动 ⋮⋮ 调整展示顺序';
+  String get menuCustomizationDragHint => '拖动 ⋮⋮ 调整功能顺序';
 
   @override
   String get menuSurfaceWorkspace => '工作区';
@@ -270,7 +270,17 @@ class AppLocalizationsZh extends AppLocalizations {
   String get menuPlacementOverflow => '收纳';
 
   @override
+  String get menuPlacementSettingsPage => '仅设置页';
+
+  @override
   String get menuConfigurationReset => '恢复当前界面默认布局';
+
+  @override
+  String get aliasPromptOnCreate => '创建时询问代号';
+
+  @override
+  String get aliasPromptOnCreateDescription =>
+      '新建事件、模块、挑战或自定义地图前显示代号弹窗；关闭后直接使用自动生成的默认代号。';
 
   @override
   String get aboutSoftware => '关于软件';
@@ -1197,7 +1207,7 @@ class AppLocalizationsZh extends AppLocalizations {
       '这里提供禁用豆藤共生和神器开关。在庭院模块下神器自动禁用，无需手动开启禁用开关。';
 
   @override
-  String get waveTimelineJitterOffsetsTitle => '出怪间隔偏移预设';
+  String get waveTimelineJitterOffsetsTitle => '出怪位置偏移预设';
 
   @override
   String get waveTimelineJitterOffsetsNone => '未创建预设';
@@ -1208,7 +1218,7 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get jitterOffsetsPageTitle => '出怪间隔偏移预设';
+  String get jitterOffsetsPageTitle => '出怪位置偏移预设';
 
   @override
   String jitterOffsetsPageCount(int count) {
@@ -1220,7 +1230,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get jitterOffsetsEmpty =>
-      '还没有预设。\n未绑定预设的「普通出怪」和「海底出怪」事件会使用游戏内的默认参数；\n如需自定义，请新建预设后在事件中绑定。';
+      '还没有预设。\n未绑定预设的「普通出怪」「海底出怪」「地底出怪」和「障碍物出怪」事件会使用游戏内的默认参数 80 / 30；\n如需自定义，请新建预设后在事件中绑定。';
 
   @override
   String get jitterOffsetsNoAlias => '（无代号）';
@@ -1235,21 +1245,22 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get jitterOffsetsIncrementLabel =>
-      '同一行出怪间隔 (ZombieSpawningOffsetIncrement)';
+      '同一行累计偏移增量 (ZombieSpawningOffsetIncrement)';
 
   @override
   String get jitterOffsetsRandomJitterLabel =>
-      '浮动范围 (ZombieSpawningRandomJitter)';
+      '随机偏移上限 (ZombieSpawningRandomJitter)';
 
   @override
   String get jitterOffsetsIntegerInvalid => '请输入有效的整数。';
 
   @override
-  String get jitterOffsetsIncrementInvalid => '请输入非负数。同一行出怪间隔为负数时，关卡可能无法正常结算。';
+  String get jitterOffsetsIncrementInvalid =>
+      '请使用非负数。负数可能使累计值与随机值之和小于 0；游戏会将其按无符号整数换算，产生异常大的横坐标，使僵尸无法正常进场。';
 
   @override
   String get jitterOffsetsRandomJitterInvalid =>
-      '请输入正数。浮动范围为 0 时，僵尸会被直接斩杀、无法正常出现；为负数时，关卡可能无法正常结算。';
+      '请输入正数。0 或负数不会关闭随机偏移，可能产生异常大的横坐标，使僵尸无法正常进场。';
 
   @override
   String get jitterOffsetsRename => '重命名';
@@ -1298,24 +1309,24 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get jitterOffsetsDeleteBlockedHint => '请先打开以下事件，将「出怪间隔偏移」改为其他预设或取消启用：';
+  String get jitterOffsetsDeleteBlockedHint => '请先打开以下事件，将「出怪位置偏移」改为其他预设或取消绑定：';
 
   @override
-  String get jitterOffsetsEventLabel => '出怪间隔偏移';
+  String get jitterOffsetsEventLabel => '出怪位置偏移';
 
   @override
-  String get jitterOffsetsEventNone => '不启用（使用游戏内默认参数）';
+  String get jitterOffsetsEventNone => '不绑定（使用游戏内默认参数 80 / 30）';
 
   @override
   String get jitterOffsetsEventManage => '管理预设';
 
   @override
   String get jitterOffsetsEventDescription =>
-      '控制同一行各僵尸在场地外生成位置之间的距离。不绑定预设时使用游戏内的默认参数，也能正常出怪。';
+      '控制同一事件中同一行各僵尸在基础出怪位置上追加的横向偏移，偏移方向由僵尸朝向决定。';
 
   @override
   String get jitterOffsetsEventNoPresets =>
-      '还没有预设，当前事件会自动使用游戏内的默认参数。如需自定义，请先新建预设。';
+      '还没有预设，当前事件会自动使用游戏内的默认参数 80 / 30。如需自定义，请先新建预设。';
 
   @override
   String jitterOffsetsEventDangling(String alias) {
@@ -1329,31 +1340,48 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get jitterOffsetsEventInvalidPreset =>
-      '当前预设包含无效参数。请在「管理预设」中将「同一行出怪间隔」改为非负数，并将「浮动范围」改为正数。';
+      '当前预设包含无效参数。请在「管理预设」中将「随机偏移上限」改为正数。';
 
   @override
-  String get jitterOffsetsHelpTitle => '出怪间隔偏移说明';
+  String get jitterOffsetsFixedOffsetOverrideWarning =>
+      '当前事件的「全局序号固定偏移」不为 0，游戏会按整批僵尸的创建顺序追加固定偏移，不再使用已绑定的出怪位置偏移预设和出怪排列方式。原有设置会保留，固定偏移恢复为 0 后重新生效。';
+
+  @override
+  String get jitterOffsetsAdvancedSettingsTitle => '高级设置';
+
+  @override
+  String get jitterOffsetsFixedOffsetLabel => '全局序号固定偏移 (FixedOffset)';
+
+  @override
+  String get jitterOffsetsFixedOffsetDescription =>
+      '默认值为 0。非零时，整批僵尸按创建顺序编号，从 0 开始；每只僵尸在自己的基础横向位置上追加「序号 × 固定偏移值」。编号不会按行重新计数，偏移方向也不会随僵尸朝向改变：固定偏移值为正数时向右偏移，为负数时向左偏移。因此，同一事件包含不同行或不同朝向的僵尸时请谨慎使用。\n此时出怪位置偏移预设和出怪排列方式会被暂时忽略，但原有设置会保留；恢复为 0 后重新生效。出怪排列方式是游戏用于设置各行起始偏移和行间偏移的排列规则。';
+
+  @override
+  String get jitterOffsetsFixedOffsetInvalid => '请输入有效的数字。';
+
+  @override
+  String get jitterOffsetsHelpTitle => '出怪位置偏移说明';
 
   @override
   String get jitterOffsetsHelpOverviewTitle => '简要介绍';
 
   @override
   String get jitterOffsetsHelpOverviewBody =>
-      '在「普通出怪」和「海底出怪」事件中，同一行的僵尸会依次在场地外生成。通过添加出怪间隔偏移预设，可以控制同一行各僵尸生成位置之间的距离。这些事件在不绑定预设时会使用游戏内的默认参数，也能正常出怪，因此本功能不预置默认预设，请按需设置。';
+      '出怪位置偏移预设用于调整同一出怪事件中僵尸的横向排列。在「普通出怪」「海底出怪」「地底出怪」和「障碍物出怪」事件中，每只僵尸先取得自己的基础出怪位置，再追加本预设计算的横向偏移。各行分别累计偏移，互不影响。\n「地底出怪」先根据指定列或列范围计算基础钻出位置，追加偏移后可能移出原来的列范围；「障碍物出怪」以目标障碍物的位置为基础，追加偏移后可能偏离该障碍物所在格的中心。该预设只改变横向出怪位置，不会改变创建时间、所在行或波次时间。\n未绑定预设时，累计偏移增量为 80，随机偏移上限为 30，因此不创建预设也能正常出怪。';
 
   @override
   String get jitterOffsetsHelpUsageTitle => '使用说明';
 
   @override
   String get jitterOffsetsHelpUsageBody =>
-      '在此创建预设后，打开任意「普通出怪」或「海底出怪」事件，并在「出怪间隔偏移」中选择需要绑定的预设即可。\n同一预设可以被多个事件共用，修改预设后，所有引用该预设的事件都会同步变化。仍被事件引用的预设无法删除，需要先将相关事件改为其他预设或取消启用。';
+      '在此创建预设后，打开任意「普通出怪」「海底出怪」「地底出怪」或「障碍物出怪」事件，并在「出怪位置偏移」中选择需要绑定的预设即可。\n同一预设可以被多个事件共用；修改预设后，所有引用该预设的事件都会同步变化。仍被事件引用的预设无法删除，需要先将相关事件改为其他预设或取消绑定。';
 
   @override
   String get jitterOffsetsHelpParametersTitle => '参数介绍';
 
   @override
   String get jitterOffsetsHelpParametersBody =>
-      '「同一行出怪间隔」指同一行相邻僵尸在场地外生成时的基础间距。建议填写非负数；填写负数时，关卡可能无法正常结算。\n「浮动范围」指在基础间距上随机增加或减少的范围。建议填写正数；填写 0 时，僵尸会被直接斩杀、无法正常出现，填写负数时，关卡可能无法正常结算。\n实际生成位置之间的距离会在「同一行出怪间隔 ± 浮动范围」的范围内随机取值。';
+      '「同一行累计偏移增量」指同一事件中，同一行每多一只僵尸，累计追加的固定偏移。第一只的累计偏移为 0，第二只为一个增量，第三只为两个增量，以此类推。建议填写非负数；负数可能使累计偏移与随机偏移之和小于 0，产生异常大的横坐标，使僵尸无法正常进场。\n「随机偏移上限」指每只僵尸独立取得的随机偏移。实际值从 0 到「填写值减 1」；例如填写 10，实际取值为 0～9。必须填写正整数；0 或负数不会关闭随机，而可能使僵尸无法正常进场。\n将累计偏移与本次随机偏移相加后，根据僵尸朝向应用到基础位置：面向左（通常从场地右侧进场）时向右偏移；面向右（通常从场地左侧进场）时向左偏移。海底出怪中，开启「从场地左侧出现」时，僵尸面向右并向左追加偏移；关闭时，通常从右侧出现并向右追加偏移。\n例如累计增量为 20、随机上限为 10，同一行前三只僵尸的偏移量分别为 0～9、20～29、40～49，再按上述朝向决定向左还是向右。\n游戏还可通过「出怪排列方式」设置各行的起始偏移和行间偏移；这些排列规则会与本预设叠加，因此实际位置可能还包含额外偏移。';
 
   @override
   String get removeModule => '移除模块';
@@ -2088,6 +2116,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get missingModules => '缺失模块';
+
+  @override
+  String get underwaterZombieWinConditionWarningTitle => '海底世界失败判定提示';
 
   @override
   String get underwaterZombieWinConditionWarning =>
@@ -5969,6 +6000,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get backgroundMusicLevelJam => '魔音音乐切换 (LevelJam)';
+
+  @override
+  String get selectLevelJamTitle => '选择要切换的音乐类型';
 
   @override
   String get onlyAppliesRockEra => '此事件触发时切换背景音乐，仅对摇滚年代地图有效。';

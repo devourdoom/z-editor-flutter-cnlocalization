@@ -9,10 +9,12 @@ import 'package:c_editor/data/repository/zombie_repository.dart'
     show ZombieRepository, ZombieTag;
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
+import 'package:c_editor/screens/editor/others/jitter_offsets_presets_screen.dart';
 import 'package:c_editor/widgets/custom_zombie_properties_actions.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 import 'package:c_editor/widgets/custom_stage_editor_widgets.dart';
 import 'package:c_editor/widgets/editor_object_alias.dart';
+import 'package:c_editor/widgets/jitter_offsets_binding_card.dart';
 import 'package:c_editor/widgets/zombie_flat_lane_drag_drop_editor.dart';
 import 'package:c_editor/widgets/zombie_row_lane_utils.dart';
 import 'package:c_editor/widgets/zombie_spawn_edit_sheet.dart';
@@ -30,6 +32,7 @@ class GridItemSpawnEventScreen extends StatefulWidget {
     required this.onRequestZombieSelection,
     this.onEditCustomZombie,
     this.onInjectCustomZombie,
+    this.onOpenReferencedEvent,
   });
 
   final String rtid;
@@ -42,6 +45,7 @@ class GridItemSpawnEventScreen extends StatefulWidget {
   onRequestZombieSelection;
   final void Function(String rtid)? onEditCustomZombie;
   final String? Function(String alias)? onInjectCustomZombie;
+  final Future<void> Function(String rtid)? onOpenReferencedEvent;
 
   @override
   State<GridItemSpawnEventScreen> createState() =>
@@ -129,24 +133,14 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
         id,
         widget.levelFile,
       );
-      _data = SpawnZombiesFromGridItemData(
-        waveStartMessage: _data.waveStartMessage,
-        zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-        gridTypes: [..._data.gridTypes, rtid],
-        zombies: _data.zombies,
-      );
+      _data = _data.copyWith(gridTypes: [..._data.gridTypes, rtid]);
       _sync();
     });
   }
 
   void _removeGridType(int index) {
     final gridTypes = List<String>.from(_data.gridTypes)..removeAt(index);
-    _data = SpawnZombiesFromGridItemData(
-      waveStartMessage: _data.waveStartMessage,
-      zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-      gridTypes: gridTypes,
-      zombies: _data.zombies,
-    );
+    _data = _data.copyWith(gridTypes: gridTypes);
     _sync();
   }
 
@@ -160,10 +154,7 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
               ?.tags
               .contains(ZombieTag.elite) ??
           false;
-      _data = SpawnZombiesFromGridItemData(
-        waveStartMessage: _data.waveStartMessage,
-        zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-        gridTypes: _data.gridTypes,
+      _data = _data.copyWith(
         zombies: [
           ..._data.zombies,
           ZombieSpawnData(type: rtid, level: isElite ? null : 1, row: null),
@@ -190,12 +181,7 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
       eraseOrphan = choice;
     }
     final zombies = List<ZombieSpawnData>.from(_data.zombies)..removeAt(index);
-    _data = SpawnZombiesFromGridItemData(
-      waveStartMessage: _data.waveStartMessage,
-      zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-      gridTypes: _data.gridTypes,
-      zombies: zombies,
-    );
+    _data = _data.copyWith(zombies: zombies);
     _sync();
     if (info?.source == 'CurrentLevel' && eraseOrphan) {
       CustomZombieLevelUtils.removeTypeAndProperties(
@@ -209,12 +195,7 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
   void _updateZombie(int index, ZombieSpawnData zombie) {
     final zombies = List<ZombieSpawnData>.from(_data.zombies);
     zombies[index] = zombie;
-    _data = SpawnZombiesFromGridItemData(
-      waveStartMessage: _data.waveStartMessage,
-      zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-      gridTypes: _data.gridTypes,
-      zombies: zombies,
-    );
+    _data = _data.copyWith(zombies: zombies);
     _sync();
   }
 
@@ -229,13 +210,10 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
       type: newRtid,
       level: isEliteNew ? null : current.level,
       row: current.row,
+      direction: current.direction,
+      titles: current.titles,
     );
-    _data = SpawnZombiesFromGridItemData(
-      waveStartMessage: _data.waveStartMessage,
-      zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-      gridTypes: _data.gridTypes,
-      zombies: zombies,
-    );
+    _data = _data.copyWith(zombies: zombies);
     _sync();
   }
 
@@ -246,12 +224,7 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
       fromIndex: fromIndex,
       insertIndex: insertIndex,
     );
-    _data = SpawnZombiesFromGridItemData(
-      waveStartMessage: _data.waveStartMessage,
-      zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-      gridTypes: _data.gridTypes,
-      zombies: zombies,
-    );
+    _data = _data.copyWith(zombies: zombies);
     _sync();
   }
 
@@ -291,6 +264,8 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
             type: zombie.type,
             row: null,
             level: level == 0 ? null : level,
+            direction: zombie.direction,
+            titles: zombie.titles,
           ),
         );
       },
@@ -299,13 +274,10 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
           type: zombie.type,
           row: null,
           level: isElite ? null : zombie.level,
+          direction: zombie.direction,
+          titles: zombie.titles,
         );
-        _data = SpawnZombiesFromGridItemData(
-          waveStartMessage: _data.waveStartMessage,
-          zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-          gridTypes: _data.gridTypes,
-          zombies: [..._data.zombies, copy],
-        );
+        _data = _data.copyWith(zombies: [..._data.zombies, copy]);
         _sync();
       },
       onDelete: (sheetContext) {
@@ -331,7 +303,13 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
               onRtidSelected: (rtid) {
                 _updateZombie(
                   index,
-                  ZombieSpawnData(type: rtid, row: null, level: zombie.level),
+                  ZombieSpawnData(
+                    type: rtid,
+                    row: null,
+                    level: zombie.level,
+                    direction: zombie.direction,
+                    titles: zombie.titles,
+                  ),
                 );
               },
             )
@@ -347,6 +325,47 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
       onChanged: widget.onChanged,
     );
     setState(() => _alias = newAlias);
+  }
+
+  void _updateJitterOffsets(String? value) {
+    _data = _data.copyWith(
+      jitterOffsets: value,
+      clearJitterOffsets: value == null,
+    );
+    _sync();
+  }
+
+  void _updateFixedOffset(num value) {
+    _data = _data.copyWith(fixedOffset: value.toDouble());
+    _sync();
+  }
+
+  Future<void> _openJitterOffsetsPresets() async {
+    final selectedEventRtid = await Navigator.push<String>(
+      context,
+      MaterialPageRoute<String>(
+        builder: (context) => JitterOffsetsPresetsScreen(
+          levelFile: widget.levelFile,
+          onChanged: widget.onChanged,
+          onBack: () => Navigator.pop(context),
+        ),
+      ),
+    );
+    if (!mounted) return;
+    final currentAlias = RtidParser.parse(widget.rtid)?.alias;
+    final selectedAlias = selectedEventRtid == null
+        ? null
+        : RtidParser.parse(selectedEventRtid)?.alias;
+    if (selectedEventRtid != null &&
+        selectedAlias != currentAlias &&
+        widget.onOpenReferencedEvent != null) {
+      final openReferencedEvent = widget.onOpenReferencedEvent!;
+      await Navigator.of(context).maybePop();
+      await openReferencedEvent(selectedEventRtid);
+      return;
+    }
+    _loadData();
+    setState(() {});
   }
 
   @override
@@ -440,11 +459,9 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                           initialValue: _data.waveStartMessage ?? '',
                           decoration: decoration,
                           onChanged: (v) {
-                            _data = SpawnZombiesFromGridItemData(
-                              waveStartMessage: v.isEmpty ? null : v,
-                              zombieSpawnWaitTime: _data.zombieSpawnWaitTime,
-                              gridTypes: _data.gridTypes,
-                              zombies: _data.zombies,
+                            _data = _data.copyWith(
+                              waveStartMessage: v,
+                              clearWaveStartMessage: v.isEmpty,
                             );
                             _sync();
                           },
@@ -465,12 +482,7 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                           onChanged: (v) {
                             final n = int.tryParse(v);
                             if (n != null) {
-                              _data = SpawnZombiesFromGridItemData(
-                                waveStartMessage: _data.waveStartMessage,
-                                zombieSpawnWaitTime: n,
-                                gridTypes: _data.gridTypes,
-                                zombies: _data.zombies,
-                              );
+                              _data = _data.copyWith(zombieSpawnWaitTime: n);
                               _sync();
                             }
                           },
@@ -479,6 +491,23 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(height: 16),
+              JitterOffsetsBindingCard(
+                levelFile: widget.levelFile,
+                currentValue: _data.jitterOffsets,
+                onChanged: _updateJitterOffsets,
+                onManage: _openJitterOffsetsPresets,
+                enabled: _data.fixedOffset == 0,
+                overrideWarning: _data.fixedOffset != 0
+                    ? (l10n?.jitterOffsetsFixedOffsetOverrideWarning ??
+                          'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.')
+                    : null,
+              ),
+              const SizedBox(height: 16),
+              FixedOffsetAdvancedSettingsCard(
+                value: _data.fixedOffset,
+                onChanged: _updateFixedOffset,
               ),
               const SizedBox(height: 16),
               EditorResponsiveActionRow(

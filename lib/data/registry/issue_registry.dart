@@ -543,7 +543,7 @@ class LevelIssueRegistry {
       isActive: (ctx) =>
           ctx.hasModule(zombieWinCondition) &&
           LevelParser.usesDeepSeaBackground(ctx.levelDef, ctx.levelFile),
-      title: (_, l10n) => l10n.warning,
+      title: (_, l10n) => l10n.underwaterZombieWinConditionWarningTitle,
       message: (_, l10n) => l10n.underwaterZombieWinConditionWarning,
     ),
     LevelIssueRule(

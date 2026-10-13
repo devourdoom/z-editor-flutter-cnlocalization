@@ -35,6 +35,7 @@ class ZombieSpawnEventScreen extends StatefulWidget {
     this.onRequestPlantSelection,
     this.onEditCustomZombie,
     this.onInjectCustomZombie,
+    this.onOpenReferencedEvent,
   });
 
   final String rtid;
@@ -49,6 +50,7 @@ class ZombieSpawnEventScreen extends StatefulWidget {
   onRequestPlantSelection;
   final void Function(String rtid)? onEditCustomZombie;
   final String? Function(String alias)? onInjectCustomZombie;
+  final Future<void> Function(String rtid)? onOpenReferencedEvent;
 
   @override
   State<ZombieSpawnEventScreen> createState() => _ZombieSpawnEventScreenState();
@@ -123,6 +125,10 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       ? (_data as SpawnZombiesFromGroundData).zombies
       : (_data as WaveActionData).zombies;
 
+  num get _fixedOffset => widget.isGroundSpawner
+      ? ((_data as SpawnZombiesFromGroundData).fixedOffset ?? 0)
+      : ((_data as WaveActionData).fixedOffset ?? 0);
+
   String _resolveBaseTypeName(ZombieSpawnData zombie) {
     final info = RtidParser.parse(zombie.type);
     final alias = info?.alias ?? zombie.type;
@@ -170,17 +176,22 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       sortZombieSpawnListByRow(zombies, maxRow: _isDeepSeaLawn ? 6 : 5);
     }
     if (widget.isGroundSpawner) {
+      final data = _data as SpawnZombiesFromGroundData;
       _data = SpawnZombiesFromGroundData(
-        columnStart: (_data as SpawnZombiesFromGroundData).columnStart,
-        columnEnd: (_data as SpawnZombiesFromGroundData).columnEnd,
-        additionalPlantFood:
-            (_data as SpawnZombiesFromGroundData).additionalPlantFood,
-        spawnPlantName: (_data as SpawnZombiesFromGroundData).spawnPlantName,
+        jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: data.fixedOffset,
+        columnStart: data.columnStart,
+        columnEnd: data.columnEnd,
+        additionalPlantFood: data.additionalPlantFood,
+        spawnPlantName: data.spawnPlantName,
         zombies: zombies,
       );
     } else {
       _data = WaveActionData(
         jitterOffsets: (_data as WaveActionData).jitterOffsets,
+        zombieSpawnPattern: (_data as WaveActionData).zombieSpawnPattern,
+        fixedOffset: (_data as WaveActionData).fixedOffset,
         notificationEvents: (_data as WaveActionData).notificationEvents,
         additionalPlantFood: (_data as WaveActionData).additionalPlantFood,
         spawnPlantName: (_data as WaveActionData).spawnPlantName,
@@ -234,7 +245,7 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
     required BuildContext sheetContext,
     required int index,
     required ZombieSpawnData zombie,
-    required bool fromLeft,
+    required String? direction,
     required int rowValue,
     required int levelValue,
     required bool isElite,
@@ -253,8 +264,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
         clearLevel: isEliteNew || levelValue == 0,
         row: rowValue == 0 ? null : rowValue,
         clearRow: rowValue == 0,
-        direction: fromLeft ? 'left' : null,
-        clearDirection: !fromLeft,
+        direction: direction,
+        clearDirection: direction == null,
       ),
     );
     if (sheetContext.mounted) {
@@ -285,6 +296,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
     final list = value == null ? null : <String>[value];
     _data = WaveActionData(
       jitterOffsets: (_data as WaveActionData).jitterOffsets,
+      zombieSpawnPattern: (_data as WaveActionData).zombieSpawnPattern,
+      fixedOffset: (_data as WaveActionData).fixedOffset,
       notificationEvents: list,
       additionalPlantFood: (_data as WaveActionData).additionalPlantFood,
       spawnPlantName: (_data as WaveActionData).spawnPlantName,
@@ -294,10 +307,26 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
   }
 
   void _updateJitterOffsets(String? value) {
-    if (widget.isGroundSpawner) return;
+    if (widget.isGroundSpawner) {
+      final data = _data as SpawnZombiesFromGroundData;
+      _data = SpawnZombiesFromGroundData(
+        jitterOffsets: value,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: data.fixedOffset,
+        columnStart: data.columnStart,
+        columnEnd: data.columnEnd,
+        additionalPlantFood: data.additionalPlantFood,
+        spawnPlantName: data.spawnPlantName,
+        zombies: data.zombies,
+      );
+      _sync();
+      return;
+    }
     final data = _data as WaveActionData;
     _data = WaveActionData(
       jitterOffsets: value,
+      zombieSpawnPattern: data.zombieSpawnPattern,
+      fixedOffset: data.fixedOffset,
       notificationEvents: data.notificationEvents,
       additionalPlantFood: data.additionalPlantFood,
       spawnPlantName: data.spawnPlantName,
@@ -306,10 +335,39 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
     _sync();
   }
 
+  void _updateFixedOffset(num value) {
+    final storedValue = value == 0 ? null : value;
+    if (widget.isGroundSpawner) {
+      final data = _data as SpawnZombiesFromGroundData;
+      _data = SpawnZombiesFromGroundData(
+        jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: storedValue,
+        columnStart: data.columnStart,
+        columnEnd: data.columnEnd,
+        additionalPlantFood: data.additionalPlantFood,
+        spawnPlantName: data.spawnPlantName,
+        zombies: data.zombies,
+      );
+    } else {
+      final data = _data as WaveActionData;
+      _data = WaveActionData(
+        jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: storedValue,
+        notificationEvents: data.notificationEvents,
+        additionalPlantFood: data.additionalPlantFood,
+        spawnPlantName: data.spawnPlantName,
+        zombies: data.zombies,
+      );
+    }
+    _sync();
+  }
+
   Future<void> _openJitterOffsetsPresets() async {
-    await Navigator.push<void>(
+    final selectedEventRtid = await Navigator.push<String>(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<String>(
         builder: (context) => JitterOffsetsPresetsScreen(
           levelFile: widget.levelFile,
           onChanged: widget.onChanged,
@@ -317,6 +375,19 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
         ),
       ),
     );
+    if (!mounted) return;
+    final currentAlias = RtidParser.parse(widget.rtid)?.alias;
+    final selectedAlias = selectedEventRtid == null
+        ? null
+        : RtidParser.parse(selectedEventRtid)?.alias;
+    if (selectedEventRtid != null &&
+        selectedAlias != currentAlias &&
+        widget.onOpenReferencedEvent != null) {
+      final openReferencedEvent = widget.onOpenReferencedEvent!;
+      await Navigator.of(context).maybePop();
+      await openReferencedEvent(selectedEventRtid);
+      return;
+    }
     if (mounted) {
       _loadData();
       setState(() {});
@@ -333,6 +404,9 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
         currentPlants.removeRange(clamped, currentPlants.length);
       }
       _data = SpawnZombiesFromGroundData(
+        jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: data.fixedOffset,
         columnStart: data.columnStart,
         columnEnd: data.columnEnd,
         additionalPlantFood: clamped == 0 ? null : clamped,
@@ -347,6 +421,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       }
       _data = WaveActionData(
         jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: data.fixedOffset,
         notificationEvents: data.notificationEvents,
         additionalPlantFood: clamped == 0 ? null : clamped,
         spawnPlantName: currentPlants.isEmpty ? null : currentPlants,
@@ -365,6 +441,9 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       if (total == 0 || list.length >= total) return;
       list.add(plantId);
       _data = SpawnZombiesFromGroundData(
+        jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: data.fixedOffset,
         columnStart: data.columnStart,
         columnEnd: data.columnEnd,
         additionalPlantFood: total,
@@ -379,6 +458,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       list.add(plantId);
       _data = WaveActionData(
         jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: data.fixedOffset,
         notificationEvents: data.notificationEvents,
         additionalPlantFood: total,
         spawnPlantName: list,
@@ -396,6 +477,9 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
         list.removeAt(index);
       }
       _data = SpawnZombiesFromGroundData(
+        jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: data.fixedOffset,
         columnStart: data.columnStart,
         columnEnd: data.columnEnd,
         additionalPlantFood: data.additionalPlantFood,
@@ -410,6 +494,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
       }
       _data = WaveActionData(
         jitterOffsets: data.jitterOffsets,
+        zombieSpawnPattern: data.zombieSpawnPattern,
+        fixedOffset: data.fixedOffset,
         notificationEvents: data.notificationEvents,
         additionalPlantFood: data.additionalPlantFood,
         spawnPlantName: list.isEmpty ? null : list,
@@ -445,15 +531,28 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
     final displayName = info?.name ?? baseType;
     final iconPath = info?.iconAssetPath;
     final isCustom = _isCustomZombie(zombie);
+    var currentZombie = zombie;
+
+    int currentZombieIndex() =>
+        _zombies.indexWhere((candidate) => identical(candidate, currentZombie));
+
+    void updateCurrentZombie(ZombieSpawnData updated) {
+      final liveIndex = currentZombieIndex();
+      if (liveIndex < 0) return;
+      currentZombie = updated;
+      _updateZombie(liveIndex, updated);
+    }
+
     showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
       builder: (ctx) {
-        int rowValue = zombie.row ?? 0;
-        int levelValue = zombie.level ?? 0;
-        bool fromLeft = zombie.direction == 'left';
-        var titles = List<String>.from(zombie.titles ?? []);
+        int rowValue = currentZombie.row ?? 0;
+        int levelValue = currentZombie.level ?? 0;
+        var direction = currentZombie.direction;
+        bool fromLeft = ZombieSpawnData.entersFromLeft(direction);
+        var titles = List<String>.from(currentZombie.titles ?? []);
         return StatefulBuilder(
           builder: (ctx, setModalState) {
             return Padding(
@@ -468,15 +567,19 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                       displayName: ResourceNames.lookup(context, displayName),
                       isCustom: isCustom,
                       customLabel: l10n?.customLabel ?? 'Custom',
-                      onChange: () => _changeZombieTypeFromSheet(
-                        sheetContext: ctx,
-                        index: index,
-                        zombie: zombie,
-                        fromLeft: fromLeft,
-                        rowValue: rowValue,
-                        levelValue: levelValue,
-                        isElite: isElite,
-                      ),
+                      onChange: () {
+                        final liveIndex = currentZombieIndex();
+                        if (liveIndex < 0) return;
+                        _changeZombieTypeFromSheet(
+                          sheetContext: ctx,
+                          index: liveIndex,
+                          zombie: currentZombie,
+                          direction: direction,
+                          rowValue: rowValue,
+                          levelValue: levelValue,
+                          isElite: isElite,
+                        );
+                      },
                     ),
                     const SizedBox(height: 12),
                     EditorResponsiveInputField(
@@ -529,13 +632,10 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                             onChanged: (v) {
                               if (v == null) return;
                               setModalState(() => rowValue = v);
-                              _updateZombie(
-                                index,
-                                zombie.copyWith(
-                                  row: v == 0 ? null : v,
+                              updateCurrentZombie(
+                                currentZombie.copyWith(
+                                  row: v,
                                   clearRow: v == 0,
-                                  direction: fromLeft ? 'left' : null,
-                                  clearDirection: !fromLeft,
                                 ),
                               );
                             },
@@ -554,13 +654,10 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                         value: levelValue == 0,
                         onChanged: (v) {
                           setModalState(() => levelValue = v ? 0 : 1);
-                          _updateZombie(
-                            index,
-                            zombie.copyWith(
+                          updateCurrentZombie(
+                            currentZombie.copyWith(
                               level: v ? null : 1,
                               clearLevel: v,
-                              direction: fromLeft ? 'left' : null,
-                              clearDirection: !fromLeft,
                             ),
                           );
                         },
@@ -582,13 +679,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                               onChanged: (v) {
                                 final newLevel = v.round();
                                 setModalState(() => levelValue = newLevel);
-                                _updateZombie(
-                                  index,
-                                  zombie.copyWith(
-                                    level: newLevel,
-                                    direction: fromLeft ? 'left' : null,
-                                    clearDirection: !fromLeft,
-                                  ),
+                                updateCurrentZombie(
+                                  currentZombie.copyWith(level: newLevel),
                                 );
                               },
                             ),
@@ -600,12 +692,14 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                       title: Text(l10n?.zombieFromLeft ?? 'From left'),
                       value: fromLeft,
                       onChanged: (v) {
-                        setModalState(() => fromLeft = v);
-                        _updateZombie(
-                          index,
-                          zombie.copyWith(
-                            direction: v ? 'left' : null,
-                            clearDirection: !v,
+                        setModalState(() {
+                          fromLeft = v;
+                          direction = ZombieSpawnData.directionForEntrySide(v);
+                        });
+                        updateCurrentZombie(
+                          currentZombie.copyWith(
+                            direction: direction,
+                            clearDirection: direction == null,
                           ),
                         );
                       },
@@ -616,9 +710,8 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                         titles: titles,
                         onChanged: (next) {
                           setModalState(() => titles = List<String>.from(next));
-                          _updateZombie(
-                            index,
-                            zombie.copyWith(
+                          updateCurrentZombie(
+                            currentZombie.copyWith(
                               titles: next,
                               clearTitles: next.isEmpty,
                             ),
@@ -632,18 +725,7 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                         Expanded(
                           child: OutlinedButton.icon(
                             onPressed: () {
-                              final copy = zombie.copyWith(
-                                row: rowValue == 0 ? null : rowValue,
-                                clearRow: rowValue == 0,
-                                level: isElite
-                                    ? null
-                                    : (levelValue == 0 ? null : levelValue),
-                                clearLevel: isElite || levelValue == 0,
-                                direction: fromLeft ? 'left' : null,
-                                clearDirection: !fromLeft,
-                                titles: titles,
-                                clearTitles: titles.isEmpty,
-                              );
+                              final copy = currentZombie.copyWith();
                               final list = List<ZombieSpawnData>.from(_zombies)
                                 ..add(copy);
                               _updateZombies(list, sortRows: true);
@@ -662,13 +744,15 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                               ).colorScheme.error,
                             ),
                             onPressed: () {
+                              final liveIndex = currentZombieIndex();
+                              if (liveIndex < 0) return;
                               CustomZombieLevelUtils.handleDeleteFromBottomSheet(
                                 sheetContext: ctx,
                                 parentContext: context,
                                 levelFile: widget.levelFile,
-                                zombieTypeRtid: zombie.type,
+                                zombieTypeRtid: currentZombie.type,
                                 onRemove: (eraseOrphan) => _removeZombie(
-                                  index,
+                                  liveIndex,
                                   eraseOrphanProperties: eraseOrphan,
                                 ),
                               );
@@ -684,12 +768,14 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                       CustomZombiePropertiesSheetActions(
                         levelFile: widget.levelFile,
                         baseType: baseType,
-                        currentRtid: zombie.type,
+                        currentRtid: currentZombie.type,
                         onEditCustomZombie: widget.onEditCustomZombie,
                         onInjectCustomZombie: widget.onInjectCustomZombie,
                         onCloseSheet: () => Navigator.pop(ctx),
                         onRtidSelected: (rtid) {
-                          _updateZombie(index, zombie.copyWith(type: rtid));
+                          updateCurrentZombie(
+                            currentZombie.copyWith(type: rtid),
+                          );
                         },
                       ),
                   ],
@@ -793,15 +879,25 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
               const SizedBox(height: 16),
               if (widget.isGroundSpawner) _buildColumnRangeCard(theme, l10n),
               if (widget.isGroundSpawner) const SizedBox(height: 16),
-              if (!widget.isGroundSpawner) ...[
-                JitterOffsetsBindingCard(
-                  levelFile: widget.levelFile,
-                  currentValue: (_data as WaveActionData).jitterOffsets,
-                  onChanged: _updateJitterOffsets,
-                  onManage: _openJitterOffsetsPresets,
-                ),
-                const SizedBox(height: 16),
-              ],
+              JitterOffsetsBindingCard(
+                levelFile: widget.levelFile,
+                currentValue: widget.isGroundSpawner
+                    ? (_data as SpawnZombiesFromGroundData).jitterOffsets
+                    : (_data as WaveActionData).jitterOffsets,
+                onChanged: _updateJitterOffsets,
+                onManage: _openJitterOffsetsPresets,
+                enabled: _fixedOffset == 0,
+                overrideWarning: _fixedOffset != 0
+                    ? (l10n?.jitterOffsetsFixedOffsetOverrideWarning ??
+                          'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.')
+                    : null,
+              ),
+              const SizedBox(height: 16),
+              FixedOffsetAdvancedSettingsCard(
+                value: _fixedOffset,
+                onChanged: _updateFixedOffset,
+              ),
+              const SizedBox(height: 16),
               if (!widget.isGroundSpawner && _supportsLevelJamMusic) ...[
                 _buildNotificationCard(theme, l10n),
                 const SizedBox(height: 16),
@@ -846,6 +942,9 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                       final n = int.tryParse(v);
                       if (n != null) {
                         _data = SpawnZombiesFromGroundData(
+                          jitterOffsets: d.jitterOffsets,
+                          zombieSpawnPattern: d.zombieSpawnPattern,
+                          fixedOffset: d.fixedOffset,
                           columnStart: n,
                           columnEnd: d.columnEnd,
                           additionalPlantFood: d.additionalPlantFood,
@@ -867,6 +966,9 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
                       final n = int.tryParse(v);
                       if (n != null) {
                         _data = SpawnZombiesFromGroundData(
+                          jitterOffsets: d.jitterOffsets,
+                          zombieSpawnPattern: d.zombieSpawnPattern,
+                          fixedOffset: d.fixedOffset,
                           columnStart: d.columnStart,
                           columnEnd: n,
                           additionalPlantFood: d.additionalPlantFood,

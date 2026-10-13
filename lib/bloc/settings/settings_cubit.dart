@@ -19,6 +19,9 @@ enum AutosaveTarget {
 }
 
 class SettingsCubit extends Cubit<SettingsState> {
+  static const promptForAliasOnCreatePreferenceKey =
+      'prompt_for_alias_on_create';
+
   SettingsCubit(this._prefs) : super(_initialState(_prefs)) {
     setDocumentLanguage(state.locale.languageCode);
   }
@@ -70,6 +73,8 @@ class SettingsCubit extends Cubit<SettingsState> {
         for (final target in AutosaveTarget.values)
           if (prefs.getBool(target.preferenceKey) ?? false) target,
       }),
+      promptForAliasOnCreate:
+          prefs.getBool(promptForAliasOnCreatePreferenceKey) ?? false,
     );
   }
 
@@ -110,6 +115,11 @@ class SettingsCubit extends Cubit<SettingsState> {
     for (final target in AutosaveTarget.values) {
       _prefs.setBool(target.preferenceKey, targets.contains(target));
     }
+  }
+
+  void setPromptForAliasOnCreate(bool enabled) {
+    emit(state.copyWith(promptForAliasOnCreate: enabled));
+    _prefs.setBool(promptForAliasOnCreatePreferenceKey, enabled);
   }
 
   void setInterfaceMenuActions(

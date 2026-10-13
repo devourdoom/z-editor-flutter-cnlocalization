@@ -34,6 +34,7 @@ class ZombieFishWaveEventScreen extends StatefulWidget {
     this.onInjectCustomZombie,
     this.onEditCustomFish,
     this.onInjectCustomFish,
+    this.onOpenReferencedEvent,
   });
 
   final String rtid;
@@ -48,6 +49,7 @@ class ZombieFishWaveEventScreen extends StatefulWidget {
   final String? Function(String baseType)? onInjectCustomZombie;
   final void Function(String rtid)? onEditCustomFish;
   final String? Function(String baseFishAlias)? onInjectCustomFish;
+  final Future<void> Function(String rtid)? onOpenReferencedEvent;
 
   @override
   State<ZombieFishWaveEventScreen> createState() =>
@@ -106,6 +108,22 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
   void _updateJitterOffsets(String? value) {
     _data = SpawnZombiesFishWaveActionPropsData(
       jitterOffsets: value,
+      zombieSpawnPattern: _data.zombieSpawnPattern,
+      fixedOffset: _data.fixedOffset,
+      notificationEvents: _data.notificationEvents,
+      additionalPlantFood: _data.additionalPlantFood,
+      spawnPlantName: _data.spawnPlantName,
+      zombies: _data.zombies,
+      fishes: _data.fishes,
+    );
+    _sync();
+  }
+
+  void _updateFixedOffset(num value) {
+    _data = SpawnZombiesFishWaveActionPropsData(
+      jitterOffsets: _data.jitterOffsets,
+      zombieSpawnPattern: _data.zombieSpawnPattern,
+      fixedOffset: value == 0 ? null : value,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: _data.additionalPlantFood,
       spawnPlantName: _data.spawnPlantName,
@@ -116,9 +134,9 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
   }
 
   Future<void> _openJitterOffsetsPresets() async {
-    await Navigator.push<void>(
+    final selectedEventRtid = await Navigator.push<String>(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<String>(
         builder: (context) => JitterOffsetsPresetsScreen(
           levelFile: widget.levelFile,
           onChanged: widget.onChanged,
@@ -127,6 +145,18 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
       ),
     );
     if (!mounted) return;
+    final currentAlias = RtidParser.parse(widget.rtid)?.alias;
+    final selectedAlias = selectedEventRtid == null
+        ? null
+        : RtidParser.parse(selectedEventRtid)?.alias;
+    if (selectedEventRtid != null &&
+        selectedAlias != currentAlias &&
+        widget.onOpenReferencedEvent != null) {
+      final openReferencedEvent = widget.onOpenReferencedEvent!;
+      await Navigator.of(context).maybePop();
+      await openReferencedEvent(selectedEventRtid);
+      return;
+    }
     _loadData();
     setState(() {});
   }
@@ -169,6 +199,8 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     }
     _data = SpawnZombiesFishWaveActionPropsData(
       jitterOffsets: _data.jitterOffsets,
+      zombieSpawnPattern: _data.zombieSpawnPattern,
+      fixedOffset: _data.fixedOffset,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: _data.additionalPlantFood,
       spawnPlantName: _data.spawnPlantName,
@@ -222,6 +254,8 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
           onChanged: (newFishes) {
             _data = SpawnZombiesFishWaveActionPropsData(
               jitterOffsets: _data.jitterOffsets,
+              zombieSpawnPattern: _data.zombieSpawnPattern,
+              fixedOffset: _data.fixedOffset,
               notificationEvents: _data.notificationEvents,
               additionalPlantFood: _data.additionalPlantFood,
               spawnPlantName: _data.spawnPlantName,
@@ -280,10 +314,11 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                   body: l10n?.eventHelpZombieFishWaveBody ?? '',
                 ),
                 HelpSectionData(
-                  title: l10n?.jitterOffsetsEventLabel ?? 'Spawn Jitter Offset',
+                  title:
+                      l10n?.jitterOffsetsEventLabel ?? 'Spawn Position Offset',
                   body:
                       l10n?.jitterOffsetsEventDescription ??
-                      'Controls the distance between the off-lawn spawn positions of zombies in the same row. Without a bound preset, the event uses the game\'s default parameters and still spawns normally.',
+                      'Controls the horizontal offset added to each zombie\'s base spawn position within the same event and row. Facing determines the offset direction.',
                 ),
                 HelpSectionData(
                   title: l10n?.fishPropertiesGrid ?? 'Fish placement',
@@ -326,6 +361,16 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                 currentValue: _data.jitterOffsets,
                 onChanged: _updateJitterOffsets,
                 onManage: _openJitterOffsetsPresets,
+                enabled: (_data.fixedOffset ?? 0) == 0,
+                overrideWarning: (_data.fixedOffset ?? 0) != 0
+                    ? (l10n?.jitterOffsetsFixedOffsetOverrideWarning ??
+                          'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.')
+                    : null,
+              ),
+              const SizedBox(height: 16),
+              FixedOffsetAdvancedSettingsCard(
+                value: _data.fixedOffset,
+                onChanged: _updateFixedOffset,
               ),
               const SizedBox(height: 16),
               Text(
@@ -421,12 +466,14 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     final level = _batchLevel.round();
     final zombies = _data.zombies.map((z) {
       if (_isElite(z)) {
-        return ZombieSpawnData(type: z.type, row: z.row, level: null);
+        return z.copyWith(clearLevel: true);
       }
-      return ZombieSpawnData(type: z.type, row: z.row, level: level);
+      return z.copyWith(level: level);
     }).toList();
     _data = SpawnZombiesFishWaveActionPropsData(
       jitterOffsets: _data.jitterOffsets,
+      zombieSpawnPattern: _data.zombieSpawnPattern,
+      fixedOffset: _data.fixedOffset,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: _data.additionalPlantFood,
       spawnPlantName: _data.spawnPlantName,
@@ -445,6 +492,8 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     }
     _data = SpawnZombiesFishWaveActionPropsData(
       jitterOffsets: _data.jitterOffsets,
+      zombieSpawnPattern: _data.zombieSpawnPattern,
+      fixedOffset: _data.fixedOffset,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: clamped == 0 ? null : clamped,
       spawnPlantName: currentPlants.isEmpty ? null : currentPlants,
@@ -463,6 +512,8 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     plants.add(id);
     _data = SpawnZombiesFishWaveActionPropsData(
       jitterOffsets: _data.jitterOffsets,
+      zombieSpawnPattern: _data.zombieSpawnPattern,
+      fixedOffset: _data.fixedOffset,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: total,
       spawnPlantName: plants,
@@ -491,6 +542,8 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     }
     _data = SpawnZombiesFishWaveActionPropsData(
       jitterOffsets: _data.jitterOffsets,
+      zombieSpawnPattern: _data.zombieSpawnPattern,
+      fixedOffset: _data.fixedOffset,
       notificationEvents: _data.notificationEvents,
       additionalPlantFood: plants.isNotEmpty ? plants.length : null,
       spawnPlantName: plants.isEmpty ? null : plants,
@@ -640,6 +693,18 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
     final info = ZombieRepository().getZombieById(baseType);
     final isCustom = _isCustomZombie(zombie);
     final isElite = _isElite(zombie);
+    var currentZombie = zombie;
+
+    int currentZombieIndex() => _data.zombies.indexWhere(
+      (candidate) => identical(candidate, currentZombie),
+    );
+
+    void updateCurrentZombie(ZombieSpawnData updated) {
+      final liveIndex = currentZombieIndex();
+      if (liveIndex < 0) return;
+      currentZombie = updated;
+      _updateZombie(liveIndex, updated);
+    }
 
     showZombieSpawnEditSheet(
       context: context,
@@ -657,7 +722,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
       isElite: isElite,
       rowValue: zombie.row ?? 0,
       levelValue: zombie.level ?? 1,
-      fromLeft: zombie.direction == 'left',
+      fromLeft: ZombieSpawnData.entersFromLeft(currentZombie.direction),
       onChangeType: () {
         Future.microtask(() async {
           if (!mounted) return;
@@ -665,59 +730,34 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
           if (!mounted || selected == null) return;
           final aliases = ZombieRepository().buildZombieAliases(selected);
           final rtid = RtidParser.build(aliases, 'ZombieTypes');
-          _updateZombie(
-            index,
-            ZombieSpawnData(
-              type: rtid,
-              row: zombie.row,
-              level: zombie.level,
-              direction: zombie.direction == 'left' ? 'left' : null,
-            ),
-          );
+          updateCurrentZombie(currentZombie.copyWith(type: rtid));
         });
       },
       onRowChanged: (row) {
-        _updateZombie(
-          index,
-          ZombieSpawnData(
-            type: zombie.type,
-            row: row == 0 ? null : row,
-            level: zombie.level,
-            direction: zombie.direction == 'left' ? 'left' : null,
-          ),
+        updateCurrentZombie(
+          currentZombie.copyWith(row: row, clearRow: row == 0),
         );
       },
       onDirectionChanged: (fromLeft) {
-        _updateZombie(
-          index,
-          ZombieSpawnData(
-            type: zombie.type,
-            row: zombie.row,
-            level: zombie.level,
-            direction: fromLeft ? 'left' : null,
+        final direction = ZombieSpawnData.directionForEntrySide(fromLeft);
+        updateCurrentZombie(
+          currentZombie.copyWith(
+            direction: direction,
+            clearDirection: direction == null,
           ),
         );
       },
       onLevelChanged: (level) {
-        _updateZombie(
-          index,
-          ZombieSpawnData(
-            type: zombie.type,
-            row: zombie.row,
-            level: level == 0 ? null : level,
-            direction: zombie.direction == 'left' ? 'left' : null,
-          ),
+        updateCurrentZombie(
+          currentZombie.copyWith(level: level, clearLevel: level == 0),
         );
       },
       onCopy: () {
-        final copy = ZombieSpawnData(
-          type: zombie.type,
-          row: zombie.row,
-          level: zombie.level,
-          direction: zombie.direction == 'left' ? 'left' : null,
-        );
+        final copy = currentZombie.copyWith();
         _data = SpawnZombiesFishWaveActionPropsData(
           jitterOffsets: _data.jitterOffsets,
+          zombieSpawnPattern: _data.zombieSpawnPattern,
+          fixedOffset: _data.fixedOffset,
           notificationEvents: _data.notificationEvents,
           additionalPlantFood: _data.additionalPlantFood,
           spawnPlantName: _data.spawnPlantName,
@@ -728,13 +768,15 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
         _sync();
       },
       onDelete: (sheetContext) {
+        final liveIndex = currentZombieIndex();
+        if (liveIndex < 0) return;
         CustomZombieLevelUtils.handleDeleteFromBottomSheet(
           sheetContext: sheetContext,
           parentContext: context,
           levelFile: widget.levelFile,
-          zombieTypeRtid: zombie.type,
+          zombieTypeRtid: currentZombie.type,
           onRemove: (eraseOrphan) =>
-              _removeZombie(index, eraseOrphanProperties: eraseOrphan),
+              _removeZombie(liveIndex, eraseOrphanProperties: eraseOrphan),
         );
       },
       customPropertiesActions:
@@ -750,15 +792,7 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                 if (mounted) Navigator.of(context).pop();
               },
               onRtidSelected: (rtid) {
-                _updateZombie(
-                  index,
-                  ZombieSpawnData(
-                    type: rtid,
-                    row: zombie.row,
-                    level: zombie.level,
-                    direction: zombie.direction == 'left' ? 'left' : null,
-                  ),
-                );
+                updateCurrentZombie(currentZombie.copyWith(type: rtid));
               },
             )
           : null,

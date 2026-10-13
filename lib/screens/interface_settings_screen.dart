@@ -1,7 +1,7 @@
-import 'dart:math' as math;
-
 import 'package:c_editor/bloc/settings/settings_cubit.dart';
 import 'package:c_editor/data/interface_menu_config.dart';
+import 'package:c_editor/data/registry/module_registry.dart';
+import 'package:c_editor/screens/editor/tabs/level_settings_tab.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/plugins/plugin_host_hooks.dart';
 import 'package:c_editor/plugins/plugin_manager.dart';
@@ -69,6 +69,17 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
       return BlocBuilder<SettingsCubit, SettingsState>(
         builder: (context, settings) {
           _pendingUiScale ??= settings.uiScale;
+          final preferenceSections = <Widget>[
+            if (_showSettingOnPage(settings, InterfaceMenuActionIds.language))
+              _buildLanguageSection(context, l10n, settings),
+            if (_showSettingOnPage(settings, InterfaceMenuActionIds.theme))
+              _buildThemeSection(context, l10n, settings),
+            if (_showSettingOnPage(settings, InterfaceMenuActionIds.uiScale))
+              _buildScaleSection(context, l10n, settings),
+            if (_showSettingOnPage(settings, InterfaceMenuActionIds.autosave))
+              _buildAutosaveSection(context, l10n, settings),
+            _buildAliasPromptSection(context, l10n, settings),
+          ];
           return Scaffold(
             appBar: AppBar(title: Text(l10n.interfaceSettings)),
             body: Scrollbar(
@@ -86,13 +97,14 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        _buildLanguageSection(context, l10n, settings),
-                        const SizedBox(height: 12),
-                        _buildThemeSection(context, l10n, settings),
-                        const SizedBox(height: 12),
-                        _buildScaleSection(context, l10n, settings),
-                        const SizedBox(height: 12),
-                        _buildAutosaveSection(context, l10n, settings),
+                        for (
+                          var index = 0;
+                          index < preferenceSections.length;
+                          index++
+                        ) ...[
+                          if (index > 0) const SizedBox(height: 12),
+                          preferenceSections[index],
+                        ],
                         const SizedBox(height: 24),
                         _buildMenuCustomization(context, l10n, settings),
                       ],
@@ -110,6 +122,21 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
     return ListenableBuilder(
       listenable: pluginManager,
       builder: (context, _) => buildPage(),
+    );
+  }
+
+  bool _showSettingOnPage(SettingsState settings, String actionId) {
+    return const [
+      InterfaceMenuSurface.workspace,
+      InterfaceMenuSurface.levelEditor,
+    ].any(
+      (surface) => settings
+          .interfaceMenuActionsFor(surface)
+          .any(
+            (action) =>
+                action.id == actionId &&
+                action.placement == InterfaceMenuPlacement.settingsPage,
+          ),
     );
   }
 
@@ -184,9 +211,7 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
     final theme = Theme.of(context);
 
     return _SettingsSection(
-      icon: settings.themeMode == ThemeMode.dark
-          ? Icons.dark_mode
-          : Icons.light_mode,
+      icon: Icons.brightness_6_outlined,
       title: l10n.toggleTheme,
       child: Container(
         padding: const EdgeInsets.all(8),
@@ -196,8 +221,7 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
         ),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final iconOnly = constraints.maxWidth < 380;
-            final selector = SegmentedButton<ThemeMode>(
+            return SegmentedButton<ThemeMode>(
               showSelectedIcon: false,
               expandedInsets: EdgeInsets.zero,
               segments: [
@@ -205,45 +229,23 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
                   value: ThemeMode.light,
                   icon: Semantics(
                     label: l10n.lightTheme,
-                    child: const Icon(Icons.arrow_back),
+                    child: const Icon(Icons.light_mode),
                   ),
-                  label: iconOnly ? null : Text(l10n.lightTheme),
+                  label: Text(l10n.lightTheme),
                 ),
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.dark,
                   icon: Semantics(
                     label: l10n.darkTheme,
-                    child: const Icon(Icons.arrow_forward),
+                    child: const Icon(Icons.dark_mode),
                   ),
-                  label: iconOnly ? null : Text(l10n.darkTheme),
+                  label: Text(l10n.darkTheme),
                 ),
               ],
               selected: {settings.themeMode},
               onSelectionChanged: (selection) {
                 context.read<SettingsCubit>().setThemeMode(selection.first);
               },
-            );
-            if (constraints.maxWidth < 500) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                    settings.themeMode == ThemeMode.dark
-                        ? l10n.darkTheme
-                        : l10n.lightTheme,
-                    style: theme.textTheme.bodyLarge,
-                  ),
-                  const SizedBox(height: 8),
-                  selector,
-                ],
-              );
-            }
-            return Row(
-              children: [
-                Text(l10n.toggleTheme, style: theme.textTheme.bodyLarge),
-                const SizedBox(width: 12),
-                Expanded(child: selector),
-              ],
             );
           },
         ),
@@ -367,6 +369,25 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
     );
   }
 
+  Widget _buildAliasPromptSection(
+    BuildContext context,
+    AppLocalizations l10n,
+    SettingsState settings,
+  ) {
+    return _SettingsSection(
+      icon: Icons.drive_file_rename_outline,
+      title: l10n.aliasPromptOnCreate,
+      child: SwitchListTile.adaptive(
+        key: const ValueKey('interfaceSettingsAliasPromptOnCreate'),
+        value: settings.promptForAliasOnCreate,
+        onChanged: context.read<SettingsCubit>().setPromptForAliasOnCreate,
+        title: Text(l10n.aliasPromptOnCreate),
+        subtitle: Text(l10n.aliasPromptOnCreateDescription),
+        contentPadding: EdgeInsets.zero,
+      ),
+    );
+  }
+
   Widget _buildMenuCustomization(
     BuildContext context,
     AppLocalizations l10n,
@@ -425,11 +446,13 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
                 index: index,
                 icon: _actionIcon(action.id, settings),
                 label: _actionLabel(action.id, l10n),
-                placement: action.placement == InterfaceMenuPlacement.toolbar
-                    ? InterfaceMenuPlacement.toolbar
-                    : InterfaceMenuPlacement.overflow,
+                placement: action.placement,
                 toolbarLabel: l10n.menuPlacementToolbar,
                 overflowLabel: l10n.menuPlacementOverflow,
+                settingsPageLabel: l10n.menuPlacementSettingsPage,
+                allowSettingsPage: supportsInterfaceSettingsPagePlacement(
+                  action.id,
+                ),
                 onPlacementChanged: (placement) {
                   context.read<SettingsCubit>().setInterfaceMenuActionPlacement(
                     _selectedSurface,
@@ -531,10 +554,7 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
   IconData _actionIcon(String id, SettingsState settings) {
     return switch (id) {
       InterfaceMenuActionIds.language => Icons.language,
-      InterfaceMenuActionIds.theme =>
-        settings.themeMode == ThemeMode.dark
-            ? Icons.light_mode
-            : Icons.dark_mode,
+      InterfaceMenuActionIds.theme => Icons.brightness_6_outlined,
       InterfaceMenuActionIds.uiScale => Icons.aspect_ratio,
       InterfaceMenuActionIds.autosave => Icons.save_outlined,
       InterfaceMenuActionIds.interfaceSettings => Icons.tune,
@@ -645,6 +665,7 @@ class _ScalePreview extends StatelessWidget {
     final inheritedScale = AppUiScale.of(context);
     final localScale = scale / (inheritedScale <= 0 ? 1 : inheritedScale);
     return Container(
+      key: const ValueKey('interfaceSettingsUiScalePreview'),
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(12),
@@ -663,57 +684,58 @@ class _ScalePreview extends StatelessWidget {
           const SizedBox(height: 8),
           LayoutBuilder(
             builder: (context, constraints) {
-              final previewWidth = math.min(240.0, constraints.maxWidth / 1.5);
-              return SizedBox(
-                height: 124,
-                child: Center(
-                  child: Transform.scale(
-                    scale: localScale,
-                    transformHitTests: false,
-                    child: SizedBox(
-                      width: previewWidth,
-                      child: Card(
-                        margin: EdgeInsets.zero,
-                        elevation: 1,
-                        child: Padding(
-                          padding: const EdgeInsets.all(12),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 18,
-                                backgroundColor:
-                                    theme.colorScheme.primaryContainer,
-                                child: Icon(
-                                  Icons.text_fields,
-                                  color: theme.colorScheme.onPrimaryContainer,
-                                ),
-                              ),
-                              const SizedBox(width: 10),
-                              Expanded(
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      l10n.uiScalePreviewTitle,
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: theme.textTheme.titleSmall,
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      l10n.uiScalePreviewDescription,
-                                      maxLines: 2,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: theme.textTheme.bodySmall,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+              // Relayout at the draft zoom before painting it, matching the
+              // full-width module list used by the level settings screen.
+              final logicalWidth = constraints.maxWidth / localScale;
+              return FittedBox(
+                fit: BoxFit.fitWidth,
+                alignment: Alignment.topLeft,
+                child: SizedBox(
+                  key: const ValueKey('interfaceSettingsPreviewLayout'),
+                  width: logicalWidth,
+                  child: MediaQuery(
+                    data: MediaQuery.of(context).copyWith(
+                      size: Size(
+                        logicalWidth,
+                        MediaQuery.sizeOf(context).height,
                       ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (final objClass in const [
+                          'SeedBankProperties',
+                          'SunDropperProperties',
+                        ])
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: Builder(
+                              builder: (context) {
+                                final meta = ModuleRegistry.getMetadata(
+                                  objClass,
+                                );
+                                return LevelSettingsModuleTile(
+                                  info: ModuleUIInfo(
+                                    rtid: '',
+                                    alias: meta.defaultAlias,
+                                    objClass: objClass,
+                                    friendlyName: meta.getTitle(context),
+                                    description: meta.getDescription(context),
+                                    icon: meta.icon,
+                                    assetIconPath: meta.assetIconPath,
+                                    isCore: true,
+                                    canEdit: false,
+                                  ),
+                                  isCore: true,
+                                  reorderIndex: 0,
+                                  removeTooltip: l10n.removeModule,
+                                  preview: true,
+                                  onDelete: () {},
+                                );
+                              },
+                            ),
+                          ),
+                      ],
                     ),
                   ),
                 ),
@@ -804,6 +826,8 @@ class _MenuActionTile extends StatelessWidget {
     required this.placement,
     required this.toolbarLabel,
     required this.overflowLabel,
+    required this.settingsPageLabel,
+    required this.allowSettingsPage,
     required this.onPlacementChanged,
   });
 
@@ -813,6 +837,8 @@ class _MenuActionTile extends StatelessWidget {
   final InterfaceMenuPlacement placement;
   final String toolbarLabel;
   final String overflowLabel;
+  final String settingsPageLabel;
+  final bool allowSettingsPage;
   final ValueChanged<InterfaceMenuPlacement> onPlacementChanged;
 
   @override
@@ -825,12 +851,16 @@ class _MenuActionTile extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
         child: LayoutBuilder(
           builder: (context, constraints) {
+            final useCompactPlacement =
+                constraints.maxWidth < 680 || allowSettingsPage;
             final placementControl = _PlacementControl(
               placement: placement,
               toolbarLabel: toolbarLabel,
               overflowLabel: overflowLabel,
+              settingsPageLabel: settingsPageLabel,
+              allowSettingsPage: allowSettingsPage,
               onChanged: onPlacementChanged,
-              compact: constraints.maxWidth < 520,
+              compact: useCompactPlacement,
             );
             final title = Row(
               children: [
@@ -852,17 +882,10 @@ class _MenuActionTile extends StatelessWidget {
                 ),
               ],
             );
-            if (constraints.maxWidth < 520) {
+            if (useCompactPlacement) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  title,
-                  const SizedBox(height: 6),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: placementControl,
-                  ),
-                ],
+                children: [title, const SizedBox(height: 6), placementControl],
               );
             }
             return Row(
@@ -884,6 +907,8 @@ class _PlacementControl extends StatelessWidget {
     required this.placement,
     required this.toolbarLabel,
     required this.overflowLabel,
+    required this.settingsPageLabel,
+    required this.allowSettingsPage,
     required this.onChanged,
     required this.compact,
   });
@@ -891,6 +916,8 @@ class _PlacementControl extends StatelessWidget {
   final InterfaceMenuPlacement placement;
   final String toolbarLabel;
   final String overflowLabel;
+  final String settingsPageLabel;
+  final bool allowSettingsPage;
   final ValueChanged<InterfaceMenuPlacement> onChanged;
   final bool compact;
 
@@ -899,29 +926,57 @@ class _PlacementControl extends StatelessWidget {
     if (compact) {
       return DropdownButton<InterfaceMenuPlacement>(
         value: placement,
+        isExpanded: true,
         items: [
           DropdownMenuItem(
             value: InterfaceMenuPlacement.toolbar,
             child: Row(
-              mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icons.push_pin_outlined, size: 18),
                 const SizedBox(width: 6),
-                Text(toolbarLabel),
+                Expanded(
+                  child: Text(
+                    toolbarLabel,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),
           DropdownMenuItem(
             value: InterfaceMenuPlacement.overflow,
             child: Row(
-              mainAxisSize: MainAxisSize.min,
               children: [
                 const Icon(Icons.more_vert, size: 18),
                 const SizedBox(width: 6),
-                Text(overflowLabel),
+                Expanded(
+                  child: Text(
+                    overflowLabel,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
           ),
+          if (allowSettingsPage)
+            DropdownMenuItem(
+              value: InterfaceMenuPlacement.settingsPage,
+              child: Row(
+                children: [
+                  const Icon(Icons.tune, size: 18),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      settingsPageLabel,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ],
+              ),
+            ),
         ],
         onChanged: (value) {
           if (value != null) onChanged(value);
@@ -941,6 +996,12 @@ class _PlacementControl extends StatelessWidget {
           icon: const Icon(Icons.more_vert),
           label: Text(overflowLabel),
         ),
+        if (allowSettingsPage)
+          ButtonSegment(
+            value: InterfaceMenuPlacement.settingsPage,
+            icon: const Icon(Icons.tune),
+            label: Text(settingsPageLabel),
+          ),
       ],
       selected: {placement},
       onSelectionChanged: (selection) => onChanged(selection.first),

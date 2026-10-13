@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:c_editor/data/custom_stage_level_utils.dart';
 import 'package:c_editor/data/level_parser.dart';
+import 'package:c_editor/data/music_suffix_catalog.dart';
 import 'package:c_editor/data/music_type_catalog.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/rtid_parser.dart';
@@ -223,11 +224,61 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
             musicModule?.suffixNameKey ?? 'musicSuffix_$displayMusicSuffix',
             displayMusicSuffix,
           );
-    final musicPickerTitle = displayMusicSuffix.isEmpty
-        ? '${l10n?.currentMusicModule ?? 'Current music module'} '
-              '(MusicSuffix): —'
-        : '${l10n?.currentMusicModule ?? 'Current music module'} '
-              '(MusicSuffix): $musicSuffixName ($displayMusicSuffix)';
+    final musicSuffixCode = displayMusicSuffix.isEmpty
+        ? '—'
+        : displayMusicSuffix;
+    final musicSuffixIconAsset = MusicSuffixCatalog.iconAsset(
+      displayMusicSuffix,
+    );
+    final musicPickerHeader = Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: AssetImageWidget(
+            assetPath: musicSuffixIconAsset,
+            altCandidates: imageAltCandidates(musicSuffixIconAsset),
+            width: 72,
+            height: 72,
+            fit: BoxFit.cover,
+          ),
+        ),
+        const SizedBox(width: 14),
+        Expanded(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${l10n?.currentMusicModule ?? 'Current music module'} '
+                '(MusicSuffix)',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                musicSuffixName,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                musicSuffixCode,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: theme.colorScheme.onSurfaceVariant,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
     final musicPickerNotes = [
       for (final noteKey in musicModule?.noteKeys ?? const <String>[])
         ResourceNames.lookupOrFallback(context, noteKey, ''),
@@ -261,7 +312,6 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
             onPressed: () => showEditorHelpDialog(
               context,
               title: l10n?.levelBasicInfoHelpTitle ?? 'Level Definition Basics',
-              useNeutralSectionTitles: true,
               sections: [
                 HelpSectionData(
                   title: l10n?.overview ?? 'Overview',
@@ -500,7 +550,10 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                 padding: const EdgeInsets.all(16),
                 child: SeparatedOptionPickerField<String>(
                   labelText: '${l10n?.musicType ?? 'Music type'} (MusicType)',
-                  sheetTitle: musicPickerTitle,
+                  sheetTitle:
+                      '${l10n?.currentMusicModule ?? 'Current music module'} '
+                      '(MusicSuffix)',
+                  sheetHeader: musicPickerHeader,
                   sheetSubtitleLines: musicPickerNotes,
                   value: currentMusicType,
                   items: [

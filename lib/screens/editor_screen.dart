@@ -489,6 +489,9 @@ class _EditorScreenState extends State<EditorScreen> {
   }
 
   Future<String?> _promptCustomStageAlias(String suggested) async {
+    if (!context.read<SettingsCubit>().state.promptForAliasOnCreate) {
+      return suggested;
+    }
     return showDialog<String>(
       context: context,
       builder: (ctx) => _CustomStageAliasPromptDialog(initialAlias: suggested),
@@ -867,6 +870,7 @@ class _EditorScreenState extends State<EditorScreen> {
           title: l10n.addModuleAliasTitle,
           objClass: meta.objClass,
           levelFile: _ec.state.levelFile!,
+          forCreation: true,
         );
         if (chosenAlias == null || !mounted) return;
       }
@@ -1333,6 +1337,8 @@ class _EditorScreenState extends State<EditorScreen> {
             onInjectCustomZombie: _injectCustomZombie,
             onEditCustomFish: _handleEditCustomFish,
             onInjectCustomFish: _injectCustomFish,
+            onOpenReferencedEvent: (targetRtid) =>
+                _handleEditEvent(targetRtid, 0),
             onRequestPlantSelection: (onSelected) {
               Navigator.push(
                 context,
@@ -1396,6 +1402,8 @@ class _EditorScreenState extends State<EditorScreen> {
             },
             onEditCustomZombie: _handleEditCustomZombie,
             onInjectCustomZombie: _injectCustomZombie,
+            onOpenReferencedEvent: (targetRtid) =>
+                _handleEditEvent(targetRtid, 0),
             onRequestPlantSelection: (onSelected) {
               Navigator.push(
                 context,
@@ -1459,6 +1467,8 @@ class _EditorScreenState extends State<EditorScreen> {
             },
             onEditCustomZombie: _handleEditCustomZombie,
             onInjectCustomZombie: _injectCustomZombie,
+            onOpenReferencedEvent: (targetRtid) =>
+                _handleEditEvent(targetRtid, 0),
             onRequestPlantSelection: (onSelected) {
               Navigator.push(
                 context,
@@ -1744,6 +1754,8 @@ class _EditorScreenState extends State<EditorScreen> {
             },
             onEditCustomZombie: _handleEditCustomZombie,
             onInjectCustomZombie: _injectCustomZombie,
+            onOpenReferencedEvent: (targetRtid) =>
+                _handleEditEvent(targetRtid, 0),
             onRequestGridItemSelection: (onSelected) {
               Navigator.push(
                 context,
@@ -2041,6 +2053,7 @@ class _EditorScreenState extends State<EditorScreen> {
       title: l10n.addEventAliasTitle,
       objClass: meta.defaultObjClass,
       levelFile: _ec.state.levelFile!,
+      forCreation: true,
     );
     if (newAlias == null || !mounted) return;
 
@@ -2109,12 +2122,12 @@ class _EditorScreenState extends State<EditorScreen> {
     );
   }
 
-  void _handleEditJitterOffsets() {
+  Future<void> _handleEditJitterOffsets() async {
     final levelFile = _ec.state.levelFile;
     if (levelFile == null) return;
-    Navigator.push<void>(
+    final selectedEventRtid = await Navigator.push<String>(
       context,
-      MaterialPageRoute(
+      MaterialPageRoute<String>(
         builder: (context) => JitterOffsetsPresetsScreen(
           levelFile: levelFile,
           onChanged: _markDirty,
@@ -2122,6 +2135,8 @@ class _EditorScreenState extends State<EditorScreen> {
         ),
       ),
     );
+    if (!mounted || selectedEventRtid == null) return;
+    await _handleEditEvent(selectedEventRtid, 0);
   }
 
   void _openZombieSelection(void Function(String) onSelected) {
@@ -3848,9 +3863,10 @@ class _EditorScreenState extends State<EditorScreen> {
       InterfaceMenuActionIds.language => l10n?.language ?? 'Language',
       InterfaceMenuActionIds.theme => l10n?.toggleTheme ?? 'Toggle theme',
       InterfaceMenuActionIds.uiScale => l10n?.uiSize ?? 'UI size',
-      InterfaceMenuActionIds.autosave => settings.hasAutosave
-          ? (l10n?.autosaveOn ?? 'Autosave: on')
-          : (l10n?.autosaveOff ?? 'Autosave: off'),
+      InterfaceMenuActionIds.autosave =>
+        settings.hasAutosave
+            ? (l10n?.autosaveOn ?? 'Autosave: on')
+            : (l10n?.autosaveOff ?? 'Autosave: off'),
       InterfaceMenuActionIds.viewJson =>
         l10n?.tooltipJsonViewer ?? 'View/edit JSON',
       InterfaceMenuActionIds.interfaceSettings =>
@@ -3861,12 +3877,10 @@ class _EditorScreenState extends State<EditorScreen> {
     };
   }
 
-  IconData _editorActionIcon(SettingsState settings, String id) {
+  IconData _editorActionIcon(String id) {
     return switch (id) {
       InterfaceMenuActionIds.language => Icons.language,
-      InterfaceMenuActionIds.theme => settings.themeMode == ThemeMode.dark
-          ? Icons.light_mode
-          : Icons.dark_mode,
+      InterfaceMenuActionIds.theme => Icons.brightness_6_outlined,
       InterfaceMenuActionIds.uiScale => Icons.aspect_ratio,
       InterfaceMenuActionIds.autosave => Icons.save_outlined,
       InterfaceMenuActionIds.viewJson => Icons.code,
@@ -3903,7 +3917,7 @@ class _EditorScreenState extends State<EditorScreen> {
     final enabled = _editorActionEnabled(id);
     return IconButton(
       key: ValueKey('editorToolbarAction_$id'),
-      icon: Icon(_editorActionIcon(settings, id)),
+      icon: Icon(_editorActionIcon(id)),
       tooltip: _editorActionLabel(l10n, settings, id),
       onPressed: enabled ? () => _handleEditorAction(id) : null,
     );
@@ -3921,7 +3935,7 @@ class _EditorScreenState extends State<EditorScreen> {
       enabled: enabled,
       child: EditorPopupMenuTile(
         enabled: enabled,
-        leading: Icon(_editorActionIcon(settings, id)),
+        leading: Icon(_editorActionIcon(id)),
         title: Text(_editorActionLabel(l10n, settings, id)),
       ),
     );
@@ -3956,22 +3970,17 @@ class _EditorScreenState extends State<EditorScreen> {
           );
           final requestedToolbarActions = configuredActions
               .where(
-                (action) =>
-                    action.placement == InterfaceMenuPlacement.toolbar,
+                (action) => action.placement == InterfaceMenuPlacement.toolbar,
               )
               .toList(growable: false);
           final pluginAppBarActions = pluginEditorAppBarActions(context);
-          final estimatedToolbarCapacity = ((screenWidth -
-                      200 -
-                      pluginAppBarActions.length * 48) /
-                  48)
-              .floor()
-              .clamp(0, requestedToolbarActions.length)
-              .toInt();
+          final estimatedToolbarCapacity =
+              ((screenWidth - 200 - pluginAppBarActions.length * 48) / 48)
+                  .floor()
+                  .clamp(0, requestedToolbarActions.length)
+                  .toInt();
           final toolbarCapacity = useCompactActions
-              ? (estimatedToolbarCapacity < 3
-                    ? estimatedToolbarCapacity
-                    : 3)
+              ? (estimatedToolbarCapacity < 3 ? estimatedToolbarCapacity : 3)
               : estimatedToolbarCapacity;
           final toolbarActionIds = {
             for (final action in requestedToolbarActions.take(toolbarCapacity))
@@ -4412,9 +4421,7 @@ class _CustomStageAliasPromptDialogState
     }
     final alias = raw.trim();
     if (alias.isEmpty) {
-      setState(
-        () => _errorText = l10n?.aliasEmpty ?? 'Alias cannot be empty',
-      );
+      setState(() => _errorText = l10n?.aliasEmpty ?? 'Alias cannot be empty');
       return;
     }
     Navigator.pop(context, alias);

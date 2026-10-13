@@ -559,19 +559,19 @@ abstract class AppLocalizations {
   /// No description provided for @menuCustomization.
   ///
   /// In en, this message translates to:
-  /// **'Top-right actions'**
+  /// **'Feature display'**
   String get menuCustomization;
 
   /// No description provided for @menuCustomizationDescription.
   ///
   /// In en, this message translates to:
-  /// **'Customize the position and order of actions at the top right of each screen independently. Exposed actions appear directly in the app bar, while contained actions are placed in the ⋮ menu.'**
+  /// **'Customize where each screen\'s features are displayed and their order. Exposed features appear directly in the app bar, contained features are placed in the ⋮ menu, and supported features can be kept on this page only.\nWhen space is limited, features normally shown in the app bar are automatically moved into the ⋮ menu according to their order.'**
   String get menuCustomizationDescription;
 
   /// No description provided for @menuCustomizationDragHint.
   ///
   /// In en, this message translates to:
-  /// **'Drag ⋮⋮ to change the display order'**
+  /// **'Drag ⋮⋮ to change the feature order'**
   String get menuCustomizationDragHint;
 
   /// No description provided for @menuSurfaceWorkspace.
@@ -604,11 +604,29 @@ abstract class AppLocalizations {
   /// **'Contain'**
   String get menuPlacementOverflow;
 
+  /// No description provided for @menuPlacementSettingsPage.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings page only'**
+  String get menuPlacementSettingsPage;
+
   /// No description provided for @menuConfigurationReset.
   ///
   /// In en, this message translates to:
   /// **'Restore defaults for this screen'**
   String get menuConfigurationReset;
+
+  /// No description provided for @aliasPromptOnCreate.
+  ///
+  /// In en, this message translates to:
+  /// **'Ask for alias when creating'**
+  String get aliasPromptOnCreate;
+
+  /// No description provided for @aliasPromptOnCreateDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Show the alias dialog before creating an event, module, challenge, or custom lawn. When off, C-Editor uses the generated default alias.'**
+  String get aliasPromptOnCreateDescription;
 
   /// No description provided for @aboutSoftware.
   ///
@@ -2287,7 +2305,7 @@ abstract class AppLocalizations {
   /// No description provided for @waveTimelineJitterOffsetsTitle.
   ///
   /// In en, this message translates to:
-  /// **'Spawn Jitter Offset Presets'**
+  /// **'Spawn Position Offset Presets'**
   String get waveTimelineJitterOffsetsTitle;
 
   /// No description provided for @waveTimelineJitterOffsetsNone.
@@ -2305,7 +2323,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsPageTitle.
   ///
   /// In en, this message translates to:
-  /// **'Spawn Jitter Offset Presets'**
+  /// **'Spawn Position Offset Presets'**
   String get jitterOffsetsPageTitle;
 
   /// No description provided for @jitterOffsetsPageCount.
@@ -2323,7 +2341,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsEmpty.
   ///
   /// In en, this message translates to:
-  /// **'No presets yet.\nBasic Spawner and Underwater Spawner events without a bound preset use the game\'s default parameters.\nIf you need custom spacing, create a preset and bind it in the event.'**
+  /// **'No presets yet.\nBasic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events without a bound preset use the game\'s default parameters of 80 / 30.\nTo customize the offsets, create a preset and bind it in the event.'**
   String get jitterOffsetsEmpty;
 
   /// No description provided for @jitterOffsetsNoAlias.
@@ -2347,13 +2365,13 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsIncrementLabel.
   ///
   /// In en, this message translates to:
-  /// **'Same-row spawn interval (ZombieSpawningOffsetIncrement)'**
+  /// **'Same-row cumulative offset increment (ZombieSpawningOffsetIncrement)'**
   String get jitterOffsetsIncrementLabel;
 
   /// No description provided for @jitterOffsetsRandomJitterLabel.
   ///
   /// In en, this message translates to:
-  /// **'Random jitter (ZombieSpawningRandomJitter)'**
+  /// **'Random offset upper bound (ZombieSpawningRandomJitter)'**
   String get jitterOffsetsRandomJitterLabel;
 
   /// No description provided for @jitterOffsetsIntegerInvalid.
@@ -2365,13 +2383,13 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsIncrementInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Use a non-negative same-row spawn interval. Negative values may prevent the level from settling normally.'**
+  /// **'Use a non-negative value. A negative value may make the sum of the cumulative value and random value less than 0; the game converts it as an unsigned integer, which may produce an abnormally large X coordinate and prevent zombies from entering the lawn normally.'**
   String get jitterOffsetsIncrementInvalid;
 
   /// No description provided for @jitterOffsetsRandomJitterInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Use a positive random jitter. A value of 0 causes zombies to be killed immediately before appearing; negative values may prevent the level from settling normally.'**
+  /// **'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.'**
   String get jitterOffsetsRandomJitterInvalid;
 
   /// No description provided for @jitterOffsetsRename.
@@ -2449,19 +2467,19 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsDeleteBlockedHint.
   ///
   /// In en, this message translates to:
-  /// **'Open these events first and switch \"Spawn Jitter Offset\" to another preset or turn it off:'**
+  /// **'Open these events first and switch \"Spawn Position Offset\" to another preset or unbind it:'**
   String get jitterOffsetsDeleteBlockedHint;
 
   /// No description provided for @jitterOffsetsEventLabel.
   ///
   /// In en, this message translates to:
-  /// **'Spawn Jitter Offset'**
+  /// **'Spawn Position Offset'**
   String get jitterOffsetsEventLabel;
 
   /// No description provided for @jitterOffsetsEventNone.
   ///
   /// In en, this message translates to:
-  /// **'Off (use the game\'s default parameters)'**
+  /// **'Unbound (use the game\'s default parameters: 80 / 30)'**
   String get jitterOffsetsEventNone;
 
   /// No description provided for @jitterOffsetsEventManage.
@@ -2473,13 +2491,13 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsEventDescription.
   ///
   /// In en, this message translates to:
-  /// **'Controls the distance between the off-lawn spawn positions of zombies in the same row. Without a bound preset, the event uses the game\'s default parameters and still spawns normally.'**
+  /// **'Controls the horizontal offset added to each zombie\'s base spawn position within the same event and row. Facing determines the offset direction.'**
   String get jitterOffsetsEventDescription;
 
   /// No description provided for @jitterOffsetsEventNoPresets.
   ///
   /// In en, this message translates to:
-  /// **'No presets yet. This event will automatically use the game\'s default parameters. If you need custom spacing, create a preset first.'**
+  /// **'No presets yet. This event automatically uses the game\'s default parameters of 80 / 30. To customize the offsets, create a preset first.'**
   String get jitterOffsetsEventNoPresets;
 
   /// No description provided for @jitterOffsetsEventDangling.
@@ -2497,13 +2515,43 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsEventInvalidPreset.
   ///
   /// In en, this message translates to:
-  /// **'This preset contains invalid parameters. Under \"Manage Presets\", set \"Same-row spawn interval\" to a non-negative value and \"Random jitter\" to a positive value.'**
+  /// **'This preset contains invalid parameters. Under \"Manage Presets\", set \"Random offset upper bound\" to a positive value.'**
   String get jitterOffsetsEventInvalidPreset;
+
+  /// No description provided for @jitterOffsetsFixedOffsetOverrideWarning.
+  ///
+  /// In en, this message translates to:
+  /// **'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.'**
+  String get jitterOffsetsFixedOffsetOverrideWarning;
+
+  /// No description provided for @jitterOffsetsAdvancedSettingsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced Settings'**
+  String get jitterOffsetsAdvancedSettingsTitle;
+
+  /// No description provided for @jitterOffsetsFixedOffsetLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Global-index fixed offset (FixedOffset)'**
+  String get jitterOffsetsFixedOffsetLabel;
+
+  /// No description provided for @jitterOffsetsFixedOffsetDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'The default is 0. With a nonzero value, zombies are numbered in creation order across the whole batch, starting at 0. Each zombie\'s base horizontal position receives its index multiplied by the fixed offset value. The index does not reset by row, and facing does not change the offset direction: a positive fixed offset value moves zombies right, while a negative value moves them left. Therefore, use this setting carefully when one event contains zombies in different rows or with different facings.\nThe Spawn Position Offset preset and spawn arrangement are temporarily ignored but retained; they take effect again when this value is restored to 0. Spawn arrangement is the game\'s rule for row starting offsets and offsets between rows.'**
+  String get jitterOffsetsFixedOffsetDescription;
+
+  /// No description provided for @jitterOffsetsFixedOffsetInvalid.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter a valid number.'**
+  String get jitterOffsetsFixedOffsetInvalid;
 
   /// No description provided for @jitterOffsetsHelpTitle.
   ///
   /// In en, this message translates to:
-  /// **'Spawn Jitter Offsets'**
+  /// **'Zombie Spawn Position Offsets'**
   String get jitterOffsetsHelpTitle;
 
   /// No description provided for @jitterOffsetsHelpOverviewTitle.
@@ -2515,7 +2563,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsHelpOverviewBody.
   ///
   /// In en, this message translates to:
-  /// **'In Basic Spawner and Underwater Spawner events, zombies in the same row spawn one after another outside the lawn. Spawn jitter offset presets control the distance between their spawn positions. Events that are not bound to a preset use the game\'s default parameters and still spawn normally, so no default preset is provided. Configure this feature only when needed.'**
+  /// **'Spawn Position Offset presets adjust the horizontal arrangement of zombies created by the same event. In Basic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events, each zombie first receives its base position, then the horizontal offset calculated by this preset. Each row accumulates offsets independently.\nGround Spawner derives its base emergence position from the selected column or range; offsets may move it outside that range. Grid Item Spawner uses the target obstacle\'s position; offsets may move it away from the tile center. Only horizontal position changes, not creation time, row, or wave timing.\nWithout a bound preset, the game uses the default parameters: a cumulative increment of 80 and a random upper bound of 30.'**
   String get jitterOffsetsHelpOverviewBody;
 
   /// No description provided for @jitterOffsetsHelpUsageTitle.
@@ -2527,7 +2575,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsHelpUsageBody.
   ///
   /// In en, this message translates to:
-  /// **'After creating a preset here, open any Basic Spawner or Underwater Spawner event and select it under \"Spawn Jitter Offset\".\nA preset can be shared by multiple events. Editing it updates every event that references it. A referenced preset cannot be deleted; first switch those events to another preset or turn the feature off.'**
+  /// **'After creating a preset here, open any Basic Spawner, Underwater Spawner, Ground Spawner, or Grid Item Spawner event and select it under \"Spawn Position Offset\".\nA preset can be shared by multiple events. Editing it updates every event that references it. A referenced preset cannot be deleted; first switch those events to another preset or unbind it.'**
   String get jitterOffsetsHelpUsageBody;
 
   /// No description provided for @jitterOffsetsHelpParametersTitle.
@@ -2539,7 +2587,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsHelpParametersBody.
   ///
   /// In en, this message translates to:
-  /// **'\"Same-row spawn interval\" is the base distance between the off-lawn spawn positions of adjacent zombies in the same row. A non-negative value is recommended; negative values may prevent the level from settling normally.\n\"Random jitter\" is the range randomly added to or subtracted from the base distance. A positive value is recommended; setting it to 0 will cause zombies to be instantly killed and prevent them from spawning normally, while negative values may prevent the level from settling normally.\nThe actual distance between spawn positions is randomly selected within \"Same-row spawn interval ± Random jitter\".'**
+  /// **'\"Same-row cumulative offset increment\" adds a fixed amount for each additional zombie in the same event and row. The first zombie has no cumulative offset; the second has one increment; the third has two, and so on. Use a non-negative value. A negative sum of cumulative and random offsets may produce an abnormally large horizontal coordinate and prevent normal entry.\n\"Random offset upper bound\" gives each zombie an independent random offset from 0 through the entered value minus 1. For example, 10 gives 0 through 9. Enter a positive integer; zero or negative values do not disable randomness and may prevent normal entry.\nThe cumulative and random offsets are added together, then applied according to facing. Facing left, usually entering from the right side of the lawn, moves the spawn position right. Facing right, usually entering from the left side, moves it left. In Underwater Spawner, enabling \"From left\" means facing right and adding the offset toward the left; disabling it normally means entering from the right and adding the offset toward the right.\nFor an increment of 20 and upper bound of 10, the first three zombies in one row receive offsets of 0–9, 20–29, and 40–49, applied left or right as described above.\nThe game\'s spawn arrangement rules may also set row starting offsets and offsets between rows. These combine with the preset, so the final position may include additional offsets.'**
   String get jitterOffsetsHelpParametersBody;
 
   /// No description provided for @removeModule.
@@ -3922,10 +3970,16 @@ abstract class AppLocalizations {
   /// **'Missing modules'**
   String get missingModules;
 
+  /// No description provided for @underwaterZombieWinConditionWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Underwater World loss-condition notice'**
+  String get underwaterZombieWinConditionWarningTitle;
+
   /// No description provided for @underwaterZombieWinConditionWarning.
   ///
   /// In en, this message translates to:
-  /// **'On maps using an Underwater World appearance, if too many zombies spawn naturally on the left at the same time, some may spawn directly on the defeat line and trigger a level loss. It is recommended to remove the \"Loss Condition\" module.'**
+  /// **'On lawns using an Underwater World appearance, if too many zombies spawn naturally on the left at the same time, some may spawn directly on the defeat line and trigger a level loss. It is recommended to remove the \"Loss Condition\" module.'**
   String get underwaterZombieWinConditionWarning;
 
   /// No description provided for @conflictTitle_ModuleLogic.
@@ -11060,6 +11114,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Neon Mixtape Tour music switch (LevelJam)'**
   String get backgroundMusicLevelJam;
+
+  /// No description provided for @selectLevelJamTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the jam to switch to'**
+  String get selectLevelJamTitle;
 
   /// No description provided for @onlyAppliesRockEra.
   ///

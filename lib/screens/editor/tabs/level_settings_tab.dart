@@ -382,9 +382,7 @@ class _LevelSettingsTabState extends State<LevelSettingsTab> {
   }
 
   PvzLevelFile _levelFileWithDefinition() {
-    final objects = <PvzObject>[
-      ...widget.objectMap.values,
-    ];
+    final objects = <PvzObject>[...widget.objectMap.values];
     if (widget.levelDef != null &&
         !objects.any((o) => o.objClass == 'LevelDefinition')) {
       objects.insert(
@@ -500,7 +498,7 @@ class _ReorderableModuleList extends StatelessWidget {
           onReorderItem: onReorder,
           itemBuilder: (context, index) {
             final item = modules[index];
-            return _ReorderableModuleTile(
+            return LevelSettingsModuleTile(
               key: ValueKey(item.rtid),
               info: item,
               isCore: isCore,
@@ -516,8 +514,8 @@ class _ReorderableModuleList extends StatelessWidget {
   }
 }
 
-class _ReorderableModuleTile extends StatelessWidget {
-  const _ReorderableModuleTile({
+class LevelSettingsModuleTile extends StatelessWidget {
+  const LevelSettingsModuleTile({
     super.key,
     required this.info,
     required this.isCore,
@@ -525,6 +523,7 @@ class _ReorderableModuleTile extends StatelessWidget {
     required this.removeTooltip,
     this.onClick,
     required this.onDelete,
+    this.preview = false,
   });
 
   final ModuleUIInfo info;
@@ -533,6 +532,7 @@ class _ReorderableModuleTile extends StatelessWidget {
   final String removeTooltip;
   final VoidCallback? onClick;
   final VoidCallback onDelete;
+  final bool preview;
 
   @override
   Widget build(BuildContext context) {
@@ -556,6 +556,7 @@ class _ReorderableModuleTile extends StatelessWidget {
             children: [
               ReorderableDragStartListener(
                 index: reorderIndex,
+                enabled: !preview,
                 child: SizedBox(
                   width: 40,
                   height: 40,
@@ -609,7 +610,7 @@ class _ReorderableModuleTile extends StatelessWidget {
                   color: iconColor,
                 ),
                 tooltip: removeTooltip,
-                onPressed: onDelete,
+                onPressed: preview ? null : onDelete,
               ),
             ],
           ),

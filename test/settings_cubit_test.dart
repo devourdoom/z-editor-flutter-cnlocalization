@@ -31,17 +31,62 @@ void main() {
     expect(prefs.getString('locale'), 'ru');
   });
 
+  test('alias prompt on create is disabled by default and persists', () async {
+    SharedPreferences.setMockInitialValues({
+      'locale': 'en',
+      'theme_mode': 'light',
+    });
+    final prefs = await SharedPreferences.getInstance();
+    final cubit = SettingsCubit(prefs);
+
+    expect(cubit.state.promptForAliasOnCreate, isFalse);
+    cubit.setPromptForAliasOnCreate(true);
+    expect(cubit.state.promptForAliasOnCreate, isTrue);
+    expect(
+      prefs.getBool(SettingsCubit.promptForAliasOnCreatePreferenceKey),
+      isTrue,
+    );
+
+    final restored = SettingsCubit(prefs);
+    addTearDown(restored.close);
+    await cubit.close();
+    expect(restored.state.promptForAliasOnCreate, isTrue);
+  });
+
   test(
-    'interface action defaults keep the requested leading shortcuts',
+    'interface action defaults use independent workspace and editor layouts',
     () async {
       SharedPreferences.setMockInitialValues({});
       final cubit = SettingsCubit(await SharedPreferences.getInstance());
       addTearDown(cubit.close);
 
-      for (final surface in const [
+      final workspace = cubit.state.interfaceMenuActionsFor(
         InterfaceMenuSurface.workspace,
-        InterfaceMenuSurface.levelEditor,
-      ]) {
+      );
+      expect(
+        workspace
+            .where(
+              (action) => action.placement == InterfaceMenuPlacement.toolbar,
+            )
+            .map((action) => action.id),
+        const [
+          InterfaceMenuActionIds.sort,
+          InterfaceMenuActionIds.refresh,
+          InterfaceMenuActionIds.switchFolder,
+          InterfaceMenuActionIds.importFiles,
+          InterfaceMenuActionIds.importFolder,
+          InterfaceMenuActionIds.downloadAll,
+        ],
+      );
+      expect(
+        workspace
+            .singleWhere(
+              (action) => action.id == InterfaceMenuActionIds.autosave,
+            )
+            .placement,
+        InterfaceMenuPlacement.settingsPage,
+      );
+      for (final surface in const [InterfaceMenuSurface.levelEditor]) {
         final actions = cubit.state.interfaceMenuActionsFor(surface);
         expect(actions.take(3).map((action) => action.id), const [
           InterfaceMenuActionIds.language,
@@ -102,7 +147,14 @@ void main() {
       final prefs = await SharedPreferences.getInstance();
       final cubit = SettingsCubit(prefs);
 
-      cubit.reorderInterfaceMenuAction(InterfaceMenuSurface.workspace, 1, 0);
+      final themeIndex = cubit.state
+          .interfaceMenuActionsFor(InterfaceMenuSurface.workspace)
+          .indexWhere((action) => action.id == InterfaceMenuActionIds.theme);
+      cubit.reorderInterfaceMenuAction(
+        InterfaceMenuSurface.workspace,
+        themeIndex,
+        0,
+      );
       cubit.setInterfaceMenuActionPlacement(
         InterfaceMenuSurface.workspace,
         InterfaceMenuActionIds.theme,
@@ -218,7 +270,7 @@ void main() {
               (action) => action.id == InterfaceMenuActionIds.uiScale,
             )
             .placement,
-        InterfaceMenuPlacement.toolbar,
+        InterfaceMenuPlacement.overflow,
       );
       expect(
         actions
@@ -236,4 +288,25 @@ void main() {
       );
     },
   );
+
+  test('settings-page placement is limited to the four global settings', () {
+    final workspace =
+        decodeInterfaceMenuActions(InterfaceMenuSurface.workspace, const [
+          '${InterfaceMenuActionIds.language}|settingsPage',
+          '${InterfaceMenuActionIds.sort}|settingsPage',
+        ]);
+
+    expect(
+      workspace
+          .singleWhere((action) => action.id == InterfaceMenuActionIds.language)
+          .placement,
+      InterfaceMenuPlacement.settingsPage,
+    );
+    expect(
+      workspace
+          .singleWhere((action) => action.id == InterfaceMenuActionIds.sort)
+          .placement,
+      InterfaceMenuPlacement.toolbar,
+    );
+  });
 }

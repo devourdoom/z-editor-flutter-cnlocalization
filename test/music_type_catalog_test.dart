@@ -3,6 +3,7 @@ import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/editor/basic_info_screen.dart';
+import 'package:c_editor/widgets/asset_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -95,7 +96,7 @@ void main() {
     );
     expect(
       ResourceNames.lookupWithLocale('zh', eighties.noteKeys.single),
-      '僵尸的具体音乐需要写在出怪波次中',
+      '特殊僵尸对应的音乐需要在「普通出怪」事件中选择',
     );
   });
 
@@ -185,10 +186,22 @@ void main() {
     await tester.tap(currentChoice);
     await tester.pumpAndSettle();
 
+    expect(find.text('当前音乐模块 (MusicSuffix)'), findsOneWidget);
+    expect(find.text('炙热征服者 (时空裂缝版本)'), findsOneWidget);
+    expect(find.text('TeamBossRoman'), findsOneWidget);
+    final sheetScrollbar = tester.widget<Scrollbar>(
+      find.descendant(
+        of: find.byType(BottomSheet),
+        matching: find.byType(Scrollbar),
+      ),
+    );
+    expect(sheetScrollbar.thumbVisibility, isTrue);
+    expect(sheetScrollbar.trackVisibility, isTrue);
+    expect(sheetScrollbar.scrollbarOrientation, ScrollbarOrientation.right);
     expect(
-      find.text(
-        '当前音乐模块 (MusicSuffix): '
-        '炙热征服者 (时空裂缝版本) (TeamBossRoman)',
+      find.descendant(
+        of: find.byType(BottomSheet),
+        matching: find.byType(AssetImageWidget),
       ),
       findsOneWidget,
     );
@@ -296,7 +309,11 @@ void main() {
     await tester.tap(currentChoice);
     await tester.pumpAndSettle();
 
-    expect(find.text('当前音乐模块 (MusicSuffix): —'), findsOneWidget);
+    expect(find.text('当前音乐模块 (MusicSuffix)'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(BottomSheet), matching: find.text('—')),
+      findsNWidgets(2),
+    );
     expect(find.textContaining('炙热征服者'), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -348,13 +365,8 @@ void main() {
     await tester.ensureVisible(currentChoice);
     await tester.tap(currentChoice);
     await tester.pumpAndSettle();
-    expect(
-      find.text(
-        '当前音乐模块 (MusicSuffix): '
-        'MysterySuffix (MysterySuffix)',
-      ),
-      findsOneWidget,
-    );
+    expect(find.text('当前音乐模块 (MusicSuffix)'), findsOneWidget);
+    expect(find.text('MysterySuffix'), findsNWidgets(2));
 
     Navigator.of(tester.element(find.byType(BottomSheet))).pop();
     await tester.pumpAndSettle();

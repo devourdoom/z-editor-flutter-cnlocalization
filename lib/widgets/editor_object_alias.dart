@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:c_editor/bloc/settings/settings_cubit.dart';
 import 'package:c_editor/data/pvz_alias_utils.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/registry/module_registry.dart';
@@ -310,7 +312,22 @@ Future<String?> showPvzAliasInputDialog(
   required String title,
   required String objClass,
   required PvzLevelFile levelFile,
+  bool forCreation = false,
 }) {
+  if (forCreation) {
+    // Keep this helper usable in isolated editor/widget tests where no app
+    // settings provider is present. In the real app, the preference defaults
+    // to false and creation proceeds with the already-unique suggested alias.
+    SettingsCubit? settings;
+    try {
+      settings = context.read<SettingsCubit>();
+    } catch (_) {
+      settings = null;
+    }
+    if (settings != null && !settings.state.promptForAliasOnCreate) {
+      return Future<String?>.value(defaultAlias);
+    }
+  }
   return showDialog<String>(
     context: context,
     builder: (ctx) => _PvzAliasInputDialog(
@@ -365,9 +382,7 @@ class _PvzAliasInputDialogState extends State<_PvzAliasInputDialog> {
     }
     final alias = raw.trim();
     if (alias.isEmpty) {
-      setState(
-        () => _errorText = l10n?.aliasEmpty ?? 'Alias cannot be empty',
-      );
+      setState(() => _errorText = l10n?.aliasEmpty ?? 'Alias cannot be empty');
       return;
     }
     if (!PvzAliasUtils.isAliasAvailable(widget.levelFile, alias)) {

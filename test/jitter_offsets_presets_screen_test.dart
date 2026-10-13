@@ -2,6 +2,7 @@ import 'package:c_editor/data/jitter_offsets_utils.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/screens/editor/others/jitter_offsets_presets_screen.dart';
+import 'package:c_editor/screens/editor/tabs/wave_timeline_tab.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -19,7 +20,7 @@ void main() {
     );
   }
 
-  test('preset validity requires a non-negative interval and positive jitter', () {
+  test('preset validity only requires a positive random offset bound', () {
     expect(
       JitterOffsetsUtils.isDataValid(
         ZombieJitterOffsetsData(offsetIncrement: 0, randomJitter: 1),
@@ -30,7 +31,7 @@ void main() {
       JitterOffsetsUtils.isDataValid(
         ZombieJitterOffsetsData(offsetIncrement: -1, randomJitter: 1),
       ),
-      isFalse,
+      isTrue,
     );
     expect(
       JitterOffsetsUtils.isDataValid(
@@ -75,12 +76,28 @@ void main() {
     );
     expect(
       presets.single.objData,
-      containsPair('ZombieSpawningRandomJitter', 10),
+      containsPair('ZombieSpawningRandomJitter', 30),
     );
 
     await tester.enterText(find.byType(TextFormField).at(0), '24');
     await tester.enterText(find.byType(TextFormField).at(1), '3');
     await tester.pump();
+
+    final appBar = tester.widget<AppBar>(find.byType(AppBar));
+    final pageTheme = Theme.of(tester.element(find.byType(AppBar)));
+    expect(appBar.backgroundColor, pageTheme.colorScheme.secondary);
+    for (var index = 0; index < 2; index++) {
+      final decorator = tester.widget<InputDecorator>(
+        find.descendant(
+          of: find.byType(TextFormField).at(index),
+          matching: find.byType(InputDecorator),
+        ),
+      );
+      expect(
+        decorator.decoration.floatingLabelStyle?.color,
+        pageTheme.colorScheme.onSurface,
+      );
+    }
 
     expect(
       presets.single.objData,
@@ -91,6 +108,43 @@ void main() {
       containsPair('ZombieSpawningRandomJitter', 3),
     );
     expect(changed, greaterThanOrEqualTo(3));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('wave timeline entry uses a blue background with white content', (
+    tester,
+  ) async {
+    final level = PvzLevelFile(objects: []);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        home: Scaffold(
+          body: WaveTimelineTab(
+            levelFile: level,
+            parsed: ParsedLevelData(
+              waveManager: WaveManagerData(waveCount: 0, waves: []),
+              objectMap: const {},
+            ),
+            onChanged: () {},
+            onEditEvent: (_, _) async {},
+            onAddEvent: (_) {},
+            onEditWaveManagerSettings: () {},
+            onEditJitterOffsets: () {},
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final title = find.text('Spawn Position Offset Presets');
+    final card = find.ancestor(of: title, matching: find.byType(Card)).first;
+    final theme = Theme.of(tester.element(title));
+    expect(tester.widget<Card>(card).color, theme.colorScheme.secondary);
+    expect(tester.widget<Text>(title).style?.color, Colors.white);
+    expect(tester.widget<Icon>(find.byIcon(Icons.speed)).color, Colors.white);
     expect(tester.takeException(), isNull);
   });
 
@@ -131,6 +185,70 @@ void main() {
     await tester.tap(find.text('Got it'));
     await tester.pumpAndSettle();
     expect(level.objects, contains(preset));
+  });
+
+  testWidgets('referencing event names are underlined navigation links', (
+    tester,
+  ) async {
+    final preset = PvzObject(
+      aliases: ['Offsets'],
+      objClass: JitterOffsetsUtils.objectClass,
+      objData: ZombieJitterOffsetsData().toJson(),
+    );
+    final event = PvzObject(
+      aliases: ['Wave1Event1'],
+      objClass: 'SpawnZombiesJitteredWaveActionProps',
+      objData: <String, dynamic>{'JitterOffsets': 'RTID(Offsets@CurrentLevel)'},
+    );
+    final level = PvzLevelFile(objects: [preset, event]);
+    String? selectedEventRtid;
+
+    await tester.pumpWidget(
+      MaterialApp(
+        locale: const Locale('en'),
+        supportedLocales: AppLocalizations.supportedLocales,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        home: Builder(
+          builder: (context) => Scaffold(
+            body: Center(
+              child: FilledButton(
+                onPressed: () async {
+                  selectedEventRtid = await Navigator.push<String>(
+                    context,
+                    MaterialPageRoute<String>(
+                      builder: (screenContext) => JitterOffsetsPresetsScreen(
+                        levelFile: level,
+                        onChanged: () {},
+                        onBack: () => Navigator.pop(screenContext),
+                      ),
+                    ),
+                  );
+                },
+                child: const Text('Open presets'),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('Open presets'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.delete_outline));
+    await tester.pumpAndSettle();
+
+    final eventLink = find.text('Wave1Event1');
+    expect(eventLink, findsOneWidget);
+    expect(
+      tester.widget<Text>(eventLink).style?.decoration,
+      TextDecoration.underline,
+    );
+
+    await tester.tap(eventLink);
+    await tester.pumpAndSettle();
+    expect(selectedEventRtid, 'RTID(Wave1Event1@CurrentLevel)');
+    expect(find.text('Spawn Position Offset Presets'), findsNothing);
+    expect(find.text('Open presets'), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets('rejects spaces and Chinese characters in preset aliases', (
@@ -200,7 +318,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('rejects confirmed invalid values but keeps allowed values', (
+  testWidgets('accepts negative increments but rejects non-positive bounds', (
     tester,
   ) async {
     final preset = PvzObject(
@@ -216,30 +334,41 @@ void main() {
     final fields = find.byType(TextFormField);
     await tester.enterText(fields.at(0), '-1');
     await tester.pump();
-    expect(preset.objData, containsPair('ZombieSpawningOffsetIncrement', 80));
+    expect(preset.objData, containsPair('ZombieSpawningOffsetIncrement', -1));
     expect(
       find.text(
-        'Use a non-negative same-row spawn interval. Negative values may prevent the level from settling normally.',
+        'Use a non-negative value. A negative value may make the sum of the cumulative value and random value less than 0; the game converts it as an unsigned integer, which may produce an abnormally large X coordinate and prevent zombies from entering the lawn normally.',
       ),
       findsOneWidget,
     );
 
     await tester.enterText(fields.at(1), '0');
     await tester.pump();
-    expect(preset.objData, containsPair('ZombieSpawningRandomJitter', 10));
+    expect(preset.objData, containsPair('ZombieSpawningRandomJitter', 30));
+    final jitterInputDecorator = find.descendant(
+      of: fields.at(1),
+      matching: find.byType(InputDecorator),
+    );
+    expect(
+      tester
+          .widget<InputDecorator>(jitterInputDecorator)
+          .decoration
+          .errorMaxLines,
+      8,
+    );
     expect(
       find.text(
-        'Use a positive random jitter. A value of 0 causes zombies to be killed immediately before appearing; negative values may prevent the level from settling normally.',
+        'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.',
       ),
       findsOneWidget,
     );
 
     await tester.enterText(fields.at(1), '-3');
     await tester.pump();
-    expect(preset.objData, containsPair('ZombieSpawningRandomJitter', 10));
+    expect(preset.objData, containsPair('ZombieSpawningRandomJitter', 30));
     expect(
       find.text(
-        'Use a positive random jitter. A value of 0 causes zombies to be killed immediately before appearing; negative values may prevent the level from settling normally.',
+        'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.',
       ),
       findsOneWidget,
     );
@@ -273,7 +402,7 @@ void main() {
 
     expect(
       find.text(
-        'Use a positive random jitter. A value of 0 causes zombies to be killed immediately before appearing; negative values may prevent the level from settling normally.',
+        'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.',
       ),
       findsOneWidget,
     );
@@ -313,6 +442,8 @@ void main() {
 
     final dialog = find.byType(AlertDialog);
     expect(dialog, findsOneWidget);
+    Finder dialogTextContaining(String text) =>
+        find.descendant(of: dialog, matching: find.textContaining(text));
     final sectionTitles = tester
         .widgetList<Text>(
           find.descendant(of: dialog, matching: find.byType(Text)),
@@ -322,31 +453,35 @@ void main() {
         .where((text) => text.startsWith('• '))
         .toList();
     expect(sectionTitles, ['• Overview', '• Instructions', '• Parameters']);
+    expect(dialogTextContaining('default parameters'), findsOneWidget);
     expect(
-      find.textContaining('no default preset is provided'),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: dialog,
-        matching: find.textContaining(
-          'In Basic Spawner and Underwater Spawner events',
-        ),
+      dialogTextContaining(
+        'In Basic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events',
       ),
       findsOneWidget,
     );
+    expect(dialogTextContaining('natural spawn'), findsNothing);
+    expect(dialogTextContaining('A preset can be shared'), findsOneWidget);
     expect(
-      find.descendant(
-        of: dialog,
-        matching: find.textContaining('natural spawn'),
-      ),
-      findsNothing,
-    );
-    expect(find.textContaining('A preset can be shared'), findsOneWidget);
-    expect(
-      find.textContaining('Same-row spawn interval ± Random jitter'),
+      dialogTextContaining('random offset from 0 through the entered value minus 1'),
       findsOneWidget,
     );
+    expect(
+      dialogTextContaining(
+        'Facing left, usually entering from the right side of the lawn',
+      ),
+      findsOneWidget,
+    );
+    expect(dialogTextContaining('moves the spawn position right'), findsOneWidget);
+    expect(
+      dialogTextContaining('Facing right, usually entering from the left side'),
+      findsOneWidget,
+    );
+    expect(dialogTextContaining('moves it left'), findsOneWidget);
+    expect(dialogTextContaining('spawn arrangement rules'), findsOneWidget);
+    expect(dialogTextContaining('Direction'), findsNothing);
+    expect(dialogTextContaining('ZombieSpawnPattern'), findsNothing);
+    expect(dialogTextContaining('global index in the event'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 

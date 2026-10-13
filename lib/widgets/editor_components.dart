@@ -13,6 +13,7 @@ import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/theme/app_theme.dart';
 import 'package:c_editor/widgets/local_scrollbar_region.dart';
+import 'package:c_editor/widgets/persistent_scrollbar_scroll_behavior.dart';
 import 'package:c_editor/widgets/asset_image.dart'
     show AssetImageWidget, imageAltCandidates;
 
@@ -2389,9 +2390,10 @@ void showEditorHelpDialog(
                 displayTitle,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 20,
+                  color: themeColor ?? Theme.of(ctx).colorScheme.primary,
                 ),
               ),
             ),
@@ -3616,7 +3618,7 @@ class _SelectionSearchFieldState extends State<SelectionSearchField> {
   }
 }
 
-class MouseDragScrollBehavior extends MaterialScrollBehavior {
+class MouseDragScrollBehavior extends PersistentScrollbarScrollBehavior {
   const MouseDragScrollBehavior();
 
   @override

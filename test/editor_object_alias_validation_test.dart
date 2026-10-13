@@ -1,10 +1,13 @@
+import 'package:c_editor/bloc/settings/settings_cubit.dart';
 import 'package:c_editor/data/pvz_alias_utils.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/widgets/app_message.dart';
 import 'package:c_editor/widgets/editor_object_alias.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Widget _app(Widget child) {
   return MaterialApp(
@@ -17,6 +20,53 @@ Widget _app(Widget child) {
 
 void main() {
   tearDown(AppMessage.hide);
+
+  testWidgets('creation alias prompt follows the interface preference', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      'locale': 'zh',
+      'theme_mode': 'light',
+    });
+    final settings = SettingsCubit(await SharedPreferences.getInstance());
+    addTearDown(settings.close);
+    String? result;
+
+    await tester.pumpWidget(
+      BlocProvider.value(
+        value: settings,
+        child: _app(
+          Builder(
+            builder: (context) => TextButton(
+              onPressed: () async {
+                result = await showPvzAliasInputDialog(
+                  context,
+                  defaultAlias: 'Event1',
+                  title: 'Add event',
+                  objClass: 'TestEvent',
+                  levelFile: PvzLevelFile(objects: []),
+                  forCreation: true,
+                );
+              },
+              child: const Text('Open'),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('Open'));
+    await tester.pump();
+    expect(result, 'Event1');
+    expect(find.byType(AlertDialog), findsNothing);
+
+    settings.setPromptForAliasOnCreate(true);
+    result = null;
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+    expect(result, isNull);
+    expect(find.byType(AlertDialog), findsOneWidget);
+  });
 
   testWidgets('add alias dialog rejects whitespace and Chinese', (
     tester,
@@ -116,9 +166,7 @@ void main() {
     await tester.enterText(find.byType(TextField), 'Event_2');
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pumpAndSettle();
-    final l10n = AppLocalizations.of(
-      tester.element(find.byType(AlertDialog)),
-    )!;
+    final l10n = AppLocalizations.of(tester.element(find.byType(AlertDialog)))!;
     await tester.tap(find.widgetWithText(FilledButton, l10n.confirm));
     await tester.pumpAndSettle();
 

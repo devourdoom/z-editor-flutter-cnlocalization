@@ -1609,9 +1609,8 @@ class _LevelListScreenState extends State<LevelListScreen> {
       InterfaceMenuActionIds.language => l10n.language,
       InterfaceMenuActionIds.theme => l10n.toggleTheme,
       InterfaceMenuActionIds.uiScale => l10n.uiSize,
-      InterfaceMenuActionIds.autosave => settings.hasAutosave
-          ? l10n.autosaveOn
-          : l10n.autosaveOff,
+      InterfaceMenuActionIds.autosave =>
+        settings.hasAutosave ? l10n.autosaveOn : l10n.autosaveOff,
       InterfaceMenuActionIds.sort => l10n.sortByLabel,
       InterfaceMenuActionIds.refresh => l10n.refresh,
       InterfaceMenuActionIds.switchFolder => l10n.switchFolder,
@@ -1626,12 +1625,10 @@ class _LevelListScreenState extends State<LevelListScreen> {
     };
   }
 
-  IconData _workspaceActionIcon(SettingsState settings, String id) {
+  IconData _workspaceActionIcon(String id) {
     return switch (id) {
       InterfaceMenuActionIds.language => Icons.language,
-      InterfaceMenuActionIds.theme => settings.themeMode == ThemeMode.dark
-          ? Icons.light_mode
-          : Icons.dark_mode,
+      InterfaceMenuActionIds.theme => Icons.brightness_6_outlined,
       InterfaceMenuActionIds.uiScale => Icons.aspect_ratio,
       InterfaceMenuActionIds.autosave => Icons.save_outlined,
       InterfaceMenuActionIds.sort => Icons.sort,
@@ -1694,7 +1691,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
   ) {
     return IconButton(
       key: ValueKey('workspaceToolbarAction_$id'),
-      icon: Icon(_workspaceActionIcon(settings, id)),
+      icon: Icon(_workspaceActionIcon(id)),
       tooltip: _workspaceActionLabel(l10n, settings, id),
       onPressed: () => _handleWorkspaceAction(id),
     );
@@ -1709,7 +1706,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
       key: ValueKey('workspaceOverflowAction_$id'),
       value: id,
       child: EditorPopupMenuTile(
-        leading: Icon(_workspaceActionIcon(settings, id)),
+        leading: Icon(_workspaceActionIcon(id)),
         title: Text(_workspaceActionLabel(l10n, settings, id)),
         contentPadding: EdgeInsets.zero,
       ),
@@ -1763,9 +1760,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
         .where((action) => _workspaceActionAvailable(action.id))
         .toList(growable: false);
     final requestedToolbarActions = configuredActions
-        .where(
-          (action) => action.placement == InterfaceMenuPlacement.toolbar,
-        )
+        .where((action) => action.placement == InterfaceMenuPlacement.toolbar)
         .toList(growable: false);
     final toolbarCapacity = useCompactActions
         ? (requestedToolbarActions.length < 3

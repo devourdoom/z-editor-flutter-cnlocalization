@@ -1,8 +1,10 @@
 import 'package:c_editor/data/gladiator_row_utils.dart';
 import 'package:c_editor/data/jitter_offsets_utils.dart';
+import 'package:c_editor/bloc/settings/settings_cubit.dart';
 import 'dart:convert';
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:c_editor/data/module_open_hint.dart';
 import 'package:c_editor/data/moon_wave_preview_utils.dart';
 import 'package:c_editor/data/pvz_alias_utils.dart';
@@ -630,39 +632,29 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: theme.colorScheme.tertiary,
+      color: theme.colorScheme.secondary,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(color: theme.colorScheme.onTertiary),
+        side: const BorderSide(color: Colors.white),
       ),
       child: ListTile(
-        leading: Icon(Icons.speed, color: theme.colorScheme.onTertiary),
+        leading: const Icon(Icons.speed, color: Colors.white),
         title: Text(
-          l10n?.waveTimelineJitterOffsetsTitle ?? 'Spawn Jitter Offset Presets',
-          style: TextStyle(
-            color: theme.colorScheme.onTertiary,
+          l10n?.waveTimelineJitterOffsetsTitle ??
+              'Spawn Position Offset Presets',
+          style: const TextStyle(
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        subtitle: Text(
-          subtitle,
-          style: TextStyle(color: theme.colorScheme.onTertiary),
-        ),
+        subtitle: Text(subtitle, style: const TextStyle(color: Colors.white)),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (unused > 0)
-              Icon(
-                Icons.warning_amber_rounded,
-                size: 18,
-                color: theme.colorScheme.onTertiary,
-              ),
+              Icon(Icons.warning_amber_rounded, size: 18, color: Colors.white),
             const SizedBox(width: 4),
-            Icon(
-              Icons.arrow_forward_ios,
-              size: 16,
-              color: theme.colorScheme.onTertiary,
-            ),
+            Icon(Icons.arrow_forward_ios, size: 16, color: Colors.white),
           ],
         ),
         onTap: widget.onEditJitterOffsets,
@@ -1249,6 +1241,18 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
               }
             }
           } catch (_) {}
+        } else if (obj.objClass == 'SpawnZombiesFromGridItemSpawnerProps') {
+          try {
+            final data = SpawnZombiesFromGridItemData.fromJson(
+              Map<String, dynamic>.from(obj.objData as Map),
+            );
+            for (final z in data.zombies) {
+              final info = RtidParser.parse(z.type);
+              if (info?.source == 'CurrentLevel') {
+                usedAliases.add(info!.alias);
+              }
+            }
+          } catch (_) {}
         }
         for (final a in usedAliases) {
           final set = result.putIfAbsent(a, () => <int>{});
@@ -1691,6 +1695,9 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
                 info?.alias == custom.alias);
           }).toList();
           final updated = WaveActionData(
+            jitterOffsets: data.jitterOffsets,
+            zombieSpawnPattern: data.zombieSpawnPattern,
+            fixedOffset: data.fixedOffset,
             notificationEvents: data.notificationEvents,
             additionalPlantFood: data.additionalPlantFood,
             spawnPlantName: data.spawnPlantName,
@@ -1710,6 +1717,9 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
                 info?.alias == custom.alias);
           }).toList();
           final updated = SpawnZombiesFromGroundData(
+            jitterOffsets: data.jitterOffsets,
+            zombieSpawnPattern: data.zombieSpawnPattern,
+            fixedOffset: data.fixedOffset,
             columnStart: data.columnStart,
             columnEnd: data.columnEnd,
             additionalPlantFood: data.additionalPlantFood,
@@ -1717,6 +1727,42 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
             zombies: filtered,
           );
           obj.objData = updated.toJson();
+        } catch (_) {}
+      }
+      if (obj.objClass == 'SpawnZombiesFishWaveActionProps') {
+        try {
+          final data = SpawnZombiesFishWaveActionPropsData.fromJson(
+            Map<String, dynamic>.from(obj.objData as Map),
+          );
+          final filtered = data.zombies.where((z) {
+            final info = RtidParser.parse(z.type);
+            return !(info?.source == 'CurrentLevel' &&
+                info?.alias == custom.alias);
+          }).toList();
+          final updated = SpawnZombiesFishWaveActionPropsData(
+            jitterOffsets: data.jitterOffsets,
+            zombieSpawnPattern: data.zombieSpawnPattern,
+            fixedOffset: data.fixedOffset,
+            notificationEvents: data.notificationEvents,
+            additionalPlantFood: data.additionalPlantFood,
+            spawnPlantName: data.spawnPlantName,
+            zombies: filtered,
+            fishes: data.fishes,
+          );
+          obj.objData = updated.toJson();
+        } catch (_) {}
+      }
+      if (obj.objClass == 'SpawnZombiesFromGridItemSpawnerProps') {
+        try {
+          final data = SpawnZombiesFromGridItemData.fromJson(
+            Map<String, dynamic>.from(obj.objData as Map),
+          );
+          final filtered = data.zombies.where((z) {
+            final info = RtidParser.parse(z.type);
+            return !(info?.source == 'CurrentLevel' &&
+                info?.alias == custom.alias);
+          }).toList();
+          obj.objData = data.copyWith(zombies: filtered).toJson();
         } catch (_) {}
       }
     }
@@ -2056,6 +2102,25 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
   ) {
     final l10n = AppLocalizations.of(context);
     final defaultName = '${alias}_copy';
+    var promptForAlias = true;
+    try {
+      promptForAlias = context
+          .read<SettingsCubit>()
+          .state
+          .promptForAliasOnCreate;
+    } catch (_) {
+      // Preserve the existing dialog in isolated widgets without app settings.
+    }
+    if (!promptForAlias) {
+      _showCopyTargetWaveDialog(
+        context,
+        rtid,
+        defaultName,
+        waveIndex,
+        onEditFinished,
+      );
+      return;
+    }
     final ctrl = TextEditingController(text: defaultName);
     showDialog<void>(
       context: context,

@@ -4,7 +4,22 @@ import 'package:equatable/equatable.dart';
 enum InterfaceMenuSurface { workspace, levelEditor, jsonViewer }
 
 /// Where an action is presented.
-enum InterfaceMenuPlacement { toolbar, overflow }
+///
+/// [settingsPage] is available only to the global interface preferences
+/// (language, theme, UI scale and autosave). It removes their shortcut from
+/// the selected app bar and keeps the corresponding control on the Interface
+/// Settings page instead.
+enum InterfaceMenuPlacement { toolbar, overflow, settingsPage }
+
+const interfaceSettingsPageActionIds = <String>{
+  InterfaceMenuActionIds.language,
+  InterfaceMenuActionIds.theme,
+  InterfaceMenuActionIds.uiScale,
+  InterfaceMenuActionIds.autosave,
+};
+
+bool supportsInterfaceSettingsPagePlacement(String actionId) =>
+    interfaceSettingsPageActionIds.contains(actionId);
 
 final class InterfaceMenuActionPreference extends Equatable {
   const InterfaceMenuActionPreference({
@@ -53,23 +68,6 @@ abstract final class InterfaceMenuActionIds {
 }
 
 const _workspaceDefaults = <InterfaceMenuActionPreference>[
-  // Keep the three requested shortcuts at the front of the app bar.
-  InterfaceMenuActionPreference(
-    id: InterfaceMenuActionIds.language,
-    placement: InterfaceMenuPlacement.toolbar,
-  ),
-  InterfaceMenuActionPreference(
-    id: InterfaceMenuActionIds.theme,
-    placement: InterfaceMenuPlacement.toolbar,
-  ),
-  InterfaceMenuActionPreference(
-    id: InterfaceMenuActionIds.uiScale,
-    placement: InterfaceMenuPlacement.toolbar,
-  ),
-  InterfaceMenuActionPreference(
-    id: InterfaceMenuActionIds.autosave,
-    placement: InterfaceMenuPlacement.overflow,
-  ),
   InterfaceMenuActionPreference(
     id: InterfaceMenuActionIds.sort,
     placement: InterfaceMenuPlacement.toolbar,
@@ -95,11 +93,23 @@ const _workspaceDefaults = <InterfaceMenuActionPreference>[
     placement: InterfaceMenuPlacement.toolbar,
   ),
   InterfaceMenuActionPreference(
-    id: InterfaceMenuActionIds.interfaceSettings,
+    id: InterfaceMenuActionIds.language,
+    placement: InterfaceMenuPlacement.overflow,
+  ),
+  InterfaceMenuActionPreference(
+    id: InterfaceMenuActionIds.theme,
+    placement: InterfaceMenuPlacement.overflow,
+  ),
+  InterfaceMenuActionPreference(
+    id: InterfaceMenuActionIds.uiScale,
     placement: InterfaceMenuPlacement.overflow,
   ),
   InterfaceMenuActionPreference(
     id: InterfaceMenuActionIds.clearCache,
+    placement: InterfaceMenuPlacement.overflow,
+  ),
+  InterfaceMenuActionPreference(
+    id: InterfaceMenuActionIds.interfaceSettings,
     placement: InterfaceMenuPlacement.overflow,
   ),
   InterfaceMenuActionPreference(
@@ -109,6 +119,10 @@ const _workspaceDefaults = <InterfaceMenuActionPreference>[
   InterfaceMenuActionPreference(
     id: InterfaceMenuActionIds.about,
     placement: InterfaceMenuPlacement.overflow,
+  ),
+  InterfaceMenuActionPreference(
+    id: InterfaceMenuActionIds.autosave,
+    placement: InterfaceMenuPlacement.settingsPage,
   ),
 ];
 
@@ -194,17 +208,22 @@ List<InterfaceMenuActionPreference> decodeInterfaceMenuActions(
     final id = value.substring(0, separator);
     if (!defaultById.containsKey(id) || !seen.add(id)) continue;
     final placementName = value.substring(separator + 1);
-    final placement = placementName == 'settings'
+    final decodedPlacement = placementName == 'settings'
         ? const [InterfaceMenuPlacement.overflow]
         : InterfaceMenuPlacement.values.where(
             (candidate) => candidate.name == placementName,
           );
+    final placement = decodedPlacement.isEmpty
+        ? defaultById[id]!.placement
+        : decodedPlacement.first;
     result.add(
       InterfaceMenuActionPreference(
         id: id,
-        placement: placement.isEmpty
+        placement:
+            placement == InterfaceMenuPlacement.settingsPage &&
+                !supportsInterfaceSettingsPagePlacement(id)
             ? defaultById[id]!.placement
-            : placement.first,
+            : placement,
       ),
     );
   }

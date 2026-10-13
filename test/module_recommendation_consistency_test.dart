@@ -197,10 +197,7 @@ void main() {
           };
 
           expect(
-            _recommendations(
-              context,
-              _level(essentialsWithoutLossCondition),
-            ),
+            _recommendations(context, _level(essentialsWithoutLossCondition)),
             contains(l10n.moduleTitle_ZombiesAteYourBrainsProperties),
             reason: 'Ordinary lawns should still recommend a loss condition.',
           );
@@ -225,18 +222,24 @@ void main() {
               ...essentialsWithoutLossCondition,
               'ZombiesAteYourBrainsProperties',
             }, stage: stage);
-            final warning = LevelIssueRegistry.forLevel(
-              context,
-              withLossCondition,
-            ).singleWhere(
-              (issue) => issue.id == 'underwaterZombieWinConditionWarning',
-            );
+            final warning =
+                LevelIssueRegistry.forLevel(
+                  context,
+                  withLossCondition,
+                ).singleWhere(
+                  (issue) => issue.id == 'underwaterZombieWinConditionWarning',
+                );
             expect(warning.severity, LevelIssueSeverity.warning);
-            expect(warning.title, l10n.warning);
+            expect(
+              warning.title,
+              l10n.underwaterZombieWinConditionWarningTitle,
+            );
             expect(warning.message, l10n.underwaterZombieWinConditionWarning);
           }
 
-          PvzLevelFile customUnderwaterLevel({required bool withLossCondition}) {
+          PvzLevelFile customUnderwaterLevel({
+            required bool withLossCondition,
+          }) {
             final level = _level({
               ...essentialsWithoutLossCondition,
               if (withLossCondition) 'ZombiesAteYourBrainsProperties',
@@ -247,9 +250,7 @@ void main() {
               PvzObject(
                 aliases: ['CustomUnderwaterStage'],
                 objClass: 'StageModuleProperties',
-                objData: {
-                  'BackgroundImagePrefix': 'IMAGE_BACKGROUNDS_DEEPSEA',
-                },
+                objData: {'BackgroundImagePrefix': 'IMAGE_BACKGROUNDS_DEEPSEA'},
               ),
             );
             return level;
@@ -261,14 +262,12 @@ void main() {
               customUnderwaterLevel(withLossCondition: false),
             ),
             isEmpty,
-            reason: 'The selected appearance, rather than the stage class, '
+            reason:
+                'The selected appearance, rather than the stage class, '
                 'controls the recommendation.',
           );
           expect(
-            _issueIds(
-              context,
-              customUnderwaterLevel(withLossCondition: true),
-            ),
+            _issueIds(context, customUnderwaterLevel(withLossCondition: true)),
             contains('underwaterZombieWinConditionWarning'),
           );
         });

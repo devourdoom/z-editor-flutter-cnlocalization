@@ -3,7 +3,7 @@ import 'package:c_editor/widgets/asset_image.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 import 'package:flutter/material.dart';
 
-enum LevelJamLabel { none, pop, rap, metal, punk, eightBit }
+enum LevelJamLabel { none, punk, pop, rap, eightBit, metal }
 
 class LevelJamOption {
   const LevelJamOption({
@@ -33,6 +33,11 @@ const levelJamOptions = <LevelJamOption>[
     iconAssets: ['assets/images/others/jamNone.webp'],
   ),
   LevelJamOption(
+    value: 'jam_punk',
+    label: LevelJamLabel.punk,
+    iconAssets: ['assets/images/zombies/zombie_eighties_punk.webp'],
+  ),
+  LevelJamOption(
     value: 'jam_pop',
     label: LevelJamLabel.pop,
     iconAssets: ['assets/images/zombies/zombie_eighties_glitter.webp'],
@@ -46,19 +51,14 @@ const levelJamOptions = <LevelJamOption>[
     ],
   ),
   LevelJamOption(
-    value: 'jam_metal',
-    label: LevelJamLabel.metal,
-    iconAssets: ['assets/images/zombies/zombie_eighties_gargantuar.webp'],
-  ),
-  LevelJamOption(
-    value: 'jam_punk',
-    label: LevelJamLabel.punk,
-    iconAssets: ['assets/images/zombies/zombie_eighties_punk.webp'],
-  ),
-  LevelJamOption(
     value: 'jam_8bit',
     label: LevelJamLabel.eightBit,
     iconAssets: ['assets/images/zombies/zombie_eighties_arcade.webp'],
+  ),
+  LevelJamOption(
+    value: 'jam_metal',
+    label: LevelJamLabel.metal,
+    iconAssets: ['assets/images/zombies/zombie_eighties_gargantuar.webp'],
   ),
 ];
 
@@ -77,7 +77,6 @@ class LevelJamPickerField extends StatelessWidget {
     required this.onChanged,
     this.enabled = true,
     this.decoration,
-    this.dialogTitle,
   });
 
   final String labelText;
@@ -85,7 +84,6 @@ class LevelJamPickerField extends StatelessWidget {
   final ValueChanged<String?> onChanged;
   final bool enabled;
   final InputDecoration? decoration;
-  final String? dialogTitle;
 
   Future<void> _showOptions(BuildContext context) async {
     if (!enabled) return;
@@ -113,65 +111,76 @@ class LevelJamPickerField extends StatelessWidget {
                   clipBehavior: Clip.antiAlias,
                   child: SizedBox(
                     width: constraints.maxWidth.clamp(0.0, 560.0),
-                    height: (constraints.maxHeight * 0.85).clamp(0.0, 620.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-                          child: Text(
-                            dialogTitle ?? labelText,
-                            style: theme.textTheme.headlineSmall,
-                          ),
+                    child: ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: (constraints.maxHeight * 0.85).clamp(
+                          0.0,
+                          620.0,
                         ),
-                        Expanded(
-                          child: ListView.separated(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            itemCount: levelJamOptions.length,
-                            separatorBuilder: (_, _) =>
-                                const Divider(height: 1),
-                            itemBuilder: (context, index) {
-                              final option = levelJamOptions[index];
-                              final selected = option.value == value;
-                              return EditorOptionTile(
-                                key: ValueKey(
-                                  'levelJamOption_${option.value ?? 'none'}',
-                                ),
-                                selected: selected,
-                                contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 10,
-                                ),
-                                leading: _LevelJamAvatars(
-                                  option: option,
-                                  size: 42,
-                                ),
-                                title: Text(option.localizedLabel(l10n)),
-                                trailing: selected
-                                    ? Icon(
-                                        Icons.check_circle,
-                                        color: theme.colorScheme.primary,
-                                        size: 22,
-                                      )
-                                    : null,
-                                onTap: () => Navigator.pop(
-                                  dialogContext,
-                                  _LevelJamSelection(option.value),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
-                          child: Align(
-                            alignment: AlignmentDirectional.centerEnd,
-                            child: TextButton(
-                              onPressed: () => Navigator.pop(dialogContext),
-                              child: Text(l10n.cancel),
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
+                            child: Text(
+                              l10n.selectLevelJamTitle,
+                              style: theme.textTheme.headlineSmall,
                             ),
                           ),
-                        ),
-                      ],
+                          Flexible(
+                            child: ListView.separated(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                              ),
+                              itemCount: levelJamOptions.length,
+                              separatorBuilder: (_, _) =>
+                                  const Divider(height: 1),
+                              itemBuilder: (context, index) {
+                                final option = levelJamOptions[index];
+                                final selected = option.value == value;
+                                return EditorOptionTile(
+                                  key: ValueKey(
+                                    'levelJamOption_${option.value ?? 'none'}',
+                                  ),
+                                  selected: selected,
+                                  contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 10,
+                                  ),
+                                  leading: _LevelJamAvatars(
+                                    option: option,
+                                    size: 42,
+                                  ),
+                                  title: Text(option.localizedLabel(l10n)),
+                                  trailing: selected
+                                      ? Icon(
+                                          Icons.check_circle,
+                                          color: theme.colorScheme.primary,
+                                          size: 22,
+                                        )
+                                      : null,
+                                  onTap: () => Navigator.pop(
+                                    dialogContext,
+                                    _LevelJamSelection(option.value),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8, 4, 8, 8),
+                            child: Align(
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: TextButton(
+                                onPressed: () => Navigator.pop(dialogContext),
+                                child: Text(l10n.cancel),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),

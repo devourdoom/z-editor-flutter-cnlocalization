@@ -31,6 +31,7 @@ void main() {
   Future<void> pumpScreen(
     WidgetTester tester, {
     Size size = const Size(1000, 1400),
+    Locale locale = const Locale('en'),
   }) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = size;
@@ -41,7 +42,7 @@ void main() {
         child: AppUiScale(
           scale: 1,
           child: MaterialApp(
-            locale: const Locale('en'),
+            locale: locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
             home: const InterfaceSettingsScreen(),
@@ -52,36 +53,79 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  Finder previewTransform(AppLocalizations l10n) {
-    return find
-        .ancestor(
-          of: find.text(l10n.uiScalePreviewTitle),
-          matching: find.byType(Transform),
-        )
-        .first;
-  }
+  testWidgets('narrow layouts keep theme labels and contain module previews', (
+    tester,
+  ) async {
+    for (final id in interfaceSettingsPageActionIds) {
+      settings.setInterfaceMenuActionPlacement(
+        InterfaceMenuSurface.workspace,
+        id,
+        InterfaceMenuPlacement.settingsPage,
+      );
+    }
+    settings.setUiScale(1.5);
+    for (final locale in const [Locale('zh'), Locale('en'), Locale('ru')]) {
+      await tester.pumpWidget(const SizedBox.shrink());
+      await pumpScreen(tester, size: const Size(320, 1400), locale: locale);
+      final l10n = lookupAppLocalizations(locale);
+      final selector = tester.widget<SegmentedButton<ThemeMode>>(
+        find.byType(SegmentedButton<ThemeMode>),
+      );
+      expect((selector.segments[0].label as Text).data, l10n.lightTheme);
+      expect((selector.segments[1].label as Text).data, l10n.darkTheme);
+      final preview = find.byKey(
+        const ValueKey('interfaceSettingsUiScalePreview'),
+      );
+      final layout = find.byKey(
+        const ValueKey('interfaceSettingsPreviewLayout'),
+      );
+      await tester.ensureVisible(preview);
+      await tester.pumpAndSettle();
+      final outerRect = tester.getRect(preview);
+      final contentRect = tester.getRect(layout);
+      expect(contentRect.left, greaterThanOrEqualTo(outerRect.left));
+      expect(contentRect.right, lessThanOrEqualTo(outerRect.right));
+      expect(contentRect.bottom, lessThanOrEqualTo(outerRect.bottom));
+      expect(tester.takeException(), isNull);
+    }
+  });
 
   testWidgets('shows the four settings areas and a live draft scale preview', (
     tester,
   ) async {
+    for (final id in interfaceSettingsPageActionIds) {
+      settings.setInterfaceMenuActionPlacement(
+        InterfaceMenuSurface.workspace,
+        id,
+        InterfaceMenuPlacement.settingsPage,
+      );
+    }
     await pumpScreen(tester);
     final l10n = lookupAppLocalizations(const Locale('en'));
 
+    expect(l10n.menuCustomization, 'Feature display');
+    expect(
+      l10n.menuCustomizationDescription,
+      contains('When space is limited'),
+    );
     expect(find.text(l10n.language), findsWidgets);
     expect(find.text(l10n.toggleTheme), findsWidgets);
     expect(find.text(l10n.uiSize), findsWidgets);
     expect(find.text(l10n.autosave), findsWidgets);
     expect(find.text(l10n.menuCustomization), findsOneWidget);
+    expect(find.text(l10n.aliasPromptOnCreate), findsWidgets);
 
     final scrollbar = tester.widget<Scrollbar>(find.byType(Scrollbar));
     expect(scrollbar.thumbVisibility, isTrue);
     expect(scrollbar.scrollbarOrientation, ScrollbarOrientation.right);
 
+    await tester.ensureVisible(find.text(l10n.languageChinese));
     await tester.tap(find.text(l10n.languageChinese));
     await tester.pump();
     expect(settings.state.locale, const Locale('zh'));
     expect(preferences.getString('locale'), 'zh');
 
+    await tester.ensureVisible(find.text(l10n.darkTheme));
     await tester.tap(find.text(l10n.darkTheme));
     await tester.pump();
     expect(settings.state.themeMode, ThemeMode.dark);
@@ -96,20 +140,29 @@ void main() {
     expect(settings.state.autosaveTargets, contains(AutosaveTarget.level));
     expect(preferences.getBool(AutosaveTarget.level.preferenceKey), isTrue);
 
+    final aliasPrompt = find.byKey(
+      const ValueKey('interfaceSettingsAliasPromptOnCreate'),
+    );
+    await tester.ensureVisible(aliasPrompt);
+    await tester.tap(aliasPrompt);
+    await tester.pump();
+    expect(settings.state.promptForAliasOnCreate, isTrue);
+    expect(
+      preferences.getBool(SettingsCubit.promptForAliasOnCreatePreferenceKey),
+      isTrue,
+    );
+
     final slider = find.byKey(const ValueKey('interfaceSettingsUiScaleSlider'));
     await tester.ensureVisible(slider);
-    final initialPreviewScale = tester
-        .widget<Transform>(previewTransform(l10n))
-        .transform
-        .getMaxScaleOnAxis();
+    final previewLayout = find.byKey(
+      const ValueKey('interfaceSettingsPreviewLayout'),
+    );
+    final initialPreviewWidth = tester.widget<SizedBox>(previewLayout).width!;
     final gesture = await tester.startGesture(tester.getCenter(slider));
     await gesture.moveBy(const Offset(160, 0));
     await tester.pump();
-    final draftPreviewScale = tester
-        .widget<Transform>(previewTransform(l10n))
-        .transform
-        .getMaxScaleOnAxis();
-    expect(draftPreviewScale, greaterThan(initialPreviewScale));
+    final draftPreviewWidth = tester.widget<SizedBox>(previewLayout).width!;
+    expect(draftPreviewWidth, lessThan(initialPreviewWidth));
     expect(settings.state.uiScale, 1.0, reason: 'dragging only changes draft');
 
     await gesture.up();
@@ -118,6 +171,61 @@ void main() {
     expect(preferences.getDouble('ui_scale'), settings.state.uiScale);
     expect(tester.takeException(), isNull);
   });
+
+  testWidgets(
+    'global setting sections appear only when either app bar keeps them here',
+    (tester) async {
+      await pumpScreen(tester);
+      final l10n = lookupAppLocalizations(const Locale('en'));
+
+      expect(
+        find.byKey(const ValueKey('interfaceSettingsUiScaleSlider')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('interfaceSettingsAutosaveSelectAll')),
+        findsOneWidget,
+      );
+
+      settings.setInterfaceMenuActionPlacement(
+        InterfaceMenuSurface.workspace,
+        InterfaceMenuActionIds.uiScale,
+        InterfaceMenuPlacement.settingsPage,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('interfaceSettingsUiScaleSlider')),
+        findsOneWidget,
+      );
+
+      settings.setInterfaceMenuActionPlacement(
+        InterfaceMenuSurface.levelEditor,
+        InterfaceMenuActionIds.uiScale,
+        InterfaceMenuPlacement.settingsPage,
+      );
+      settings.setInterfaceMenuActionPlacement(
+        InterfaceMenuSurface.workspace,
+        InterfaceMenuActionIds.uiScale,
+        InterfaceMenuPlacement.toolbar,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('interfaceSettingsUiScaleSlider')),
+        findsOneWidget,
+      );
+
+      settings.setInterfaceMenuActionPlacement(
+        InterfaceMenuSurface.levelEditor,
+        InterfaceMenuActionIds.uiScale,
+        InterfaceMenuPlacement.overflow,
+      );
+      await tester.pumpAndSettle();
+      expect(
+        find.byKey(const ValueKey('interfaceSettingsUiScaleSlider')),
+        findsNothing,
+      );
+    },
+  );
 
   testWidgets('customizes all three top-right action surfaces independently', (
     tester,
@@ -146,7 +254,7 @@ void main() {
           .interfaceMenuActionsFor(InterfaceMenuSurface.workspace)
           .first
           .id,
-      InterfaceMenuActionIds.theme,
+      InterfaceMenuActionIds.refresh,
     );
 
     final workspaceLanguage = find.byKey(const ValueKey('workspace_lang'));
@@ -154,10 +262,12 @@ void main() {
     await tester.tap(
       find.descendant(
         of: workspaceLanguage,
-        matching: find.text(l10n.menuPlacementOverflow),
+        matching: find.byType(DropdownButton<InterfaceMenuPlacement>),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10n.menuPlacementOverflow).last);
+    await tester.pumpAndSettle();
     expect(
       settings.state
           .interfaceMenuActionsFor(InterfaceMenuSurface.workspace)
@@ -186,10 +296,12 @@ void main() {
     await tester.tap(
       find.descendant(
         of: editorAutosave,
-        matching: find.text(l10n.menuPlacementToolbar),
+        matching: find.byType(DropdownButton<InterfaceMenuPlacement>),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
+    await tester.tap(find.text(l10n.menuPlacementToolbar).last);
+    await tester.pumpAndSettle();
     expect(
       settings.state
           .interfaceMenuActionsFor(InterfaceMenuSurface.levelEditor)
@@ -227,7 +339,7 @@ void main() {
           .interfaceMenuActionsFor(InterfaceMenuSurface.workspace)
           .singleWhere((action) => action.id == InterfaceMenuActionIds.autosave)
           .placement,
-      InterfaceMenuPlacement.overflow,
+      InterfaceMenuPlacement.settingsPage,
     );
     expect(tester.takeException(), isNull);
   });
