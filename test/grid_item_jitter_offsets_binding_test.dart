@@ -34,7 +34,7 @@ void main() {
   });
 
   testWidgets(
-    'obstacle spawner disables its preset while FixedOffset overrides it',
+    'obstacle spawner hides offset controls and retains imported fields',
     (tester) async {
       tester.view.physicalSize = const Size(900, 1600);
       tester.view.devicePixelRatio = 1;
@@ -80,39 +80,33 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('出怪位置偏移'), findsOneWidget);
-      expect(find.textContaining('按整批僵尸的创建顺序追加固定偏移'), findsOneWidget);
-
-      final picker = find.byKey(const ValueKey('jitterOffsetsPresetPicker'));
-      await tester.ensureVisible(picker);
-      await tester.tap(picker);
-      await tester.pumpAndSettle();
-      expect(find.text('Offsets'), findsOneWidget);
-
-      final advanced = find.byKey(
-        const ValueKey('fixedOffsetAdvancedSettings'),
+      expect(find.text('出怪位置偏移'), findsNothing);
+      expect(
+        find.byKey(const ValueKey('spawnPositionOffsetSettings')),
+        findsNothing,
       );
-      await tester.ensureVisible(advanced);
-      await tester.tap(advanced);
-      await tester.pumpAndSettle();
-      final field = find.byKey(const ValueKey('fixedOffsetField'));
+      expect(
+        find.byKey(const ValueKey('spawnPositionOffsetsUnavailable')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('jitterOffsetsPresetPicker')),
+        findsNothing,
+      );
+      expect(find.byKey(const ValueKey('fixedOffsetField')), findsNothing);
+
+      final field = find.byKey(const ValueKey('waveStartMessageField'));
       await tester.ensureVisible(field);
-      await tester.enterText(field, '0');
+      await tester.enterText(field, 'READY');
       await tester.pumpAndSettle();
 
       expect(event.objData, isA<Map<String, dynamic>>());
       final boundJson = event.objData as Map<String, dynamic>;
       expect(boundJson['JitterOffsets'], 'RTID(Offsets@CurrentLevel)');
       expect(boundJson['ZombieSpawnPattern'], 'RTID(Pattern@CurrentLevel)');
-      expect(boundJson, isNot(contains('FixedOffset')));
+      expect(boundJson['FixedOffset'], 40);
+      expect(boundJson['WaveStartMessage'], 'READY');
       expect(JitterOffsetsUtils.findReferrers(level, 'Offsets'), [event]);
-
-      await tester.ensureVisible(picker);
-      await tester.tap(picker);
-      await tester.pumpAndSettle();
-      expect(find.text('Offsets'), findsWidgets);
-      await tester.tap(find.text('Offsets').last);
-      await tester.pumpAndSettle();
       expect(tester.takeException(), isNull);
     },
   );

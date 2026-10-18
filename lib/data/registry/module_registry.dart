@@ -244,6 +244,8 @@ class ModuleRegistry {
         return l10n.moduleTitle_RainDarkProperties;
       case 'moduleTitle_LawnMowerProperties':
         return l10n.moduleTitle_LawnMowerProperties;
+      case 'moduleTitle_SpeedUpTileModuleProperties':
+        return l10n.moduleTitle_SpeedUpTileModuleProperties;
       case 'moduleTitle_TunnelDefendModuleProperties':
         return l10n.moduleTitle_TunnelDefendModuleProperties;
       case 'moduleTitle_SouDaCheTunnelDefendDefault':
@@ -428,6 +430,8 @@ class ModuleRegistry {
         return l10n.moduleDesc_RainDarkProperties;
       case 'moduleDesc_LawnMowerProperties':
         return l10n.moduleDesc_LawnMowerProperties;
+      case 'moduleDesc_SpeedUpTileModuleProperties':
+        return l10n.moduleDesc_SpeedUpTileModuleProperties;
       case 'moduleDesc_TunnelDefendModuleProperties':
         return l10n.moduleDesc_TunnelDefendModuleProperties;
       case 'moduleDesc_SouDaCheTunnelDefendDefault':
@@ -1262,6 +1266,17 @@ class ModuleRegistry {
       defaultAlias: 'RoofProps',
       initialDataFactory: () => RoofPropertiesData(),
       routeId: 'RoofProperties',
+    ),
+    'SpeedUpTileModuleProperties': ModuleMetadata(
+      titleKey: 'moduleTitle_SpeedUpTileModuleProperties',
+      descriptionKey: 'moduleDesc_SpeedUpTileModuleProperties',
+      icon: Icons.fast_forward,
+      assetIconPath: 'assets/images/tunnels/speed_up_tile_left.webp',
+      isCore: true,
+      category: ModuleCategory.scene,
+      defaultAlias: 'SpeedUpTile',
+      initialDataFactory: () => SpeedUpTileModulePropertiesData(),
+      routeId: 'SpeedUpTileModule',
     ),
     'TunnelDefendModuleProperties': ModuleMetadata(
       titleKey: 'moduleTitle_TunnelDefendModuleProperties',

@@ -11,6 +11,7 @@ import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/escape_override.dart';
 import 'package:c_editor/utils/json_viewer_search.dart';
 import 'package:c_editor/widgets/app_message.dart';
+import 'package:c_editor/widgets/autosave.dart';
 import 'package:c_editor/widgets/editor_components.dart'
     show EditorPopupMenuTile;
 import 'package:c_editor/widgets/json_viewer_search_bar.dart';
@@ -147,6 +148,9 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
   double _fontSize = _cachedFontSize ?? 12;
   final _verticalController = ScrollController();
   bool _isEditing = false;
+  String _editInitialText = '';
+  bool _confirmingCancelEdit = false;
+  bool _savingEdit = false;
   final _editController = _JsonEditController();
   final _searchController = TextEditingController();
   final _replaceController = TextEditingController();
@@ -512,7 +516,7 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
   }
 
   void _replaceCurrentMatch() {
-    if (!_isEditing || _matches.isEmpty) return;
+    if (_savingEdit || !_isEditing || _matches.isEmpty) return;
     final match = _matches[_currentMatchIndex];
     final replacement = _replaceController.text;
     final next = replaceJsonViewerMatch(
@@ -529,7 +533,7 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
   }
 
   void _replaceAllMatches() {
-    if (!_isEditing || _searchController.text.isEmpty) return;
+    if (_savingEdit || !_isEditing || _searchController.text.isEmpty) return;
     final replacement = _replaceController.text;
     final next = replaceAllJsonViewerMatches(
       _editController.text,
@@ -617,6 +621,7 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
   void _startEdit() {
     final previousScrollOffset = _currentScrollOffset();
     _editController.text = _rawPrettyText();
+    _editInitialText = _editController.text;
     setState(() {
       _isEditing = true;
       _syntaxError = null;
@@ -628,7 +633,44 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
     _pushEscapeHandler();
   }
 
-  void _cancelEdit() {
+  Future<void> _cancelEdit() async {
+    if (_confirmingCancelEdit || _savingEdit) return;
+    if (_editController.text != _editInitialText) {
+      if (autosaveEnabled(context, AutosaveTarget.level)) {
+        await _saveEdit();
+        // Invalid JSON or a failed write leaves edit mode and its text intact.
+        return;
+      }
+      _confirmingCancelEdit = true;
+      bool? discard;
+      try {
+        final l10n = AppLocalizations.of(context)!;
+        discard = await showDialog<bool>(
+          context: context,
+          builder: (dialogContext) => EscapeClosesModal(
+            child: AlertDialog(
+              key: const ValueKey('jsonDiscardEditsDialog'),
+              title: Text(l10n.unsavedChanges),
+              content: Text(l10n.jsonDiscardEditsBody),
+              actions: [
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext, false),
+                  child: Text(l10n.stayInEditor),
+                ),
+                TextButton(
+                  onPressed: () => Navigator.pop(dialogContext, true),
+                  child: Text(l10n.discard),
+                ),
+              ],
+            ),
+          ),
+        );
+      } finally {
+        _confirmingCancelEdit = false;
+      }
+      if (!mounted || discard != true) return;
+    }
+    if (!mounted) return;
     _popEscapeHandler();
     setState(() {
       _isEditing = false;
@@ -638,16 +680,68 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
   }
 
   Future<void> _saveEdit() async {
+    if (_savingEdit || !_isEditing) return;
+    setState(() => _savingEdit = true);
     try {
-      final json = jsonDecode(_editController.text) as Map<String, dynamic>;
-      final newLevel = PvzLevelFile.fromJson(json);
+      await _saveEditImpl();
+    } finally {
+      if (mounted) setState(() => _savingEdit = false);
+    }
+  }
+
+  Future<void> _saveEditImpl() async {
+    final l10n = AppLocalizations.of(context);
+    dynamic json;
+    try {
+      json = jsonDecode(_editController.text);
+    } on FormatException catch (error) {
+      final offset = error.offset;
+      if (offset != null) {
+        final preceding = _editController.text.substring(
+          0,
+          offset.clamp(0, _editController.text.length),
+        );
+        final line = 1 + '\n'.allMatches(preceding).length;
+        final column = preceding.length - preceding.lastIndexOf('\n');
+        _showEditError(
+          l10n?.jsonEditSyntaxErrorAt('$line', '$column') ??
+              'Invalid JSON syntax near line $line, column $column. Check commas, brackets, and double quotes, then save again.',
+        );
+      } else {
+        _showEditError(
+          l10n?.jsonEditSyntaxError ??
+              'Invalid JSON syntax. Check commas, brackets, and double quotes, then save again.',
+        );
+      }
+      return;
+    }
+
+    late final PvzLevelFile newLevel;
+    try {
+      // A missing objects list must not silently replace the level with an
+      // empty file. Leave object-specific compatibility to the existing parser.
+      if (json is! Map<String, dynamic> || json['objects'] is! List) {
+        throw const FormatException('Expected a level objects list');
+      }
+      newLevel = PvzLevelFile.fromJson(json);
+    } catch (_) {
+      _showEditError(
+        l10n?.jsonEditStructureError ??
+            "This JSON does not match the level structure. Keep the objects list and each object's objclass and objdata fields; the version must be an integer.",
+      );
+      return;
+    }
+
+    try {
+      await (widget.saveLevel ?? LevelRepository.saveAndExport)(
+        widget.filePath,
+        newLevel,
+      );
+      // Commit only after the file is saved, so a failed write does not change
+      // the level behind the editor or discard the user's pending JSON edits.
       widget.levelFile.objects.clear();
       widget.levelFile.objects.addAll(newLevel.objects);
       widget.levelFile.version = newLevel.version;
-      await (widget.saveLevel ?? LevelRepository.saveAndExport)(
-        widget.filePath,
-        widget.levelFile,
-      );
       if (mounted) {
         _popEscapeHandler();
         setState(() {
@@ -664,17 +758,22 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
           icon: Icons.check_circle,
         );
       }
-    } catch (e) {
-      if (mounted) {
-        setState(() => _syntaxError = 'JSON error: $e');
-        final l10n = AppLocalizations.of(context);
-        AppMessage.show(
-          context,
-          l10n?.saveFail ?? 'Save failed',
-          icon: Icons.warning_amber_rounded,
-        );
-      }
+    } catch (_) {
+      _showEditError(
+        l10n?.jsonEditSaveError ??
+            'Could not save the file. Check workspace write permissions and free space, then try again. On the web, make sure the browser allows local storage. Your edits have been kept.',
+      );
     }
+  }
+
+  void _showEditError(String message) {
+    if (!mounted) return;
+    setState(() => _syntaxError = message);
+    AppMessage.show(
+      context,
+      AppLocalizations.of(context)?.saveFail ?? 'Save failed',
+      icon: Icons.warning_amber_rounded,
+    );
   }
 
   void _toggleJsonView() {
@@ -766,8 +865,7 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
         final toolbarActionIds = {
           if (!isNarrow)
             for (final action in configuredActions)
-              if (action.placement == InterfaceMenuPlacement.toolbar)
-                action.id,
+              if (action.placement == InterfaceMenuPlacement.toolbar) action.id,
         };
         final overflowActions = configuredActions
             .where(
@@ -823,7 +921,7 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
                   IconButton(
                     icon: const Icon(Icons.save),
                     tooltip: l10n?.tooltipSave ?? 'Save',
-                    onPressed: _saveEdit,
+                    onPressed: _savingEdit ? null : _saveEdit,
                   )
                 else ...[
                   for (final action in configuredActions)
@@ -970,6 +1068,7 @@ class _JsonViewerScreenState extends State<JsonViewerScreen> {
             const SizedBox(width: 16),
             Expanded(
               child: TextField(
+                readOnly: _savingEdit,
                 controller: _editController,
                 maxLines: null,
                 style: Theme.of(context).textTheme.bodyMedium?.copyWith(

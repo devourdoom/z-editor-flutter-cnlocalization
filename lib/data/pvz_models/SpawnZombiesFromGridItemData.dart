@@ -15,6 +15,9 @@ class SpawnZombiesFromGridItemData extends PvzModel {
 
   String? waveStartMessage;
   int zombieSpawnWaitTime;
+
+  /// The obstacle-rise positioning path ignores these three imported fields.
+  /// Preserve them when editing other properties of an existing event.
   String? jitterOffsets;
   String? zombieSpawnPattern;
   double fixedOffset;

@@ -247,7 +247,7 @@ class _JitterOffsetsPresetsScreenState
                   const SizedBox(height: 12),
                   Text(
                     l10n?.jitterOffsetsDeleteBlockedHint ??
-                        'Open these events first and switch "Spawn Position Offset" to another preset or unbind it:',
+                        'Open these events first and switch "Spawn Position Offset" to another preset or unbind it. For events that do not support offset settings, use the manual file editor to remove retained references:',
                     style: Theme.of(dialogContext).textTheme.bodySmall
                         ?.copyWith(
                           color: Theme.of(
@@ -349,19 +349,27 @@ class _JitterOffsetsPresetsScreenState
           title: l10n?.jitterOffsetsHelpOverviewTitle ?? 'Overview',
           body:
               l10n?.jitterOffsetsHelpOverviewBody ??
-              'Spawn Position Offset presets adjust the horizontal arrangement of zombies created by the same spawn event. In Basic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events, each zombie first receives its own base spawn position. The game then accumulates horizontal offsets independently for each row and applies them to the base X coordinate according to the zombie\'s facing direction. Ground Spawner first calculates a base emergence position from the selected column or column range, so the added offset may move it outside that range. Grid Item Spawner uses the target obstacle position as its base, so the final emergence point may be offset from the center of that obstacle\'s tile. This preset changes only the final spawn X coordinate; it does not change creation time, row, or wave timing. Without a bound preset, the game uses the default parameters of 80 for the same-row cumulative offset increment and 30 for the random offset upper bound, so zombies still spawn normally without a custom preset.',
+              'Spawn Position Offset presets adjust the horizontal arrangement of zombies in the same event. They apply to the zombie lists in Basic Spawner and Underwater Spawner, without affecting sea creatures. Each zombie receives an offset from its row\'s accumulated value and an independent random value, applied to its own base position. Each row accumulates independently. Only horizontal position changes, not the number created, creation time, row, or wave timing.\nWithout a bound preset, the game uses the default parameters: a same-row cumulative offset increment of 80 and a random offset upper bound of 30, giving each zombie a random offset from 0 through 29. Zombies spawn normally without a custom preset.',
         ),
         HelpSectionData(
           title: l10n?.jitterOffsetsHelpUsageTitle ?? 'Instructions',
           body:
               l10n?.jitterOffsetsHelpUsageBody ??
-              'After creating a preset here, open any Basic Spawner, Underwater Spawner, Ground Spawner, or Grid Item Spawner event and select it under "Spawn Position Offset".\nA preset can be shared by multiple events. Editing it updates every event that references it. A referenced preset cannot be deleted; first switch those events to another preset or unbind it.',
+              'After creating a preset here, open a Basic Spawner or Underwater Spawner event and select it under "Spawn Position Offset".\nA preset can be shared by multiple events. Editing it updates every event that references it. A referenced preset cannot be deleted; first switch those events to another preset or unbind it.',
         ),
         HelpSectionData(
           title: l10n?.jitterOffsetsHelpParametersTitle ?? 'Parameters',
           body:
               l10n?.jitterOffsetsHelpParametersBody ??
-              '"Same-row cumulative offset increment" adds a fixed amount for each additional zombie in the same event and row. The first zombie has no cumulative offset; the second has one increment; the third has two, and so on. Use a non-negative value. A negative sum of cumulative and random offsets may produce an abnormally large horizontal coordinate and prevent normal entry.\n"Random offset upper bound" gives each zombie an independent random offset from 0 through the entered value minus 1. For example, 10 gives 0 through 9. Enter a positive integer; zero or negative values do not disable randomness and may prevent normal entry.\nThe cumulative and random offsets are added together, then applied according to facing. Facing left, usually entering from the right side of the lawn, moves the spawn position right. Facing right, usually entering from the left side, moves it left. In Underwater Spawner, enabling "From left" means facing right and adding the offset toward the left; disabling it normally means entering from the right and adding the offset toward the right.\nFor an increment of 20 and upper bound of 10, the first three zombies in one row receive offsets of 0–9, 20–29, and 40–49, applied left or right as described above.\nThe game\'s spawn arrangement rules may also set row starting offsets and offsets between rows. These combine with the preset, so the final position may include additional offsets.',
+              '"Same-row cumulative offset increment" is the amount added to a row\'s accumulated offset after each zombie in that row is positioned. A non-negative integer is recommended. Negative values may be converted into abnormally large offsets and prevent normal entry.\n"Random offset upper bound" sets each zombie\'s independent random offset range. The actual value ranges from 0 through the entered value minus 1. For example, 10 gives 0 through 9. Enter a positive integer; zero or negative values do not disable randomness and may produce abnormal coordinates.\nThe accumulated and random offsets are added together, then applied to the base position according to facing. Facing left, usually entering from the right side of the lawn, moves the spawn position right. Facing right, usually entering from the left side, moves it left. Without a spawn formation preset, each row starts at 0. For example, an increment of 20 and upper bound of 10 give the first three zombies in one row offsets of 0–9, 20–29, and 40–49.\nA spawn formation preset adjusts each row\'s initial horizontal offset and the spacing between later zombies in that row. Each row starts with the preset\'s initial offset; after positioning each zombie, that row gains its extra spacing adjustment as well as the base increment. This changes horizontal spacing within a row, not the vertical distance between rows.',
+        ),
+        HelpSectionData(
+          title:
+              l10n?.jitterOffsetsHelpFixedOffsetTitle ??
+              'Batch-index fixed offset',
+          body:
+              l10n?.jitterOffsetsFixedOffsetDescription ??
+              'Commonly used in Two-Player Mode; the default is 0. A value of 0 uses the Spawn Position Offset preset and spawn formation preset. A nonzero value temporarily disables both but preserves their settings; restoring 0 enables them again. Fixed offsets accumulate in the event\'s zombie-list order without restarting for each row, while each zombie retains its own base position. The first zombie has no fixed offset; each following zombie receives one more entered increment. Even a tiny nonzero value or an event with only one zombie disables both presets.\nA positive fixed offset value moves zombies right, a negative value moves them left, and decimal fractions are preserved. Facing does not reverse this direction, so use this setting carefully with mixed rows or facings. For example, 8.5 moves the first three zombies right by 0, 8.5, and 17 from their own base positions.\nThis setting changes only horizontal position, not the number created. Excessively large magnitudes may place zombies far outside or too deeply inside the lawn, preventing normal entry or causing settlement problems.',
         ),
       ],
     );
@@ -426,7 +434,7 @@ class _JitterOffsetsPresetsScreenState
                     padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Text(
                       l10n?.jitterOffsetsEmpty ??
-                          'No presets yet.\nBasic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events without a bound preset use the game\'s default parameters of 80 / 30.\nTo customize the offsets, create a preset and bind it in the event.',
+                          'No presets yet.\nWithout a bound preset, the zombie lists in Basic Spawner and Underwater Spawner use the game\'s default parameters: a same-row cumulative offset increment of 80 and a random offset upper bound of 30, giving each zombie a random offset from 0 through 29.\nTo customize the offsets, create a preset and bind it in the event.',
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
@@ -478,7 +486,7 @@ class _JitterOffsetsPresetsScreenState
                     icon: const Icon(Icons.add_circle_outline),
                     label: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 14),
-                      child: Text(l10n?.jitterOffsetsAdd ?? 'New Preset'),
+                      child: Text(l10n?.jitterOffsetsAdd ?? 'Add Offset'),
                     ),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: themeColor,
@@ -616,7 +624,7 @@ class _JitterOffsetsPresetCard extends StatelessWidget {
               },
               warningBuilder: (value) => value != null && value < 0
                   ? (l10n?.jitterOffsetsIncrementInvalid ??
-                        'Use a non-negative value. A negative value may make the sum of the cumulative value and random value less than 0; the game converts it as an unsigned integer, which may produce an abnormally large X coordinate and prevent zombies from entering the lawn normally.')
+                        'A non-negative integer is recommended. Negative values may be converted into abnormally large offsets and prevent normal entry onto the lawn.')
                   : null,
               onChanged: onIncrementChanged,
             ),
@@ -635,7 +643,7 @@ class _JitterOffsetsPresetCard extends StatelessWidget {
                 }
                 if (value <= 0) {
                   return l10n?.jitterOffsetsRandomJitterInvalid ??
-                      'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.';
+                      'Enter a positive integer. Zero or a negative value does not disable the random offset and may produce an abnormally large horizontal position, preventing zombies from entering the lawn normally.';
                 }
                 return null;
               },

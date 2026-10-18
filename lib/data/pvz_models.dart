@@ -139,6 +139,8 @@ export 'pvz_models/SpawnZombiesFishWaveActionPropsData.dart';
 export 'pvz_models/SpawnZombiesFromGridItemData.dart';
 export 'pvz_models/SpawnZombiesFromGroundData.dart';
 export 'pvz_models/SpeedConditionData.dart';
+export 'pvz_models/SpeedUpTileModulePropertiesData.dart';
+export 'pvz_models/SpeedUpTileRoadData.dart';
 export 'pvz_models/StatueMazeModulePropertiesData.dart';
 export 'pvz_models/SpermWhaleModulePropertiesData.dart';
 export 'pvz_models/StarChallengeBeatTheLevelData.dart';

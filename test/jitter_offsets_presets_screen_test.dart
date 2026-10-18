@@ -64,7 +64,7 @@ void main() {
     await tester.pumpWidget(buildScreen(level, onChanged: () => changed++));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('New Preset'));
+    await tester.tap(find.text('Add Offset'));
     await tester.pumpAndSettle();
 
     final presets = JitterOffsetsUtils.listPresets(level);
@@ -111,41 +111,51 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('wave timeline entry uses a blue background with white content', (
+  testWidgets('wave timeline entry follows themed hint colors and typography', (
     tester,
   ) async {
     final level = PvzLevelFile(objects: []);
 
-    await tester.pumpWidget(
-      MaterialApp(
-        locale: const Locale('en'),
-        supportedLocales: AppLocalizations.supportedLocales,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        home: Scaffold(
-          body: WaveTimelineTab(
-            levelFile: level,
-            parsed: ParsedLevelData(
-              waveManager: WaveManagerData(waveCount: 0, waves: []),
-              objectMap: const {},
+    for (final brightness in Brightness.values) {
+      await tester.pumpWidget(
+        MaterialApp(
+          theme: ThemeData(brightness: brightness),
+          locale: const Locale('en'),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          home: Scaffold(
+            body: WaveTimelineTab(
+              levelFile: level,
+              parsed: ParsedLevelData(
+                waveManager: WaveManagerData(waveCount: 0, waves: []),
+                objectMap: const {},
+              ),
+              onChanged: () {},
+              onEditEvent: (_, _) async {},
+              onAddEvent: (_) {},
+              onEditWaveManagerSettings: () {},
+              onEditJitterOffsets: () {},
             ),
-            onChanged: () {},
-            onEditEvent: (_, _) async {},
-            onAddEvent: (_) {},
-            onEditWaveManagerSettings: () {},
-            onEditJitterOffsets: () {},
           ),
         ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      );
+      await tester.pumpAndSettle();
 
-    final title = find.text('Spawn Position Offset Presets');
-    final card = find.ancestor(of: title, matching: find.byType(Card)).first;
-    final theme = Theme.of(tester.element(title));
-    expect(tester.widget<Card>(card).color, theme.colorScheme.secondary);
-    expect(tester.widget<Text>(title).style?.color, Colors.white);
-    expect(tester.widget<Icon>(find.byIcon(Icons.speed)).color, Colors.white);
-    expect(tester.takeException(), isNull);
+      final title = find.text('Spawn Position Offset Presets');
+      final card = find.ancestor(of: title, matching: find.byType(Card)).first;
+      final theme = Theme.of(tester.element(title));
+      final onCard = brightness == Brightness.dark
+          ? Colors.white
+          : Colors.black87;
+      expect(tester.widget<Card>(card).color, theme.colorScheme.secondary);
+      expect(tester.widget<Text>(title).style?.color, onCard);
+      expect(
+        tester.widget<Text>(title).style?.fontSize,
+        theme.textTheme.bodyMedium?.fontSize,
+      );
+      expect(tester.widget<Icon>(find.byIcon(Icons.speed)).color, onCard);
+      expect(tester.takeException(), isNull);
+    }
   });
 
   testWidgets('renames references and blocks deletion while referenced', (
@@ -337,7 +347,7 @@ void main() {
     expect(preset.objData, containsPair('ZombieSpawningOffsetIncrement', -1));
     expect(
       find.text(
-        'Use a non-negative value. A negative value may make the sum of the cumulative value and random value less than 0; the game converts it as an unsigned integer, which may produce an abnormally large X coordinate and prevent zombies from entering the lawn normally.',
+        'A non-negative integer is recommended. Negative values may be converted into abnormally large offsets and prevent normal entry onto the lawn.',
       ),
       findsOneWidget,
     );
@@ -358,7 +368,7 @@ void main() {
     );
     expect(
       find.text(
-        'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.',
+        'Enter a positive integer. Zero or a negative value does not disable the random offset and may produce an abnormally large horizontal position, preventing zombies from entering the lawn normally.',
       ),
       findsOneWidget,
     );
@@ -368,7 +378,7 @@ void main() {
     expect(preset.objData, containsPair('ZombieSpawningRandomJitter', 30));
     expect(
       find.text(
-        'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.',
+        'Enter a positive integer. Zero or a negative value does not disable the random offset and may produce an abnormally large horizontal position, preventing zombies from entering the lawn normally.',
       ),
       findsOneWidget,
     );
@@ -402,7 +412,7 @@ void main() {
 
     expect(
       find.text(
-        'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.',
+        'Enter a positive integer. Zero or a negative value does not disable the random offset and may produce an abnormally large horizontal position, preventing zombies from entering the lawn normally.',
       ),
       findsOneWidget,
     );
@@ -432,7 +442,9 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('organizes help into three concise sections', (tester) async {
+  testWidgets('help includes preset guidance and fixed-offset explanation', (
+    tester,
+  ) async {
     final level = PvzLevelFile(objects: []);
 
     await tester.pumpWidget(buildScreen(level));
@@ -452,18 +464,25 @@ void main() {
         .whereType<String>()
         .where((text) => text.startsWith('• '))
         .toList();
-    expect(sectionTitles, ['• Overview', '• Instructions', '• Parameters']);
+    expect(sectionTitles, [
+      '• Overview',
+      '• Instructions',
+      '• Parameters',
+      '• Batch-index fixed offset',
+    ]);
     expect(dialogTextContaining('default parameters'), findsOneWidget);
     expect(
       dialogTextContaining(
-        'In Basic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events',
+        'They apply to the zombie lists in Basic Spawner and Underwater Spawner',
       ),
       findsOneWidget,
     );
     expect(dialogTextContaining('natural spawn'), findsNothing);
     expect(dialogTextContaining('A preset can be shared'), findsOneWidget);
     expect(
-      dialogTextContaining('random offset from 0 through the entered value minus 1'),
+      dialogTextContaining(
+        'The actual value ranges from 0 through the entered value minus 1',
+      ),
       findsOneWidget,
     );
     expect(
@@ -472,15 +491,35 @@ void main() {
       ),
       findsOneWidget,
     );
-    expect(dialogTextContaining('moves the spawn position right'), findsOneWidget);
+    expect(
+      dialogTextContaining('moves the spawn position right'),
+      findsOneWidget,
+    );
     expect(
       dialogTextContaining('Facing right, usually entering from the left side'),
       findsOneWidget,
     );
     expect(dialogTextContaining('moves it left'), findsOneWidget);
-    expect(dialogTextContaining('spawn arrangement rules'), findsOneWidget);
+    expect(
+      dialogTextContaining('not the vertical distance between rows'),
+      findsOneWidget,
+    );
+    expect(
+      dialogTextContaining('without affecting sea creatures'),
+      findsOneWidget,
+    );
+    expect(dialogTextContaining('0–9, 20–29, and 40–49'), findsOneWidget);
     expect(dialogTextContaining('Direction'), findsNothing);
     expect(dialogTextContaining('ZombieSpawnPattern'), findsNothing);
+    expect(dialogTextContaining('FixedOffset'), findsNothing);
+    expect(dialogTextContaining('RowStartOffset'), findsNothing);
+    expect(dialogTextContaining('RowBetweenOffset'), findsNothing);
+    expect(dialogTextContaining('BaseX'), findsNothing);
+    expect(dialogTextContaining('×'), findsNothing);
+    expect(
+      dialogTextContaining('8.5, and 17 from their own base positions'),
+      findsOneWidget,
+    );
     expect(dialogTextContaining('global index in the event'), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -502,7 +541,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Offsets'), findsOneWidget);
-    expect(find.text('New Preset'), findsOneWidget);
+    expect(find.text('Add Offset'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 }

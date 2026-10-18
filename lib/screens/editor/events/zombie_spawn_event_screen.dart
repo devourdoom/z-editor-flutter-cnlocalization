@@ -307,21 +307,7 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
   }
 
   void _updateJitterOffsets(String? value) {
-    if (widget.isGroundSpawner) {
-      final data = _data as SpawnZombiesFromGroundData;
-      _data = SpawnZombiesFromGroundData(
-        jitterOffsets: value,
-        zombieSpawnPattern: data.zombieSpawnPattern,
-        fixedOffset: data.fixedOffset,
-        columnStart: data.columnStart,
-        columnEnd: data.columnEnd,
-        additionalPlantFood: data.additionalPlantFood,
-        spawnPlantName: data.spawnPlantName,
-        zombies: data.zombies,
-      );
-      _sync();
-      return;
-    }
+    if (widget.isGroundSpawner) return;
     final data = _data as WaveActionData;
     _data = WaveActionData(
       jitterOffsets: value,
@@ -336,31 +322,18 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
   }
 
   void _updateFixedOffset(num value) {
+    if (widget.isGroundSpawner) return;
     final storedValue = value == 0 ? null : value;
-    if (widget.isGroundSpawner) {
-      final data = _data as SpawnZombiesFromGroundData;
-      _data = SpawnZombiesFromGroundData(
-        jitterOffsets: data.jitterOffsets,
-        zombieSpawnPattern: data.zombieSpawnPattern,
-        fixedOffset: storedValue,
-        columnStart: data.columnStart,
-        columnEnd: data.columnEnd,
-        additionalPlantFood: data.additionalPlantFood,
-        spawnPlantName: data.spawnPlantName,
-        zombies: data.zombies,
-      );
-    } else {
-      final data = _data as WaveActionData;
-      _data = WaveActionData(
-        jitterOffsets: data.jitterOffsets,
-        zombieSpawnPattern: data.zombieSpawnPattern,
-        fixedOffset: storedValue,
-        notificationEvents: data.notificationEvents,
-        additionalPlantFood: data.additionalPlantFood,
-        spawnPlantName: data.spawnPlantName,
-        zombies: data.zombies,
-      );
-    }
+    final data = _data as WaveActionData;
+    _data = WaveActionData(
+      jitterOffsets: data.jitterOffsets,
+      zombieSpawnPattern: data.zombieSpawnPattern,
+      fixedOffset: storedValue,
+      notificationEvents: data.notificationEvents,
+      additionalPlantFood: data.additionalPlantFood,
+      spawnPlantName: data.spawnPlantName,
+      zombies: data.zombies,
+    );
     _sync();
   }
 
@@ -879,25 +852,22 @@ class _ZombieSpawnEventScreenState extends State<ZombieSpawnEventScreen> {
               const SizedBox(height: 16),
               if (widget.isGroundSpawner) _buildColumnRangeCard(theme, l10n),
               if (widget.isGroundSpawner) const SizedBox(height: 16),
-              JitterOffsetsBindingCard(
-                levelFile: widget.levelFile,
-                currentValue: widget.isGroundSpawner
-                    ? (_data as SpawnZombiesFromGroundData).jitterOffsets
-                    : (_data as WaveActionData).jitterOffsets,
-                onChanged: _updateJitterOffsets,
-                onManage: _openJitterOffsetsPresets,
-                enabled: _fixedOffset == 0,
-                overrideWarning: _fixedOffset != 0
-                    ? (l10n?.jitterOffsetsFixedOffsetOverrideWarning ??
-                          'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.')
-                    : null,
-              ),
-              const SizedBox(height: 16),
-              FixedOffsetAdvancedSettingsCard(
-                value: _fixedOffset,
-                onChanged: _updateFixedOffset,
-              ),
-              const SizedBox(height: 16),
+              if (!widget.isGroundSpawner) ...[
+                JitterOffsetsBindingCard(
+                  levelFile: widget.levelFile,
+                  currentValue: (_data as WaveActionData).jitterOffsets,
+                  onChanged: _updateJitterOffsets,
+                  onManage: _openJitterOffsetsPresets,
+                  fixedOffset: _fixedOffset,
+                  onFixedOffsetChanged: _updateFixedOffset,
+                  enabled: _fixedOffset == 0,
+                  overrideWarning: _fixedOffset != 0
+                      ? (l10n?.jitterOffsetsFixedOffsetOverrideWarning ??
+                            'The event\'s batch-index fixed offset is nonzero. The bound Spawn Position Offset preset and spawn formation preset are temporarily ignored but retained; they take effect again when the fixed offset returns to 0.')
+                      : null,
+                ),
+                const SizedBox(height: 16),
+              ],
               if (!widget.isGroundSpawner && _supportsLevelJamMusic) ...[
                 _buildNotificationCard(theme, l10n),
                 const SizedBox(height: 16),

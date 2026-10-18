@@ -11,7 +11,9 @@ import 'package:c_editor/widgets/editor_components.dart'
 import 'package:c_editor/data/zombie_conditions.dart';
 import 'package:flutter/material.dart';
 import 'package:c_editor/data/lunar_mine_vein_type_catalog.dart';
+import 'package:c_editor/data/music_suffix_catalog.dart';
 import 'package:c_editor/data/music_type_catalog.dart';
+import 'package:c_editor/data/speed_up_tile_catalog.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/level_parser.dart';
 import 'package:c_editor/data/rtid_parser.dart';
@@ -260,6 +262,8 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
         return l10n.previewTabPlants;
       case GridPreviewModuleKind.zombies:
         return _p('previewInitial', 'Initial');
+      case GridPreviewModuleKind.initialLawnOverview:
+        return l10n.previewTabInitialLawnOverview;
       case GridPreviewModuleKind.common:
         return _p('previewInitial', 'Initial');
       case GridPreviewModuleKind.piratePlank:
@@ -292,6 +296,8 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
         return l10n.moduleTitle_ManholePipelineModuleProperties;
       case GridPreviewModuleKind.roofProperties:
         return l10n.moduleTitle_RoofProperties;
+      case GridPreviewModuleKind.speedUpTile:
+        return l10n.moduleTitle_SpeedUpTileModuleProperties;
       case GridPreviewModuleKind.tunnelDefend:
         return l10n.moduleTitle_TunnelDefendModuleProperties;
       case GridPreviewModuleKind.expeditionTiles:
@@ -703,7 +709,8 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
         ? '—'
         : ResourceNames.lookupOrFallback(
             context,
-            musicModule?.suffixNameKey ?? 'musicSuffix_$musicSuffixCode',
+            musicModule?.suffixNameKey ??
+                MusicSuffixCatalog.resourceKey(musicSuffixCode),
             musicSuffixCode,
           );
     final musicSuffixDisplay =
@@ -714,13 +721,18 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
     final musicTypeCode = def.musicType.isEmpty
         ? MusicTypeCatalog.mainPath
         : def.musicType;
-    final musicTypeChoice = musicModule?.choices.firstWhereOrNull(
+    final musicTypeChoices =
+        musicModule?.choices ??
+        MusicTypeCatalog.fallbackChoicesForSuffix(rawMusicSuffix);
+    final musicTypeChoice = musicTypeChoices.firstWhereOrNull(
       (choice) => choice.value == musicTypeCode,
     );
     final musicTypeName = ResourceNames.lookupOrFallback(
       context,
       musicTypeChoice?.labelKey ?? musicTypeCode,
-      musicTypeCode,
+      musicTypeChoice?.labelKey.startsWith('musicSuffix_') == true
+          ? musicSuffixName
+          : musicTypeCode,
     );
     final musicTypeDisplay = musicTypeName == musicTypeCode
         ? musicTypeName
@@ -2672,18 +2684,19 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
 
   Widget _buildTideGrid(int rows, int cols, LevelPreviewGridStyle style) {
     final tideData = readTideModuleData(widget.levelFile);
+    final waterColumns = (tideData?.startingWaveLocation ?? 0)
+        .clamp(0, cols)
+        .toInt();
     return _buildCompositeLawnGrid(
       rows: rows,
       cols: cols,
       style: style,
-      background: tideData != null
+      background: waterColumns > 0
           ? Row(
               children: [
-                Spacer(
-                  flex: (cols - tideData.startingWaveLocation).clamp(0, cols),
-                ),
+                if (waterColumns < cols) Spacer(flex: cols - waterColumns),
                 Expanded(
-                  flex: tideData.startingWaveLocation.clamp(0, cols),
+                  flex: waterColumns,
                   child: Container(color: Colors.blue.withValues(alpha: 0.25)),
                 ),
               ],
@@ -3019,6 +3032,34 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
     );
   }
 
+  Widget _buildSpeedUpTileGrid(
+    int rows,
+    int cols,
+    LevelPreviewGridStyle style,
+  ) {
+    final data = readSpeedUpTileData(widget.levelFile);
+    return _buildCompositeLawnGrid(
+      rows: rows,
+      cols: cols,
+      style: style,
+      cellBuilder: (col, row) {
+        final road = data?.roads.reversed.firstWhereOrNull(
+          (road) => road.gridX == col && road.gridY == row,
+        );
+        if (road == null) return null;
+        final path = SpeedUpTileCatalog.assetForImage(road.img);
+        if (path == null) {
+          return const Center(child: Icon(Icons.help_outline));
+        }
+        return AssetImageWidget(
+          assetPath: path,
+          altCandidates: imageAltCandidates(path),
+          fit: BoxFit.contain,
+        );
+      },
+    );
+  }
+
   Widget _buildGulliverGrid(int rows, int cols, LevelPreviewGridStyle style) {
     final data = readGulliverTunnelData(widget.levelFile);
     return _buildCompositeLawnGrid(
@@ -3107,6 +3148,9 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
           : (isMobile ? 550 * textScale : 400 * textScale).clamp(300.0, 1000.0),
     );
 
+    if (activeKind == GridPreviewModuleKind.initialLawnOverview) {
+      return _buildInitialLawnOverview(rows, cols, style);
+    }
     if (activeKind != GridPreviewModuleKind.plants &&
         activeKind != GridPreviewModuleKind.zombies &&
         activeKind != GridPreviewModuleKind.common &&
@@ -3200,6 +3244,8 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
         );
       case GridPreviewModuleKind.common:
         return _buildCommonGridItemsPreview(rows, cols, style);
+      case GridPreviewModuleKind.initialLawnOverview:
+        return _buildInitialLawnOverview(rows, cols, style);
       case GridPreviewModuleKind.piratePlank:
         return _buildPiratePlankGrid(rows, cols, style);
       case GridPreviewModuleKind.railcart:
@@ -3247,6 +3293,8 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
         return _buildRenaiGrid(rows, cols, style, category!);
       case GridPreviewModuleKind.roofProperties:
         return _buildRoofGrid(rows, cols, style);
+      case GridPreviewModuleKind.speedUpTile:
+        return _buildSpeedUpTileGrid(rows, cols, style);
       case GridPreviewModuleKind.tunnelDefend:
         return _buildTunnelDefendGrid(rows, cols, style);
       case GridPreviewModuleKind.expeditionTiles:
@@ -5906,6 +5954,7 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
     required int cols,
     required LevelPreviewGridStyle style,
     required Widget? Function(int col, int row) cellBuilder,
+    bool paintCellBelowItems = false,
     BoxDecoration? Function(int col, int row, bool isSelected, bool isStripe)?
     cellDecorationBuilder,
     BoxDecoration? Function(int col, int row, bool isSelected)?
@@ -5942,10 +5991,13 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
       },
       cellBuilder: (context, col, row) {
         final ids = moduleData?['$col,$row'] ?? [];
+        final cellContent = cellBuilder(col, row);
 
         return Stack(
           alignment: Alignment.center,
           children: [
+            if (paintCellBelowItems && cellContent != null)
+              Positioned.fill(child: IgnorePointer(child: cellContent)),
             if (ids.isNotEmpty)
               Stack(
                 fit: StackFit.expand,
@@ -5987,7 +6039,7 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
                     ),
                 ],
               ),
-            cellBuilder(col, row) ?? const SizedBox.shrink(),
+            if (!paintCellBelowItems) cellContent ?? const SizedBox.shrink(),
           ],
         );
       },
@@ -6277,6 +6329,51 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
     );
   }
 
+  /// Reuse each module's existing paint callbacks without mounting extra grids
+  /// or their tap handlers. Later-wave configurations keep their own tabs.
+  Map<GridPreviewModuleKind, LawnGrid> _buildInitialTerrainLayers(
+    int rows,
+    int cols,
+    LevelPreviewGridStyle style,
+  ) {
+    final layers = <GridPreviewModuleKind, LawnGrid>{};
+    void add(GridPreviewModuleKind kind) {
+      final preview = _buildGridItemCategoryGrid(
+        rows,
+        cols,
+        style,
+        GridPreviewCategoryOption(kind: kind, label: ''),
+        2,
+      );
+      final grid = preview is LawnGrid
+          ? preview
+          : preview is Column
+          ? preview.children.whereType<LawnGrid>().firstOrNull
+          : null;
+      if (grid != null) layers[kind] = grid;
+    }
+
+    for (final entry in initialTerrainModuleKinds.entries) {
+      if (entry.value == GridPreviewModuleKind.tunnelDefend) {
+        if (levelHasStandardTunnelDefendModule(widget.levelFile)) {
+          add(GridPreviewModuleKind.tunnelDefend);
+        }
+        if (levelHasExpeditionTilesModule(widget.levelFile)) {
+          add(GridPreviewModuleKind.expeditionTiles);
+        }
+      } else if (levelHasModule(widget.levelFile, entry.key)) {
+        add(entry.value);
+      }
+    }
+    if (hasInitialArmrackItems(readArmrackModuleData(widget.levelFile))) {
+      add(GridPreviewModuleKind.armrack);
+    }
+    if (hasInitialEnergyGridItems(readEnergyGridModuleData(widget.levelFile))) {
+      add(GridPreviewModuleKind.energyGrid);
+    }
+    return layers;
+  }
+
   Widget _buildCommonGridItemsPreview(
     int rows,
     int cols,
@@ -6289,6 +6386,66 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
       moduleData: _getCommonGridData(),
       activeTabIndex: 2,
       cellBuilder: (col, row) => null,
+    );
+  }
+
+  Widget _buildInitialLawnOverview(
+    int rows,
+    int cols,
+    LevelPreviewGridStyle style,
+  ) {
+    final terrain = _buildInitialTerrainLayers(rows, cols, style);
+    Widget? gridLayer({required bool foreground}) {
+      final layers = <Widget>[];
+      for (final entry in terrain.entries) {
+        final layer = foreground
+            ? entry.value.foreground
+            : entry.value.background;
+        if (layer == null) continue;
+        layers.add(
+          Positioned.fill(
+            key: ValueKey(
+              'initialTerrain${foreground ? 'Foreground' : 'Background'}_'
+              '${entry.key.name}',
+            ),
+            child: IgnorePointer(child: layer),
+          ),
+        );
+      }
+      return layers.isEmpty ? null : Stack(children: layers);
+    }
+
+    return _buildCompositeLawnGrid(
+      rows: rows,
+      cols: cols,
+      style: style,
+      moduleData: _getInitialLawnGridData(),
+      activeTabIndex: 2,
+      background: gridLayer(foreground: false),
+      foreground: gridLayer(foreground: true),
+      paintCellBelowItems: true,
+      cellBuilder: (col, row) => terrain.isEmpty
+          ? null
+          : Builder(
+              builder: (cellContext) => Stack(
+                fit: StackFit.expand,
+                children: [
+                  for (final entry in terrain.entries)
+                    Positioned.fill(
+                      key: ValueKey(
+                        'initialTerrainLayer_${entry.key.name}:$col:$row',
+                      ),
+                      child:
+                          entry.value.cellBuilder?.call(
+                            cellContext,
+                            col,
+                            row,
+                          ) ??
+                          const SizedBox.shrink(),
+                    ),
+                ],
+              ),
+            ),
     );
   }
 
@@ -6437,8 +6594,13 @@ class _LevelOverviewDialogState extends State<LevelOverviewDialog> {
         );
     }
 
-    // Overlay every lunar vein (all waves) as dormant vein art on the
-    // Initial grid-items preview; duplicate cells get a count badge.
+    return result;
+  }
+
+  Map<String, List<String>> _getInitialLawnGridData() {
+    final result = _getCommonGridData();
+    // All veins are present as dormant art in the initial lawn overview;
+    // their emergence-wave categories continue to show the active crystals.
     final lunarMineData = readLunarMineVeinModuleData(widget.levelFile);
     if (lunarMineData != null) {
       for (final placement in lunarMineData.placements) {

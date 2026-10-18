@@ -179,6 +179,31 @@ void main() {
     },
   );
 
+  testWidgets('gladiator spawn cards stay separated from their heading', (
+    tester,
+  ) async {
+    tester.view.physicalSize = const Size(360, 850);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final l10n = lookupAppLocalizations(const Locale('en'));
+    await tester.pumpWidget(_app(_editor(_level(1)), scale: 2));
+    await tester.pumpAndSettle();
+    final heading = find.text(l10n.gladiatorSpawns);
+    await tester.ensureVisible(heading);
+    await tester.pumpAndSettle();
+    final firstSpawnField = find.byKey(
+      const ValueKey('gladiator-spawn-0-Time'),
+    );
+    final firstCard = find
+        .ancestor(of: firstSpawnField, matching: find.byType(Card))
+        .first;
+    expect(
+      tester.getRect(firstCard).top - tester.getRect(heading).bottom,
+      greaterThanOrEqualTo(16),
+    );
+    expect(tester.takeException(), isNull);
+  });
+
   for (final locale in ['zh', 'en', 'ru']) {
     testWidgets(
       'underwater notice and reminder are localized and clear after changing lawns in $locale',

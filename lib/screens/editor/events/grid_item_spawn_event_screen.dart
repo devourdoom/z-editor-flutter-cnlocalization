@@ -9,12 +9,10 @@ import 'package:c_editor/data/repository/zombie_repository.dart'
     show ZombieRepository, ZombieTag;
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
-import 'package:c_editor/screens/editor/others/jitter_offsets_presets_screen.dart';
 import 'package:c_editor/widgets/custom_zombie_properties_actions.dart';
 import 'package:c_editor/widgets/editor_components.dart';
 import 'package:c_editor/widgets/custom_stage_editor_widgets.dart';
 import 'package:c_editor/widgets/editor_object_alias.dart';
-import 'package:c_editor/widgets/jitter_offsets_binding_card.dart';
 import 'package:c_editor/widgets/zombie_flat_lane_drag_drop_editor.dart';
 import 'package:c_editor/widgets/zombie_row_lane_utils.dart';
 import 'package:c_editor/widgets/zombie_spawn_edit_sheet.dart';
@@ -327,47 +325,6 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
     setState(() => _alias = newAlias);
   }
 
-  void _updateJitterOffsets(String? value) {
-    _data = _data.copyWith(
-      jitterOffsets: value,
-      clearJitterOffsets: value == null,
-    );
-    _sync();
-  }
-
-  void _updateFixedOffset(num value) {
-    _data = _data.copyWith(fixedOffset: value.toDouble());
-    _sync();
-  }
-
-  Future<void> _openJitterOffsetsPresets() async {
-    final selectedEventRtid = await Navigator.push<String>(
-      context,
-      MaterialPageRoute<String>(
-        builder: (context) => JitterOffsetsPresetsScreen(
-          levelFile: widget.levelFile,
-          onChanged: widget.onChanged,
-          onBack: () => Navigator.pop(context),
-        ),
-      ),
-    );
-    if (!mounted) return;
-    final currentAlias = RtidParser.parse(widget.rtid)?.alias;
-    final selectedAlias = selectedEventRtid == null
-        ? null
-        : RtidParser.parse(selectedEventRtid)?.alias;
-    if (selectedEventRtid != null &&
-        selectedAlias != currentAlias &&
-        widget.onOpenReferencedEvent != null) {
-      final openReferencedEvent = widget.onOpenReferencedEvent!;
-      await Navigator.of(context).maybePop();
-      await openReferencedEvent(selectedEventRtid);
-      return;
-    }
-    _loadData();
-    setState(() {});
-  }
-
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
@@ -491,23 +448,6 @@ class _GridItemSpawnEventScreenState extends State<GridItemSpawnEventScreen> {
                     ],
                   ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              JitterOffsetsBindingCard(
-                levelFile: widget.levelFile,
-                currentValue: _data.jitterOffsets,
-                onChanged: _updateJitterOffsets,
-                onManage: _openJitterOffsetsPresets,
-                enabled: _data.fixedOffset == 0,
-                overrideWarning: _data.fixedOffset != 0
-                    ? (l10n?.jitterOffsetsFixedOffsetOverrideWarning ??
-                          'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.')
-                    : null,
-              ),
-              const SizedBox(height: 16),
-              FixedOffsetAdvancedSettingsCard(
-                value: _data.fixedOffset,
-                onChanged: _updateFixedOffset,
               ),
               const SizedBox(height: 16),
               EditorResponsiveActionRow(

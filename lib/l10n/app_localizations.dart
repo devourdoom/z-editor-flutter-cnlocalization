@@ -100,6 +100,24 @@ abstract class AppLocalizations {
     Locale('zh'),
   ];
 
+  /// No description provided for @updateSaveWorkGuidance.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic saving applies when leaving supported editors normally. Browser refresh or closure may skip it. Before updating, verify that your level and JSON are saved and all test packages and preview images have finished exporting. This dialog does not save or restart anything.'**
+  String get updateSaveWorkGuidance;
+
+  /// No description provided for @jsonDiscardEditsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard the changes in this JSON editor? Unsaved text, including invalid JSON, will be lost. Choose Stay to continue editing and save.'**
+  String get jsonDiscardEditsBody;
+
+  /// No description provided for @webUpdateSaveAndRefresh.
+  ///
+  /// In en, this message translates to:
+  /// **'A new version of the editor is available. Save your work, then refresh this page to load it.'**
+  String get webUpdateSaveAndRefresh;
+
   /// No description provided for @error.
   ///
   /// In en, this message translates to:
@@ -141,6 +159,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Grid Items'**
   String get previewTabGridItems;
+
+  /// No description provided for @previewTabInitialLawnOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Initial Lawn Overview'**
+  String get previewTabInitialLawnOverview;
 
   /// No description provided for @overviewPresetPlants.
   ///
@@ -505,7 +529,7 @@ abstract class AppLocalizations {
   /// No description provided for @autosaveSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Save changes automatically when leaving a level'**
+  /// **'Save changes automatically when leaving a level or JSON edit mode'**
   String get autosaveSubtitle;
 
   /// No description provided for @ultra.
@@ -627,6 +651,162 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Show the alias dialog before creating an event, module, challenge, or custom lawn. When off, C-Editor uses the generated default alias.'**
   String get aliasPromptOnCreateDescription;
+
+  /// No description provided for @popupPrompts.
+  ///
+  /// In en, this message translates to:
+  /// **'Dialog prompts'**
+  String get popupPrompts;
+
+  /// No description provided for @currentTheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Current theme: {theme}'**
+  String currentTheme(String theme);
+
+  /// No description provided for @checkForUpdatesAutomatically.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates'**
+  String get checkForUpdatesAutomatically;
+
+  /// No description provided for @checkForUpdatesAutomaticallyDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for stable releases in the background when opening the workspace, at most once every 24 hours. Failed automatic checks stay silent.'**
+  String get checkForUpdatesAutomaticallyDescription;
+
+  /// No description provided for @checkForUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Check for updates'**
+  String get checkForUpdates;
+
+  /// No description provided for @checkingForUpdates.
+  ///
+  /// In en, this message translates to:
+  /// **'Checking for updates…'**
+  String get checkingForUpdates;
+
+  /// No description provided for @updateAvailableTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Update available'**
+  String get updateAvailableTitle;
+
+  /// No description provided for @updateAvailableBody.
+  ///
+  /// In en, this message translates to:
+  /// **'The latest stable version is {version}.'**
+  String updateAvailableBody(String version);
+
+  /// No description provided for @updateAlreadyLatest.
+  ///
+  /// In en, this message translates to:
+  /// **'You are using the latest stable version.'**
+  String get updateAlreadyLatest;
+
+  /// No description provided for @updateCheckFailedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not check for updates'**
+  String get updateCheckFailedTitle;
+
+  /// No description provided for @updateDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose a download link'**
+  String get updateDownload;
+
+  /// No description provided for @updateGithubDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the GitHub Releases link'**
+  String get updateGithubDownload;
+
+  /// No description provided for @updateDownloadDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Clicking the link will take you to a browser or another app, where you can download the installer for the new version from the corresponding page.'**
+  String get updateDownloadDescription;
+
+  /// No description provided for @updateLater.
+  ///
+  /// In en, this message translates to:
+  /// **'Remind me later'**
+  String get updateLater;
+
+  /// No description provided for @updateBaiduDownload.
+  ///
+  /// In en, this message translates to:
+  /// **'Open the Baidu Netdisk link'**
+  String get updateBaiduDownload;
+
+  /// No description provided for @networkTimeoutAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'The request timed out. Check your connection and try again. Access to GitHub may require a proxy or a different network.'**
+  String get networkTimeoutAdvice;
+
+  /// No description provided for @networkRateLimitAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'GitHub\'s request limit has been reached, or access was refused. Wait and try again, or use a different network or proxy.'**
+  String get networkRateLimitAdvice;
+
+  /// No description provided for @networkConnectionAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not connect to the server. Check your connection and try again. Access to GitHub may require a proxy or a different network.'**
+  String get networkConnectionAdvice;
+
+  /// No description provided for @networkServiceAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'The server is temporarily unavailable. Please try again later.'**
+  String get networkServiceAdvice;
+
+  /// No description provided for @networkResponseAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'The server returned unexpected data. Try again later or visit the download page directly.'**
+  String get networkResponseAdvice;
+
+  /// No description provided for @updateCheckUnknownAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'The update check could not be completed. Try again later, or visit the download page directly.'**
+  String get updateCheckUnknownAdvice;
+
+  /// No description provided for @externalLinkFailedAdvice.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the download page. Copy the link and open it in a browser.'**
+  String get externalLinkFailedAdvice;
+
+  /// No description provided for @jsonEditSyntaxError.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid JSON syntax. Check commas, brackets, and double quotes, then save again.'**
+  String get jsonEditSyntaxError;
+
+  /// No description provided for @jsonEditSyntaxErrorAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid JSON syntax near line {line}, column {column}. Check commas, brackets, and double quotes, then save again.'**
+  String jsonEditSyntaxErrorAt(String line, String column);
+
+  /// No description provided for @jsonEditStructureError.
+  ///
+  /// In en, this message translates to:
+  /// **'This JSON does not match the level structure. Keep the objects list and each object\'s objclass and objdata fields; the version must be an integer.'**
+  String get jsonEditStructureError;
+
+  /// No description provided for @jsonEditSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the file. Check workspace write permissions and free space, then try again. On the web, make sure the browser allows local storage. Your edits have been kept.'**
+  String get jsonEditSaveError;
 
   /// No description provided for @aboutSoftware.
   ///
@@ -2293,7 +2473,7 @@ abstract class AppLocalizations {
   /// No description provided for @levelBasicInfoHelpSceneBody.
   ///
   /// In en, this message translates to:
-  /// **'Here you can choose the level\'s lawn from the list. Note that the Pirate Seas lawn has no planks by default. The victory setting only applies to certain special level types and generally should not be changed.'**
+  /// **'Here you can choose scene information such as the level\'s lawn and music type from the list. The Pirate Seas lawn has no planks by default.\nThe available music types depend on the lawn\'s default music module. After customizing the lawn, you can change its music module to use music from other lawns in the level.\nThe settlement setting only applies to certain special level types and generally should not be changed.'**
   String get levelBasicInfoHelpSceneBody;
 
   /// No description provided for @levelBasicInfoHelpRestrictionsBody.
@@ -2335,13 +2515,19 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsAdd.
   ///
   /// In en, this message translates to:
-  /// **'New Preset'**
+  /// **'Add Offset'**
   String get jitterOffsetsAdd;
+
+  /// No description provided for @jitterOffsetsSelectTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Select Spawn Position Offset'**
+  String get jitterOffsetsSelectTitle;
 
   /// No description provided for @jitterOffsetsEmpty.
   ///
   /// In en, this message translates to:
-  /// **'No presets yet.\nBasic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events without a bound preset use the game\'s default parameters of 80 / 30.\nTo customize the offsets, create a preset and bind it in the event.'**
+  /// **'No presets yet.\nWithout a bound preset, the zombie lists in Basic Spawner and Underwater Spawner use the game\'s default parameters: a same-row cumulative offset increment of 80 and a random offset upper bound of 30, giving each zombie a random offset from 0 through 29.\nTo customize the offsets, create a preset and bind it in the event.'**
   String get jitterOffsetsEmpty;
 
   /// No description provided for @jitterOffsetsNoAlias.
@@ -2383,13 +2569,13 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsIncrementInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Use a non-negative value. A negative value may make the sum of the cumulative value and random value less than 0; the game converts it as an unsigned integer, which may produce an abnormally large X coordinate and prevent zombies from entering the lawn normally.'**
+  /// **'A non-negative integer is recommended. Negative values may be converted into abnormally large offsets and prevent normal entry onto the lawn.'**
   String get jitterOffsetsIncrementInvalid;
 
   /// No description provided for @jitterOffsetsRandomJitterInvalid.
   ///
   /// In en, this message translates to:
-  /// **'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.'**
+  /// **'Enter a positive integer. Zero or a negative value does not disable the random offset and may produce an abnormally large horizontal position, preventing zombies from entering the lawn normally.'**
   String get jitterOffsetsRandomJitterInvalid;
 
   /// No description provided for @jitterOffsetsRename.
@@ -2467,7 +2653,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsDeleteBlockedHint.
   ///
   /// In en, this message translates to:
-  /// **'Open these events first and switch \"Spawn Position Offset\" to another preset or unbind it:'**
+  /// **'Open these events first and switch \"Spawn Position Offset\" to another preset or unbind it. For events that do not support offset settings, use the manual file editor to remove retained references:'**
   String get jitterOffsetsDeleteBlockedHint;
 
   /// No description provided for @jitterOffsetsEventLabel.
@@ -2479,7 +2665,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsEventNone.
   ///
   /// In en, this message translates to:
-  /// **'Unbound (use the game\'s default parameters: 80 / 30)'**
+  /// **'Unbound (use the game\'s default parameters)'**
   String get jitterOffsetsEventNone;
 
   /// No description provided for @jitterOffsetsEventManage.
@@ -2497,7 +2683,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsEventNoPresets.
   ///
   /// In en, this message translates to:
-  /// **'No presets yet. This event automatically uses the game\'s default parameters of 80 / 30. To customize the offsets, create a preset first.'**
+  /// **'No presets yet. This event automatically uses the game\'s default parameters: a same-row cumulative offset increment of 80 and a random offset upper bound of 30, giving each zombie a random offset from 0 through 29. To customize the offsets, create a preset first.'**
   String get jitterOffsetsEventNoPresets;
 
   /// No description provided for @jitterOffsetsEventDangling.
@@ -2521,8 +2707,14 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsFixedOffsetOverrideWarning.
   ///
   /// In en, this message translates to:
-  /// **'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.'**
+  /// **'The event\'s batch-index fixed offset is nonzero. The bound Spawn Position Offset preset and spawn formation preset are temporarily ignored but retained; they take effect again when the fixed offset returns to 0.'**
   String get jitterOffsetsFixedOffsetOverrideWarning;
+
+  /// No description provided for @jitterOffsetsUnderwaterScopeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'These settings affect only the zombie list, not the sea creature list.'**
+  String get jitterOffsetsUnderwaterScopeDescription;
 
   /// No description provided for @jitterOffsetsAdvancedSettingsTitle.
   ///
@@ -2533,13 +2725,13 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsFixedOffsetLabel.
   ///
   /// In en, this message translates to:
-  /// **'Global-index fixed offset (FixedOffset)'**
+  /// **'Batch-index fixed offset (FixedOffset)'**
   String get jitterOffsetsFixedOffsetLabel;
 
   /// No description provided for @jitterOffsetsFixedOffsetDescription.
   ///
   /// In en, this message translates to:
-  /// **'The default is 0. With a nonzero value, zombies are numbered in creation order across the whole batch, starting at 0. Each zombie\'s base horizontal position receives its index multiplied by the fixed offset value. The index does not reset by row, and facing does not change the offset direction: a positive fixed offset value moves zombies right, while a negative value moves them left. Therefore, use this setting carefully when one event contains zombies in different rows or with different facings.\nThe Spawn Position Offset preset and spawn arrangement are temporarily ignored but retained; they take effect again when this value is restored to 0. Spawn arrangement is the game\'s rule for row starting offsets and offsets between rows.'**
+  /// **'Commonly used in Two-Player Mode; the default is 0. A value of 0 uses the Spawn Position Offset preset and spawn formation preset. A nonzero value temporarily disables both but preserves their settings; restoring 0 enables them again. Fixed offsets accumulate in the event\'s zombie-list order without restarting for each row, while each zombie retains its own base position. The first zombie has no fixed offset; each following zombie receives one more entered increment. Even a tiny nonzero value or an event with only one zombie disables both presets.\nA positive fixed offset value moves zombies right, a negative value moves them left, and decimal fractions are preserved. Facing does not reverse this direction, so use this setting carefully with mixed rows or facings. For example, 8.5 moves the first three zombies right by 0, 8.5, and 17 from their own base positions.\nThis setting changes only horizontal position, not the number created. Excessively large magnitudes may place zombies far outside or too deeply inside the lawn, preventing normal entry or causing settlement problems.'**
   String get jitterOffsetsFixedOffsetDescription;
 
   /// No description provided for @jitterOffsetsFixedOffsetInvalid.
@@ -2563,7 +2755,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsHelpOverviewBody.
   ///
   /// In en, this message translates to:
-  /// **'Spawn Position Offset presets adjust the horizontal arrangement of zombies created by the same event. In Basic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events, each zombie first receives its base position, then the horizontal offset calculated by this preset. Each row accumulates offsets independently.\nGround Spawner derives its base emergence position from the selected column or range; offsets may move it outside that range. Grid Item Spawner uses the target obstacle\'s position; offsets may move it away from the tile center. Only horizontal position changes, not creation time, row, or wave timing.\nWithout a bound preset, the game uses the default parameters: a cumulative increment of 80 and a random upper bound of 30.'**
+  /// **'Spawn Position Offset presets adjust the horizontal arrangement of zombies in the same event. They apply to the zombie lists in Basic Spawner and Underwater Spawner, without affecting sea creatures. Each zombie receives an offset from its row\'s accumulated value and an independent random value, applied to its own base position. Each row accumulates independently. Only horizontal position changes, not the number created, creation time, row, or wave timing.\nWithout a bound preset, the game uses the default parameters: a same-row cumulative offset increment of 80 and a random offset upper bound of 30, giving each zombie a random offset from 0 through 29. Zombies spawn normally without a custom preset.'**
   String get jitterOffsetsHelpOverviewBody;
 
   /// No description provided for @jitterOffsetsHelpUsageTitle.
@@ -2575,7 +2767,7 @@ abstract class AppLocalizations {
   /// No description provided for @jitterOffsetsHelpUsageBody.
   ///
   /// In en, this message translates to:
-  /// **'After creating a preset here, open any Basic Spawner, Underwater Spawner, Ground Spawner, or Grid Item Spawner event and select it under \"Spawn Position Offset\".\nA preset can be shared by multiple events. Editing it updates every event that references it. A referenced preset cannot be deleted; first switch those events to another preset or unbind it.'**
+  /// **'After creating a preset here, open a Basic Spawner or Underwater Spawner event and select it under \"Spawn Position Offset\".\nA preset can be shared by multiple events. Editing it updates every event that references it. A referenced preset cannot be deleted; first switch those events to another preset or unbind it.'**
   String get jitterOffsetsHelpUsageBody;
 
   /// No description provided for @jitterOffsetsHelpParametersTitle.
@@ -2584,10 +2776,16 @@ abstract class AppLocalizations {
   /// **'Parameters'**
   String get jitterOffsetsHelpParametersTitle;
 
+  /// No description provided for @jitterOffsetsHelpFixedOffsetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Batch-index fixed offset'**
+  String get jitterOffsetsHelpFixedOffsetTitle;
+
   /// No description provided for @jitterOffsetsHelpParametersBody.
   ///
   /// In en, this message translates to:
-  /// **'\"Same-row cumulative offset increment\" adds a fixed amount for each additional zombie in the same event and row. The first zombie has no cumulative offset; the second has one increment; the third has two, and so on. Use a non-negative value. A negative sum of cumulative and random offsets may produce an abnormally large horizontal coordinate and prevent normal entry.\n\"Random offset upper bound\" gives each zombie an independent random offset from 0 through the entered value minus 1. For example, 10 gives 0 through 9. Enter a positive integer; zero or negative values do not disable randomness and may prevent normal entry.\nThe cumulative and random offsets are added together, then applied according to facing. Facing left, usually entering from the right side of the lawn, moves the spawn position right. Facing right, usually entering from the left side, moves it left. In Underwater Spawner, enabling \"From left\" means facing right and adding the offset toward the left; disabling it normally means entering from the right and adding the offset toward the right.\nFor an increment of 20 and upper bound of 10, the first three zombies in one row receive offsets of 0–9, 20–29, and 40–49, applied left or right as described above.\nThe game\'s spawn arrangement rules may also set row starting offsets and offsets between rows. These combine with the preset, so the final position may include additional offsets.'**
+  /// **'\"Same-row cumulative offset increment\" is the amount added to a row\'s accumulated offset after each zombie in that row is positioned. A non-negative integer is recommended. Negative values may be converted into abnormally large offsets and prevent normal entry.\n\"Random offset upper bound\" sets each zombie\'s independent random offset range. The actual value ranges from 0 through the entered value minus 1. For example, 10 gives 0 through 9. Enter a positive integer; zero or negative values do not disable randomness and may produce abnormal coordinates.\nThe accumulated and random offsets are added together, then applied to the base position according to facing. Facing left, usually entering from the right side of the lawn, moves the spawn position right. Facing right, usually entering from the left side, moves it left. Without a spawn formation preset, each row starts at 0. For example, an increment of 20 and upper bound of 10 give the first three zombies in one row offsets of 0–9, 20–29, and 40–49.\nA spawn formation preset adjusts each row\'s initial horizontal offset and the spacing between later zombies in that row. Each row starts with the preset\'s initial offset; after positioning each zombie, that row gains its extra spacing adjustment as well as the base increment. This changes horizontal spacing within a row, not the vertical distance between rows.'**
   String get jitterOffsetsHelpParametersBody;
 
   /// No description provided for @removeModule.
@@ -12489,6 +12687,18 @@ abstract class AppLocalizations {
   /// **'Sets mower styles (doesn\'t work in Creative Courtyard)'**
   String get moduleDesc_LawnMowerProperties;
 
+  /// No description provided for @moduleTitle_SpeedUpTileModuleProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed-Up Tiles'**
+  String get moduleTitle_SpeedUpTileModuleProperties;
+
+  /// No description provided for @moduleDesc_SpeedUpTileModuleProperties.
+  ///
+  /// In en, this message translates to:
+  /// **'Places preset Speed-Up Tiles from the Need for Speed crossover secret realm on the lawn'**
+  String get moduleDesc_SpeedUpTileModuleProperties;
+
   /// No description provided for @moduleTitle_TunnelDefendModuleProperties.
   ///
   /// In en, this message translates to:
@@ -12656,6 +12866,120 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This will remove all Gulliver Tunnels outside the 5×9 lawn. This action cannot be undone.'**
   String get gulliverTunnelDeleteOutsideConfirmMessage;
+
+  /// No description provided for @speedUpTileTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed-Up Tiles'**
+  String get speedUpTileTitle;
+
+  /// No description provided for @speedUpTileHelpOverview.
+  ///
+  /// In en, this message translates to:
+  /// **'Place Speed-Up Tiles on selected tiles to make eligible ground zombies move quickly in the arrow\'s direction. These tiles commonly appear in the Need for Speed racing secret realm. Zombies resume normal walking when they leave the road. Gargantuars and zombies with special movement behavior ignore Speed-Up Tiles.'**
+  String get speedUpTileHelpOverview;
+
+  /// No description provided for @speedUpTileHelpUsageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Usage'**
+  String get speedUpTileHelpUsageTitle;
+
+  /// No description provided for @speedUpTileHelpUsageBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Select an arrow direction below, then click the grid to place a Speed-Up Tile. Clicking a tile with the same arrow direction removes it; selecting another direction and clicking an existing Speed-Up Tile replaces its direction. A Speed-Up Tile\'s horizontal coordinate (GridX) and vertical coordinate (GridY) both start at 0. For example, horizontal coordinate 0 means the first column and 8 means the ninth column; vertical coordinate 0 means the first row and 2 means the third row.'**
+  String get speedUpTileHelpUsageBody;
+
+  /// No description provided for @speedUpTileTopologyTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Road Connection Rules'**
+  String get speedUpTileTopologyTitle;
+
+  /// No description provided for @speedUpTileTopologyBody.
+  ///
+  /// In en, this message translates to:
+  /// **'An arrow does not mean \"turn immediately on entering this tile\". Zombies usually keep moving in their current direction through adjacent Speed-Up Tiles and check road connections only after traveling about one tile. To make a turn, the tile ahead in the old direction must be ordinary ground, the adjacent tile in the intended direction must be a Speed-Up Tile, and there should be only one available exit. A continuous, one-tile-wide road without branches is recommended.'**
+  String get speedUpTileTopologyBody;
+
+  /// No description provided for @speedUpTileSelectDirection.
+  ///
+  /// In en, this message translates to:
+  /// **'Select arrow direction'**
+  String get speedUpTileSelectDirection;
+
+  /// No description provided for @speedUpTileDirectionLeft.
+  ///
+  /// In en, this message translates to:
+  /// **'Left'**
+  String get speedUpTileDirectionLeft;
+
+  /// No description provided for @speedUpTileDirectionRight.
+  ///
+  /// In en, this message translates to:
+  /// **'Right'**
+  String get speedUpTileDirectionRight;
+
+  /// No description provided for @speedUpTileDirectionUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Up'**
+  String get speedUpTileDirectionUp;
+
+  /// No description provided for @speedUpTileDirectionDown.
+  ///
+  /// In en, this message translates to:
+  /// **'Down'**
+  String get speedUpTileDirectionDown;
+
+  /// No description provided for @speedUpTilePlacedCount.
+  ///
+  /// In en, this message translates to:
+  /// **'Placed'**
+  String get speedUpTilePlacedCount;
+
+  /// No description provided for @speedUpTileClearAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get speedUpTileClearAll;
+
+  /// No description provided for @speedUpTileClearConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all Speed-Up Tiles?'**
+  String get speedUpTileClearConfirmTitle;
+
+  /// No description provided for @speedUpTileClearConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove all placed Speed-Up Tiles, including those outside the lawn. This action cannot be undone.'**
+  String get speedUpTileClearConfirmMessage;
+
+  /// No description provided for @speedUpTileOutsideLawn.
+  ///
+  /// In en, this message translates to:
+  /// **'Speed-Up Tiles outside the lawn: '**
+  String get speedUpTileOutsideLawn;
+
+  /// No description provided for @speedUpTileDeleteOutside.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Speed-Up Tiles outside the lawn'**
+  String get speedUpTileDeleteOutside;
+
+  /// No description provided for @speedUpTileDeleteOutsideConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove Speed-Up Tiles outside the lawn?'**
+  String get speedUpTileDeleteOutsideConfirmTitle;
+
+  /// No description provided for @speedUpTileDeleteOutsideConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove all Speed-Up Tiles outside the current lawn grid. This action cannot be undone.'**
+  String get speedUpTileDeleteOutsideConfirmMessage;
 
   /// No description provided for @moduleTitle_RiftThemeDemoModuleProperties.
   ///

@@ -3,6 +3,7 @@ import 'package:c_editor/data/interface_menu_config.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/screens/interface_settings_screen.dart';
 import 'package:c_editor/widgets/app_ui_scale.dart';
+import 'package:c_editor/widgets/app_ui_scaler.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -32,6 +33,7 @@ void main() {
     WidgetTester tester, {
     Size size = const Size(1000, 1400),
     Locale locale = const Locale('en'),
+    double? appScale,
   }) async {
     tester.view.devicePixelRatio = 1;
     tester.view.physicalSize = size;
@@ -45,6 +47,14 @@ void main() {
             locale: locale,
             localizationsDelegates: AppLocalizations.localizationsDelegates,
             supportedLocales: AppLocalizations.supportedLocales,
+            builder: appScale == null
+                ? null
+                : (context, child) => AppUiScaler(
+                    scale: appScale,
+                    applyCompactViewportScale: true,
+                    wrapMessenger: false,
+                    child: child!,
+                  ),
             home: const InterfaceSettingsScreen(),
           ),
         ),
@@ -53,42 +63,67 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('narrow layouts keep theme labels and contain module previews', (
-    tester,
-  ) async {
-    for (final id in interfaceSettingsPageActionIds) {
-      settings.setInterfaceMenuActionPlacement(
-        InterfaceMenuSurface.workspace,
-        id,
-        InterfaceMenuPlacement.settingsPage,
-      );
-    }
-    settings.setUiScale(1.5);
-    for (final locale in const [Locale('zh'), Locale('en'), Locale('ru')]) {
-      await tester.pumpWidget(const SizedBox.shrink());
-      await pumpScreen(tester, size: const Size(320, 1400), locale: locale);
-      final l10n = lookupAppLocalizations(locale);
-      final selector = tester.widget<SegmentedButton<ThemeMode>>(
-        find.byType(SegmentedButton<ThemeMode>),
-      );
-      expect((selector.segments[0].label as Text).data, l10n.lightTheme);
-      expect((selector.segments[1].label as Text).data, l10n.darkTheme);
-      final preview = find.byKey(
-        const ValueKey('interfaceSettingsUiScalePreview'),
-      );
-      final layout = find.byKey(
-        const ValueKey('interfaceSettingsPreviewLayout'),
-      );
-      await tester.ensureVisible(preview);
-      await tester.pumpAndSettle();
-      final outerRect = tester.getRect(preview);
-      final contentRect = tester.getRect(layout);
-      expect(contentRect.left, greaterThanOrEqualTo(outerRect.left));
-      expect(contentRect.right, lessThanOrEqualTo(outerRect.right));
-      expect(contentRect.bottom, lessThanOrEqualTo(outerRect.bottom));
-      expect(tester.takeException(), isNull);
-    }
-  });
+  testWidgets(
+    'narrow scaled layouts separate theme labels and module content',
+    (tester) async {
+      for (final id in interfaceSettingsPageActionIds) {
+        settings.setInterfaceMenuActionPlacement(
+          InterfaceMenuSurface.workspace,
+          id,
+          InterfaceMenuPlacement.settingsPage,
+        );
+      }
+      settings.setUiScale(1.5);
+      for (final locale in const [Locale('zh'), Locale('en'), Locale('ru')]) {
+        await tester.pumpWidget(const SizedBox.shrink());
+        await pumpScreen(
+          tester,
+          size: const Size(320, 1400),
+          locale: locale,
+          appScale: 1.5,
+        );
+        final l10n = lookupAppLocalizations(locale);
+        final selector = tester.widget<SegmentedButton<ThemeMode>>(
+          find.byType(SegmentedButton<ThemeMode>),
+        );
+        expect(
+          selector.segments.every((segment) => segment.label == null),
+          isTrue,
+        );
+        expect(find.text(l10n.currentTheme(l10n.lightTheme)), findsOneWidget);
+        await tester.ensureVisible(
+          find.byKey(const ValueKey('interfaceSettingsThemeSelector')),
+        );
+        expect(
+          tester
+              .getSize(
+                find.byKey(const ValueKey('interfaceSettingsThemeSelector')),
+              )
+              .height,
+          lessThan(90),
+        );
+        final preview = find.byKey(
+          const ValueKey('interfaceSettingsUiScalePreview'),
+        );
+        final layout = find.byKey(
+          const ValueKey('interfaceSettingsPreviewLayout'),
+        );
+        await tester.ensureVisible(preview);
+        await tester.pumpAndSettle();
+        final outerRect = tester.getRect(preview);
+        final contentRect = tester.getRect(layout);
+        expect(contentRect.left, greaterThanOrEqualTo(outerRect.left));
+        expect(contentRect.right, lessThanOrEqualTo(outerRect.right));
+        expect(contentRect.bottom, lessThanOrEqualTo(outerRect.bottom));
+        expect(
+          tester.getSize(find.text('SeedBank')).height,
+          lessThan(36),
+          reason: 'the alias stays on one line instead of a narrow text column',
+        );
+        expect(tester.takeException(), isNull);
+      }
+    },
+  );
 
   testWidgets('shows the four settings areas and a live draft scale preview', (
     tester,
@@ -114,6 +149,7 @@ void main() {
     expect(find.text(l10n.autosave), findsWidgets);
     expect(find.text(l10n.menuCustomization), findsOneWidget);
     expect(find.text(l10n.aliasPromptOnCreate), findsWidgets);
+    expect(find.text(l10n.popupPrompts), findsOneWidget);
 
     final scrollbar = tester.widget<Scrollbar>(find.byType(Scrollbar));
     expect(scrollbar.thumbVisibility, isTrue);
@@ -151,6 +187,15 @@ void main() {
       preferences.getBool(SettingsCubit.promptForAliasOnCreatePreferenceKey),
       isTrue,
     );
+
+    final updatePrompt = find.byKey(
+      const ValueKey('interfaceSettingsCheckForUpdates'),
+    );
+    expect(settings.state.checkForUpdates, isTrue);
+    await tester.ensureVisible(updatePrompt);
+    await tester.tap(updatePrompt);
+    await tester.pump();
+    expect(settings.state.checkForUpdates, isFalse);
 
     final slider = find.byKey(const ValueKey('interfaceSettingsUiScaleSlider'));
     await tester.ensureVisible(slider);
@@ -242,6 +287,24 @@ void main() {
     expect(
       find.byKey(const ValueKey('interfaceMenu_workspace')),
       findsOneWidget,
+    );
+
+    final sortPlacement = find.descendant(
+      of: find.byKey(const ValueKey('workspace_sort')),
+      matching: find.byKey(const ValueKey('interfaceMenuPlacementControl')),
+    );
+    final languagePlacement = find.descendant(
+      of: find.byKey(const ValueKey('workspace_lang')),
+      matching: find.byKey(const ValueKey('interfaceMenuPlacementControl')),
+    );
+    expect(
+      tester.getRect(sortPlacement).right,
+      closeTo(tester.getRect(languagePlacement).right, 0.1),
+    );
+    expect(
+      tester.getSize(sortPlacement).width,
+      tester.getSize(languagePlacement).width,
+      reason: 'wide two- and three-option controls share the same right column',
     );
 
     final workspaceList = tester.widget<ReorderableListView>(

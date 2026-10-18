@@ -14,16 +14,13 @@ class SpawnZombiesFromGroundData extends PvzModel {
     this.zombies = const [],
   });
 
-  /// Optional level-local `ZombieJitterOffsets` preset.
+  /// Imported compatibility field; the ground-rise positioning path ignores it.
   String? jitterOffsets;
 
-  /// Optional spawn-pattern object applied before the position offsets.
+  /// Imported compatibility field; ignored by the ground-rise positioning path.
   String? zombieSpawnPattern;
 
-  /// When non-zero, the game adds `global zombie index * fixedOffset` to each
-  /// zombie's base X coordinate. The index spans the whole event rather than
-  /// resetting per row, and both [jitterOffsets] and [zombieSpawnPattern] are
-  /// bypassed. Keep the original number type when round-tripping JSON.
+  /// Preserved when round-tripping JSON, but not used by ground-rise actions.
   num? fixedOffset;
   int columnStart;
   int columnEnd;

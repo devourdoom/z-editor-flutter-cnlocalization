@@ -94,7 +94,7 @@ void main() {
     for (final body in const [
       '关卡定义是PvZ2关卡的根节点，不仅存放了关卡全局属性，还通过模块列表逐级链接了关卡内所有模块。本页面可以对关卡全局属性进行修改。',
       '这里可以定义关卡名称、描述、初始阳光等基本信息。关卡描述字段是进入关卡播放转场动画时的白色字幕。初始阳光是指计算账号阳光强化前的可用阳光。',
-      '这里可以从列表中选择关卡的地图，注意海盗地图默认无甲板。结算方式仅适用于部分特殊关卡种类，一般不建议对其进行修改。',
+      '这里可以从列表中选择关卡的地图、音乐类型等场景信息。海盗港湾地图默认无甲板。\n音乐类型的可选范围由地图默认的音乐模块决定，自定义地图后可更改音乐模块，在关卡中使用其他地图的音乐。\n结算方式仅适用于部分特殊关卡种类，一般不建议对其进行修改。',
       '这里提供禁用豆藤共生和神器开关。在庭院模块下神器自动禁用，无需手动开启禁用开关。',
     ]) {
       expect(find.descendant(of: dialog, matching: find.text(body)), findsOne);
@@ -111,4 +111,29 @@ void main() {
     expect(find.byType(AlertDialog), findsNothing);
     expect(tester.takeException(), isNull);
   });
+
+  test(
+    'fixed offset descriptions identify Two-Player Mode in each locale',
+    () async {
+      const introductions = {
+        'zh': '常见于双人对决，默认值为0。',
+        'en': 'Commonly used in Two-Player Mode; the default is 0.',
+        'ru': 'Часто используется в режиме для двух игроков; по умолчанию — 0.',
+      };
+
+      for (final entry in introductions.entries) {
+        final localizations = await AppLocalizations.delegate.load(
+          Locale(entry.key),
+        );
+        expect(
+          localizations.jitterOffsetsFixedOffsetDescription,
+          startsWith(entry.value),
+        );
+        expect(
+          localizations.levelBasicInfoHelpSceneBody.split('\n'),
+          hasLength(3),
+        );
+      }
+    },
+  );
 }

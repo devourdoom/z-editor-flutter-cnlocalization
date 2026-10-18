@@ -7,9 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  test('Ground Spawner model preserves JitterOffsets and FixedOffset', () {
+  test('Ground Spawner model preserves imported position fields', () {
     final restored = SpawnZombiesFromGroundData.fromJson(<String, dynamic>{
       'JitterOffsets': 'RTID(Offsets@CurrentLevel)',
+      'ZombieSpawnPattern': 'RTID(Pattern@CurrentLevel)',
       'FixedOffset': 24.5,
       'ColumnStart': 2,
       'ColumnEnd': 7,
@@ -18,6 +19,7 @@ void main() {
 
     expect(restored.jitterOffsets, 'RTID(Offsets@CurrentLevel)');
     expect(restored.fixedOffset, 24.5);
+    expect(restored.zombieSpawnPattern, 'RTID(Pattern@CurrentLevel)');
     expect(restored.toJson(), containsPair('FixedOffset', 24.5));
     expect(
       restored.toJson(),
@@ -70,8 +72,12 @@ void main() {
       tester.element(find.byType(ZombieSpawnEventScreen)),
     )!;
     expect(find.text('出怪位置偏移'), findsOneWidget);
-    expect(find.text('管理预设'), findsOneWidget);
-    expect(find.text('不绑定（使用游戏内默认参数 80 / 30）'), findsOneWidget);
+    expect(
+      find.byKey(const ValueKey('jitterOffsetsPresetPicker')),
+      findsNothing,
+    );
+    await _expandOffsetSettings(tester);
+    expect(find.text(l10n.jitterOffsetsEventNone), findsOneWidget);
     expect(find.text(l10n.jitterOffsetsEventDescription), findsOneWidget);
     final sectionIcon = tester.widget<Icon>(find.byIcon(Icons.speed));
     expect(
@@ -87,16 +93,19 @@ void main() {
     await tester.ensureVisible(picker);
     await tester.tap(picker);
     await tester.pumpAndSettle();
+    final dialog = find.byKey(const ValueKey('jitterOffsetsPresetDialog'));
+    expect(dialog, findsOneWidget);
+    expect(find.text(l10n.jitterOffsetsSelectTitle), findsOneWidget);
     final pickerScrollbar = tester.widget<Scrollbar>(
-      find.descendant(
-        of: find.byType(BottomSheet),
-        matching: find.byType(Scrollbar),
-      ),
+      find.descendant(of: dialog, matching: find.byType(Scrollbar)),
     );
     expect(pickerScrollbar.thumbVisibility, isTrue);
     expect(pickerScrollbar.trackVisibility, isTrue);
     final noneOption = tester.widget<Text>(
-      find.text('不绑定（使用游戏内默认参数 80 / 30）').last,
+      find.descendant(
+        of: dialog,
+        matching: find.text(l10n.jitterOffsetsEventNone),
+      ),
     );
     expect(noneOption.maxLines, isNull);
     expect(noneOption.overflow, isNull);
@@ -110,7 +119,7 @@ void main() {
 
     await tester.tap(picker);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('不绑定（使用游戏内默认参数 80 / 30）').last);
+    await tester.tap(find.text(l10n.jitterOffsetsEventNone).last);
     await tester.pumpAndSettle();
     expect(
       event.objData as Map<String, dynamic>,
@@ -154,6 +163,7 @@ void main() {
     final l10n = AppLocalizations.of(
       tester.element(find.byType(ZombieSpawnEventScreen)),
     )!;
+    await _expandOffsetSettings(tester);
     expect(find.text(l10n.jitterOffsetsEventDescription), findsOneWidget);
     expect(find.textContaining('还没有预设'), findsNothing);
     expect(tester.takeException(), isNull);
@@ -199,7 +209,14 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('出怪位置偏移'), findsOneWidget);
-    expect(find.text('管理预设'), findsOneWidget);
+    await _expandOffsetSettings(tester);
+    final l10n = AppLocalizations.of(
+      tester.element(find.byType(ZombieFishWaveEventScreen)),
+    )!;
+    expect(
+      find.text(l10n.jitterOffsetsUnderwaterScopeDescription),
+      findsOneWidget,
+    );
 
     final picker = find.byKey(const ValueKey('jitterOffsetsPresetPicker'));
     await tester.ensureVisible(picker);
@@ -215,7 +232,7 @@ void main() {
 
     await tester.tap(picker);
     await tester.pumpAndSettle();
-    await tester.tap(find.text('不绑定（使用游戏内默认参数 80 / 30）').last);
+    await tester.tap(find.text(l10n.jitterOffsetsEventNone).last);
     await tester.pumpAndSettle();
     expect(
       event.objData as Map<String, dynamic>,
@@ -225,7 +242,7 @@ void main() {
   });
 
   testWidgets(
-    'Ground Spawner retains offsets while FixedOffset temporarily overrides them',
+    'Ground Spawner hides offset controls and preserves imported fields',
     (tester) async {
       tester.view.physicalSize = const Size(800, 1600);
       tester.view.devicePixelRatio = 1;
@@ -272,23 +289,25 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      final picker = find.byKey(const ValueKey('jitterOffsetsPresetPicker'));
-      expect(picker, findsOneWidget);
-      expect(find.textContaining('按整批僵尸的创建顺序追加固定偏移'), findsOneWidget);
-      await tester.ensureVisible(picker);
-      await tester.tap(picker);
-      await tester.pumpAndSettle();
-      expect(find.text('Offsets'), findsOneWidget);
-
-      final advanced = find.byKey(
-        const ValueKey('fixedOffsetAdvancedSettings'),
+      expect(
+        find.byKey(const ValueKey('spawnPositionOffsetSettings')),
+        findsNothing,
       );
-      await tester.ensureVisible(advanced);
-      await tester.tap(advanced);
-      await tester.pumpAndSettle();
-      final fixedOffsetField = find.byKey(const ValueKey('fixedOffsetField'));
-      await tester.ensureVisible(fixedOffsetField);
-      await tester.enterText(fixedOffsetField, '0');
+      expect(
+        find.byKey(const ValueKey('spawnPositionOffsetsUnavailable')),
+        findsNothing,
+      );
+      expect(
+        find.byKey(const ValueKey('jitterOffsetsPresetPicker')),
+        findsNothing,
+      );
+      expect(find.byKey(const ValueKey('fixedOffsetField')), findsNothing);
+
+      final columnStart = find.byWidgetPredicate(
+        (widget) => widget is TextFormField && widget.initialValue == '2',
+      );
+      await tester.ensureVisible(columnStart);
+      await tester.enterText(columnStart, '3');
       await tester.pumpAndSettle();
 
       expect(
@@ -301,22 +320,13 @@ void main() {
       );
       expect(
         event.objData as Map<String, dynamic>,
-        isNot(contains('FixedOffset')),
-      );
-
-      await tester.ensureVisible(picker);
-      await tester.tap(picker);
-      await tester.pumpAndSettle();
-      await tester.tap(find.text('不绑定（使用游戏内默认参数 80 / 30）').last);
-      await tester.pumpAndSettle();
-      expect(
-        event.objData as Map<String, dynamic>,
-        isNot(contains('JitterOffsets')),
+        containsPair('FixedOffset', 32),
       );
       expect(
         event.objData as Map<String, dynamic>,
-        containsPair('ZombieSpawnPattern', 'RTID(Pattern@CurrentLevel)'),
+        containsPair('ColumnStart', 3),
       );
+      expect(JitterOffsetsUtils.findReferrers(level, 'Offsets'), [event]);
       expect(tester.takeException(), isNull);
     },
   );
@@ -364,11 +374,12 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    await _expandOffsetSettings(tester);
     expect(find.text('UnsafeOffsets（参数无效）'), findsOneWidget);
-    expect(find.text('当前预设包含无效参数。请在「管理预设」中将「随机偏移上限」改为正数。'), findsOneWidget);
     final l10n = AppLocalizations.of(
       tester.element(find.byType(ZombieSpawnEventScreen)),
     )!;
+    expect(find.text(l10n.jitterOffsetsEventInvalidPreset), findsOneWidget);
     expect(find.text(l10n.jitterOffsetsEventDescription), findsNothing);
     expect(tester.takeException(), isNull);
   });
@@ -416,6 +427,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
+    await _expandOffsetSettings(tester);
     expect(find.text('Offsets (missing)'), findsWidgets);
     final picker = find.byKey(const ValueKey('jitterOffsetsPresetPicker'));
     await tester.ensureVisible(picker);
@@ -431,4 +443,11 @@ void main() {
     expect(JitterOffsetsUtils.findReferrers(level, 'Offsets'), [event]);
     expect(tester.takeException(), isNull);
   });
+}
+
+Future<void> _expandOffsetSettings(WidgetTester tester) async {
+  final section = find.byKey(const ValueKey('spawnPositionOffsetSettings'));
+  await tester.ensureVisible(section);
+  await tester.tap(section);
+  await tester.pumpAndSettle();
 }

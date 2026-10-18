@@ -31,6 +31,26 @@ void main() {
     expect(prefs.getString('locale'), 'ru');
   });
 
+  test(
+    'automatic update checks default on and persist when disabled',
+    () async {
+      SharedPreferences.setMockInitialValues({});
+      final prefs = await SharedPreferences.getInstance();
+      final cubit = SettingsCubit(prefs);
+      expect(cubit.state.checkForUpdates, isTrue);
+      cubit.setCheckForUpdates(false);
+      expect(cubit.state.checkForUpdates, isFalse);
+      expect(
+        prefs.getBool(SettingsCubit.checkForUpdatesPreferenceKey),
+        isFalse,
+      );
+      final restored = SettingsCubit(prefs);
+      addTearDown(restored.close);
+      await cubit.close();
+      expect(restored.state.checkForUpdates, isFalse);
+    },
+  );
+
   test('alias prompt on create is disabled by default and persists', () async {
     SharedPreferences.setMockInitialValues({
       'locale': 'en',

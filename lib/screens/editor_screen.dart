@@ -100,6 +100,7 @@ import 'package:c_editor/screens/editor/modules/wave_generator_wave_screen.dart'
 import 'package:c_editor/screens/editor/modules/lawn_mower_properties_screen.dart';
 import 'package:c_editor/screens/editor/modules/tunnel_defend_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/gulliver_tunnel_module_screen.dart';
+import 'package:c_editor/screens/editor/modules/speed_up_tile_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/zombie_rush_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/pvz1_copycats_module_screen.dart';
 import 'package:c_editor/screens/editor/modules/pvz1_seeing_stars_module_screen.dart';
@@ -3761,6 +3762,21 @@ class _EditorScreenState extends State<EditorScreen> {
       return;
     }
     if (info.source == 'CurrentLevel' &&
+        objClass == 'SpeedUpTileModuleProperties') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SpeedUpTileModuleScreen(
+            rtid: rtid,
+            levelFile: _ec.state.levelFile!,
+            onChanged: _markDirty,
+            onBack: () => Navigator.pop(context),
+          ),
+        ),
+      );
+      return;
+    }
+    if (info.source == 'CurrentLevel' &&
         objClass == 'InitialGridItemGulliverTunnelProperties') {
       Navigator.push(
         context,
@@ -3877,10 +3893,13 @@ class _EditorScreenState extends State<EditorScreen> {
     };
   }
 
-  IconData _editorActionIcon(String id) {
+  IconData _editorActionIcon(String id, SettingsState settings) {
     return switch (id) {
       InterfaceMenuActionIds.language => Icons.language,
-      InterfaceMenuActionIds.theme => Icons.brightness_6_outlined,
+      InterfaceMenuActionIds.theme =>
+        settings.themeMode == ThemeMode.dark
+            ? Icons.light_mode
+            : Icons.dark_mode,
       InterfaceMenuActionIds.uiScale => Icons.aspect_ratio,
       InterfaceMenuActionIds.autosave => Icons.save_outlined,
       InterfaceMenuActionIds.viewJson => Icons.code,
@@ -3917,7 +3936,7 @@ class _EditorScreenState extends State<EditorScreen> {
     final enabled = _editorActionEnabled(id);
     return IconButton(
       key: ValueKey('editorToolbarAction_$id'),
-      icon: Icon(_editorActionIcon(id)),
+      icon: Icon(_editorActionIcon(id, settings)),
       tooltip: _editorActionLabel(l10n, settings, id),
       onPressed: enabled ? () => _handleEditorAction(id) : null,
     );
@@ -3935,7 +3954,7 @@ class _EditorScreenState extends State<EditorScreen> {
       enabled: enabled,
       child: EditorPopupMenuTile(
         enabled: enabled,
-        leading: Icon(_editorActionIcon(id)),
+        leading: Icon(_editorActionIcon(id, settings)),
         title: Text(_editorActionLabel(l10n, settings, id)),
       ),
     );

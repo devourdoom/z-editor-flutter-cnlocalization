@@ -1,3 +1,5 @@
+import 'package:c_editor/data/music_suffix_catalog.dart';
+
 /// A named `MusicType` choice for one PVZ2 music module (`MusicSuffix`).
 class MusicTypeChoice {
   const MusicTypeChoice({required this.value, required this.labelKey});
@@ -42,10 +44,19 @@ abstract final class MusicTypeCatalog {
     MusicTypeChoice(value: mainPath, labelKey: mainPath),
     MusicTypeChoice(value: miniGameA, labelKey: miniGameA),
     MusicTypeChoice(value: miniGameB, labelKey: miniGameB),
-    MusicTypeChoice(value: miniGameC, labelKey: miniGameC),
-    MusicTypeChoice(value: miniGameD, labelKey: miniGameD),
-    MusicTypeChoice(value: miniGameE, labelKey: miniGameE),
   ];
+
+  /// Unconfigured modules offer the three common tracks, named after their
+  /// module until individual track labels are available. Empty suffixes keep
+  /// the raw track labels rather than exposing an empty localization key.
+  static List<MusicTypeChoice> fallbackChoicesForSuffix(String suffix) {
+    final labelKey = MusicSuffixCatalog.resourceKey(suffix);
+    if (labelKey.isEmpty) return fallbackChoices;
+    return [
+      for (final choice in fallbackChoices)
+        MusicTypeChoice(value: choice.value, labelKey: labelKey),
+    ];
+  }
 
   static const _main = MusicTypeChoice(
     value: mainPath,
@@ -162,8 +173,12 @@ abstract final class MusicTypeCatalog {
     MusicTypeModule(
       suffix: 'Eighties',
       // The guide's jam_* entries belong to wave NotificationEvents, not
-      // MusicType. Keep the editor's raw choices and show only the guide note.
-      choices: fallbackChoices,
+      // MusicType. Use the module name until individual tracks are documented.
+      choices: [
+        MusicTypeChoice(value: mainPath, labelKey: 'musicSuffix_Eighties'),
+        MusicTypeChoice(value: miniGameA, labelKey: 'musicSuffix_Eighties'),
+        MusicTypeChoice(value: miniGameB, labelKey: 'musicSuffix_Eighties'),
+      ],
       noteKeys: ['musicTypeNote_eighties'],
     ),
     MusicTypeModule(
@@ -223,17 +238,9 @@ abstract final class MusicTypeCatalog {
     MusicTypeModule(
       suffix: 'Moon',
       choices: [
-        // The guide has no Moon section. Preserve the existing raw choices and
-        // label the Moon tracks explicitly supplied or confirmed by the user.
-        MusicTypeChoice(value: mainPath, labelKey: mainPath),
+        _main,
         MusicTypeChoice(value: miniGameA, labelKey: 'musicTypeLabel_moonUb'),
         MusicTypeChoice(value: miniGameB, labelKey: 'musicTypeLabel_moonMg'),
-        MusicTypeChoice(
-          value: miniGameC,
-          labelKey: 'musicTypeLabel_moonDay24FinalWave',
-        ),
-        MusicTypeChoice(value: miniGameD, labelKey: miniGameD),
-        MusicTypeChoice(value: miniGameE, labelKey: miniGameE),
       ],
     ),
     MusicTypeModule(

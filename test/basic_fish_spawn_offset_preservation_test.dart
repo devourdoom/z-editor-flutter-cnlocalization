@@ -30,46 +30,66 @@ void main() {
         ),
       );
 
-      await tester.tap(
-        find.byKey(const ValueKey('fixedOffsetAdvancedSettings')),
-      );
-      await tester.pumpAndSettle();
       final field = find.byKey(const ValueKey('fixedOffsetField'));
       expect(tester.widget<TextFormField>(field).initialValue, '0');
 
       await tester.enterText(field, 'NaN');
       await tester.pump();
       expect(changed, isNull);
-      expect(find.text('请输入有效的数字。'), findsOneWidget);
+      final l10n = AppLocalizations.of(tester.element(field))!;
+      expect(find.text(l10n.jitterOffsetsFixedOffsetInvalid), findsOneWidget);
 
       await tester.enterText(field, 'Infinity');
       await tester.pump();
       expect(changed, isNull);
 
-      await tester.enterText(field, '-12.5');
-      await tester.pump();
-      expect(changed, -12.5);
+      for (final value in <double>[8.5, -8.5, 0.001, -0.0, 1e100]) {
+        await tester.enterText(field, value.toString());
+        await tester.pump();
+        expect(changed, value);
+        expect(changed!.isNegative, value.isNegative);
+      }
     },
   );
+
+  testWidgets('FixedOffset editor retains a large finite initial value', (
+    tester,
+  ) async {
+    await _pumpEditor(
+      tester,
+      Scaffold(
+        body: FixedOffsetAdvancedSettingsCard(value: 1e100, onChanged: (_) {}),
+      ),
+    );
+
+    final field = tester.widget<TextFormField>(
+      find.byKey(const ValueKey('fixedOffsetField')),
+    );
+    expect(num.parse(field.initialValue!), 1e100);
+    expect(tester.takeException(), isNull);
+  });
 
   test('basic and underwater models preserve all position controls', () {
     const source = <String, dynamic>{
       'JitterOffsets': 'RTID(Offsets@CurrentLevel)',
       'ZombieSpawnPattern': 'ZombieSpawnerPatternStaggered',
-      'FixedOffset': 24.5,
       'Zombies': <dynamic>[],
     };
 
-    final basic = WaveActionData.fromJson(source);
-    final underwater = SpawnZombiesFishWaveActionPropsData.fromJson(source);
+    for (final value in <double>[8.5, -8.5, 0.001, -0.0]) {
+      final input = <String, dynamic>{...source, 'FixedOffset': value};
+      final basic = WaveActionData.fromJson(input);
+      final underwater = SpawnZombiesFishWaveActionPropsData.fromJson(input);
 
-    for (final restored in <Map<String, dynamic>>[
-      basic.toJson(),
-      underwater.toJson(),
-    ]) {
-      expect(restored['JitterOffsets'], 'RTID(Offsets@CurrentLevel)');
-      expect(restored['ZombieSpawnPattern'], 'ZombieSpawnerPatternStaggered');
-      expect(restored['FixedOffset'], 24.5);
+      for (final restored in <Map<String, dynamic>>[
+        basic.toJson(),
+        underwater.toJson(),
+      ]) {
+        expect(restored['JitterOffsets'], 'RTID(Offsets@CurrentLevel)');
+        expect(restored['ZombieSpawnPattern'], 'ZombieSpawnerPatternStaggered');
+        expect(restored['FixedOffset'], value);
+        expect((restored['FixedOffset'] as num).isNegative, value.isNegative);
+      }
     }
   });
 
@@ -121,6 +141,13 @@ void main() {
       );
 
       await _expectOverrideThenRestore(tester, event);
+      final l10n = AppLocalizations.of(
+        tester.element(find.byType(ZombieFishWaveEventScreen)),
+      )!;
+      expect(
+        find.text(l10n.jitterOffsetsUnderwaterScopeDescription),
+        findsOneWidget,
+      );
       expect(tester.takeException(), isNull);
     },
   );
@@ -139,6 +166,15 @@ void main() {
               'Row': 1,
               'Direction': 'right',
               'Titles': <String>['ZTSpeed1'],
+            },
+          ],
+          'JitterOffsets': 'RTID(Offsets@CurrentLevel)',
+          'ZombieSpawnPattern': 'ZombieSpawnerPatternStaggered',
+          'FixedOffset': 8.5,
+          'Fishes': <dynamic>[
+            <String, dynamic>{
+              'Type': 'RTID(fish@CreatureTypes)',
+              'Position': <String, dynamic>{'mX': 5, 'mY': 2},
             },
           ],
         },
@@ -279,6 +315,15 @@ void _expectFishZombieFields(
     expect(zombie['Direction'], direction);
   }
   expect(zombie['Titles'], <String>['ZTSpeed1']);
+  expect(data['JitterOffsets'], 'RTID(Offsets@CurrentLevel)');
+  expect(data['ZombieSpawnPattern'], 'ZombieSpawnerPatternStaggered');
+  expect(data['FixedOffset'], 8.5);
+  expect(data['Fishes'], <dynamic>[
+    <String, dynamic>{
+      'Type': 'RTID(fish@CreatureTypes)',
+      'Position': <String, dynamic>{'mX': 5, 'mY': 2},
+    },
+  ]);
 }
 
 PvzObject _event({required String alias, required String objClass}) {
@@ -326,21 +371,36 @@ Future<void> _expectOverrideThenRestore(
   WidgetTester tester,
   PvzObject event,
 ) async {
+  final section = find.byKey(const ValueKey('spawnPositionOffsetSettings'));
+  await tester.ensureVisible(section);
+  await tester.tap(section);
+  await tester.pumpAndSettle();
+
   final picker = find.byKey(const ValueKey('jitterOffsetsPresetPicker'));
   await tester.ensureVisible(picker);
-  await tester.tap(picker);
-  await tester.pumpAndSettle();
+  expect(tester.widget<InkWell>(picker).onTap, isNull);
   expect(find.text('Offsets'), findsOneWidget);
-
-  final advanced = find.byKey(const ValueKey('fixedOffsetAdvancedSettings'));
-  await tester.ensureVisible(advanced);
-  await tester.tap(advanced);
-  await tester.pumpAndSettle();
-  expect(find.text('全局序号固定偏移 (FixedOffset)'), findsOneWidget);
+  final l10n = AppLocalizations.of(tester.element(section))!;
+  expect(find.text(l10n.jitterOffsetsFixedOffsetLabel), findsOneWidget);
 
   final field = find.byKey(const ValueKey('fixedOffsetField'));
   await tester.ensureVisible(field);
-  await tester.enterText(field, '0');
+  for (final value in <double>[8.5, -8.5, 0.001]) {
+    await tester.enterText(field, value.toString());
+    await tester.pumpAndSettle();
+
+    final json = event.objData as Map<String, dynamic>;
+    expect(json['FixedOffset'], value);
+    expect(json['JitterOffsets'], 'RTID(Offsets@CurrentLevel)');
+    expect(json['ZombieSpawnPattern'], 'ZombieSpawnerPatternStaggered');
+    expect(tester.widget<InkWell>(picker).onTap, isNull);
+    expect(
+      find.text(l10n.jitterOffsetsFixedOffsetOverrideWarning),
+      findsOneWidget,
+    );
+  }
+
+  await tester.enterText(field, '-0.0');
   await tester.pumpAndSettle();
 
   final json = event.objData as Map<String, dynamic>;

@@ -9,6 +9,17 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
+  String get updateSaveWorkGuidance =>
+      '自动保存会在正常退出支持的编辑页面时执行，刷新或关闭网页可能跳过此流程。更新前请确认关卡和 JSON 已保存，测试包和预览图已导出完成。此弹窗不会代为保存，也不会自动刷新或重启。';
+
+  @override
+  String get jsonDiscardEditsBody =>
+      '要放弃本次 JSON 修改吗？尚未保存的文本（包括未通过语法检查的内容）将丢失。选择“留下”可继续编辑并保存。';
+
+  @override
+  String get webUpdateSaveAndRefresh => '检测到编辑器有新版本。请先保存正在编辑的内容，再刷新页面加载新版。';
+
+  @override
   String get error => '错误';
 
   @override
@@ -28,6 +39,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get previewTabGridItems => '物品';
+
+  @override
+  String get previewTabInitialLawnOverview => '场地初始布局';
 
   @override
   String get overviewPresetPlants => '预选植物';
@@ -218,7 +232,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get autosaveOff => '自动保存：关';
 
   @override
-  String get autosaveSubtitle => '离开关卡后自动保存更改';
+  String get autosaveSubtitle => '退出关卡或 JSON 编辑模式时自动保存更改';
 
   @override
   String get ultra => '超大';
@@ -281,6 +295,95 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get aliasPromptOnCreateDescription =>
       '新建事件、模块、挑战或自定义地图前显示代号弹窗；关闭后直接使用自动生成的默认代号。';
+
+  @override
+  String get popupPrompts => '弹窗提示';
+
+  @override
+  String currentTheme(String theme) {
+    return '当前主题：$theme';
+  }
+
+  @override
+  String get checkForUpdatesAutomatically => '检测并提示更新';
+
+  @override
+  String get checkForUpdatesAutomaticallyDescription =>
+      '进入工作区时在后台检测正式版更新，每24小时最多检测一次。自动检测失败时不会显示提示。';
+
+  @override
+  String get checkForUpdates => '检测更新';
+
+  @override
+  String get checkingForUpdates => '正在检测更新…';
+
+  @override
+  String get updateAvailableTitle => '发现新版本';
+
+  @override
+  String updateAvailableBody(String version) {
+    return '最新正式版为 $version。';
+  }
+
+  @override
+  String get updateAlreadyLatest => '当前已是最新正式版。';
+
+  @override
+  String get updateCheckFailedTitle => '更新检测失败';
+
+  @override
+  String get updateDownload => '选择下载链接';
+
+  @override
+  String get updateGithubDownload => '打开GitHub Releases链接';
+
+  @override
+  String get updateDownloadDescription => '点击链接后将跳转至浏览器或其他应用，可在对应页面下载新版安装包。';
+
+  @override
+  String get updateLater => '稍后提醒';
+
+  @override
+  String get updateBaiduDownload => '打开百度网盘链接';
+
+  @override
+  String get networkTimeoutAdvice => '请求超时。请检查网络后重试；访问 GitHub 可能需要使用代理网络或切换网络。';
+
+  @override
+  String get networkRateLimitAdvice =>
+      'GitHub 请求次数已达上限，或访问被拒绝。请稍后重试，也可以切换网络或使用代理网络。';
+
+  @override
+  String get networkConnectionAdvice =>
+      '无法连接到服务器。请检查网络后重试；访问 GitHub 可能需要使用代理网络或切换网络。';
+
+  @override
+  String get networkServiceAdvice => '服务器暂时无法使用，请稍后重试。';
+
+  @override
+  String get networkResponseAdvice => '服务器返回的数据异常。请稍后重试，或直接前往下载页面。';
+
+  @override
+  String get updateCheckUnknownAdvice => '未能完成更新检测。请稍后重试，或直接前往下载页面。';
+
+  @override
+  String get externalLinkFailedAdvice => '无法打开下载页面，请复制链接后使用浏览器打开。';
+
+  @override
+  String get jsonEditSyntaxError => 'JSON 格式有误。请检查逗号、括号和英文双引号，修改后再保存。';
+
+  @override
+  String jsonEditSyntaxErrorAt(String line, String column) {
+    return 'JSON 第$line行、第$column列附近存在格式错误。请检查逗号、括号和英文双引号，修改后再保存。';
+  }
+
+  @override
+  String get jsonEditStructureError =>
+      'JSON 内容不符合关卡结构。请保留 objects 列表，以及各对象的 objclass 和 objdata 字段；版本号应为整数。';
+
+  @override
+  String get jsonEditSaveError =>
+      '无法保存文件。请检查工作区的写入权限和可用空间后重试；网页端请确认浏览器允许使用本地存储。编辑内容已保留。';
 
   @override
   String get aboutSoftware => '关于软件';
@@ -1200,7 +1303,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get levelBasicInfoHelpSceneBody =>
-      '这里可以从列表中选择关卡的地图，注意海盗地图默认无甲板。结算方式仅适用于部分特殊关卡种类，一般不建议对其进行修改。';
+      '这里可以从列表中选择关卡的地图、音乐类型等场景信息。海盗港湾地图默认无甲板。\n音乐类型的可选范围由地图默认的音乐模块决定，自定义地图后可更改音乐模块，在关卡中使用其他地图的音乐。\n结算方式仅适用于部分特殊关卡种类，一般不建议对其进行修改。';
 
   @override
   String get levelBasicInfoHelpRestrictionsBody =>
@@ -1226,11 +1329,14 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get jitterOffsetsAdd => '新建预设';
+  String get jitterOffsetsAdd => '添加偏移';
+
+  @override
+  String get jitterOffsetsSelectTitle => '选择出怪位置偏移';
 
   @override
   String get jitterOffsetsEmpty =>
-      '还没有预设。\n未绑定预设的「普通出怪」「海底出怪」「地底出怪」和「障碍物出怪」事件会使用游戏内的默认参数 80 / 30；\n如需自定义，请新建预设后在事件中绑定。';
+      '还没有预设。\n未绑定预设时，「普通出怪」和「海底出怪」的僵尸列表会使用游戏内默认参数：同一行累计偏移增量为 80，随机偏移上限为 30，即每只僵尸额外取得 0～29 的随机偏移。\n如需自定义，请新建预设后在事件中绑定。';
 
   @override
   String get jitterOffsetsNoAlias => '（无代号）';
@@ -1256,11 +1362,11 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get jitterOffsetsIncrementInvalid =>
-      '请使用非负数。负数可能使累计值与随机值之和小于 0；游戏会将其按无符号整数换算，产生异常大的横坐标，使僵尸无法正常进场。';
+      '建议填写非负整数。负值可能被换算成异常大的偏移，使僵尸无法正常进场。';
 
   @override
   String get jitterOffsetsRandomJitterInvalid =>
-      '请输入正数。0 或负数不会关闭随机偏移，可能产生异常大的横坐标，使僵尸无法正常进场。';
+      '请输入正整数。0 或负数不会关闭随机偏移，可能产生异常大的横向位置，使僵尸无法正常进场。';
 
   @override
   String get jitterOffsetsRename => '重命名';
@@ -1309,13 +1415,14 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String get jitterOffsetsDeleteBlockedHint => '请先打开以下事件，将「出怪位置偏移」改为其他预设或取消绑定：';
+  String get jitterOffsetsDeleteBlockedHint =>
+      '请先打开以下事件，将「出怪位置偏移」改为其他预设或取消绑定。不支持偏移设置的事件，可通过文件手动编辑功能清理其中保留的引用：';
 
   @override
   String get jitterOffsetsEventLabel => '出怪位置偏移';
 
   @override
-  String get jitterOffsetsEventNone => '不绑定（使用游戏内默认参数 80 / 30）';
+  String get jitterOffsetsEventNone => '不绑定（使用游戏内默认参数）';
 
   @override
   String get jitterOffsetsEventManage => '管理预设';
@@ -1326,7 +1433,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get jitterOffsetsEventNoPresets =>
-      '还没有预设，当前事件会自动使用游戏内的默认参数 80 / 30。如需自定义，请先新建预设。';
+      '还没有预设，当前事件会自动使用游戏内的默认参数：同一行累计偏移增量为 80，随机偏移上限为 30，即每只僵尸额外取得 0～29 的随机偏移。如需自定义，请先新建预设。';
 
   @override
   String jitterOffsetsEventDangling(String alias) {
@@ -1344,17 +1451,20 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get jitterOffsetsFixedOffsetOverrideWarning =>
-      '当前事件的「全局序号固定偏移」不为 0，游戏会按整批僵尸的创建顺序追加固定偏移，不再使用已绑定的出怪位置偏移预设和出怪排列方式。原有设置会保留，固定偏移恢复为 0 后重新生效。';
+      '当前事件的「整批序号固定偏移」不为 0，已绑定的出怪位置偏移预设和出怪队形预设暂时不生效。原有设置会保留，固定偏移恢复为 0 后重新生效。';
+
+  @override
+  String get jitterOffsetsUnderwaterScopeDescription => '此设置仅影响僵尸列表，不影响海洋生物列表。';
 
   @override
   String get jitterOffsetsAdvancedSettingsTitle => '高级设置';
 
   @override
-  String get jitterOffsetsFixedOffsetLabel => '全局序号固定偏移 (FixedOffset)';
+  String get jitterOffsetsFixedOffsetLabel => '整批序号固定偏移 (FixedOffset)';
 
   @override
   String get jitterOffsetsFixedOffsetDescription =>
-      '默认值为 0。非零时，整批僵尸按创建顺序编号，从 0 开始；每只僵尸在自己的基础横向位置上追加「序号 × 固定偏移值」。编号不会按行重新计数，偏移方向也不会随僵尸朝向改变：固定偏移值为正数时向右偏移，为负数时向左偏移。因此，同一事件包含不同行或不同朝向的僵尸时请谨慎使用。\n此时出怪位置偏移预设和出怪排列方式会被暂时忽略，但原有设置会保留；恢复为 0 后重新生效。出怪排列方式是游戏用于设置各行起始偏移和行间偏移的排列规则。';
+      '常见于双人对决，默认值为0。值为 0 时使用出怪位置偏移预设和出怪队形预设；非零时暂时停用两者，但保留原有设置，恢复为 0 后重新生效。非零偏移按本事件僵尸列表的顺序累加，不按行重新计数，并保留各只僵尸的基础位置。第一只的固定偏移为 0，后续每只增加一个填写值；即使只有一只僵尸或填写极小的非零值，也会停用这两种预设。\n固定偏移值为正数时向右，为负数时向左，小数会完整参与计算，方向不随僵尸朝向反转，因此同一事件包含不同行或不同朝向的僵尸时请谨慎设置。例如填写 8.5，前三只分别在各自基础位置上向右偏移 0、8.5、17。\n该设置只改变横向位置，不会增减创建数量。数值绝对值过大可能使僵尸出现在极远的场外或过深的场内位置，造成无法正常进场或结算异常。';
 
   @override
   String get jitterOffsetsFixedOffsetInvalid => '请输入有效的数字。';
@@ -1367,21 +1477,24 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get jitterOffsetsHelpOverviewBody =>
-      '出怪位置偏移预设用于调整同一出怪事件中僵尸的横向排列。在「普通出怪」「海底出怪」「地底出怪」和「障碍物出怪」事件中，每只僵尸先取得自己的基础出怪位置，再追加本预设计算的横向偏移。各行分别累计偏移，互不影响。\n「地底出怪」先根据指定列或列范围计算基础钻出位置，追加偏移后可能移出原来的列范围；「障碍物出怪」以目标障碍物的位置为基础，追加偏移后可能偏离该障碍物所在格的中心。该预设只改变横向出怪位置，不会改变创建时间、所在行或波次时间。\n未绑定预设时，累计偏移增量为 80，随机偏移上限为 30，因此不创建预设也能正常出怪。';
+      '出怪位置偏移预设用于调整同一事件中僵尸的横向排列，适用于「普通出怪」和「海底出怪」中的僵尸列表，不影响海洋生物。每只僵尸在自己的基础位置上追加所在行的累计偏移和本次随机偏移，各行分别累计，互不影响。该设置只改变横向位置，不改变创建数量、创建时间、所在行或波次时间。\n未绑定预设时，游戏使用默认参数：同一行累计偏移增量为 80，随机偏移上限为 30，即每只僵尸额外取得 0～29 的随机偏移，不创建预设也能正常出怪。';
 
   @override
   String get jitterOffsetsHelpUsageTitle => '使用说明';
 
   @override
   String get jitterOffsetsHelpUsageBody =>
-      '在此创建预设后，打开任意「普通出怪」「海底出怪」「地底出怪」或「障碍物出怪」事件，并在「出怪位置偏移」中选择需要绑定的预设即可。\n同一预设可以被多个事件共用；修改预设后，所有引用该预设的事件都会同步变化。仍被事件引用的预设无法删除，需要先将相关事件改为其他预设或取消绑定。';
+      '在此创建预设后，打开「普通出怪」或「海底出怪」事件，在「出怪位置偏移」中选择需要绑定的预设。\n同一预设可由多个事件共用，修改后所有引用它的事件都会同步变化。仍被引用的预设无法删除，需要先将相关事件改为其他预设或取消绑定。';
 
   @override
   String get jitterOffsetsHelpParametersTitle => '参数介绍';
 
   @override
+  String get jitterOffsetsHelpFixedOffsetTitle => '整批序号固定偏移';
+
+  @override
   String get jitterOffsetsHelpParametersBody =>
-      '「同一行累计偏移增量」指同一事件中，同一行每多一只僵尸，累计追加的固定偏移。第一只的累计偏移为 0，第二只为一个增量，第三只为两个增量，以此类推。建议填写非负数；负数可能使累计偏移与随机偏移之和小于 0，产生异常大的横坐标，使僵尸无法正常进场。\n「随机偏移上限」指每只僵尸独立取得的随机偏移。实际值从 0 到「填写值减 1」；例如填写 10，实际取值为 0～9。必须填写正整数；0 或负数不会关闭随机，而可能使僵尸无法正常进场。\n将累计偏移与本次随机偏移相加后，根据僵尸朝向应用到基础位置：面向左（通常从场地右侧进场）时向右偏移；面向右（通常从场地左侧进场）时向左偏移。海底出怪中，开启「从场地左侧出现」时，僵尸面向右并向左追加偏移；关闭时，通常从右侧出现并向右追加偏移。\n例如累计增量为 20、随机上限为 10，同一行前三只僵尸的偏移量分别为 0～9、20～29、40～49，再按上述朝向决定向左还是向右。\n游戏还可通过「出怪排列方式」设置各行的起始偏移和行间偏移；这些排列规则会与本预设叠加，因此实际位置可能还包含额外偏移。';
+      '「同一行累计偏移增量」指每在某行放置一只僵尸后，该行累计偏移增加的数值。建议填写非负整数；负值可能被换算成异常大的偏移，使僵尸无法正常进场。\n「随机偏移上限」指每只僵尸独立取得的随机偏移范围，实际值从 0 到填写值减 1。例如填写 10，实际取值为 0～9。必须填写正整数；0 或负数不会关闭随机，而可能产生异常坐标。\n每只僵尸的累计偏移与随机偏移相加后，再按朝向应用到基础位置：面向左（通常从场地右侧进场）时向右偏移；面向右（通常从场地左侧进场）时向左偏移。未配置出怪队形预设时，各行从 0 开始累计。例如累计偏移增量为 20、随机偏移上限为 10，同一行前三只的偏移量分别为 0～9、20～29、40～49。\n「出怪队形预设」用于调整各行第一只僵尸的起始横向偏移，以及同行后续僵尸间距。配置后，每行从预设指定的起始偏移开始累计，每放置一只僵尸，除基础增量外还会追加该行的间距修正。这只调整同行的横向间距，不改变相邻两行的纵向距离。';
 
   @override
   String get removeModule => '移除模块';
@@ -3906,7 +4019,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get eventHelpZombieFishWaveFish =>
-      '使用“添加海洋生物属性”按钮在场地上放置深海鱼群。场地大小因关卡而异，海底世界关卡为 6×10，其他关卡为 5×9。坐标中行对应 Y，列对应 X。';
+      '使用“添加海洋生物属性”按钮在场地上放置海洋生物。场地大小因关卡而异，海底世界关卡为 6×10，其他关卡为 5×9。坐标中行对应 Y，列对应 X。';
 
   @override
   String get eventHelpBatchLevel => '将本波次所有僵尸设为指定阶级（精英僵尸不受影响，保持默认阶级）。';
@@ -6759,6 +6872,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get moduleDesc_LawnMowerProperties => '设置小推车样式，注意在庭院中不生效';
 
   @override
+  String get moduleTitle_SpeedUpTileModuleProperties => '加速带';
+
+  @override
+  String get moduleDesc_SpeedUpTileModuleProperties => '在场地上预置极品飞车联动秘境的加速带';
+
+  @override
   String get moduleTitle_TunnelDefendModuleProperties => '地宫坑道';
 
   @override
@@ -6847,6 +6966,68 @@ class AppLocalizationsZh extends AppLocalizations {
   @override
   String get gulliverTunnelDeleteOutsideConfirmMessage =>
       '将移除 5×9 场地之外的格列佛隧道，此操作不可撤销。';
+
+  @override
+  String get speedUpTileTitle => '加速带';
+
+  @override
+  String get speedUpTileHelpOverview =>
+      '在指定格子铺设加速带，使符合条件的地面僵尸沿箭头方向快速移动，常见于飞车竞速赛秘境。僵尸离开道路后会恢复普通行走。巨人僵尸和具有特殊移动逻辑的僵尸会无视加速带。';
+
+  @override
+  String get speedUpTileHelpUsageTitle => '使用说明';
+
+  @override
+  String get speedUpTileHelpUsageBody =>
+      '先在下方选择箭头方向，再点击网格放置加速带。再次点击相同方向的加速带可将其移除；选择不同方向后点击已有加速带的格子，可替换其方向。加速带所在格的横向坐标 (GridX)、纵向坐标 (GridY) 均从 0 开始计数，如横向坐标填 0 为第 1 列、填 8 为第 9 列，纵向坐标填 0 为第 1 行、填 2 为第 3 行。';
+
+  @override
+  String get speedUpTileTopologyTitle => '道路连接规则';
+
+  @override
+  String get speedUpTileTopologyBody =>
+      '箭头并不表示“踏入该格后立即转向”。僵尸通常会优先沿当前方向继续通过相邻的加速带，走满约一个格距后才检查道路连接。需要转弯时，旧方向前方必须是普通地砖，目标方向的相邻格必须是加速带，并且应当只有一个可用出口。建议将道路设计成一格宽、无分叉的连续单链。';
+
+  @override
+  String get speedUpTileSelectDirection => '选择箭头方向';
+
+  @override
+  String get speedUpTileDirectionLeft => '向左';
+
+  @override
+  String get speedUpTileDirectionRight => '向右';
+
+  @override
+  String get speedUpTileDirectionUp => '向上';
+
+  @override
+  String get speedUpTileDirectionDown => '向下';
+
+  @override
+  String get speedUpTilePlacedCount => '已放置';
+
+  @override
+  String get speedUpTileClearAll => '清空全部';
+
+  @override
+  String get speedUpTileClearConfirmTitle => '确定要清空全部加速带吗？';
+
+  @override
+  String get speedUpTileClearConfirmMessage =>
+      '将移除所有已放置的加速带，包括场地范围外的加速带，此操作不可撤销。';
+
+  @override
+  String get speedUpTileOutsideLawn => '场地外的加速带：';
+
+  @override
+  String get speedUpTileDeleteOutside => '删除场地外的加速带';
+
+  @override
+  String get speedUpTileDeleteOutsideConfirmTitle => '确定要删除场地外的加速带吗？';
+
+  @override
+  String get speedUpTileDeleteOutsideConfirmMessage =>
+      '将移除当前场地范围外的所有加速带，此操作不可撤销。';
 
   @override
   String get moduleTitle_RiftThemeDemoModuleProperties => '主题配置';
@@ -9770,7 +9951,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String statueMazeMissingRotationsWarning(String rounds) {
-    return '「僵尸迷阵」第 $rounds 轮未添加旋转步骤，会导致关卡闪退。请为每轮至少添加一个旋转步骤。';
+    return '「僵尸迷阵」第$rounds轮未添加旋转步骤，会导致关卡闪退。请为每轮至少添加一个旋转步骤。';
   }
 
   @override

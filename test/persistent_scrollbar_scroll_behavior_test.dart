@@ -1,4 +1,5 @@
 import 'package:c_editor/widgets/persistent_scrollbar_scroll_behavior.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,6 +27,7 @@ void main() {
   for (final platform in <TargetPlatform>[
     TargetPlatform.android,
     TargetPlatform.iOS,
+    TargetPlatform.macOS,
     TargetPlatform.windows,
   ]) {
     testWidgets('vertical pages keep one right scrollbar on ${platform.name}', (
@@ -43,6 +45,68 @@ void main() {
       expect(tester.takeException(), isNull);
     });
   }
+
+  testWidgets('help text leaves a separate gutter on every platform', (
+    tester,
+  ) async {
+    for (final platform in TargetPlatform.values) {
+      await tester.pumpWidget(
+        _app(
+          platform: platform,
+          child: SingleChildScrollView(
+            child: Container(
+              key: const ValueKey('helpBody'),
+              height: 900,
+              width: double.infinity,
+              child: const Text('A long help page'),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final content = tester.getRect(find.byKey(const ValueKey('helpBody')));
+      final bar = tester.getRect(_persistentBar);
+      expect(content.right, lessThanOrEqualTo(bar.right - 20));
+      expect(content.left, bar.left);
+      expect(tester.takeException(), isNull);
+    }
+  });
+
+  testWidgets('the gutter also covers a wider hovered thumb', (tester) async {
+    await tester.pumpWidget(
+      _app(
+        platform: TargetPlatform.windows,
+        child: ScrollbarTheme(
+          data: ScrollbarThemeData(
+            thickness: WidgetStateProperty.resolveWith(
+              (states) => states.contains(WidgetState.hovered) ? 32 : 8,
+            ),
+            crossAxisMargin: 3,
+          ),
+          child: SingleChildScrollView(
+            child: Container(
+              key: const ValueKey('helpBody'),
+              height: 900,
+              width: double.infinity,
+            ),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final content = tester.getRect(find.byKey(const ValueKey('helpBody')));
+    final bar = tester.getRect(_persistentBar);
+    final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
+    addTearDown(mouse.removePointer);
+    await mouse.addPointer(location: Offset(bar.right - 5, bar.top + 30));
+    await tester.pumpAndSettle();
+
+    expect(content.right, lessThanOrEqualTo(bar.right - 42));
+    expect(tester.getRect(find.byKey(const ValueKey('helpBody'))), content);
+    expect(tester.takeException(), isNull);
+  });
 
   testWidgets('horizontal controls keep their component-specific behavior', (
     tester,
@@ -83,6 +147,37 @@ void main() {
 
     expect(find.byType(Scrollbar), findsOneWidget);
     expect(find.byKey(const ValueKey('explicitScrollbar')), findsOneWidget);
+    final viewport = tester.getRect(find.byType(Viewport));
+    final bar = tester.getRect(find.byKey(const ValueKey('explicitScrollbar')));
+    expect(viewport.right, lessThanOrEqualTo(bar.right - 20));
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('an explicit left scrollbar reserves space on the left', (
+    tester,
+  ) async {
+    final controller = ScrollController();
+    addTearDown(controller.dispose);
+
+    await tester.pumpWidget(
+      _app(
+        platform: TargetPlatform.iOS,
+        child: Scrollbar(
+          key: const ValueKey('leftScrollbar'),
+          controller: controller,
+          thumbVisibility: true,
+          scrollbarOrientation: ScrollbarOrientation.left,
+          child: _longVerticalList(controller: controller),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final viewport = tester.getRect(find.byType(Viewport));
+    final bar = tester.getRect(find.byKey(const ValueKey('leftScrollbar')));
+    expect(find.byType(Scrollbar), findsOneWidget);
+    expect(viewport.left, greaterThanOrEqualTo(bar.left + 20));
+    expect(viewport.right, bar.right);
     expect(tester.takeException(), isNull);
   });
 

@@ -9,6 +9,18 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
+  String get updateSaveWorkGuidance =>
+      'Automatic saving applies when leaving supported editors normally. Browser refresh or closure may skip it. Before updating, verify that your level and JSON are saved and all test packages and preview images have finished exporting. This dialog does not save or restart anything.';
+
+  @override
+  String get jsonDiscardEditsBody =>
+      'Discard the changes in this JSON editor? Unsaved text, including invalid JSON, will be lost. Choose Stay to continue editing and save.';
+
+  @override
+  String get webUpdateSaveAndRefresh =>
+      'A new version of the editor is available. Save your work, then refresh this page to load it.';
+
+  @override
   String get error => 'Error';
 
   @override
@@ -28,6 +40,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get previewTabGridItems => 'Grid Items';
+
+  @override
+  String get previewTabInitialLawnOverview => 'Initial Lawn Overview';
 
   @override
   String get overviewPresetPlants => 'Preset plants';
@@ -220,7 +235,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get autosaveSubtitle =>
-      'Save changes automatically when leaving a level';
+      'Save changes automatically when leaving a level or JSON edit mode';
 
   @override
   String get ultra => 'Ultra';
@@ -284,6 +299,102 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get aliasPromptOnCreateDescription =>
       'Show the alias dialog before creating an event, module, challenge, or custom lawn. When off, C-Editor uses the generated default alias.';
+
+  @override
+  String get popupPrompts => 'Dialog prompts';
+
+  @override
+  String currentTheme(String theme) {
+    return 'Current theme: $theme';
+  }
+
+  @override
+  String get checkForUpdatesAutomatically => 'Check for updates';
+
+  @override
+  String get checkForUpdatesAutomaticallyDescription =>
+      'Check for stable releases in the background when opening the workspace, at most once every 24 hours. Failed automatic checks stay silent.';
+
+  @override
+  String get checkForUpdates => 'Check for updates';
+
+  @override
+  String get checkingForUpdates => 'Checking for updates…';
+
+  @override
+  String get updateAvailableTitle => 'Update available';
+
+  @override
+  String updateAvailableBody(String version) {
+    return 'The latest stable version is $version.';
+  }
+
+  @override
+  String get updateAlreadyLatest => 'You are using the latest stable version.';
+
+  @override
+  String get updateCheckFailedTitle => 'Could not check for updates';
+
+  @override
+  String get updateDownload => 'Choose a download link';
+
+  @override
+  String get updateGithubDownload => 'Open the GitHub Releases link';
+
+  @override
+  String get updateDownloadDescription =>
+      'Clicking the link will take you to a browser or another app, where you can download the installer for the new version from the corresponding page.';
+
+  @override
+  String get updateLater => 'Remind me later';
+
+  @override
+  String get updateBaiduDownload => 'Open the Baidu Netdisk link';
+
+  @override
+  String get networkTimeoutAdvice =>
+      'The request timed out. Check your connection and try again. Access to GitHub may require a proxy or a different network.';
+
+  @override
+  String get networkRateLimitAdvice =>
+      'GitHub\'s request limit has been reached, or access was refused. Wait and try again, or use a different network or proxy.';
+
+  @override
+  String get networkConnectionAdvice =>
+      'Could not connect to the server. Check your connection and try again. Access to GitHub may require a proxy or a different network.';
+
+  @override
+  String get networkServiceAdvice =>
+      'The server is temporarily unavailable. Please try again later.';
+
+  @override
+  String get networkResponseAdvice =>
+      'The server returned unexpected data. Try again later or visit the download page directly.';
+
+  @override
+  String get updateCheckUnknownAdvice =>
+      'The update check could not be completed. Try again later, or visit the download page directly.';
+
+  @override
+  String get externalLinkFailedAdvice =>
+      'Could not open the download page. Copy the link and open it in a browser.';
+
+  @override
+  String get jsonEditSyntaxError =>
+      'Invalid JSON syntax. Check commas, brackets, and double quotes, then save again.';
+
+  @override
+  String jsonEditSyntaxErrorAt(String line, String column) {
+    return 'Invalid JSON syntax near line $line, column $column. Check commas, brackets, and double quotes, then save again.';
+  }
+
+  @override
+  String get jsonEditStructureError =>
+      'This JSON does not match the level structure. Keep the objects list and each object\'s objclass and objdata fields; the version must be an integer.';
+
+  @override
+  String get jsonEditSaveError =>
+      'Could not save the file. Check workspace write permissions and free space, then try again. On the web, make sure the browser allows local storage. Your edits have been kept.';
 
   @override
   String get aboutSoftware => 'About';
@@ -1230,7 +1341,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get levelBasicInfoHelpSceneBody =>
-      'Here you can choose the level\'s lawn from the list. Note that the Pirate Seas lawn has no planks by default. The victory setting only applies to certain special level types and generally should not be changed.';
+      'Here you can choose scene information such as the level\'s lawn and music type from the list. The Pirate Seas lawn has no planks by default.\nThe available music types depend on the lawn\'s default music module. After customizing the lawn, you can change its music module to use music from other lawns in the level.\nThe settlement setting only applies to certain special level types and generally should not be changed.';
 
   @override
   String get levelBasicInfoHelpRestrictionsBody =>
@@ -1256,11 +1367,14 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get jitterOffsetsAdd => 'New Preset';
+  String get jitterOffsetsAdd => 'Add Offset';
+
+  @override
+  String get jitterOffsetsSelectTitle => 'Select Spawn Position Offset';
 
   @override
   String get jitterOffsetsEmpty =>
-      'No presets yet.\nBasic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events without a bound preset use the game\'s default parameters of 80 / 30.\nTo customize the offsets, create a preset and bind it in the event.';
+      'No presets yet.\nWithout a bound preset, the zombie lists in Basic Spawner and Underwater Spawner use the game\'s default parameters: a same-row cumulative offset increment of 80 and a random offset upper bound of 30, giving each zombie a random offset from 0 through 29.\nTo customize the offsets, create a preset and bind it in the event.';
 
   @override
   String get jitterOffsetsNoAlias => '(no alias)';
@@ -1286,11 +1400,11 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jitterOffsetsIncrementInvalid =>
-      'Use a non-negative value. A negative value may make the sum of the cumulative value and random value less than 0; the game converts it as an unsigned integer, which may produce an abnormally large X coordinate and prevent zombies from entering the lawn normally.';
+      'A non-negative integer is recommended. Negative values may be converted into abnormally large offsets and prevent normal entry onto the lawn.';
 
   @override
   String get jitterOffsetsRandomJitterInvalid =>
-      'Enter a positive value. Zero or a negative value does not disable the random offset and may produce an abnormally large X coordinate, preventing zombies from entering the lawn normally.';
+      'Enter a positive integer. Zero or a negative value does not disable the random offset and may produce an abnormally large horizontal position, preventing zombies from entering the lawn normally.';
 
   @override
   String get jitterOffsetsRename => 'Rename';
@@ -1342,14 +1456,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jitterOffsetsDeleteBlockedHint =>
-      'Open these events first and switch \"Spawn Position Offset\" to another preset or unbind it:';
+      'Open these events first and switch \"Spawn Position Offset\" to another preset or unbind it. For events that do not support offset settings, use the manual file editor to remove retained references:';
 
   @override
   String get jitterOffsetsEventLabel => 'Spawn Position Offset';
 
   @override
   String get jitterOffsetsEventNone =>
-      'Unbound (use the game\'s default parameters: 80 / 30)';
+      'Unbound (use the game\'s default parameters)';
 
   @override
   String get jitterOffsetsEventManage => 'Manage Presets';
@@ -1360,7 +1474,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jitterOffsetsEventNoPresets =>
-      'No presets yet. This event automatically uses the game\'s default parameters of 80 / 30. To customize the offsets, create a preset first.';
+      'No presets yet. This event automatically uses the game\'s default parameters: a same-row cumulative offset increment of 80 and a random offset upper bound of 30, giving each zombie a random offset from 0 through 29. To customize the offsets, create a preset first.';
 
   @override
   String jitterOffsetsEventDangling(String alias) {
@@ -1378,18 +1492,22 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jitterOffsetsFixedOffsetOverrideWarning =>
-      'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.';
+      'The event\'s batch-index fixed offset is nonzero. The bound Spawn Position Offset preset and spawn formation preset are temporarily ignored but retained; they take effect again when the fixed offset returns to 0.';
+
+  @override
+  String get jitterOffsetsUnderwaterScopeDescription =>
+      'These settings affect only the zombie list, not the sea creature list.';
 
   @override
   String get jitterOffsetsAdvancedSettingsTitle => 'Advanced Settings';
 
   @override
   String get jitterOffsetsFixedOffsetLabel =>
-      'Global-index fixed offset (FixedOffset)';
+      'Batch-index fixed offset (FixedOffset)';
 
   @override
   String get jitterOffsetsFixedOffsetDescription =>
-      'The default is 0. With a nonzero value, zombies are numbered in creation order across the whole batch, starting at 0. Each zombie\'s base horizontal position receives its index multiplied by the fixed offset value. The index does not reset by row, and facing does not change the offset direction: a positive fixed offset value moves zombies right, while a negative value moves them left. Therefore, use this setting carefully when one event contains zombies in different rows or with different facings.\nThe Spawn Position Offset preset and spawn arrangement are temporarily ignored but retained; they take effect again when this value is restored to 0. Spawn arrangement is the game\'s rule for row starting offsets and offsets between rows.';
+      'Commonly used in Two-Player Mode; the default is 0. A value of 0 uses the Spawn Position Offset preset and spawn formation preset. A nonzero value temporarily disables both but preserves their settings; restoring 0 enables them again. Fixed offsets accumulate in the event\'s zombie-list order without restarting for each row, while each zombie retains its own base position. The first zombie has no fixed offset; each following zombie receives one more entered increment. Even a tiny nonzero value or an event with only one zombie disables both presets.\nA positive fixed offset value moves zombies right, a negative value moves them left, and decimal fractions are preserved. Facing does not reverse this direction, so use this setting carefully with mixed rows or facings. For example, 8.5 moves the first three zombies right by 0, 8.5, and 17 from their own base positions.\nThis setting changes only horizontal position, not the number created. Excessively large magnitudes may place zombies far outside or too deeply inside the lawn, preventing normal entry or causing settlement problems.';
 
   @override
   String get jitterOffsetsFixedOffsetInvalid => 'Enter a valid number.';
@@ -1402,21 +1520,24 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get jitterOffsetsHelpOverviewBody =>
-      'Spawn Position Offset presets adjust the horizontal arrangement of zombies created by the same event. In Basic Spawner, Underwater Spawner, Ground Spawner, and Grid Item Spawner events, each zombie first receives its base position, then the horizontal offset calculated by this preset. Each row accumulates offsets independently.\nGround Spawner derives its base emergence position from the selected column or range; offsets may move it outside that range. Grid Item Spawner uses the target obstacle\'s position; offsets may move it away from the tile center. Only horizontal position changes, not creation time, row, or wave timing.\nWithout a bound preset, the game uses the default parameters: a cumulative increment of 80 and a random upper bound of 30.';
+      'Spawn Position Offset presets adjust the horizontal arrangement of zombies in the same event. They apply to the zombie lists in Basic Spawner and Underwater Spawner, without affecting sea creatures. Each zombie receives an offset from its row\'s accumulated value and an independent random value, applied to its own base position. Each row accumulates independently. Only horizontal position changes, not the number created, creation time, row, or wave timing.\nWithout a bound preset, the game uses the default parameters: a same-row cumulative offset increment of 80 and a random offset upper bound of 30, giving each zombie a random offset from 0 through 29. Zombies spawn normally without a custom preset.';
 
   @override
   String get jitterOffsetsHelpUsageTitle => 'Instructions';
 
   @override
   String get jitterOffsetsHelpUsageBody =>
-      'After creating a preset here, open any Basic Spawner, Underwater Spawner, Ground Spawner, or Grid Item Spawner event and select it under \"Spawn Position Offset\".\nA preset can be shared by multiple events. Editing it updates every event that references it. A referenced preset cannot be deleted; first switch those events to another preset or unbind it.';
+      'After creating a preset here, open a Basic Spawner or Underwater Spawner event and select it under \"Spawn Position Offset\".\nA preset can be shared by multiple events. Editing it updates every event that references it. A referenced preset cannot be deleted; first switch those events to another preset or unbind it.';
 
   @override
   String get jitterOffsetsHelpParametersTitle => 'Parameters';
 
   @override
+  String get jitterOffsetsHelpFixedOffsetTitle => 'Batch-index fixed offset';
+
+  @override
   String get jitterOffsetsHelpParametersBody =>
-      '\"Same-row cumulative offset increment\" adds a fixed amount for each additional zombie in the same event and row. The first zombie has no cumulative offset; the second has one increment; the third has two, and so on. Use a non-negative value. A negative sum of cumulative and random offsets may produce an abnormally large horizontal coordinate and prevent normal entry.\n\"Random offset upper bound\" gives each zombie an independent random offset from 0 through the entered value minus 1. For example, 10 gives 0 through 9. Enter a positive integer; zero or negative values do not disable randomness and may prevent normal entry.\nThe cumulative and random offsets are added together, then applied according to facing. Facing left, usually entering from the right side of the lawn, moves the spawn position right. Facing right, usually entering from the left side, moves it left. In Underwater Spawner, enabling \"From left\" means facing right and adding the offset toward the left; disabling it normally means entering from the right and adding the offset toward the right.\nFor an increment of 20 and upper bound of 10, the first three zombies in one row receive offsets of 0–9, 20–29, and 40–49, applied left or right as described above.\nThe game\'s spawn arrangement rules may also set row starting offsets and offsets between rows. These combine with the preset, so the final position may include additional offsets.';
+      '\"Same-row cumulative offset increment\" is the amount added to a row\'s accumulated offset after each zombie in that row is positioned. A non-negative integer is recommended. Negative values may be converted into abnormally large offsets and prevent normal entry.\n\"Random offset upper bound\" sets each zombie\'s independent random offset range. The actual value ranges from 0 through the entered value minus 1. For example, 10 gives 0 through 9. Enter a positive integer; zero or negative values do not disable randomness and may produce abnormal coordinates.\nThe accumulated and random offsets are added together, then applied to the base position according to facing. Facing left, usually entering from the right side of the lawn, moves the spawn position right. Facing right, usually entering from the left side, moves it left. Without a spawn formation preset, each row starts at 0. For example, an increment of 20 and upper bound of 10 give the first three zombies in one row offsets of 0–9, 20–29, and 40–49.\nA spawn formation preset adjusts each row\'s initial horizontal offset and the spacing between later zombies in that row. Each row starts with the preset\'s initial offset; after positioning each zombie, that row gains its extra spacing adjustment as well as the base increment. This changes horizontal spacing within a row, not the vertical distance between rows.';
 
   @override
   String get removeModule => 'Remove module';
@@ -7105,6 +7226,13 @@ class AppLocalizationsEn extends AppLocalizations {
       'Sets mower styles (doesn\'t work in Creative Courtyard)';
 
   @override
+  String get moduleTitle_SpeedUpTileModuleProperties => 'Speed-Up Tiles';
+
+  @override
+  String get moduleDesc_SpeedUpTileModuleProperties =>
+      'Places preset Speed-Up Tiles from the Need for Speed crossover secret realm on the lawn';
+
+  @override
   String get moduleTitle_TunnelDefendModuleProperties =>
       'Underground Palace Pathways';
 
@@ -7204,6 +7332,70 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get gulliverTunnelDeleteOutsideConfirmMessage =>
       'This will remove all Gulliver Tunnels outside the 5×9 lawn. This action cannot be undone.';
+
+  @override
+  String get speedUpTileTitle => 'Speed-Up Tiles';
+
+  @override
+  String get speedUpTileHelpOverview =>
+      'Place Speed-Up Tiles on selected tiles to make eligible ground zombies move quickly in the arrow\'s direction. These tiles commonly appear in the Need for Speed racing secret realm. Zombies resume normal walking when they leave the road. Gargantuars and zombies with special movement behavior ignore Speed-Up Tiles.';
+
+  @override
+  String get speedUpTileHelpUsageTitle => 'Usage';
+
+  @override
+  String get speedUpTileHelpUsageBody =>
+      'Select an arrow direction below, then click the grid to place a Speed-Up Tile. Clicking a tile with the same arrow direction removes it; selecting another direction and clicking an existing Speed-Up Tile replaces its direction. A Speed-Up Tile\'s horizontal coordinate (GridX) and vertical coordinate (GridY) both start at 0. For example, horizontal coordinate 0 means the first column and 8 means the ninth column; vertical coordinate 0 means the first row and 2 means the third row.';
+
+  @override
+  String get speedUpTileTopologyTitle => 'Road Connection Rules';
+
+  @override
+  String get speedUpTileTopologyBody =>
+      'An arrow does not mean \"turn immediately on entering this tile\". Zombies usually keep moving in their current direction through adjacent Speed-Up Tiles and check road connections only after traveling about one tile. To make a turn, the tile ahead in the old direction must be ordinary ground, the adjacent tile in the intended direction must be a Speed-Up Tile, and there should be only one available exit. A continuous, one-tile-wide road without branches is recommended.';
+
+  @override
+  String get speedUpTileSelectDirection => 'Select arrow direction';
+
+  @override
+  String get speedUpTileDirectionLeft => 'Left';
+
+  @override
+  String get speedUpTileDirectionRight => 'Right';
+
+  @override
+  String get speedUpTileDirectionUp => 'Up';
+
+  @override
+  String get speedUpTileDirectionDown => 'Down';
+
+  @override
+  String get speedUpTilePlacedCount => 'Placed';
+
+  @override
+  String get speedUpTileClearAll => 'Clear all';
+
+  @override
+  String get speedUpTileClearConfirmTitle => 'Clear all Speed-Up Tiles?';
+
+  @override
+  String get speedUpTileClearConfirmMessage =>
+      'This will remove all placed Speed-Up Tiles, including those outside the lawn. This action cannot be undone.';
+
+  @override
+  String get speedUpTileOutsideLawn => 'Speed-Up Tiles outside the lawn: ';
+
+  @override
+  String get speedUpTileDeleteOutside =>
+      'Remove Speed-Up Tiles outside the lawn';
+
+  @override
+  String get speedUpTileDeleteOutsideConfirmTitle =>
+      'Remove Speed-Up Tiles outside the lawn?';
+
+  @override
+  String get speedUpTileDeleteOutsideConfirmMessage =>
+      'This will remove all Speed-Up Tiles outside the current lawn grid. This action cannot be undone.';
 
   @override
   String get moduleTitle_RiftThemeDemoModuleProperties => 'Theme Configuration';

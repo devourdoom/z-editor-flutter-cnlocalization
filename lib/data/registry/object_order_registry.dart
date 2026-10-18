@@ -26,6 +26,7 @@ class ObjectOrderRegistry {
     'PiratePlankProperties',
     'TideProperties',
     'RoofProperties',
+    'SpeedUpTileModuleProperties',
     'RailcartProperties',
     'PowerTileProperties',
     'ZombiePotionModuleProperties',

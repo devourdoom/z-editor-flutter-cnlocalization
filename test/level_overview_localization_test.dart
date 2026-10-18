@@ -1,4 +1,5 @@
 import 'package:c_editor/data/level_parser.dart';
+import 'package:c_editor/data/music_suffix_catalog.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/data/repository/grid_item_repository.dart';
 import 'package:c_editor/data/repository/plant_repository.dart';
@@ -40,7 +41,7 @@ const _copy =
         conveyor: '传送带植物',
         lawn: '地图',
         musicModule: '神秘埃及 (Egypt)',
-        musicType: '神秘埃及-终“僵”之战 (Ultimate Battle) (MiniGame_A)',
+        musicType: '神秘埃及-终“僵”之战 / Ultimate Battle (MiniGame_A)',
       ),
       'ru': (
         plants: 'Предустановленные растения',
@@ -150,6 +151,7 @@ void main() {
       ZombieRepository().init(),
       GridItemRepository.init(),
       StageRepository.init(),
+      MusicSuffixCatalog.init(),
       ResourceNames.ensureLoaded(),
       ZombossMechRepository.ensureLoaded(),
       ZombossBattleRepository.init(),
@@ -254,6 +256,67 @@ void main() {
         },
       );
     }
+
+    testWidgets(
+      '${entry.key} overview names unconfigured music tracks after their module',
+      (tester) async {
+        tester.view.physicalSize = const Size(900, 800);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.reset);
+        final locale = Locale(entry.key);
+        final moduleName = ResourceNames.lookupWithLocale(
+          entry.key,
+          'musicSuffix_BGMe',
+        );
+        for (final track in const ['MainPath', 'MiniGame_A', 'MiniGame_B']) {
+          final level = PvzLevelFile(
+            objects: [
+              PvzObject(
+                aliases: const ['LevelDefinition'],
+                objClass: 'LevelDefinition',
+                objData: LevelDefinitionData(
+                  stageModule: 'RTID(FallbackMusicStage@CurrentLevel)',
+                  musicType: track,
+                ).toJson(),
+              ),
+              PvzObject(
+                aliases: const ['FallbackMusicStage'],
+                objClass: 'ModernStageProperties',
+                objData: const {
+                  'MusicSuffix': 'BGMe',
+                  'ResourceGroupNames': <String>[],
+                  'GroupsToUnloadForAds': <String>[],
+                },
+              ),
+            ],
+          );
+          await tester.pumpWidget(
+            MaterialApp(
+              locale: locale,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              theme: ThemeData(platform: TargetPlatform.iOS),
+              home: LevelOverviewDialog(
+                key: ValueKey(track),
+                levelFile: level,
+                parsed: LevelParser.parseLevel(level),
+                fileName: 'overview-music-fallback.json',
+                onClose: () {},
+              ),
+            ),
+          );
+          await tester.pumpAndSettle();
+          expect(
+            find.text(
+              '${lookupAppLocalizations(locale).musicType}: '
+              '$moduleName ($track)',
+            ),
+            findsOneWidget,
+          );
+          expect(tester.takeException(), isNull);
+        }
+      },
+    );
 
     testWidgets(
       '${entry.key} overview shows a seed chooser without field names',

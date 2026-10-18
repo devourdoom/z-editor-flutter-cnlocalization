@@ -28,6 +28,8 @@ class SeparatedOptionPickerField<T> extends StatelessWidget {
     this.sheetTitle,
     this.sheetHeader,
     this.sheetSubtitleLines = const [],
+    this.fallbackLabel,
+    this.selectedTextStyle,
   });
 
   final String labelText;
@@ -39,6 +41,10 @@ class SeparatedOptionPickerField<T> extends StatelessWidget {
   final String? sheetTitle;
   final Widget? sheetHeader;
   final List<String> sheetSubtitleLines;
+
+  /// Displays an imported value missing from [items] without making it a choice.
+  final String? fallbackLabel;
+  final TextStyle? selectedTextStyle;
 
   SeparatedOptionPickerItem<T>? get _selectedItem {
     for (final item in items) {
@@ -76,13 +82,17 @@ class SeparatedOptionPickerField<T> extends StatelessWidget {
           borderRadius: BorderRadius.circular(8),
           onTap: enabled ? () => _showOptions(context) : null,
           child: InputDecorator(
-            isEmpty: selected == null,
+            isEmpty: selected == null && fallbackLabel == null,
             decoration: effectiveDecoration.copyWith(enabled: enabled),
             child: Row(
               children: [
                 Expanded(
                   child: Text(
-                    selected?.fieldLabel ?? selected?.label ?? '',
+                    selected?.fieldLabel ??
+                        selected?.label ??
+                        fallbackLabel ??
+                        '',
+                    style: selectedTextStyle,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -1625,10 +1625,13 @@ class _LevelListScreenState extends State<LevelListScreen> {
     };
   }
 
-  IconData _workspaceActionIcon(String id) {
+  IconData _workspaceActionIcon(String id, SettingsState settings) {
     return switch (id) {
       InterfaceMenuActionIds.language => Icons.language,
-      InterfaceMenuActionIds.theme => Icons.brightness_6_outlined,
+      InterfaceMenuActionIds.theme =>
+        settings.themeMode == ThemeMode.dark
+            ? Icons.light_mode
+            : Icons.dark_mode,
       InterfaceMenuActionIds.uiScale => Icons.aspect_ratio,
       InterfaceMenuActionIds.autosave => Icons.save_outlined,
       InterfaceMenuActionIds.sort => Icons.sort,
@@ -1691,7 +1694,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
   ) {
     return IconButton(
       key: ValueKey('workspaceToolbarAction_$id'),
-      icon: Icon(_workspaceActionIcon(id)),
+      icon: Icon(_workspaceActionIcon(id, settings)),
       tooltip: _workspaceActionLabel(l10n, settings, id),
       onPressed: () => _handleWorkspaceAction(id),
     );
@@ -1706,7 +1709,7 @@ class _LevelListScreenState extends State<LevelListScreen> {
       key: ValueKey('workspaceOverflowAction_$id'),
       value: id,
       child: EditorPopupMenuTile(
-        leading: Icon(_workspaceActionIcon(id)),
+        leading: Icon(_workspaceActionIcon(id, settings)),
         title: Text(_workspaceActionLabel(l10n, settings, id)),
         contentPadding: EdgeInsets.zero,
       ),

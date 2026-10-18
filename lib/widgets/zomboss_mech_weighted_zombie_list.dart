@@ -18,6 +18,7 @@ class ZombossMechWeightedZombieListEditor extends StatelessWidget {
     required this.editable,
     required this.onChanged,
     this.defaultWeight = 100,
+    this.headingStyle,
   });
 
   final String fieldLabel;
@@ -27,6 +28,7 @@ class ZombossMechWeightedZombieListEditor extends StatelessWidget {
   final bool editable;
   final void Function(List<String> zombieIds, List<int> weights) onChanged;
   final int defaultWeight;
+  final TextStyle? headingStyle;
 
   int _weightAt(int index) {
     if (index >= 0 && index < weights.length) return weights[index];
@@ -80,7 +82,10 @@ class ZombossMechWeightedZombieListEditor extends StatelessWidget {
         Row(
           children: [
             Expanded(
-              child: Text(fieldLabel, style: theme.textTheme.titleSmall),
+              child: Text(
+                fieldLabel,
+                style: headingStyle ?? theme.textTheme.titleSmall,
+              ),
             ),
             if (editable)
               IconButton(
@@ -91,6 +96,7 @@ class ZombossMechWeightedZombieListEditor extends StatelessWidget {
               ),
           ],
         ),
+        const SizedBox(height: 12),
         if (zombieIds.isEmpty)
           Padding(
             padding: const EdgeInsets.only(bottom: 6),

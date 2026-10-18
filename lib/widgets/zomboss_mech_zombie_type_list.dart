@@ -61,7 +61,7 @@ class ZombossMechZombieTypeListEditor extends StatelessWidget {
             padding: EdgeInsets.only(
               left: dense ? 8 : 0,
               top: dense ? 6 : 8,
-              bottom: 4,
+              bottom: dense ? 8 : 12,
             ),
             child: Row(
               children: [

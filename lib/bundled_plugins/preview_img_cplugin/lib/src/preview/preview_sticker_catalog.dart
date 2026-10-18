@@ -20,6 +20,7 @@ import 'package:c_editor/data/repository/tool_repository.dart';
 import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/repository/zombie_properties_repository.dart';
 import 'package:c_editor/data/rtid_parser.dart';
+import 'package:c_editor/data/speed_up_tile_catalog.dart';
 import 'package:c_editor/data/zombie_discovery.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
@@ -296,7 +297,9 @@ Set<String> previewCurrentLevelStickerAssetPaths({
       }
     }
     final className = obj.objClass.toLowerCase();
-    final scope = className.contains('tunnel')
+    final scope =
+        className.contains('tunnel') ||
+            obj.objClass == 'SpeedUpTileModuleProperties'
         ? 'components'
         : obj.objClass == 'CreatureType'
         ? 'creatures'
@@ -756,6 +759,21 @@ Iterable<PreviewSticker> _supplementalStickers() sync* {
     nameResolver: (context) =>
         AppLocalizations.of(context)!.comingSoonPlantBlockedLabel,
   );
+  const speedUpTileLabels = {
+    SpeedUpTileCatalog.left: 'previewStickerNameSpeedUpTileLeft',
+    SpeedUpTileCatalog.right: 'previewStickerNameSpeedUpTileRight',
+    SpeedUpTileCatalog.up: 'previewStickerNameSpeedUpTileUp',
+    SpeedUpTileCatalog.down: 'previewStickerNameSpeedUpTileDown',
+  };
+  for (final entry in speedUpTileLabels.entries) {
+    final path = SpeedUpTileCatalog.assetForImage(entry.key)!;
+    yield PreviewSticker(
+      assetPath: path,
+      tag: 'components',
+      labelKey: entry.value,
+      searchTerms: [entry.key, _imageStem(path).split('/').last],
+    );
+  }
   // Same component order as the Underground Palace module's image picker.
   const directions = {
     'DOWN': [1, 2, 3],

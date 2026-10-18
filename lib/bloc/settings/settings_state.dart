@@ -8,6 +8,7 @@ final class SettingsState extends Equatable {
     this.interfaceMenuActions = const {},
     this.autosaveTargets = const {},
     this.promptForAliasOnCreate = false,
+    this.checkForUpdates = true,
   });
 
   final Locale locale;
@@ -19,6 +20,7 @@ final class SettingsState extends Equatable {
 
   final Set<AutosaveTarget> autosaveTargets;
   final bool promptForAliasOnCreate;
+  final bool checkForUpdates;
 
   bool get autosave => autosaveTargets.contains(AutosaveTarget.level);
   bool get hasAutosave => autosaveTargets.isNotEmpty;
@@ -35,6 +37,7 @@ final class SettingsState extends Equatable {
     interfaceMenuActions,
     Set<AutosaveTarget>? autosaveTargets,
     bool? promptForAliasOnCreate,
+    bool? checkForUpdates,
   }) {
     return SettingsState(
       locale: locale ?? this.locale,
@@ -44,6 +47,7 @@ final class SettingsState extends Equatable {
       autosaveTargets: autosaveTargets ?? this.autosaveTargets,
       promptForAliasOnCreate:
           promptForAliasOnCreate ?? this.promptForAliasOnCreate,
+      checkForUpdates: checkForUpdates ?? this.checkForUpdates,
     );
   }
 
@@ -55,5 +59,6 @@ final class SettingsState extends Equatable {
     interfaceMenuActions,
     autosaveTargets,
     promptForAliasOnCreate,
+    checkForUpdates,
   ];
 }

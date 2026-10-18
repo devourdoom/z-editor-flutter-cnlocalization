@@ -623,6 +623,9 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
   Widget _buildJitterOffsetsCard(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final theme = Theme.of(context);
+    final onCard = theme.brightness == Brightness.dark
+        ? Colors.white
+        : Colors.black87;
     final presets = JitterOffsetsUtils.listPresets(widget.levelFile);
     final unused = JitterOffsetsUtils.unreferencedCount(widget.levelFile);
     final subtitle = presets.isEmpty
@@ -633,31 +636,46 @@ class _WaveTimelineTabState extends State<WaveTimelineTab> {
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       color: theme.colorScheme.secondary,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Colors.white),
-      ),
-      child: ListTile(
-        leading: const Icon(Icons.speed, color: Colors.white),
-        title: Text(
-          l10n?.waveTimelineJitterOffsetsTitle ??
-              'Spawn Position Offset Presets',
-          style: const TextStyle(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: widget.onEditJitterOffsets,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              Icon(Icons.speed, color: onCard),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n?.waveTimelineJitterOffsetsTitle ??
+                          'Spawn Position Offset Presets',
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: onCard,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      subtitle,
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: onCard.withValues(alpha: 0.9),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 8),
+              if (unused > 0) ...[
+                Icon(Icons.warning_amber_rounded, size: 18, color: onCard),
+                const SizedBox(width: 4),
+              ],
+              Icon(Icons.arrow_forward_ios, size: 16, color: onCard),
+            ],
           ),
         ),
-        subtitle: Text(subtitle, style: const TextStyle(color: Colors.white)),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (unused > 0)
-              Icon(Icons.warning_amber_rounded, size: 18, color: Colors.white),
-            const SizedBox(width: 4),
-            Icon(Icons.arrow_forward_ios, size: 16, color: Colors.white),
-          ],
-        ),
-        onTap: widget.onEditJitterOffsets,
       ),
     );
   }

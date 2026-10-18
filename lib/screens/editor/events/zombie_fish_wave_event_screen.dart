@@ -316,12 +316,15 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                 HelpSectionData(
                   title:
                       l10n?.jitterOffsetsEventLabel ?? 'Spawn Position Offset',
-                  body:
-                      l10n?.jitterOffsetsEventDescription ??
-                      'Controls the horizontal offset added to each zombie\'s base spawn position within the same event and row. Facing determines the offset direction.',
+                  body: [
+                    l10n?.jitterOffsetsEventDescription ??
+                        'Controls the horizontal offset added to each zombie\'s base spawn position within the same event and row. Facing determines the offset direction.',
+                    l10n?.jitterOffsetsUnderwaterScopeDescription ??
+                        'These settings affect only the zombie list, not the sea creature list.',
+                  ].join('\n'),
                 ),
                 HelpSectionData(
-                  title: l10n?.fishPropertiesGrid ?? 'Fish placement',
+                  title: l10n?.fishPropertiesGrid ?? 'Sea creature placement',
                   body: l10n?.eventHelpZombieFishWaveFish ?? '',
                 ),
                 HelpSectionData(
@@ -361,16 +364,16 @@ class _ZombieFishWaveEventScreenState extends State<ZombieFishWaveEventScreen> {
                 currentValue: _data.jitterOffsets,
                 onChanged: _updateJitterOffsets,
                 onManage: _openJitterOffsetsPresets,
+                scopeDescription:
+                    l10n?.jitterOffsetsUnderwaterScopeDescription ??
+                    'These settings affect only the zombie list, not the sea creature list.',
+                fixedOffset: _data.fixedOffset,
+                onFixedOffsetChanged: _updateFixedOffset,
                 enabled: (_data.fixedOffset ?? 0) == 0,
                 overrideWarning: (_data.fixedOffset ?? 0) != 0
                     ? (l10n?.jitterOffsetsFixedOffsetOverrideWarning ??
-                          'The event\'s global-index fixed offset is nonzero. The game applies fixed offsets in creation order across the entire batch, ignoring the bound Spawn Position Offset preset and spawn arrangement. These settings are retained and take effect again when the fixed offset returns to 0.')
+                          'The event\'s batch-index fixed offset is nonzero. The bound Spawn Position Offset preset and spawn formation preset are temporarily ignored but retained; they take effect again when the fixed offset returns to 0.')
                     : null,
-              ),
-              const SizedBox(height: 16),
-              FixedOffsetAdvancedSettingsCard(
-                value: _data.fixedOffset,
-                onChanged: _updateFixedOffset,
               ),
               const SizedBox(height: 16),
               Text(

@@ -195,17 +195,26 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
     final currentMusicType = def.musicType.isEmpty
         ? MusicTypeCatalog.mainPath
         : def.musicType;
-    final musicTypeChoices = <MusicTypeChoice>[
-      ...?musicModule?.choices,
-      if (musicModule == null) ...MusicTypeCatalog.fallbackChoices,
-    ];
-    if (!musicTypeChoices.any((choice) => choice.value == currentMusicType)) {
-      musicTypeChoices.add(
-        MusicTypeChoice(value: currentMusicType, labelKey: currentMusicType),
-      );
-    }
+    final musicTypeChoices =
+        musicModule?.choices ??
+        MusicTypeCatalog.fallbackChoicesForSuffix(musicSuffix);
+    final displayMusicSuffix = musicModule?.suffix ?? musicSuffix.trim();
+    final musicSuffixName = displayMusicSuffix.isEmpty
+        ? '—'
+        : ResourceNames.lookupOrFallback(
+            context,
+            musicModule?.suffixNameKey ??
+                MusicSuffixCatalog.resourceKey(displayMusicSuffix),
+            displayMusicSuffix,
+          );
     String localizedMusicTypeLabel(MusicTypeChoice choice) =>
-        ResourceNames.lookupOrFallback(context, choice.labelKey, choice.value);
+        ResourceNames.lookupOrFallback(
+          context,
+          choice.labelKey,
+          choice.labelKey.startsWith('musicSuffix_')
+              ? musicSuffixName
+              : choice.value,
+        );
     String? musicTypeSubtitle(MusicTypeChoice choice) {
       final label = localizedMusicTypeLabel(choice);
       return label == choice.value ? null : choice.value;
@@ -216,14 +225,6 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
       return label == choice.value ? label : '$label (${choice.value})';
     }
 
-    final displayMusicSuffix = musicModule?.suffix ?? musicSuffix.trim();
-    final musicSuffixName = displayMusicSuffix.isEmpty
-        ? '—'
-        : ResourceNames.lookupOrFallback(
-            context,
-            musicModule?.suffixNameKey ?? 'musicSuffix_$displayMusicSuffix',
-            displayMusicSuffix,
-          );
     final musicSuffixCode = displayMusicSuffix.isEmpty
         ? '—'
         : displayMusicSuffix;
@@ -338,9 +339,14 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   title: l10n?.sceneSettingsSection ?? 'Scene settings',
                   body:
                       l10n?.levelBasicInfoHelpSceneBody ??
-                      "Here you can choose the level's map from the list. Note "
-                          'that the Pirate Seas map has no planks by default. '
-                          'The victory setting only applies to certain special '
+                      "Here you can choose scene information such as the level's "
+                          'lawn and music type from the list. The Pirate Seas '
+                          'lawn has no planks by default.\n'
+                          "The available music types depend on the lawn's default "
+                          'music module. After customizing the lawn, you can '
+                          'change its music module to use music from other lawns '
+                          'in the level.\n'
+                          'The settlement setting only applies to certain special '
                           'level types and generally should not be changed.',
                 ),
                 HelpSectionData(
@@ -556,6 +562,10 @@ class _BasicInfoScreenState extends State<BasicInfoScreen> {
                   sheetHeader: musicPickerHeader,
                   sheetSubtitleLines: musicPickerNotes,
                   value: currentMusicType,
+                  fallbackLabel: currentMusicType,
+                  selectedTextStyle: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
                   items: [
                     for (final choice in musicTypeChoices)
                       SeparatedOptionPickerItem(

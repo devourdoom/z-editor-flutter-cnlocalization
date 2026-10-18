@@ -3,6 +3,7 @@ import 'package:c_editor/screens/level_overview/level_overview_widgets.dart';
 import 'package:c_editor/data/level_parser.dart';
 import 'package:c_editor/data/lunar_mine_vein_type_catalog.dart';
 import 'package:c_editor/data/pvz_models.dart';
+import 'package:c_editor/data/speed_up_tile_catalog.dart';
 import 'package:c_editor/data/repository/grid_item_repository.dart';
 import 'package:c_editor/data/repository/plant_repository.dart';
 import 'package:c_editor/data/repository/reference_repository.dart';
@@ -109,12 +110,71 @@ void main() {
     ]);
   });
 
+  testWidgets('overview renders speed-up arrows at zero-based grid positions', (
+    tester,
+  ) async {
+    _setLargeViewport(tester);
+    final level = PvzLevelFile(
+      objects: [
+        PvzObject(
+          aliases: const ['SpeedUpTile'],
+          objClass: 'SpeedUpTileModuleProperties',
+          objData: SpeedUpTileModulePropertiesData(
+            roads: [
+              for (var i = 0; i < SpeedUpTileCatalog.directions.length; i++)
+                SpeedUpTileRoadData(
+                  gridX: i,
+                  gridY: 0,
+                  img: SpeedUpTileCatalog.directions[i],
+                ),
+            ],
+          ).toJson(),
+        ),
+      ],
+    );
+    await tester.pumpWidget(_preview(level));
+    await tester.pumpAndSettle();
+    await tester.ensureVisible(find.byType(LawnGrid));
+    await tester.pumpAndSettle();
+
+    final images = find.descendant(
+      of: find.byType(LawnGrid),
+      matching: find.byWidgetPredicate(
+        (widget) =>
+            widget is AssetImageWidget &&
+            widget.assetPath.startsWith('assets/images/tunnels/speed_up_tile_'),
+      ),
+    );
+    expect(
+      tester
+          .widgetList<AssetImageWidget>(images)
+          .map((image) => image.assetPath),
+      SpeedUpTileCatalog.directions.map(SpeedUpTileCatalog.assetForImage),
+    );
+    final grid = tester.widget<LawnGrid>(find.byType(LawnGrid));
+    final gridRect = tester.getRect(
+      find.descendant(
+        of: find.byType(LawnGrid),
+        matching: find.byType(GridView),
+      ),
+    );
+    final firstTile = tester.getCenter(images.first);
+    expect(firstTile.dx, lessThan(gridRect.left + gridRect.width / grid.cols));
+    expect(firstTile.dy, lessThan(gridRect.top + gridRect.height / grid.rows));
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('overview shows dormant vein variants and their grown crystals', (
     tester,
   ) async {
     _setLargeViewport(tester);
     final level = PvzLevelFile(
       objects: [
+        PvzObject(
+          aliases: const ['InitialGridItems'],
+          objClass: 'InitialGridItemProperties',
+          objData: const {'InitialGridItemPlacements': []},
+        ),
         PvzObject(
           aliases: ['LunarMineVeins'],
           objClass: 'LunarMineVeinModuleProperties',

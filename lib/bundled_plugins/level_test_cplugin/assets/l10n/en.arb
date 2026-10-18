@@ -18,20 +18,21 @@
       "path": { "type": "String" }
     }
   },
-  "dynamicFetchError": "Download failed: {error}",
-  "@dynamicFetchError": {
-    "placeholders": {
-      "error": { "type": "String" }
-    }
-  },
+  "dynamicFetchError": "Could not download the data package. Check your network, workspace write permissions, and free space, then try again.",
+  "dynamicTimeout": "The connection timed out. Check your network and proxy settings, then try again. A proxy may be needed on your network.",
+  "dynamicRateLimited": "GitHub has temporarily limited requests from your network. Wait and try again later, or switch networks.",
+  "dynamicAccessDenied": "GitHub refused this request. Check your network or proxy settings and try again later.",
+  "dynamicNotFound": "This release or download is no longer available. Refresh the release list and choose another version.",
+  "dynamicInvalidResponse": "The server returned unexpected data. Check whether your network or proxy is intercepting GitHub requests, then try again later.",
+  "dynamicStorageError": "Could not save the data package. Check workspace write permissions and free space, then try again.",
   "dynamicCancelTitle": "Cancel download?",
   "dynamicCancelBody": "Stop downloading and discard the partial file?",
   "dynamicCancelConfirm": "Cancel download",
   "dynamicCancelKeep": "Keep downloading",
   "dynamicCanceling": "Canceling…",
   "dynamicCanceled": "Download canceled.",
-  "dynamicNoConnection": "No internet connection. Check your network and try again.",
-  "dynamicConnectionLost": "Connection lost while downloading. Please try again.",
+  "dynamicNoConnection": "Could not connect to GitHub. Check your network and proxy settings, then try again. A proxy may be needed on your network.",
+  "dynamicConnectionLost": "The download connection was interrupted. Check your network and proxy settings, then try again.",
   "dynamicServerError": "Server error ({code}). Please try again later.",
   "@dynamicServerError": {
     "placeholders": {
@@ -64,9 +65,9 @@
   },
   "dynamicWebOpen": "Open download",
   "dynamicWebOpenAgain": "Open link again",
-  "dynamicWebOpenFailed": "Could not open the download link. Copy it from the release page, or try again.",
+  "dynamicWebOpenFailed": "Could not open the download link. Allow browser pop-ups, or download manually from GitHub Releases. A proxy may be needed on your network.",
   "dynamicWebPick": "Choose file",
   "dynamicWebPickTitle": "Select downloaded dynamic.rsb.smf",
-  "dynamicWebPickEmpty": "Could not read the selected file. Try again.",
-  "dynamicWebImportFailed": "Failed to store the file in the workspace."
+  "dynamicWebPickEmpty": "Could not read the selected file. Make sure the download has finished and select a readable .rsb.smf file again.",
+  "dynamicWebImportFailed": "Could not store the file in the workspace. Check free space and make sure the browser allows local storage, then try again."
 }

@@ -543,7 +543,7 @@ class _GladiatorRowModuleScreenState extends State<GladiatorRowModuleScreen> {
                 ]),
               _card([
                 _heading(l10n.gladiatorSpawns),
-                const SizedBox(height: 12),
+                const SizedBox(height: 16),
                 for (var i = 0; i < encounter.spawns.length; i++)
                   _spawnCard(encounter, encounter.spawns[i], i, cols, l10n),
                 OutlinedButton.icon(
@@ -562,7 +562,7 @@ class _GladiatorRowModuleScreenState extends State<GladiatorRowModuleScreen> {
               _heading(l10n.gladiatorPunishmentPool),
               const SizedBox(height: 8),
               Text(l10n.gladiatorPunishmentHint),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               for (var i = 0; i < _data.punishmentPool.length; i++)
                 _punishmentCard(_data.punishmentPool[i], i, l10n),
               OutlinedButton.icon(

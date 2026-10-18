@@ -78,7 +78,7 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
               _buildScaleSection(context, l10n, settings),
             if (_showSettingOnPage(settings, InterfaceMenuActionIds.autosave))
               _buildAutosaveSection(context, l10n, settings),
-            _buildAliasPromptSection(context, l10n, settings),
+            _buildPopupPromptsSection(context, l10n, settings),
           ];
           return Scaffold(
             appBar: AppBar(title: Text(l10n.interfaceSettings)),
@@ -89,7 +89,12 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
               scrollbarOrientation: ScrollbarOrientation.right,
               child: SingleChildScrollView(
                 controller: _scrollController,
-                padding: const EdgeInsets.fromLTRB(16, 16, 24, 40),
+                padding: EdgeInsets.fromLTRB(
+                  MediaQuery.sizeOf(context).width < 360 ? 8 : 16,
+                  16,
+                  MediaQuery.sizeOf(context).width < 360 ? 16 : 24,
+                  40,
+                ),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: ConstrainedBox(
@@ -221,7 +226,9 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
         ),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return SegmentedButton<ThemeMode>(
+            final compact = constraints.maxWidth < 520;
+            final selector = SegmentedButton<ThemeMode>(
+              key: const ValueKey('interfaceSettingsThemeSelector'),
               showSelectedIcon: false,
               expandedInsets: EdgeInsets.zero,
               segments: [
@@ -231,7 +238,8 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
                     label: l10n.lightTheme,
                     child: const Icon(Icons.light_mode),
                   ),
-                  label: Text(l10n.lightTheme),
+                  label: compact ? null : Text(l10n.lightTheme),
+                  tooltip: l10n.lightTheme,
                 ),
                 ButtonSegment<ThemeMode>(
                   value: ThemeMode.dark,
@@ -239,13 +247,29 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
                     label: l10n.darkTheme,
                     child: const Icon(Icons.dark_mode),
                   ),
-                  label: Text(l10n.darkTheme),
+                  label: compact ? null : Text(l10n.darkTheme),
+                  tooltip: l10n.darkTheme,
                 ),
               ],
               selected: {settings.themeMode},
               onSelectionChanged: (selection) {
                 context.read<SettingsCubit>().setThemeMode(selection.first);
               },
+            );
+            if (!compact) return selector;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  l10n.currentTheme(
+                    settings.themeMode == ThemeMode.dark
+                        ? l10n.darkTheme
+                        : l10n.lightTheme,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                selector,
+              ],
             );
           },
         ),
@@ -369,21 +393,32 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
     );
   }
 
-  Widget _buildAliasPromptSection(
+  Widget _buildPopupPromptsSection(
     BuildContext context,
     AppLocalizations l10n,
     SettingsState settings,
   ) {
     return _SettingsSection(
-      icon: Icons.drive_file_rename_outline,
-      title: l10n.aliasPromptOnCreate,
-      child: SwitchListTile.adaptive(
-        key: const ValueKey('interfaceSettingsAliasPromptOnCreate'),
-        value: settings.promptForAliasOnCreate,
-        onChanged: context.read<SettingsCubit>().setPromptForAliasOnCreate,
-        title: Text(l10n.aliasPromptOnCreate),
-        subtitle: Text(l10n.aliasPromptOnCreateDescription),
-        contentPadding: EdgeInsets.zero,
+      icon: Icons.notifications_outlined,
+      title: l10n.popupPrompts,
+      child: Column(
+        children: [
+          _ResponsiveSettingSwitch(
+            key: const ValueKey('interfaceSettingsAliasPromptOnCreate'),
+            value: settings.promptForAliasOnCreate,
+            onChanged: context.read<SettingsCubit>().setPromptForAliasOnCreate,
+            title: l10n.aliasPromptOnCreate,
+            description: l10n.aliasPromptOnCreateDescription,
+          ),
+          const Divider(height: 24),
+          _ResponsiveSettingSwitch(
+            key: const ValueKey('interfaceSettingsCheckForUpdates'),
+            value: settings.checkForUpdates,
+            onChanged: context.read<SettingsCubit>().setCheckForUpdates,
+            title: l10n.checkForUpdatesAutomatically,
+            description: l10n.checkForUpdatesAutomaticallyDescription,
+          ),
+        ],
       ),
     );
   }
@@ -444,7 +479,7 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
               return _MenuActionTile(
                 key: ValueKey('${_selectedSurface.name}_${action.id}'),
                 index: index,
-                icon: _actionIcon(action.id, settings),
+                icon: _actionIcon(action.id),
                 label: _actionLabel(action.id, l10n),
                 placement: action.placement,
                 toolbarLabel: l10n.menuPlacementToolbar,
@@ -551,7 +586,7 @@ class _InterfaceSettingsScreenState extends State<InterfaceSettingsScreen> {
     };
   }
 
-  IconData _actionIcon(String id, SettingsState settings) {
+  IconData _actionIcon(String id) {
     return switch (id) {
       InterfaceMenuActionIds.language => Icons.language,
       InterfaceMenuActionIds.theme => Icons.brightness_6_outlined,
@@ -594,31 +629,88 @@ class _SettingsSection extends StatelessWidget {
     final theme = Theme.of(context);
     return Card(
       clipBehavior: Clip.antiAlias,
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
+      child: LayoutBuilder(
+        builder: (context, constraints) => Padding(
+          padding: EdgeInsets.all(constraints.maxWidth < 320 ? 10 : 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                children: [
+                  Icon(icon, color: theme.colorScheme.primary),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        color: theme.colorScheme.primary,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 14),
+              child,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _ResponsiveSettingSwitch extends StatelessWidget {
+  const _ResponsiveSettingSwitch({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final String title;
+  final String description;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth >= 360) {
+          return SwitchListTile.adaptive(
+            value: value,
+            onChanged: onChanged,
+            title: Text(title),
+            subtitle: Text(description),
+            contentPadding: EdgeInsets.zero,
+          );
+        }
+        return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
-                Icon(icon, color: theme.colorScheme.primary),
-                const SizedBox(width: 10),
                 Expanded(
                   child: Text(
                     title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      color: theme.colorScheme.primary,
-                      fontWeight: FontWeight.w700,
-                    ),
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
                 ),
+                const SizedBox(width: 8),
+                Switch.adaptive(value: value, onChanged: onChanged),
               ],
             ),
-            const SizedBox(height: 14),
-            child,
+            Text(
+              description,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+              ),
+            ),
           ],
-        ),
-      ),
+        );
+      },
     );
   }
 }
@@ -788,7 +880,13 @@ class _SurfaceSelector extends StatelessWidget {
                     children: [
                       Icon(_icon(surface)),
                       const SizedBox(width: 10),
-                      Expanded(child: Text(_label(surface))),
+                      Expanded(
+                        child: Text(
+                          _label(surface),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -851,16 +949,19 @@ class _MenuActionTile extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            final useCompactPlacement =
-                constraints.maxWidth < 680 || allowSettingsPage;
-            final placementControl = _PlacementControl(
-              placement: placement,
-              toolbarLabel: toolbarLabel,
-              overflowLabel: overflowLabel,
-              settingsPageLabel: settingsPageLabel,
-              allowSettingsPage: allowSettingsPage,
-              onChanged: onPlacementChanged,
-              compact: useCompactPlacement,
+            final stacked = constraints.maxWidth < 680;
+            final placementControl = SizedBox(
+              key: const ValueKey('interfaceMenuPlacementControl'),
+              width: stacked ? double.infinity : 320,
+              child: _PlacementControl(
+                placement: placement,
+                toolbarLabel: toolbarLabel,
+                overflowLabel: overflowLabel,
+                settingsPageLabel: settingsPageLabel,
+                allowSettingsPage: allowSettingsPage,
+                onChanged: onPlacementChanged,
+                compact: stacked || allowSettingsPage,
+              ),
             );
             final title = Row(
               children: [
@@ -882,7 +983,7 @@ class _MenuActionTile extends StatelessWidget {
                 ),
               ],
             );
-            if (useCompactPlacement) {
+            if (stacked) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [title, const SizedBox(height: 6), placementControl],
@@ -924,67 +1025,78 @@ class _PlacementControl extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (compact) {
-      return DropdownButton<InterfaceMenuPlacement>(
-        value: placement,
-        isExpanded: true,
-        items: [
-          DropdownMenuItem(
-            value: InterfaceMenuPlacement.toolbar,
-            child: Row(
-              children: [
-                const Icon(Icons.push_pin_outlined, size: 18),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    toolbarLabel,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        decoration: ShapeDecoration(
+          shape: StadiumBorder(
+            side: BorderSide(color: Theme.of(context).colorScheme.outline),
           ),
-          DropdownMenuItem(
-            value: InterfaceMenuPlacement.overflow,
-            child: Row(
-              children: [
-                const Icon(Icons.more_vert, size: 18),
-                const SizedBox(width: 6),
-                Expanded(
-                  child: Text(
-                    overflowLabel,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          if (allowSettingsPage)
-            DropdownMenuItem(
-              value: InterfaceMenuPlacement.settingsPage,
-              child: Row(
-                children: [
-                  const Icon(Icons.tune, size: 18),
-                  const SizedBox(width: 6),
-                  Expanded(
-                    child: Text(
-                      settingsPageLabel,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<InterfaceMenuPlacement>(
+            value: placement,
+            isExpanded: true,
+            items: [
+              DropdownMenuItem(
+                value: InterfaceMenuPlacement.toolbar,
+                child: Row(
+                  children: [
+                    const Icon(Icons.push_pin_outlined, size: 18),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        toolbarLabel,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-        ],
-        onChanged: (value) {
-          if (value != null) onChanged(value);
-        },
+              DropdownMenuItem(
+                value: InterfaceMenuPlacement.overflow,
+                child: Row(
+                  children: [
+                    const Icon(Icons.more_vert, size: 18),
+                    const SizedBox(width: 6),
+                    Expanded(
+                      child: Text(
+                        overflowLabel,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (allowSettingsPage)
+                DropdownMenuItem(
+                  value: InterfaceMenuPlacement.settingsPage,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.tune, size: 18),
+                      const SizedBox(width: 6),
+                      Expanded(
+                        child: Text(
+                          settingsPageLabel,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+            onChanged: (value) {
+              if (value != null) onChanged(value);
+            },
+          ),
+        ),
       );
     }
     return SegmentedButton<InterfaceMenuPlacement>(
       showSelectedIcon: false,
+      expandedInsets: EdgeInsets.zero,
       segments: [
         ButtonSegment(
           value: InterfaceMenuPlacement.toolbar,

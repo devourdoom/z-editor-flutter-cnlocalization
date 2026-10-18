@@ -14,6 +14,7 @@ import 'package:c_editor/data/registry/module_registry.dart';
 import 'package:c_editor/data/repository/grid_item_repository.dart';
 import 'package:c_editor/data/repository/zombie_repository.dart';
 import 'package:c_editor/data/rtid_parser.dart';
+import 'package:c_editor/data/speed_up_tile_catalog.dart';
 import 'package:c_editor/screens/common/level_preview_grid_helpers.dart';
 
 typedef PreviewModuleL10n =
@@ -168,6 +169,8 @@ PreviewModuleInfoPayload previewModuleInfoBuild({
       return _renai(levelFile, t, name);
     case 'TunnelDefendModuleProperties':
       return _tunnelDefend(levelFile, t);
+    case 'SpeedUpTileModuleProperties':
+      return _speedUpTiles(levelFile, t);
     case 'ManholePipelineModuleProperties':
       return _manholePipeline(levelFile, t);
     case 'MoldColonyChallengeProps':
@@ -269,6 +272,7 @@ List<String> previewPresentModuleObjClasses(PvzLevelFile levelFile) {
     'SmokePollutionModuleProperties',
     'RenaiModuleProperties',
     'TunnelDefendModuleProperties',
+    'SpeedUpTileModuleProperties',
     'ManholePipelineModuleProperties',
     'MoldColonyChallengeProps',
     'SunDropperProperties',
@@ -1658,6 +1662,65 @@ PreviewModuleInfoPayload _tunnelDefend(
                   : 'assets/images/tunnels/${r.img}.webp',
               gridX: r.gridX,
               gridY: r.gridY,
+            ),
+        ],
+      ),
+    ],
+  );
+}
+
+PreviewModuleInfoPayload _speedUpTiles(
+  PvzLevelFile levelFile,
+  PreviewModuleL10n t,
+) {
+  final data = readSpeedUpTileData(levelFile);
+  if (data == null || data.roads.isEmpty) {
+    return PreviewModuleInfoPayload(
+      lines: [t('previewGenModuleInfoNoData', 'No module data on this level')],
+    );
+  }
+  String direction(String image) => switch (image) {
+    SpeedUpTileCatalog.left => t(
+      'previewStickerNameSpeedUpTileLeft',
+      'Speed-Up Tile (left)',
+    ),
+    SpeedUpTileCatalog.right => t(
+      'previewStickerNameSpeedUpTileRight',
+      'Speed-Up Tile (right)',
+    ),
+    SpeedUpTileCatalog.up => t(
+      'previewStickerNameSpeedUpTileUp',
+      'Speed-Up Tile (up)',
+    ),
+    SpeedUpTileCatalog.down => t(
+      'previewStickerNameSpeedUpTileDown',
+      'Speed-Up Tile (down)',
+    ),
+    _ => t('previewStickerNameUnknown', 'Unknown'),
+  };
+  final (rows, cols) = _lawnDims(levelFile);
+  return PreviewModuleInfoPayload(
+    lines: [
+      t('previewGenSpeedUpTileCount', '{count} speed-up tiles', {
+        'count': data.roads.length,
+      }),
+      for (final road in data.roads)
+        '${direction(road.img)} ${_cell(t, road.gridX, road.gridY)}',
+    ],
+    lawnRows: rows,
+    lawnCols: cols,
+    sections: [
+      PreviewIconSection(
+        items: [
+          for (var i = 0; i < data.roads.length; i++)
+            PreviewItem(
+              id: 'speed_up_tile_$i',
+              assetPath:
+                  SpeedUpTileCatalog.assetForImage(data.roads[i].img) ??
+                  'assets/images/others/unknown.webp',
+              label: direction(data.roads[i].img),
+              gridX: data.roads[i].gridX,
+              gridY: data.roads[i].gridY,
             ),
         ],
       ),

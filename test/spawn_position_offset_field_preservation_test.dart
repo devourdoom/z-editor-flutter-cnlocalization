@@ -43,7 +43,7 @@ void main() {
     expect(updated.toJson(), containsPair('ZombieSpawnPattern', _patternRtid));
   });
 
-  testWidgets('editing a ground spawner preserves its spawn pattern', (
+  testWidgets('editing ground columns preserves ignored position fields', (
     tester,
   ) async {
     tester.view.physicalSize = const Size(800, 1600);
@@ -90,19 +90,31 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    final advanced = find.byKey(const ValueKey('fixedOffsetAdvancedSettings'));
-    await tester.ensureVisible(advanced);
-    await tester.tap(advanced);
-    await tester.pumpAndSettle();
-    final field = find.byKey(const ValueKey('fixedOffsetField'));
+    expect(
+      find.byKey(const ValueKey('spawnPositionOffsetSettings')),
+      findsNothing,
+    );
+    expect(
+      find.byKey(const ValueKey('spawnPositionOffsetsUnavailable')),
+      findsNothing,
+    );
+    expect(find.byKey(const ValueKey('fixedOffsetField')), findsNothing);
+    expect(
+      find.byKey(const ValueKey('jitterOffsetsPresetPicker')),
+      findsNothing,
+    );
+    final field = find.byWidgetPredicate(
+      (widget) => widget is TextFormField && widget.initialValue == '7',
+    );
     await tester.ensureVisible(field);
-    await tester.enterText(field, '0');
+    await tester.enterText(field, '8');
     await tester.pumpAndSettle();
 
     final json = event.objData as Map<String, dynamic>;
     expect(json['JitterOffsets'], _jitterRtid);
     expect(json['ZombieSpawnPattern'], _patternRtid);
-    expect(json, isNot(contains('FixedOffset')));
+    expect(json['FixedOffset'], 12);
+    expect(json['ColumnEnd'], 8);
     expect(tester.takeException(), isNull);
   });
 

@@ -15,8 +15,7 @@ class SpawnZombiesFishWaveActionPropsData extends PvzModel {
     this.fishes = const [],
   });
 
-  /// Optional level-local `ZombieJitterOffsets` preset. In-game testing has
-  /// confirmed that underwater spawn events honor this field.
+  /// Applied only to [zombies]; [fishes] use a separate positioning path.
   String? jitterOffsets;
   String? zombieSpawnPattern;
   num? fixedOffset;

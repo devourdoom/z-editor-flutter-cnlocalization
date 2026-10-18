@@ -1,16 +1,21 @@
 import 'package:c_editor/data/music_type_catalog.dart';
+import 'package:c_editor/data/music_suffix_catalog.dart';
 import 'package:c_editor/data/pvz_models.dart';
 import 'package:c_editor/l10n/app_localizations.dart';
 import 'package:c_editor/l10n/resource_names.dart';
 import 'package:c_editor/screens/editor/basic_info_screen.dart';
 import 'package:c_editor/widgets/asset_image.dart';
+import 'package:c_editor/widgets/separated_option_picker_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUpAll(ResourceNames.ensureLoaded);
+  setUpAll(() async {
+    await ResourceNames.ensureLoaded();
+    await MusicSuffixCatalog.init();
+  });
 
   test('catalog contains every guide and supplemental module', () {
     expect(MusicTypeCatalog.modules, hasLength(35));
@@ -64,8 +69,13 @@ void main() {
     );
 
     final moon = MusicTypeCatalog.forSuffix('Moon')!;
-    final moonC = moon.choices.singleWhere(
-      (choice) => choice.value == MusicTypeCatalog.miniGameC,
+    expect(moon.choices.map((choice) => choice.value), const [
+      MusicTypeCatalog.mainPath,
+      MusicTypeCatalog.miniGameA,
+      MusicTypeCatalog.miniGameB,
+    ]);
+    final moonMain = moon.choices.singleWhere(
+      (choice) => choice.value == MusicTypeCatalog.mainPath,
     );
     final moonA = moon.choices.singleWhere(
       (choice) => choice.value == MusicTypeCatalog.miniGameA,
@@ -73,38 +83,69 @@ void main() {
     final moonB = moon.choices.singleWhere(
       (choice) => choice.value == MusicTypeCatalog.miniGameB,
     );
+    expect(moonMain.labelKey, 'musicTypeLabel_main');
     expect(moonA.labelKey, 'musicTypeLabel_moonUb');
     expect(moonB.labelKey, 'musicTypeLabel_moonMg');
-    expect(moonC.labelKey, 'musicTypeLabel_moonDay24FinalWave');
     expect(
       ResourceNames.lookupWithLocale('zh', moonA.labelKey),
-      '月球基地-终“僵”之战 (Ultimate Battle)',
+      '月球基地-终“僵”之战 / Ultimate Battle',
     );
     expect(
       ResourceNames.lookupWithLocale('en', moonB.labelKey),
       'Moon BaseZ - Demonstration Mini Game',
     );
-    expect(
-      ResourceNames.lookupWithLocale('zh', moonC.labelKey),
-      '月球基地-第24天（最后一波音乐变奏）',
-    );
-
     final eighties = MusicTypeCatalog.forSuffix('Eighties')!;
     expect(
       eighties.choices.map((choice) => choice.value),
       MusicTypeCatalog.fallbackChoices.map((choice) => choice.value),
     );
+    expect(eighties.choices.map((choice) => choice.labelKey).toSet(), {
+      'musicSuffix_Eighties',
+    });
     expect(
       ResourceNames.lookupWithLocale('zh', eighties.noteKeys.single),
       '特殊僵尸对应的音乐需要在「普通出怪」事件中选择',
     );
   });
 
+  test(
+    'unconfigured modules default to three tracks using the suffix name',
+    () {
+      expect(MusicTypeCatalog.forSuffix('BGMe'), isNull);
+      final choices = MusicTypeCatalog.fallbackChoicesForSuffix('BGMe');
+      expect(choices.map((choice) => choice.value), const [
+        MusicTypeCatalog.mainPath,
+        MusicTypeCatalog.miniGameA,
+        MusicTypeCatalog.miniGameB,
+      ]);
+      expect(choices.map((choice) => choice.labelKey).toSet(), {
+        'musicSuffix_BGMe',
+      });
+      for (final locale in const ['en', 'zh', 'ru']) {
+        expect(
+          ResourceNames.lookupWithLocale(locale, choices.first.labelKey),
+          isNot(choices.first.labelKey),
+        );
+      }
+      expect(
+        MusicTypeCatalog.fallbackChoicesForSuffix(
+          ' EIGHTIES ',
+        ).map((choice) => choice.labelKey).toSet(),
+        {'musicSuffix_Eighties'},
+      );
+      expect(
+        MusicTypeCatalog.fallbackChoicesForSuffix(
+          ' ',
+        ).map((choice) => choice.labelKey),
+        const ['MainPath', 'MiniGame_A', 'MiniGame_B'],
+      );
+    },
+  );
+
   test('all catalog labels and notes are localized', () {
     final keys = <String>{
       for (final module in MusicTypeCatalog.modules)
-        for (final choice in module.choices)
-          if (choice.labelKey.startsWith('musicTypeLabel_')) choice.labelKey,
+        for (final choice in module.choices) choice.labelKey,
     };
     for (final module in MusicTypeCatalog.modules) {
       keys.addAll(module.noteKeys);
@@ -182,6 +223,10 @@ void main() {
     await tester.pumpAndSettle();
 
     final currentChoice = find.text('法老王的琨曲诅咒 (MainPath)');
+    expect(
+      tester.widget<Text>(currentChoice).style?.fontWeight,
+      FontWeight.bold,
+    );
     await tester.ensureVisible(currentChoice);
     await tester.tap(currentChoice);
     await tester.pumpAndSettle();
@@ -219,53 +264,56 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('Moon picker exposes the requested day-24 variation', (
-    tester,
-  ) async {
-    final definition = LevelDefinitionData(
-      stageModule: 'RTID(CustomMoonStage@CurrentLevel)',
-    );
-    final levelFile = PvzLevelFile(
-      objects: [
-        PvzObject(
-          aliases: const ['CustomMoonStage'],
-          objClass: 'MoonStageProperties',
-          objData: <String, dynamic>{
-            'MusicSuffix': 'Moon',
-            'ResourceGroupNames': <String>[],
-            'GroupsToUnloadForAds': <String>[],
-          },
+  testWidgets(
+    'Moon picker offers only three tracks and localizes the main path',
+    (tester) async {
+      final definition = LevelDefinitionData(
+        stageModule: 'RTID(CustomMoonStage@CurrentLevel)',
+      );
+      final levelFile = PvzLevelFile(
+        objects: [
+          PvzObject(
+            aliases: const ['CustomMoonStage'],
+            objClass: 'MoonStageProperties',
+            objData: <String, dynamic>{
+              'MusicSuffix': 'Moon',
+              'ResourceGroupNames': <String>[],
+              'GroupsToUnloadForAds': <String>[],
+            },
+          ),
+        ],
+      );
+
+      await tester.pumpWidget(
+        MaterialApp(
+          locale: const Locale('zh'),
+          supportedLocales: AppLocalizations.supportedLocales,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          home: BasicInfoScreen(
+            levelFile: levelFile,
+            levelDef: definition,
+            onBack: () {},
+            onStageTap: null,
+            onChanged: () {},
+          ),
         ),
-      ],
-    );
+      );
+      await tester.pumpAndSettle();
 
-    await tester.pumpWidget(
-      MaterialApp(
-        locale: const Locale('zh'),
-        supportedLocales: AppLocalizations.supportedLocales,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        home: BasicInfoScreen(
-          levelFile: levelFile,
-          levelDef: definition,
-          onBack: () {},
-          onStageTap: null,
-          onChanged: () {},
-        ),
-      ),
-    );
-    await tester.pumpAndSettle();
+      final currentChoice = find.text('主线音乐 (MainPath)');
+      await tester.ensureVisible(currentChoice);
+      await tester.tap(currentChoice);
+      await tester.pumpAndSettle();
 
-    final currentChoice = find.text('MainPath');
-    await tester.ensureVisible(currentChoice);
-    await tester.tap(currentChoice);
-    await tester.pumpAndSettle();
-
-    expect(find.text('月球基地-第24天（最后一波音乐变奏）'), findsOneWidget);
-    expect(find.text('月球基地-终“僵”之战 (Ultimate Battle)'), findsOneWidget);
-    expect(find.text('月球基地-趣味小游戏 (Demonstration Mini Game)'), findsOneWidget);
-    expect(find.text('MiniGame_C'), findsOneWidget);
-    expect(tester.takeException(), isNull);
-  });
+      expect(find.text('主线音乐'), findsOneWidget);
+      expect(find.text('月球基地-终“僵”之战 / Ultimate Battle'), findsOneWidget);
+      expect(find.text('月球基地-趣味小游戏 / Demonstration Mini Game'), findsOneWidget);
+      expect(find.text('MiniGame_C'), findsNothing);
+      expect(find.text('MiniGame_D'), findsNothing);
+      expect(find.text('MiniGame_E'), findsNothing);
+      expect(tester.takeException(), isNull);
+    },
+  );
 
   testWidgets('empty stage music suffix overrides stale level suffix', (
     tester,
@@ -318,6 +366,78 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
+  testWidgets('unconfigured suffix names all three choices after its module', (
+    tester,
+  ) async {
+    await _pumpCustomMusicScreen(tester, suffix: 'BGMe');
+
+    final picker = tester.widget<SeparatedOptionPickerField<String>>(
+      find.byType(SeparatedOptionPickerField<String>),
+    );
+    expect(picker.items.map((item) => item.value), const [
+      'MainPath',
+      'MiniGame_A',
+      'MiniGame_B',
+    ]);
+    expect(picker.items.map((item) => item.label).toSet(), {'BGMe (暂无内容)'});
+
+    final currentChoice = find.text('BGMe (暂无内容) (MainPath)');
+    await tester.ensureVisible(currentChoice);
+    await tester.tap(currentChoice);
+    await tester.pumpAndSettle();
+
+    expect(find.text('BGMe (暂无内容)'), findsNWidgets(4));
+    expect(find.text('MainPath'), findsOneWidget);
+    expect(find.text('MiniGame_A'), findsOneWidget);
+    expect(find.text('MiniGame_B'), findsOneWidget);
+    expect(find.text('MiniGame_C'), findsNothing);
+    expect(find.textContaining('musicSuffix_'), findsNothing);
+    expect(tester.takeException(), isNull);
+  });
+
+  testWidgets('imported Moon tracks remain intact without expanding choices', (
+    tester,
+  ) async {
+    final data = await _pumpCustomMusicScreen(
+      tester,
+      suffix: 'Moon',
+      musicType: 'MiniGame_C',
+    );
+    final picker = tester.widget<SeparatedOptionPickerField<String>>(
+      find.byType(SeparatedOptionPickerField<String>),
+    );
+    expect(picker.items.map((item) => item.value), const [
+      'MainPath',
+      'MiniGame_A',
+      'MiniGame_B',
+    ]);
+
+    final currentChoice = find.text('MiniGame_C');
+    await tester.ensureVisible(currentChoice);
+    await tester.tap(currentChoice);
+    await tester.pumpAndSettle();
+    expect(
+      find.descendant(
+        of: find.byType(BottomSheet),
+        matching: find.text('MiniGame_C'),
+      ),
+      findsNothing,
+    );
+    expect(find.text('主线音乐'), findsOneWidget);
+
+    Navigator.of(tester.element(find.byType(BottomSheet))).pop();
+    await tester.pumpAndSettle();
+    await tester.enterText(find.byType(TextField).first, 'After');
+    await tester.pump();
+
+    expect(data.definition.musicType, 'MiniGame_C');
+    expect(
+      (data.definitionObject.objData as Map<String, dynamic>)['MusicType'],
+      'MiniGame_C',
+    );
+    expect(tester.takeException(), isNull);
+  });
+
   testWidgets('unknown music suffix and type survive an unrelated save', (
     tester,
   ) async {
@@ -366,7 +486,24 @@ void main() {
     await tester.tap(currentChoice);
     await tester.pumpAndSettle();
     expect(find.text('当前音乐模块 (MusicSuffix)'), findsOneWidget);
-    expect(find.text('MysterySuffix'), findsNWidgets(2));
+    final picker = tester.widget<SeparatedOptionPickerField<String>>(
+      find.byType(SeparatedOptionPickerField<String>),
+    );
+    expect(picker.items.map((item) => item.value), const [
+      'MainPath',
+      'MiniGame_A',
+      'MiniGame_B',
+    ]);
+    expect(picker.items.map((item) => item.label).toSet(), {'MysterySuffix'});
+    expect(find.text('MysterySuffix'), findsNWidgets(5));
+    expect(find.textContaining('musicSuffix_'), findsNothing);
+    expect(
+      find.descendant(
+        of: find.byType(BottomSheet),
+        matching: find.text('CustomTrack'),
+      ),
+      findsNothing,
+    );
 
     Navigator.of(tester.element(find.byType(BottomSheet))).pop();
     await tester.pumpAndSettle();
@@ -382,4 +519,52 @@ void main() {
     );
     expect(tester.takeException(), isNull);
   });
+}
+
+Future<({LevelDefinitionData definition, PvzObject definitionObject})>
+_pumpCustomMusicScreen(
+  WidgetTester tester, {
+  required String suffix,
+  String musicType = MusicTypeCatalog.mainPath,
+}) async {
+  final definition = LevelDefinitionData(
+    name: 'Before',
+    stageModule: 'RTID(CustomMusicStage@CurrentLevel)',
+    musicType: musicType,
+  );
+  final definitionObject = PvzObject(
+    aliases: const ['LevelDefinition'],
+    objClass: 'LevelDefinition',
+    objData: definition.toJson(),
+  );
+  final levelFile = PvzLevelFile(
+    objects: [
+      definitionObject,
+      PvzObject(
+        aliases: const ['CustomMusicStage'],
+        objClass: 'ModernStageProperties',
+        objData: <String, dynamic>{
+          'MusicSuffix': suffix,
+          'ResourceGroupNames': <String>[],
+          'GroupsToUnloadForAds': <String>[],
+        },
+      ),
+    ],
+  );
+  await tester.pumpWidget(
+    MaterialApp(
+      locale: const Locale('zh'),
+      supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      home: BasicInfoScreen(
+        levelFile: levelFile,
+        levelDef: definition,
+        onBack: () {},
+        onStageTap: null,
+        onChanged: () {},
+      ),
+    ),
+  );
+  await tester.pumpAndSettle();
+  return (definition: definition, definitionObject: definitionObject);
 }
